@@ -30,7 +30,7 @@ public class RestClient {
 	// private static String server_address = "http://78.47.162.117";
 	// private static String server_address = "http://192.168.0.2";
 	//private static String server_address = "http://172.29.40.161";
-	private static String server_address = "http://json.openars.dk";
+	private static String server_address = "http://api.openarms.dk";
 	private static int server_port = 80;
 	//private static int server_port = 9000;
 	private String response;
