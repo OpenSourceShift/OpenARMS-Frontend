@@ -44,7 +44,7 @@
 		$(document).ready(function(){
 			$("#language img").bind('click', function() {
 				lang = $(this).attr('src');
-				lang = lang.replace('@{'/public/images/flags/'}/', '').replace('.png', '');
+				lang = lang.replace("@{'/public/images/flags/'}/", "").replace(".png", "");
 				$.ajax({
 					  url: "@{Application.changeLang()}?lang="+lang,
 					  success: function(){

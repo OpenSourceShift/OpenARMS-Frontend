@@ -9,7 +9,7 @@ public class Application extends Controller {
         render();
     }
     
-    public static void changelang(String lang) {
+    public static void changeLang(String lang) {
     	Lang.change(lang);
     }
 }
