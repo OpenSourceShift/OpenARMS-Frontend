@@ -96,7 +96,7 @@ public class ManagePoll extends Controller {
 			int duration = s + m * 60;
 
 			try {
-				String res = RestClient.getInstance().activate(pollID,
+				RestClient.getInstance().activate(pollID,
 						adminkey, duration);
 			} catch (Exception e) {
 			}
