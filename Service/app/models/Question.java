@@ -31,7 +31,7 @@ public class Question extends Model {
      * @param pollID
      * @param question Text of the question
      * @param MultipleAllowed whether there are multiple options allowed or not
-     * @param email e-mail address of the poll creator
+     * @param email e-mail address of the poll cre@Entityator
      */
     public Question(long pollID, String question, boolean MultipleAllowed, String email) {
         this.pollID = pollID;
