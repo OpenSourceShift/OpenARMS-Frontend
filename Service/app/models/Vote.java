@@ -12,28 +12,28 @@ import play.db.jpa.*;
 public class Vote extends Model {
 
     @ManyToOne
-    public Answer answer;
+    public Choice answer;
     public int count;
     @ManyToOne
-    public VotingRound votingRound;
+    public PollInstance instance;
 
     /**
      * @param answer Represents answer that this vote should belong to
      * @param count Count of votes for answer provided
-     * @param votingRound Voting round this vote should be in
+     * @param instance Poll instance this vote should belong to
      */
-    public Vote(Answer answer, int count, VotingRound votingRound) {
+    public Vote(Choice answer, int count, PollInstance instance) {
         this.answer = answer;
         this.count = count;
-        this.votingRound = votingRound;
+        this.instance = instance;
     }
 
     /**
      * @param answer Represents answer that this vote should belong to
-     * @param votingRound Voting round this vote should be in
+     * @param instance Poll instance this vote should belong to
      */
-    public Vote(Answer answer, VotingRound votingRound) {
-        this(answer, 1, votingRound);
+    public Vote(Choice answer, PollInstance instance) {
+        this(answer, 1, instance);
     }
 
 }

@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsons;
+package api;
 
-import models.Question;
+import models.Poll;
 
 /**
  * JSON that holds all information information about question
@@ -25,7 +25,7 @@ public class QuestionJSON {
     /**
      * @param question Question object (model) to create JSON from
      */
-    public QuestionJSON(Question question) {
+    public QuestionJSON(Poll question) {
         this.pollID = question.pollID;
         this.questionID = question.id;
         this.answers = getAnswersArray(question);
@@ -103,11 +103,11 @@ public class QuestionJSON {
      * @param question
      * @return
      */
-    public final String[] getAnswersArray(Question question) {
-        int size = question.answers.size();
+    public final String[] getAnswersArray(Poll question) {
+        int size = question.choices.size();
         String[] answersArray = new String[size];
         for (int i = 0; i < size; i++) {
-            answersArray[i] = question.answers.get(i).answer;
+            answersArray[i] = question.choices.get(i).answer;
         }
         return answersArray;
     }
@@ -116,8 +116,8 @@ public class QuestionJSON {
      * Makes Question object (model) from JSON object
      * @return
      */
-    public Question makeModelFromJSON() {
-        Question q = new Question(pollID, question, multipleAllowed, email);
+    public Poll makeModelFromJSON() {
+        Poll q = new Poll(pollID, question, multipleAllowed, email);
         return q;
     }
 }

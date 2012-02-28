@@ -1,17 +1,18 @@
 package controllers;
 
+import api.QuestionJSON;
+import api.ResultsJSON;
+import api.VoteJSON;
+import api.VoteResponseJSON;
+
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import jsons.QuestionJSON;
-import jsons.ResultsJSON;
-import jsons.VoteJSON;
-import jsons.VoteResponseJSON;
-import models.Answer;
-import models.Question;
+import models.Choice;
+import models.Poll;
 import models.Vote;
-import models.VotingRound;
+import models.PollInstance;
 import play.cache.Cache;
 import play.mvc.*;
 
@@ -31,7 +32,7 @@ public class Voting extends Controller {
      */
     public static void getQuestion() {
         long urlID = params.get("id", Long.class).longValue();
-        Question question = Question.find("byPollID", urlID).first();
+        Poll question = Poll.find("byPollID", urlID).first();
 
         if (question == null) {
             renderJSON("");
@@ -66,7 +67,7 @@ public class Voting extends Controller {
             String json = reader.readLine();
             VoteJSON vote = gson.fromJson(json, VoteJSON.class);
 
-            Question question = Question.find("id = ? AND pollID = ?", vote.getQuestionID(), vote.getPollID()).first();
+            Poll question = Poll.find("id = ? AND pollID = ?", vote.getQuestionID(), vote.getPollID()).first();
             if (question == null) {
                 renderJSON("No such question!");
             } else if (!question.isActive()) {
@@ -75,7 +76,7 @@ public class Voting extends Controller {
 
             String responderID = vote.getResponderID();
 
-            if (Cache.get(responderID, VotingRound.class) == null) {
+            if (Cache.get(responderID, PollInstance.class) == null) {
                 Cache.add(responderID, question.getLastVotingRound(), question.timeRemaining() + "s");
             } else {
                 renderJSON("already voted");
@@ -84,8 +85,8 @@ public class Voting extends Controller {
             // we need to store votes for all provided answers in array
             for (String answer : vote.getAnswers()) {
                 // find a question to vote for iteration variable answer
-                Answer selectedAnswer = null;
-                for (Answer a : question.answers) {
+                Choice selectedAnswer = null;
+                for (Choice a : question.choices) {
                     if (a.answer.equals(answer)) {
                         selectedAnswer = a;
                     }
@@ -96,7 +97,7 @@ public class Voting extends Controller {
                 } else {
                     // otherwise just increment the count value
                     for (Vote v : selectedAnswer.votes) {
-                        if (v.votingRound.equals(question.getLastVotingRound())) {
+                        if (v.instance.equals(question.getLastVotingRound())) {
                             v.count++;
                             v.save();
                         }
@@ -123,7 +124,7 @@ public class Voting extends Controller {
         long urlID = params.get("id", Long.class).longValue();
         String adminKey = params.get("adminKey");
         // retrieve the question from DB
-        Question question = Question.find("byPollID", urlID).first();
+        Poll question = Poll.find("byPollID", urlID).first();
         if (question == null) {
             renderJSON("");
         }

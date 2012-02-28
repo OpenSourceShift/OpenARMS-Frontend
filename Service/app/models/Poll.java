@@ -13,7 +13,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Question extends Model {
+public class Poll extends Model {
 
     private static final String charset = "0123456789abcdefghijklmnopqrstuvwxyz";
     @Required
@@ -23,9 +23,9 @@ public class Question extends Model {
     public String question;
     public boolean multipleAllowed;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
-    public List<Answer> answers;
+    public List<Choice> choices;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
-    public List<VotingRound> votingRound;
+    public List<PollInstance> instances;
 
     /**
      * @param pollID
@@ -33,7 +33,7 @@ public class Question extends Model {
      * @param MultipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll cre@Entityator
      */
-    public Question(long pollID, String question, boolean MultipleAllowed, String email) {
+    public Poll(long pollID, String question, boolean MultipleAllowed, String email) {
         this.pollID = pollID;
         this.question = question;
         this.multipleAllowed = MultipleAllowed;
@@ -47,14 +47,14 @@ public class Question extends Model {
      * @param duration number of seconds to activate the question for
      * @return activated Question object - does not have to be used
      */
-    public Question activateFor(int duration) {
+    public Poll activateFor(int duration) {
         if (isActive()) {
-            VotingRound lastRound = getLastVotingRound();
+            PollInstance lastRound = getLastVotingRound();
             lastRound.startDateTime = new Date(System.currentTimeMillis());
             lastRound.EndDateTime = new Date(lastRound.startDateTime.getTime() + duration * 1000);
             lastRound.save();
         } else {
-            new VotingRound(duration, this).save();
+            new PollInstance(duration, this).save();
         }
         return this;
     }
@@ -63,13 +63,13 @@ public class Question extends Model {
      * Gets latest voting round if it exists or null otherwise.
      * @return
      */
-    public VotingRound getLastVotingRound() {
-        if (votingRound.isEmpty()) {
+    public PollInstance getLastVotingRound() {
+        if (instances.isEmpty()) {
             return null;
         }
-        Collections.sort(votingRound);
-        int lastIndex = votingRound.size() - 1;
-        return votingRound.get(lastIndex);
+        Collections.sort(instances);
+        int lastIndex = instances.size() - 1;
+        return instances.get(lastIndex);
     }
 
     /**
@@ -92,9 +92,9 @@ public class Question extends Model {
      * @return
      */
     public String[] getAnswersArray() {
-        String[] array = new String[answers.size()];
-        for (int i = 0; i < answers.size(); i++) {
-            array[i] = answers.get(i).answer;
+        String[] array = new String[choices.size()];
+        for (int i = 0; i < choices.size(); i++) {
+            array[i] = choices.get(i).answer;
         }
         return array;
     }
@@ -114,7 +114,7 @@ public class Question extends Model {
      * @return
      */
     public int timeRemaining() {
-        VotingRound lastRound = getLastVotingRound();
+        PollInstance lastRound = getLastVotingRound();
         if (lastRound == null) {
             return 0;
         }
@@ -140,13 +140,13 @@ public class Question extends Model {
      */
     public int[] getVoteCounts() {
         int index = 0;
-        int[] votes = new int[answers.size()];
+        int[] votes = new int[choices.size()];
 
         if (isFresh()) {
             return votes;
         }
 
-        for (Answer answer : answers) {
+        for (Choice answer : choices) {
             List<Vote> votesList = answer.latestVotes();
             if (votesList.isEmpty()) {
                 votes[index] = 0;

@@ -10,15 +10,15 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Answer extends Model {
+public class Choice extends Model {
 
     @ManyToOne
-    public Question question;
+    public Poll question;
     public String answer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
     public List<Vote> votes;
 
-    public Answer(Question question, String answer) {
+    public Choice(Poll question, String answer) {
         this.question = question;
         this.answer = answer;
     }
@@ -28,7 +28,7 @@ public class Answer extends Model {
      * @return boolean true when it was voted for already or false otherwise
      */
     public boolean alreadyInLatestRound() {
-        VotingRound vr = question.getLastVotingRound();
+        PollInstance vr = question.getLastVotingRound();
         List<Vote> latestVotes = vr.votes;
         for (Vote vote : latestVotes) {
             if (vote.answer.equals(this)) {
@@ -43,12 +43,12 @@ public class Answer extends Model {
      * @return List<Vote> list of latest votes
      */
     public List<Vote> latestVotes() {
-        VotingRound lastRound = question.getLastVotingRound();
+        PollInstance lastRound = question.getLastVotingRound();
         List<Vote> latestVotes = new ArrayList<Vote>();
 
         if (!votes.isEmpty()) {
             for (Vote vote : votes) {
-                if (vote.votingRound.equals(lastRound)) {
+                if (vote.instance.equals(lastRound)) {
                     latestVotes.add(vote);
                 }
             }

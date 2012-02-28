@@ -11,31 +11,31 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class VotingRound extends Model implements Comparable<VotingRound> {
+public class PollInstance extends Model implements Comparable<PollInstance> {
 
     @OneToMany(mappedBy = "votingRound")
     public List<Vote> votes;
     public Date startDateTime;
     public Date EndDateTime;
     @ManyToOne
-    public Question question;
+    public Poll question;
 
-    public VotingRound(int duration, Question question) {
+    public PollInstance(int duration, Poll question) {
         this.question = question;
         this.startDateTime = new Date(System.currentTimeMillis());
         this.EndDateTime = new Date(startDateTime.getTime() + duration * 1000);
     }
 
-    public int compareTo(VotingRound other) {
+    public int compareTo(PollInstance other) {
         return this.EndDateTime.compareTo(other.EndDateTime);
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof VotingRound)) {
+        if (other == null || !(other instanceof PollInstance)) {
             return false;
         }
-        VotingRound vr = (VotingRound) other;
+        PollInstance vr = (PollInstance) other;
         return this.EndDateTime.equals(vr.EndDateTime);
     }
 

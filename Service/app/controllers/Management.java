@@ -4,16 +4,17 @@
  */
 package controllers;
 
+import api.ActivationJSON;
+import api.CreateResponseJSON;
+import api.QuestionJSON;
+
 import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
-import jsons.ActivationJSON;
-import jsons.CreateResponseJSON;
-import jsons.QuestionJSON;
-import models.Answer;
-import models.Question;
+import models.Choice;
+import models.Poll;
 import notifiers.MailNotifier;
 import play.mvc.Controller;
 
@@ -38,12 +39,12 @@ public class Management extends Controller {
             String json = reader.readLine();
             QuestionJSON questionMsg = gson.fromJson(json, QuestionJSON.class);
 
-            Question question = questionMsg.makeModelFromJSON();
+            Poll question = questionMsg.makeModelFromJSON();
 
             // generate data and save question, try until we have unique poll ID
             do {
                 question.pollID = new Random(System.currentTimeMillis()).nextInt(999999);
-            } while (!Question.find("byPollID", question.pollID).fetch().isEmpty());
+            } while (!Poll.find("byPollID", question.pollID).fetch().isEmpty());
 
             question.generateAdminKey(8);
             question.save();
@@ -54,7 +55,7 @@ public class Management extends Controller {
 
             // retrieve answers from JSON and save them into database
             for (String a : questionMsg.getAnswers()) {
-                new Answer(question, a).save();
+                new Choice(question, a).save();
             }
 
             renderJSON(new CreateResponseJSON(question.pollID, question.adminKey));
@@ -87,7 +88,7 @@ public class Management extends Controller {
             ActivationJSON activationMsg = gson.fromJson(json, ActivationJSON.class);
 
             // retrieve and activate the question
-            Question question = Question.find("byPollID", urlID).first();
+            Poll question = Poll.find("byPollID", urlID).first();
 
             if (question == null) {
                 renderJSON("The question does not exist!");
@@ -121,7 +122,7 @@ public class Management extends Controller {
         String adminKey = params.get("adminKey");
 
         // retrieve and activate the question
-        Question question = Question.find("byPollID", urlID).first();
+        Poll question = Poll.find("byPollID", urlID).first();
 
         if (question == null) {
             renderJSON(false);

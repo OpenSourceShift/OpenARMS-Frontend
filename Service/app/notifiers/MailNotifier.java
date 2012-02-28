@@ -13,7 +13,7 @@ import models.*;
  */
 public class MailNotifier extends Mailer {
 
-    public static void sendAdminLink(Question question) {
+    public static void sendAdminLink(Poll question) {
 
         long id = 1;
         setSubject("Your admin link");
@@ -26,7 +26,7 @@ public class MailNotifier extends Mailer {
         }
     }
 
-    public static void sendPollIDLink(Question question) {
+    public static void sendPollIDLink(Poll question) {
 
         long id = 1;
         setSubject("Your poll link");

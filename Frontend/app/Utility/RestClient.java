@@ -161,8 +161,7 @@ public class RestClient {
 	public boolean vote(Vote v) {
 		try {
 			Gson g = new Gson();
-			JSONObject o = new JSONObject(this.postService(StaticQuery
-					.vote(v.pollID), g.toJson(v)));
+			JSONObject o = new JSONObject(this.postService(StaticQuery.vote(v.pollID), g.toJson(v)));
 			return o.getBoolean("voteSuccessful");
 		} catch (JSONException e) {
 		}
@@ -174,8 +173,7 @@ public class RestClient {
 		try {
 			JSONObject o = new JSONObject();
 			o.put("duration", duration);
-			return this.postService(StaticQuery.activate(id, adminkey), o
-					.toString());
+			return this.postService(StaticQuery.activate(id, adminkey), o.toString());
 		} catch (JSONException e) {
 		}
 		return null;

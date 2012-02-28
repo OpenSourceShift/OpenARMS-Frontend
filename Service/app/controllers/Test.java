@@ -4,7 +4,7 @@
  */
 
 package controllers;
-import models.Question;
+import models.Poll;
 import play.mvc.*;
 import notifiers.*;
 /**
@@ -15,7 +15,7 @@ public class Test extends Controller {
 
     public static void createPoll(){
         // Only for testing
-        Question testQuestion = new Question(2525, "Test Question?", false,"krc@retrospekt.dk");
+        Poll testQuestion = new Poll(2525, "Test Question?", false,"krc@retrospekt.dk");
         testQuestion.adminKey = "123jhd";
         testQuestion.pollID = 665698;   
 
