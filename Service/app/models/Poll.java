@@ -15,28 +15,56 @@ import play.db.jpa.*;
 @Entity
 public class Poll extends Model {
 
-    private static final String charset = "0123456789abcdefghijklmnopqrstuvwxyz";
+	private static final long serialVersionUID = 5276961463864101032L;
+	/**
+	 * The set of charecters to use when generating admin keys.
+	 */
+	private static final String ADMINKEY_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyz";
+	/**
+	 * The id of the poll.
+	 */
     @Required
     public long pollID; //pollID
+    /**
+     * The admin key, this is used to gain administrative access to the poll.
+     */
     public String adminKey;
+    /**
+     * The email of the person that created the poll.
+     */
     public String email;
+    /**
+     * The question that the poll states, ex. "What is 2+2?"
+     */
     public String question;
+    /**
+     * Is it allowed to add multiple answers?
+     */
     public boolean multipleAllowed;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    /**
+     * All the possible choices associated with the poll.
+     */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll")
     public List<Choice> choices;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+    /**
+     * All the concrete instances of the poll.
+     */
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll")
     public List<PollInstance> instances;
 
     /**
+     * Constructs a new Poll object.
+     * This does not save it to the database, use the save method to do this.
+     * 
      * @param pollID
      * @param question Text of the question
-     * @param MultipleAllowed whether there are multiple options allowed or not
-     * @param email e-mail address of the poll cre@Entityator
+     * @param multipleAllowed whether there are multiple options allowed or not
+     * @param email e-mail address of the poll creator
      */
-    public Poll(long pollID, String question, boolean MultipleAllowed, String email) {
+    public Poll(long pollID, String question, boolean multipleAllowed, String email) {
         this.pollID = pollID;
         this.question = question;
-        this.multipleAllowed = MultipleAllowed;
+        this.multipleAllowed = multipleAllowed;
         this.email = email;
     }
 
@@ -49,9 +77,9 @@ public class Poll extends Model {
      */
     public Poll activateFor(int duration) {
         if (isActive()) {
-            PollInstance lastRound = getLastVotingRound();
+            PollInstance lastRound = getLatestInstance();
             lastRound.startDateTime = new Date(System.currentTimeMillis());
-            lastRound.EndDateTime = new Date(lastRound.startDateTime.getTime() + duration * 1000);
+            lastRound.endDateTime = new Date(lastRound.startDateTime.getTime() + duration * 1000);
             lastRound.save();
         } else {
             new PollInstance(duration, this).save();
@@ -62,8 +90,9 @@ public class Poll extends Model {
     /**
      * Gets latest voting round if it exists or null otherwise.
      * @return
+     * TODO: Implement this in a faster way, using a hybernate query.
      */
-    public PollInstance getLastVotingRound() {
+    public PollInstance getLatestInstance() {
         if (instances.isEmpty()) {
             return null;
         }
@@ -81,8 +110,8 @@ public class Poll extends Model {
         Random rand = new Random(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
-            int pos = rand.nextInt(charset.length());
-            sb.append(charset.charAt(pos));
+            int pos = rand.nextInt(ADMINKEY_CHARSET.length());
+            sb.append(ADMINKEY_CHARSET.charAt(pos));
         }
         adminKey = sb.toString();
     }
@@ -91,10 +120,10 @@ public class Poll extends Model {
      * Gets array of answers as strings.
      * @return
      */
-    public String[] getAnswersArray() {
+    public String[] getChoicesArray() {
         String[] array = new String[choices.size()];
         for (int i = 0; i < choices.size(); i++) {
-            array[i] = choices.get(i).answer;
+            array[i] = choices.get(i).text;
         }
         return array;
     }
@@ -114,12 +143,12 @@ public class Poll extends Model {
      * @return
      */
     public int timeRemaining() {
-        PollInstance lastRound = getLastVotingRound();
+        PollInstance lastRound = getLatestInstance();
         if (lastRound == null) {
             return 0;
         }
 
-        Date endTime = lastRound.EndDateTime;
+        Date endTime = lastRound.endDateTime;
         Date currentTime = new Date(System.currentTimeMillis());
 
         int difference = (int) Math.ceil((endTime.getTime() - currentTime.getTime()) / 1000);
@@ -131,7 +160,7 @@ public class Poll extends Model {
      * @return true when there is no voting round
      */
     public boolean isFresh() {
-        return getLastVotingRound() == null;
+        return getLatestInstance() == null;
     }
 
     /**
@@ -146,8 +175,8 @@ public class Poll extends Model {
             return votes;
         }
 
-        for (Choice answer : choices) {
-            List<Vote> votesList = answer.latestVotes();
+        for (Choice choice : choices) {
+            List<Vote> votesList = choice.latestVotes();
             if (votesList.isEmpty()) {
                 votes[index] = 0;
             } else {

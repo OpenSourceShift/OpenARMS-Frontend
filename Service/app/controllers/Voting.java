@@ -77,27 +77,27 @@ public class Voting extends Controller {
             String responderID = vote.getResponderID();
 
             if (Cache.get(responderID, PollInstance.class) == null) {
-                Cache.add(responderID, question.getLastVotingRound(), question.timeRemaining() + "s");
+                Cache.add(responderID, question.getLatestInstance(), question.timeRemaining() + "s");
             } else {
                 renderJSON("already voted");
             }
 
-            // we need to store votes for all provided answers in array
-            for (String answer : vote.getAnswers()) {
-                // find a question to vote for iteration variable answer
-                Choice selectedAnswer = null;
-                for (Choice a : question.choices) {
-                    if (a.answer.equals(answer)) {
-                        selectedAnswer = a;
+            // we need to store votes for all provided choices in array
+            for(String answer: vote.getChoices()) {
+                // find a question to vote for iteration variable choice
+                Choice selectedChoice = null;
+                for (Choice c: question.choices) {
+                    if (c.text.equals(answer)) {
+                        selectedChoice = c;
                     }
                 }
                 // if there are no votes for this answer in DB, create one
-                if (!selectedAnswer.alreadyInLatestRound()) {
-                    new Vote(selectedAnswer, question.getLastVotingRound()).save();
+                if (!selectedChoice.inLatestPollInstance()) {
+                    new Vote(selectedChoice, question.getLatestInstance()).save();
                 } else {
                     // otherwise just increment the count value
-                    for (Vote v : selectedAnswer.votes) {
-                        if (v.instance.equals(question.getLastVotingRound())) {
+                    for (Vote v : selectedChoice.votes) {
+                        if (v.pollInstance.equals(question.getLatestInstance())) {
                             v.count++;
                             v.save();
                         }
@@ -131,7 +131,7 @@ public class Voting extends Controller {
         // return results when correct adminKey is provided or when question is not active
         if ((adminKey != null && question.adminKey.equals(adminKey)) || !question.isActive()) {
             int[] votes = question.getVoteCounts();
-            ResultsJSON result = new ResultsJSON(urlID, question.id, question.question, question.getAnswersArray(), votes);
+            ResultsJSON result = new ResultsJSON(urlID, question.id, question.question, question.getChoicesArray(), votes);
             renderJSON(result);
         }
 

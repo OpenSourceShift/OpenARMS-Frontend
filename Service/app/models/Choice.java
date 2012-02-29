@@ -2,8 +2,13 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import play.db.jpa.*;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import play.db.jpa.Model;
 
 /**
  * Model class for a possible answer linked to a question.
@@ -11,48 +16,57 @@ import play.db.jpa.*;
  */
 @Entity
 public class Choice extends Model {
+	private static final long serialVersionUID = 7558864274526935981L;
+	/**
+	 * The poll that this is a choice for.
+	 */
+	@ManyToOne
+	public Poll poll;
+	/**
+	 * The human understandable text describing the choice.
+	 */
+	public String text;
+	/**
+	 * The votes that has used this choice when voting for an instance of a poll.
+	 */
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
+	public List<Vote> votes;
 
-    @ManyToOne
-    public Poll question;
-    public String answer;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
-    public List<Vote> votes;
+	public Choice(Poll poll, String text) {
+		this.poll = poll;
+		this.text = text;
+	}
 
-    public Choice(Poll question, String answer) {
-        this.question = question;
-        this.answer = answer;
-    }
+	/**
+	 * Used to determine whether this answer was voted for in the last/current voting round
+	 * @return boolean true when it was voted for already or false otherwise
+	 */
+	public boolean inLatestPollInstance() {
+		PollInstance pi = poll.getLatestInstance();
+		List<Vote> latestVotes = pi.votes;
+		for (Vote vote : latestVotes) {
+			if (vote.answer.equals(this)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    /**
-     * Used to determine whether this answer was voted for in the last/current voting round
-     * @return boolean true when it was voted for already or false otherwise
-     */
-    public boolean alreadyInLatestRound() {
-        PollInstance vr = question.getLastVotingRound();
-        List<Vote> latestVotes = vr.votes;
-        for (Vote vote : latestVotes) {
-            if (vote.answer.equals(this)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	/**
+	 * Returns list of votes that are associated with the last/current voting round.
+	 * @return List<Vote> list of latest votes
+	 */
+	public List<Vote> latestVotes() {
+		PollInstance lastRound = poll.getLatestInstance();
+		List<Vote> latestVotes = new ArrayList<Vote>();
 
-    /**
-     * Returns list of votes that are associated with the last/current voting round.
-     * @return List<Vote> list of latest votes
-     */
-    public List<Vote> latestVotes() {
-        PollInstance lastRound = question.getLastVotingRound();
-        List<Vote> latestVotes = new ArrayList<Vote>();
-
-        if (!votes.isEmpty()) {
-            for (Vote vote : votes) {
-                if (vote.instance.equals(lastRound)) {
-                    latestVotes.add(vote);
-                }
-            }
-        }
-        return latestVotes;
-    }
+		if (!votes.isEmpty()) {
+			for (Vote vote : votes) {
+				if (vote.pollInstance.equals(lastRound)) {
+					latestVotes.add(vote);
+				}
+			}
+		}
+		return latestVotes;
+	}
 }

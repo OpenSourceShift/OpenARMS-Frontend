@@ -13,21 +13,21 @@ import play.db.jpa.*;
 @Entity
 public class PollInstance extends Model implements Comparable<PollInstance> {
 
-    @OneToMany(mappedBy = "votingRound")
+    @OneToMany(mappedBy = "pollInstance")
     public List<Vote> votes;
     public Date startDateTime;
-    public Date EndDateTime;
+    public Date endDateTime;
     @ManyToOne
-    public Poll question;
+    public Poll poll;
 
-    public PollInstance(int duration, Poll question) {
-        this.question = question;
+    public PollInstance(int duration, Poll poll) {
+        this.poll = poll;
         this.startDateTime = new Date(System.currentTimeMillis());
-        this.EndDateTime = new Date(startDateTime.getTime() + duration * 1000);
+        this.endDateTime = new Date(startDateTime.getTime() + duration * 1000);
     }
 
     public int compareTo(PollInstance other) {
-        return this.EndDateTime.compareTo(other.EndDateTime);
+        return this.endDateTime.compareTo(other.endDateTime);
     }
 
     @Override
@@ -36,15 +36,15 @@ public class PollInstance extends Model implements Comparable<PollInstance> {
             return false;
         }
         PollInstance vr = (PollInstance) other;
-        return this.EndDateTime.equals(vr.EndDateTime);
+        return this.endDateTime.equals(vr.endDateTime);
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 71 * hash + (this.votes != null ? this.votes.hashCode() : 0);
-        hash = 71 * hash + (this.EndDateTime != null ? this.EndDateTime.hashCode() : 0);
-        hash = 71 * hash + (this.question != null ? this.question.hashCode() : 0);
+        hash = 71 * hash + (this.endDateTime != null ? this.endDateTime.hashCode() : 0);
+        hash = 71 * hash + (this.poll != null ? this.poll.hashCode() : 0);
         return hash;
     }
 }

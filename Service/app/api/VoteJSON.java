@@ -38,7 +38,7 @@ public class VoteJSON {
         this.questionID = questionID;
     }
 
-    public String[] getAnswers() {
+    public String[] getChoices() {
         return answers;
     }
 

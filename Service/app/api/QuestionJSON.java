@@ -107,7 +107,7 @@ public class QuestionJSON {
         int size = question.choices.size();
         String[] answersArray = new String[size];
         for (int i = 0; i < size; i++) {
-            answersArray[i] = question.choices.get(i).answer;
+            answersArray[i] = question.choices.get(i).text;
         }
         return answersArray;
     }

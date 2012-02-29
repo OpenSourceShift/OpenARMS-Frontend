@@ -15,7 +15,7 @@ public class Vote extends Model {
     public Choice answer;
     public int count;
     @ManyToOne
-    public PollInstance instance;
+    public PollInstance pollInstance;
 
     /**
      * @param answer Represents answer that this vote should belong to
@@ -25,7 +25,7 @@ public class Vote extends Model {
     public Vote(Choice answer, int count, PollInstance instance) {
         this.answer = answer;
         this.count = count;
-        this.instance = instance;
+        this.pollInstance = instance;
     }
 
     /**
