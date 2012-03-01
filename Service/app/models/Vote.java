@@ -10,25 +10,38 @@ import play.db.jpa.*;
  */
 @Entity
 public class Vote extends Model {
-
+	private static final long serialVersionUID = -4255311415057973971L;
+	
+	/**
+	 * The Choice selected by the student.
+	 */
     @ManyToOne
-    public Choice answer;
-    public int count;
+    public Choice choice;
+    /**
+     * The PollInstance that this vote has been coupled with.
+     */
     @ManyToOne
     public PollInstance pollInstance;
+    /**
+     * An integer that increments as each vote for this particular Choice and PollInstance ticks in.
+     */
+    public int count;
 
     /**
-     * @param answer Represents answer that this vote should belong to
-     * @param count Count of votes for answer provided
+     * Constructs a new Vote, only one Vote is created pr. Choice and PollInstance
+     * the count field is used to represent multiple votes for the same Choice-PollInstance-pair.
+     * @param choice Represents choice that this vote should belong to
+     * @param count Count of votes for choice provided
      * @param instance Poll instance this vote should belong to
      */
-    public Vote(Choice answer, int count, PollInstance instance) {
-        this.answer = answer;
+    public Vote(Choice choice, int count, PollInstance instance) {
+        this.choice = choice;
         this.count = count;
         this.pollInstance = instance;
     }
 
     /**
+     * Constructs a new Vote, with 1 as initial count.
      * @param answer Represents answer that this vote should belong to
      * @param instance Poll instance this vote should belong to
      */

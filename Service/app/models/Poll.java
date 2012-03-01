@@ -14,8 +14,8 @@ import play.db.jpa.*;
  */
 @Entity
 public class Poll extends Model {
-
 	private static final long serialVersionUID = 5276961463864101032L;
+	
 	/**
 	 * The set of charecters to use when generating admin keys.
 	 */
@@ -77,10 +77,10 @@ public class Poll extends Model {
      */
     public Poll activateFor(int duration) {
         if (isActive()) {
-            PollInstance lastRound = getLatestInstance();
-            lastRound.startDateTime = new Date(System.currentTimeMillis());
-            lastRound.endDateTime = new Date(lastRound.startDateTime.getTime() + duration * 1000);
-            lastRound.save();
+            PollInstance latestInstance = getLatestInstance();
+            latestInstance.startDateTime = new Date(System.currentTimeMillis());
+            latestInstance.endDateTime = new Date(latestInstance.startDateTime.getTime() + duration * 1000);
+            latestInstance.save();
         } else {
             new PollInstance(duration, this).save();
         }
@@ -89,8 +89,8 @@ public class Poll extends Model {
 
     /**
      * Gets latest voting round if it exists or null otherwise.
-     * @return
      * TODO: Implement this in a faster way, using a hybernate query.
+     * @return PollInstance The latest instance of the poll (based on endDateTime)
      */
     public PollInstance getLatestInstance() {
         if (instances.isEmpty()) {

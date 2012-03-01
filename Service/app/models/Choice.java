@@ -45,7 +45,7 @@ public class Choice extends Model {
 		PollInstance pi = poll.getLatestInstance();
 		List<Vote> latestVotes = pi.votes;
 		for (Vote vote : latestVotes) {
-			if (vote.answer.equals(this)) {
+			if (vote.choice.equals(this)) {
 				return true;
 			}
 		}

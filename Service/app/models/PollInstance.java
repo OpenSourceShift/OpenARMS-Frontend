@@ -12,11 +12,24 @@ import play.db.jpa.*;
  */
 @Entity
 public class PollInstance extends Model implements Comparable<PollInstance> {
-
+	private static final long serialVersionUID = -6371181092845400924L;
+	
+	/**
+	 * The votes that students have placed on this poll.
+	 */
     @OneToMany(mappedBy = "pollInstance")
     public List<Vote> votes;
+	/**
+	 * The date and time where this poll starts.
+	 */
     public Date startDateTime;
+    /**
+	 * The date and time where this poll ends.
+	 */
     public Date endDateTime;
+    /**
+	 * The Poll that this is an instance of.
+	 */
     @ManyToOne
     public Poll poll;
 
@@ -39,6 +52,9 @@ public class PollInstance extends Model implements Comparable<PollInstance> {
         return this.endDateTime.equals(vr.endDateTime);
     }
 
+    /*
+     * TODO: Consider if this is needed.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
