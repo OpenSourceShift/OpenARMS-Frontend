@@ -63,4 +63,4 @@ managepoll.pollstatistics=Se statestik &raquo;
 managepoll.pollstatistics.header=Afstemnings statestik
 managepoll.pollstatistics.text=Hvis du ønsker at se statestikken for din afstemning, kan du bruge knappen forneden. Statestikken blive automatisk opdateret hvert 5. sekund, so det er muligt at følge med i afstemningen live.
 managepoll.activate.pollStarted.header=Afstemning %s er startet!
-managepoll.activate.pollStarted.text=Gå til <b>openars.dk/%s</b> eller brug id'et <b>%s</b> på din Android telefon for at stemme!.
+managepoll.activate.pollStarted.text=Gå til <b>openarms.dk/%s</b> eller brug id'et <b>%s</b> på din Android telefon for at stemme!.

@@ -16,7 +16,7 @@ public class MailNotifier extends Mailer {
     public static void sendAdminLink(Poll question) {
         setSubject("Your admin link");
         addRecipient(question.email);
-        setFrom("OpenARS.dk <no-reply@mailer.openars.dk>");
+        setFrom("OpenARMS.dk <no-reply@openarms.dk>");
         System.out.println("question: " + question);
         if (question != null) {
             send(question);
@@ -26,7 +26,7 @@ public class MailNotifier extends Mailer {
     public static void sendPollIDLink(Poll question) {
         setSubject("Your poll link");
         addRecipient(question.email);
-        setFrom("OpenARS.dk <no-reply@mailer.openars.dk>");
+        setFrom("OpenARMS.dk <no-reply@openarms.dk>");
         System.out.println(question);
         if (question != null) {
             send(question);

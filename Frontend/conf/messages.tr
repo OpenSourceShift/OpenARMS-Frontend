@@ -64,4 +64,4 @@ managepoll.pollstatistics=Istatistiklere bak &raquo;
 managepoll.pollstatistics.header=Anket istatistikleri
 managepoll.pollstatistics.text=Anket istatistiklerini gormek icin asagidaki butonu kullanin. Istatistikler her 5 sn'de guncellenir, boylece sonuclari canli olarak takip edebilirsiniz.
 managepoll.activate.pollStarted.header=Anket: %s basladi!
-managepoll.activate.pollStarted.text=Oylamak icin <b>openars.dk/%s</b> 'a gidin, ya da Android istemcisinde <b>%s</b> girin.
+managepoll.activate.pollStarted.text=Oylamak icin <b>openarms.dk/%s</b> 'a gidin, ya da Android istemcisinde <b>%s</b> girin.

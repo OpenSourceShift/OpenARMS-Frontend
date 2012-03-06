@@ -66,4 +66,4 @@ managepoll.pollstatistics=Katso tilastoja &raquo;
 managepoll.pollstatistics.header=äänestyksen tilastot
 managepoll.pollstatistics.text=Kätyä alla olevaa nappulaa tarkastellaksesi äänestyksen tuloksia. Tulokset päivittyvät 5 sekunnin välein.
 managepoll.activate.pollStarted.header=äänestys %s avattu!
-managepoll.activate.pollStarted.text=Mene osoitteeseen <b>openars.dk/%s</b>  äänestääksesi, tai syätä tunnus <b>%s</b> puhelimesi äänestysohjelmaan.
+managepoll.activate.pollStarted.text=Mene osoitteeseen <b>openarms.dk/%s</b>  äänestääksesi, tai syätä tunnus <b>%s</b> puhelimesi äänestysohjelmaan.

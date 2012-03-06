@@ -64,4 +64,4 @@ managepoll.pollstatistics=Statistiken anzeigen &raquo;
 managepoll.pollstatistics.header=Umfragestatistiken 
 managepoll.pollstatistics.text=Wenn Sie die Statistiken für Ihre Umfrage sehen wollen, müssen Sie die untenstehende Schaltfläche benutzen. Die Statistiken werden alle 5 Sekunden erneuert, somit ist es Möglich die Umfrageergebnisse live mitzuerleben. 
 managepoll.activate.pollStarted.header=Umfrage %s gestartet!
-managepoll.activate.pollStarted.text=Gehen Sie zu <b>openars.dk/%s</b> um abzustimmen, oder geben Sie <b>%s</b> in Ihrem Androidhandy ein.
+managepoll.activate.pollStarted.text=Gehen Sie zu <b>openarms.dk/%s</b> um abzustimmen, oder geben Sie <b>%s</b> in Ihrem Androidhandy ein.

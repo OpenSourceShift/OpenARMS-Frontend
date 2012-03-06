@@ -26,7 +26,7 @@ import org.apache.http.protocol.HTTP;
 public class RestClient{
 
     private static RestClient instance;
-    private static String server_address = "http://json.openars.dk";
+    private static String server_address = "http://api.openarms.dk";
     private static int server_port = 80;
     private String response;
     private final String tag = "RestClient";
