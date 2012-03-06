@@ -29,7 +29,7 @@ public class Choice extends Model {
 	/**
 	 * The votes that has used this choice when voting for an instance of a poll.
 	 */
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "answer")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "choice")
 	public List<Vote> votes;
 
 	public Choice(Poll poll, String text) {
