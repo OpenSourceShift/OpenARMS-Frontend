@@ -5,9 +5,13 @@ import org.json.JSONObject;
 import Utility.RestClient;
 import play.mvc.Controller;
 
+@Deprecated
 public class Poll extends Controller {
 	public static void getResults(String id, String adminkey) {
-		JSONObject res = RestClient.getInstance().getResults(id, adminkey);
-		renderJSON(res);
+		String res = RestClient.getInstance().getResults(id, adminkey);
+		System.out.println(res);
+		if (res != null && !res.isEmpty())
+			renderJSON(res);
+		renderJSON(false);
 	}
 }
