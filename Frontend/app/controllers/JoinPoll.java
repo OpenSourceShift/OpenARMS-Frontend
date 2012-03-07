@@ -18,8 +18,7 @@ public class JoinPoll extends Controller {
 			redirect("/" + id);
 		}
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance()
-					.getQuestion(id));
+			JSONObject questionJSON = RestClient.getInstance().getQuestion(id);
 
 			String pollID = questionJSON.getString("pollID");
 

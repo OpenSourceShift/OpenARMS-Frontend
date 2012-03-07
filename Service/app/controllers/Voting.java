@@ -2,8 +2,8 @@ package controllers;
 
 import api.QuestionJSON;
 import api.ResultsJSON;
-import api.VoteJSON;
-import api.VoteResponseJSON;
+import api.requests.VoteJSON;
+import api.responses.VoteResponse;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
@@ -104,7 +104,7 @@ public class Voting extends Controller {
                     }
                 }
             }
-            renderJSON(new VoteResponseJSON(true));
+            renderJSON(new VoteResponse(true));
 
         } catch (IOException ex) {
             ex.printStackTrace();

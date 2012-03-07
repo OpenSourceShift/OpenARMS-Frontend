@@ -2,20 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package api;
+package api.requests;
 
 /**
  *
  * @author veri
  */
-public class VoteJSON {
+public class VoteRequest {
 
     private long pollID;
     private long questionID;
     private String[] answers;
     private String responderID;
 
-    public VoteJSON(long pollID, long questionID, String[] answers, String responderID) {
+    public VoteRequest(long pollID, long questionID, String[] answers, String responderID) {
         this.pollID = pollID;
         this.questionID = questionID;
         this.answers = answers;

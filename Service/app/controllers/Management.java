@@ -5,6 +5,7 @@
 package controllers;
 
 import api.ActivationJSON;
+import api.BaseJSON;
 import api.CreateResponseJSON;
 import api.QuestionJSON;
 
@@ -17,6 +18,7 @@ import models.Choice;
 import models.Poll;
 import notifiers.MailNotifier;
 import play.mvc.Controller;
+import play.mvc.Http.StatusCode;
 
 /**
  * Controller which takes care of functions that poll administrator uses
@@ -120,18 +122,14 @@ public class Management extends Controller {
     public static void checkAdminLink() {
         long urlID = params.get("id", Long.class).longValue();
         String adminKey = params.get("adminKey");
-
         // retrieve and activate the question
         Poll question = Poll.find("byPollID", urlID).first();
 
-        if (question == null) {
-            renderJSON(false);
-        }
-
-        if (adminKey != null && question.adminKey.equals(adminKey)) {
-            renderJSON(true);
+        if (question != null && adminKey != null && question.adminKey.equals(adminKey)) {
+            renderJSON(new BaseJSON());
         } else {
-            renderJSON(false);
+        	response.status = StatusCode.FORBIDDEN;
+            renderJSON(new BaseJSON("Invalid admin link"));
         }
     }
 }

@@ -43,9 +43,9 @@ public class ManagePoll extends Controller {
 		String duration = "";
 		String durationString = "00:00";
 		// Get the duration from the server
+		String res = null;
 		try {
-			String res = RestClient.getInstance().getQuestion(pollID);
-			JSONObject questionJSON = new JSONObject(res);
+			JSONObject questionJSON = RestClient.getInstance().getQuestion(pollID);
 
 			duration = questionJSON.getString("duration");
 
@@ -61,6 +61,7 @@ public class ManagePoll extends Controller {
 
 			durationString = df.format(m) + ":" + df.format(s);
 		} catch (Exception e) {
+			System.err.println("Error parsing the response from the service layer: '"+res+"'");
 			e.printStackTrace();
 		}
 
@@ -82,22 +83,15 @@ public class ManagePoll extends Controller {
 				if (s < 0) {
 					s = 0;
 				}
-			} catch (Exception e) {
-			}
-
-			try {
+				
 				m = Integer.parseInt(minutes);
 				if (m < 0) {
 					m = 0;
 				}
-			} catch (Exception e) {
-			}
 
-			int duration = s + m * 60;
+				int duration = s + m * 60;
 
-			try {
-				RestClient.getInstance().activate(pollID,
-						adminkey, duration);
+				RestClient.getInstance().activate(pollID, adminkey, duration);
 			} catch (Exception e) {
 			}
 		}

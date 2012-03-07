@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="lib/httpcore-4.1.jar"/>
 	<classpathentry kind="lib" path="lib/json-20090211.jar"/>
 	<classpathentry kind="lib" path="../play-1.2.4/framework/lib/gson-1.7.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OpenARMS Service"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -21,18 +21,25 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import play.Play;
+
 import com.google.gson.Gson;
 
-public class RestClient {
+public class RestClientBackup {
 
 	private static RestClient instance;
-	// private static String server_address = "http://devel2.openars.dk";
-	// private static String server_address = "http://78.47.162.117";
-	// private static String server_address = "http://192.168.0.2";
-	//private static String server_address = "http://172.29.40.161";
-	private static String server_address = "http://api.openarms.dk";
-	private static int server_port = 80;
-	//private static int server_port = 9000;
+	private static String server_address;
+	private static int server_port;
+	static {
+		try {
+			server_address = (String)Play.configuration.get("openarms.service_host");
+			server_port = Integer.parseInt((String)Play.configuration.get("openarms.service_port"));
+		} catch (Exception e) {
+			System.err.println("Error loading the OpenARMS configuration parameters, please check that your .conf files contains" +
+				"Both the 'openarms.service_host' and the 'openarms.service_port' keys.");
+		}
+	}
+	
 	private String response;
 	private final String tag = "RestClient";
 
@@ -44,7 +51,7 @@ public class RestClient {
 	 * @param port
 	 *            the server is running on
 	 */
-	private RestClient(String address, int port) {
+	private RestClientBackup(String address, int port) {
 		server_address = address;
 		server_port = port;
 	}
@@ -65,24 +72,22 @@ public class RestClient {
 	 * 
 	 * @param service
 	 */
-	private void executeRequest(HttpRequestBase method, String service,
-			String stringJSON) {
+	private void executeRequest(HttpRequestBase method, String service, String stringJSON) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		StringBuilder sb = new StringBuilder();
 		try {
-			String url = server_address + ":" + Integer.toString(server_port)
-					+ "/" + service;
+			String url = "http://" + server_address + ":" + Integer.toString(server_port) + "/" + service;
 			URI u = new URI(url);
 			method.setURI(u);
 
 			if ((method instanceof HttpPost) && (stringJSON.length() != 0)) {
 				ByteArrayEntity bae = new ByteArrayEntity(stringJSON.getBytes());
-				bae.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE,
-						"application/json"));
+				bae.setContentEncoding(new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
 				((HttpPost) method).setEntity(bae);
 			}
 
 			HttpResponse hr = client.execute(method);
+			
 			HttpEntity entity = hr.getEntity();
 
 			if (entity != null) {
@@ -110,15 +115,8 @@ public class RestClient {
 	 * @return JSONObject
 	 */
 	@SuppressWarnings("finally")
-	private String getService(String service) {
-		HttpRequestBase hrb = new HttpGet();
-		String ret = "ERROR";
-		try {
-			this.executeRequest(hrb, service, null);
-			ret = this.response;
-		} finally {
-			return ret;
-		}
+	private JSONObject getService(String service) {
+		return requestService(new HttpGet(), service, null);
 	}
 
 	/**
@@ -129,14 +127,26 @@ public class RestClient {
 	 * @return
 	 */
 	@SuppressWarnings("finally")
-	private String postService(String service, String stringJSON) {
-		HttpRequestBase hrb = new HttpPost();
-		String ret = "ERROR";
+	private JSONObject postService(String service, String stringJSON) {
+		return requestService(new HttpPost(), service, stringJSON);
+	}
+
+	/**
+	 * Using the 
+	 * 
+	 * @param service
+	 * @param json
+	 * @return
+	 */
+	@SuppressWarnings("finally")
+	private JSONObject requestService(HttpRequestBase baseRequest, String service, String stringJSON) {
 		try {
-			this.executeRequest(hrb, service, stringJSON);
-			ret = this.response;
-		} finally {
-			return ret;
+			this.executeRequest(baseRequest, service, stringJSON);
+			return new JSONObject(this.response);
+		} catch (Exception e) {
+			// Error parsing the response
+			System.err.println("Error parsing the response from the service layer, I got '"+this.response+"'");
+			return new JSONObject();
 		}
 	}
 
@@ -154,7 +164,7 @@ public class RestClient {
 	 * 
 	 * @return get question encapsulated in JSONObject
 	 */
-	public String getQuestion(String id) {
+	public JSONObject getQuestion(String id) {
 		return this.getService(StaticQuery.get_question(id));
 	}
 
@@ -169,14 +179,10 @@ public class RestClient {
 		return false;
 	}
 
-	public String activate(String id, String adminkey, int duration) {
-		try {
-			JSONObject o = new JSONObject();
-			o.put("duration", duration);
-			return this.postService(StaticQuery.activate(id, adminkey), o.toString());
-		} catch (JSONException e) {
-		}
-		return null;
+	public JSONObject activate(String id, String adminkey, int duration) throws JSONException {
+		JSONObject o = new JSONObject();
+		o.put("duration", duration);
+		return this.postService(StaticQuery.activate(id, adminkey), o.toString());
 	}
 
 	/**
@@ -187,7 +193,7 @@ public class RestClient {
 	 * @return A JSON object with the adminkey and pollID.
 	 * @throws JSONException
 	 */
-	public String createQuestion(Object o) throws JSONException {
+	public JSONObject createQuestion(Object o) throws JSONException {
 		Gson gson = new Gson();
 		return this.postService(StaticQuery.post_question, gson.toJson(o));
 	}
@@ -197,15 +203,14 @@ public class RestClient {
 	 * 
 	 * @return get poll results from server
 	 */
-	public String getResults(String pollID, String adminkey) {
+	public JSONObject getResults(String pollID, String adminkey) {
 		return this.getService(StaticQuery.get_results(pollID, adminkey));
 	}
 
-	public boolean checkAdminkey(String id, String adminkey)
-			throws JSONException {
-		String res = this.getService(StaticQuery
-				.get_checkadminkey(id, adminkey));
-		return Boolean.parseBoolean(res);
+	public boolean checkAdminkey(String id, String adminkey) {
+		JSONObject res = this.getService(StaticQuery.get_checkadminkey(id, adminkey));
+		// TODO: Fix
+		return false;
 	}
 
 	/**

@@ -1,16 +1,16 @@
-package api;
+package api.responses;
 
 /**
  * @author veri
  */
-public class VoteResponseJSON {
+public class VoteResponse {
 
     private boolean voteSuccessful;
 
     /**
      * @param voteSuccessful
      */
-    public VoteResponseJSON(boolean voteSuccessful) {
+    public VoteResponse(boolean voteSuccessful) {
         this.voteSuccessful = voteSuccessful;
     }
 
