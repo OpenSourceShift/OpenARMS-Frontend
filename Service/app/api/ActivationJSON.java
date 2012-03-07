@@ -8,6 +8,7 @@ package api;
  *
  * @author veri
  */
+@Deprecated
 public class ActivationJSON {
 
 //    private boolean activate;

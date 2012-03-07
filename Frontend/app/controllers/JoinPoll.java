@@ -18,7 +18,7 @@ public class JoinPoll extends Controller {
 			redirect("/" + id);
 		}
 		try {
-			JSONObject questionJSON = RestClient.getInstance().getQuestion(id);
+			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(id));
 
 			String pollID = questionJSON.getString("pollID");
 
@@ -68,8 +68,7 @@ public class JoinPoll extends Controller {
 		String duration = null;
 
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance()
-					.getQuestion(pollID));
+			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(pollID));
 
 			question = questionJSON.getString("question");
 			answersArray = questionJSON.getJSONArray("answers");
@@ -78,8 +77,7 @@ public class JoinPoll extends Controller {
 			try {
 				// Most like the poll has been inactivated, so we need the
 				// results instead
-				JSONObject resultJSON = new JSONObject(RestClient.getInstance()
-						.getResults(pollID, null));
+				JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(pollID, null));
 
 				question = resultJSON.getString("question");
 				answersArray = resultJSON.getJSONArray("answers");

@@ -5,7 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
+
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import play.data.validation.Required;
+import play.data.validation.Unique;
 import play.db.jpa.*;
 
 /**
@@ -14,6 +21,8 @@ import play.db.jpa.*;
  */
 @Entity
 public class Poll extends Model {
+	public static Gson gson = new GsonBuilder().setExclusionStrategies(new SelfExclusionStrategy(Poll.class)).create();
+	
 	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**
@@ -21,10 +30,11 @@ public class Poll extends Model {
 	 */
 	private static final String ADMINKEY_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyz";
 	/**
-	 * The id of the poll.
+	 * The token of the poll (formerly known as pollID).
 	 */
     @Required
-    public long pollID; //pollID
+    @Unique
+    public String token;
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
@@ -56,13 +66,13 @@ public class Poll extends Model {
      * Constructs a new Poll object.
      * This does not save it to the database, use the save method to do this.
      * 
-     * @param pollID
+     * @param token
      * @param question Text of the question
      * @param multipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll creator
      */
-    public Poll(long pollID, String question, boolean multipleAllowed, String email) {
-        this.pollID = pollID;
+    public Poll(String token, String question, boolean multipleAllowed, String email) {
+        this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
         this.email = email;
@@ -189,6 +199,6 @@ public class Poll extends Model {
 
     @Override
     public String toString() {
-        return "AdminKey: " + this.adminKey + " PollID: " + this.pollID;
+        return "AdminKey: " + this.adminKey + " PollID: " + this.token + " id: " + this.id;
     }
 }

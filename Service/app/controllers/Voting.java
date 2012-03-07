@@ -2,7 +2,7 @@ package controllers;
 
 import api.QuestionJSON;
 import api.ResultsJSON;
-import api.requests.VoteJSON;
+import api.requests.VoteRequest;
 import api.responses.VoteResponse;
 
 import com.google.gson.Gson;
@@ -20,6 +20,7 @@ import play.mvc.*;
  * Controller which takes care of functions that are mainly for poll users
  * @author OpenARS Server API team
  */
+@Deprecated
 public class Voting extends Controller {
 
     private static Gson gson = new Gson();
@@ -65,7 +66,7 @@ public class Voting extends Controller {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
             String json = reader.readLine();
-            VoteJSON vote = gson.fromJson(json, VoteJSON.class);
+            VoteRequest vote = gson.fromJson(json, VoteRequest.class);
 
             Poll question = Poll.find("id = ? AND pollID = ?", vote.getQuestionID(), vote.getPollID()).first();
             if (question == null) {

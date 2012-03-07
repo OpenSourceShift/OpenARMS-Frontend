@@ -15,9 +15,9 @@ public class Test extends Controller {
 
     public static void createPoll(){
         // Only for testing
-        Poll testQuestion = new Poll(2525, "Test Question?", false,"krc@retrospekt.dk");
+        Poll testQuestion = new Poll("2525", "Test Question?", false, "krc@retrospekt.dk");
         testQuestion.adminKey = "123jhd";
-        testQuestion.pollID = 665698;   
+        testQuestion.token = "665698";   
 
         System.out.println();
 

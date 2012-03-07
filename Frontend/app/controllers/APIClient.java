@@ -1,5 +1,7 @@
 package controllers;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -20,12 +22,12 @@ public class APIClient extends Controller {
 	public APIClient() {
 		client = new DefaultHttpClient();
 	}
-
-	public VoteResponse send(VoteRequest request) {
-		return (VoteResponse) this.send(new JSONObject(request));
+	
+	public VoteResponse send(VoteRequest request) throws OperationNotSupportedException {
+		throw new OperationNotSupportedException();
 	}
 	
-	public JSONObject send(JSONObject request) {
-		return 
+	public JSONObject send(JSONObject request) throws OperationNotSupportedException {
+		throw new OperationNotSupportedException();
 	}
 }

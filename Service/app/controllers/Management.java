@@ -10,13 +10,19 @@ import api.CreateResponseJSON;
 import api.QuestionJSON;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
+
+import javax.persistence.EntityManager;
+
 import models.Choice;
 import models.Poll;
 import notifiers.MailNotifier;
+import play.db.jpa.JPASupport;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 
@@ -24,6 +30,7 @@ import play.mvc.Http.StatusCode;
  * Controller which takes care of functions that poll administrator uses
  * @author OpenARS Server API team
  */
+@Deprecated
 public class Management extends Controller {
 
     private static Gson gson = new Gson();
@@ -45,8 +52,8 @@ public class Management extends Controller {
 
             // generate data and save question, try until we have unique poll ID
             do {
-                question.pollID = new Random(System.currentTimeMillis()).nextInt(999999);
-            } while (!Poll.find("byPollID", question.pollID).fetch().isEmpty());
+                question.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
+            } while (!Poll.find("byToken", question.token).fetch().isEmpty());
 
             question.generateAdminKey(8);
             question.save();
@@ -56,11 +63,11 @@ public class Management extends Controller {
             MailNotifier.sendAdminLink(question);
 
             // retrieve answers from JSON and save them into database
-            for (String a : questionMsg.getAnswers()) {
+            for (String a: questionMsg.answers) {
                 new Choice(question, a).save();
             }
 
-            renderJSON(new CreateResponseJSON(question.pollID, question.adminKey));
+            renderJSON(new CreateResponseJSON(question.token, question.adminKey));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -131,5 +138,25 @@ public class Management extends Controller {
         	response.status = StatusCode.FORBIDDEN;
             renderJSON(new BaseJSON("Invalid admin link"));
         }
+    }
+    
+    public static void test() {
+        long id = params.get("id", Long.class).longValue();
+        Poll p = Poll.findById(id);
+        Choice c = new Choice(p, "Hello "+Math.random());
+        c.save();
+        //p.choices.add(c);
+        //p.save();
+        /*
+        String str = gson.toJson(p);
+     
+        Poll p2 = Poll.em().merge(gson.fromJson(str, Poll.class));
+        p2.email="spam2@creen.dk"+Math.random();
+        p2.save();
+        
+        renderJSON(p2);
+        */
+        renderText(Poll.gson.toJson(p));
+        //renderJSON(p);
     }
 }

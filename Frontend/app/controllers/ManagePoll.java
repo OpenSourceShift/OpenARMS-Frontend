@@ -5,8 +5,9 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 
-import play.mvc.Controller;
 import Utility.RestClient;
+
+import play.mvc.Controller;
 
 public class ManagePoll extends Controller {
 	public static void index(String pollID, String adminkey) {
@@ -20,8 +21,7 @@ public class ManagePoll extends Controller {
 		}
 		
 		try {
-			boolean correct = RestClient.getInstance().checkAdminkey(pollID,
-					adminkey);
+			boolean correct = RestClient.getInstance().checkAdminkey(pollID, adminkey);
 			if (correct) {
 				if (redirect) {
 					session.put("pollID", pollID);
@@ -45,7 +45,7 @@ public class ManagePoll extends Controller {
 		// Get the duration from the server
 		String res = null;
 		try {
-			JSONObject questionJSON = RestClient.getInstance().getQuestion(pollID);
+			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(pollID));
 
 			duration = questionJSON.getString("duration");
 

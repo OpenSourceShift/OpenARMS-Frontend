@@ -10,92 +10,28 @@ import models.Poll;
  * JSON that holds all information information about question
  * @author OpenARS Server API team
  */
+@Deprecated
 public class QuestionJSON {
 
-    private long pollID;
-    private long questionID;
-    private String question;
-    private String[] answers;
-    private boolean multipleAllowed;
-    private String responderID;
-    private int duration;
-    private String email;
-
+    public String token;
+    public long questionID;
+    public String question;
+    public String[] answers;
+    public boolean multipleAllowed;
+    public String responderID;
+    public int duration;
+    public String email;
 
     /**
      * @param question Question object (model) to create JSON from
      */
     public QuestionJSON(Poll question) {
-        this.pollID = question.pollID;
+        this.token = question.token;
         this.questionID = question.id;
         this.answers = getAnswersArray(question);
         this.question = question.question;
         this.duration = question.timeRemaining();
         this.multipleAllowed = question.multipleAllowed;
-    }
-
-    public void setAnswers(String[] answers) {
-        this.answers = answers;
-    }
-
-    public void setPollID(long pollID) {
-        this.pollID = pollID;
-    }
-
-    public void setQuestionID(long questionID) {
-        this.questionID = questionID;
-    }
-
-    public void setResponderID(String responderID) {
-        this.responderID = responderID;
-    }
-
-    public String[] getAnswers() {
-        return answers;
-    }
-
-    public long getPollID() {
-        return pollID;
-    }
-
-    public long getQuestionID() {
-        return questionID;
-    }
-
-    public String getResponderID() {
-        return responderID;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public boolean isMultipleAllowed() {
-        return multipleAllowed;
-    }
-
-    public void setMultipleAllowed(boolean multipleAllowed) {
-        this.multipleAllowed = multipleAllowed;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**
@@ -117,7 +53,7 @@ public class QuestionJSON {
      * @return
      */
     public Poll makeModelFromJSON() {
-        Poll q = new Poll(pollID, question, multipleAllowed, email);
+        Poll q = new Poll(token, question, multipleAllowed, email);
         return q;
     }
 }
