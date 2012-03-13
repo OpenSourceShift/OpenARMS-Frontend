@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
+import models.helpers.SelfExclusionStrategy;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
