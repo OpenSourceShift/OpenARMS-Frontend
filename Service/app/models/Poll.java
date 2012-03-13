@@ -23,7 +23,7 @@ import play.db.jpa.*;
 public class Poll extends Model {
 	public static Gson gson = new GsonBuilder().setExclusionStrategies(new SelfExclusionStrategy(Poll.class)).create();
 	
-	//private static final long serialVersionUID = 5276961463864101032L;
+	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**
 	 * The set of charecters to use when generating admin keys.
