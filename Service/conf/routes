@@ -12,10 +12,10 @@ GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
 GET     /test/{<[0-9]+>id}    					Management.test
-
+*      /admin									module:crud
 
 # Map static resources from the /app/public folder to the /public path
-#GET     /public/                                staticDir:public
+GET     /public/                                staticDir:public
 
 # Catch all
 #*       /{controller}/{action}                  {controller}.{action}

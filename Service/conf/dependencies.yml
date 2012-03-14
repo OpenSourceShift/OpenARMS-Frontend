@@ -1,0 +1,4 @@
+#application dependencies	    
+require:
+    - play 1.2.4
+    - play -> crud
