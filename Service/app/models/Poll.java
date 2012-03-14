@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
-import models.helpers.SelfExclusionStrategy;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -23,8 +21,6 @@ import play.db.jpa.*;
  */
 @Entity
 public class Poll extends Model {
-	public static Gson gson = new GsonBuilder().setExclusionStrategies(new SelfExclusionStrategy(Poll.class)).create();
-	
 	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**

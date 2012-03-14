@@ -139,24 +139,4 @@ public class Management extends Controller {
             renderJSON(new BaseJSON("Invalid admin link"));
         }
     }
-    
-    public static void test() {
-        long id = params.get("id", Long.class).longValue();
-        Poll p = Poll.findById(id);
-        Choice c = new Choice(p, "Hello "+Math.random());
-        c.save();
-        //p.choices.add(c);
-        //p.save();
-        /*
-        String str = gson.toJson(p);
-     
-        Poll p2 = Poll.em().merge(gson.fromJson(str, Poll.class));
-        p2.email="spam2@creen.dk"+Math.random();
-        p2.save();
-        
-        renderJSON(p2);
-        */
-        renderText(Poll.gson.toJson(p));
-        //renderJSON(p);
-    }
 }
