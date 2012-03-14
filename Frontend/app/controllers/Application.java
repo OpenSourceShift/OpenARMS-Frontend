@@ -10,7 +10,8 @@ import play.mvc.Controller;
 public class Application extends Controller {
 
 	public static void index() {
-		render();
+		String test = "We are testing :)";
+		render(test);
 	}
 
 	public static void changeLang(String lang) {
