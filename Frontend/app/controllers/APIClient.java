@@ -7,8 +7,10 @@ import org.apache.http.HttpStatus;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+/*
 import api.requests.VoteRequest;
 import api.responses.VoteResponse;
+*/
 
 import play.mvc.*;
 import play.mvc.Http.StatusCode;
@@ -22,7 +24,7 @@ public class APIClient extends Controller {
 	public APIClient() {
 		client = new DefaultHttpClient();
 	}
-	
+	/*
 	public VoteResponse send(VoteRequest request) throws OperationNotSupportedException {
 		throw new OperationNotSupportedException();
 	}
@@ -30,4 +32,5 @@ public class APIClient extends Controller {
 	public JSONObject send(JSONObject request) throws OperationNotSupportedException {
 		throw new OperationNotSupportedException();
 	}
+	*/
 }
