@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 
-import Utility.RestClient;
+/*import Utility.RestClient;*/
 
 import play.mvc.Controller;
 
@@ -21,7 +21,9 @@ public class ManagePoll extends Controller {
 		}
 		
 		try {
-			boolean correct = RestClient.getInstance().checkAdminkey(token, adminkey);
+			/*boolean correct = RestClient.getInstance().checkAdminkey(token, adminkey);*/
+			JSONObject correctJSON = new JSONObject(APIClient.getInstance().send(new api.Request.CheckAdminkey(token, adminkey)));
+			boolean correct = correctJSON.getBoolean("correct");
 			if (correct) {
 				if (redirect) {
 					session.put("token", token);
@@ -45,7 +47,10 @@ public class ManagePoll extends Controller {
 		// Get the duration from the server
 		String res = null;
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));
+			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));*/
+			
+			/* ?? RestClient.getInstance().getQuestion here with 'token', in JoinPoll with 'id ?? */
+			JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));
 
 			duration = questionJSON.getString("duration");
 
@@ -91,7 +96,8 @@ public class ManagePoll extends Controller {
 
 				int duration = s + m * 60;
 
-				RestClient.getInstance().activate(token, adminkey, duration);
+				/*RestClient.getInstance().activate(token, adminkey, duration);*/
+				APIClient.getInstance().send(new api.Request.activatePoll(token, adminkey, duration));
 			} catch (Exception e) {
 			}
 		}

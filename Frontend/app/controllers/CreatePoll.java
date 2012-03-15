@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import models.Poll;
 import play.mvc.Controller;
 
-import Utility.RestClient;
+/*import Utility.RestClient;*/
 
 import com.google.gson.Gson;
 
@@ -71,7 +71,8 @@ public class CreatePoll extends Controller {
 
 		// Send it
 		try {
-			JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));
+			/*JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));*/
+			JSONObject result = new JSONObject(APIClient.getInstance().send(new api.Request.CreatePollRequest(p)));
 			String token = result.getString("token");
 			String adminkey = result.getString("adminKey");
 

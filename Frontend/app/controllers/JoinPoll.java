@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import play.mvc.Controller;
-import Utility.RestClient;
+/*import Utility.RestClient;*/
 
 public class JoinPoll extends Controller {
 	public static void index(String id) throws JSONException {
@@ -18,7 +18,9 @@ public class JoinPoll extends Controller {
 			redirect("/" + id);
 		}
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(id));
+			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(id));*/
+			/* ?? RestClient.getInstance().getQuestion here with 'id', in ManagePoll with 'token' ?? */
+			JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(id)));
 
 			String token = questionJSON.getString("token");
 
@@ -57,7 +59,8 @@ public class JoinPoll extends Controller {
 		v.answers = new String[] { answer };
 		v.rensponderID = request.remoteAddress + session.getId();
 
-		RestClient.getInstance().vote(v);
+		/*RestClient.getInstance().vote(v);*/
+		APIClient.getInstance().send(new api.Request.vote(v));
 
 		success(token);
 	}
@@ -68,8 +71,9 @@ public class JoinPoll extends Controller {
 		String duration = null;
 
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));
-
+			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));*/
+			JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));;
+			
 			question = questionJSON.getString("question");
 			answersArray = questionJSON.getJSONArray("answers");
 			duration = questionJSON.getString("duration");
@@ -77,7 +81,8 @@ public class JoinPoll extends Controller {
 			try {
 				// Most like the poll has been inactivated, so we need the
 				// results instead
-				JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(token, null));
+				/* JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(token, null)); */
+				JSONObject resultJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getResults(token, null)));
 
 				question = resultJSON.getString("question");
 				answersArray = resultJSON.getJSONArray("answers");
