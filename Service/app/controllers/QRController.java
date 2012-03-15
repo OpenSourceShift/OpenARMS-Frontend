@@ -17,6 +17,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 
 import play.Play;
 import play.mvc.Controller;
+import play.mvc.Http;
+import play.mvc.Http.Header;
 
 
 /**
@@ -28,13 +30,15 @@ public class QRController extends Controller {
 	
 	/** 
 	 * This function generates the QRcode of an URL based on the poll with a determined polltoken.
-	 * @param polltoken
-	 * @param size
-	 * @return
+	 * @param polltoken - The poll token to use for linking the QRCode image to the poll.
+	 * @param size - The size of the image.
+	 * @return - Returns the image or null if error.
 	 */
 	
 	private static BufferedImage generateImage (String polltoken, int size) {
-		String URL = ("http://openars.dk/" + polltoken);
+		String httpheader = Http.Request.current().headers.get("host").value();
+		String URL = ("http://" + httpheader + "/" + polltoken);
+		
 		BitMatrix bm;
         Writer writer = new QRCodeWriter();
 		try {
@@ -67,11 +71,11 @@ public class QRController extends Controller {
 			String polltoken = params.get("token");
 			int size = params.get("size", Integer.class).intValue();
 
-			String path = Play.applicationPath.getAbsolutePath();
-			boolean exists = (new File(path  + polltoken + "_" + size + ".jpg")).exists();
+			String path = Play.applicationPath.getPath();
+			boolean exists = (new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
 
 			if (!exists) {
-				FileOutputStream fos = new FileOutputStream(path  + polltoken + "_" + size + ".jpg");
+				FileOutputStream fos = new FileOutputStream(path +  "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
 				BufferedImage image = generateImage(polltoken, size);
 				ImageIO.write(image, "jpg", fos);
 				fos.close();
