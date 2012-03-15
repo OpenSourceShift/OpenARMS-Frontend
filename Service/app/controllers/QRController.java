@@ -22,7 +22,7 @@ import play.mvc.Http.Header;
 
 
 /**
- * 
+ * Class QRController is resposible for creating, storing and rendering QRCode
  * @author Kronics_2
  *
  */
@@ -72,8 +72,7 @@ public class QRController extends Controller {
 			int size = params.get("size", Integer.class).intValue();
 
 			String path = Play.applicationPath.getPath();
-			File f;
-			boolean exists = (f =new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
+			boolean exists = (new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
 
 			if (!exists) {
 				FileOutputStream fos = new FileOutputStream(path +  "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
@@ -81,7 +80,7 @@ public class QRController extends Controller {
 				ImageIO.write(image, "jpg", fos);
 				fos.close();
 			}
-			renderBinary(f);
+
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		} 
