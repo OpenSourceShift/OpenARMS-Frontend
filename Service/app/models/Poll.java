@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
+import models.helpers.GsonSkip;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -40,6 +42,7 @@ public class Poll extends Model {
     /**
      * The email of the person that created the poll.
      */
+    @GsonSkip(Poll.class)
     public String email;
     /**
      * The question that the poll states, ex. "What is 2+2?"
