@@ -14,7 +14,6 @@ question=Question
 multipleAllowed=Allow multiple choices
 
 # PollInstance.java
-votes=Votes
 startDateTime=Starting Date & Time
 endDateTime=Ending Date & Time
 
