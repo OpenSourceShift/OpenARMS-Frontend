@@ -22,7 +22,7 @@ import play.mvc.Http.Header;
 
 
 /**
- * 
+ * Class QRController is resposible for creating, storing and rendering QRCode.
  * @author Kronics_2
  *
  */
@@ -80,7 +80,8 @@ public class QRController extends Controller {
 				ImageIO.write(image, "jpg", fos);
 				fos.close();
 			}
-
+			File f = new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
+			renderBinary(f);
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		} 
