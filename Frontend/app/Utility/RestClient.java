@@ -163,7 +163,7 @@ public class RestClient {
 		try {
 			Gson g = new Gson();
 			JSONObject o = new JSONObject(this.postService(StaticQuery
-					.vote(v.pollID), g.toJson(v)));
+					.vote(v.token), g.toJson(v)));
 			return o.getBoolean("voteSuccessful");
 		} catch (JSONException e) {
 		}
@@ -187,7 +187,7 @@ public class RestClient {
 	 * 
 	 * @param o
 	 *            The object to base the JSON on.
-	 * @return A JSON object with the adminkey and pollID.
+	 * @return A JSON object with the adminkey and token.
 	 * @throws JSONException
 	 */
 	public String createQuestion(Object o) throws JSONException {
@@ -200,8 +200,8 @@ public class RestClient {
 	 * 
 	 * @return get poll results from server
 	 */
-	public String getResults(String pollID, String adminkey) {
-		return this.getService(StaticQuery.get_results(pollID, adminkey));
+	public String getResults(String token, String adminkey) {
+		return this.getService(StaticQuery.get_results(token, adminkey));
 	}
 
 	public boolean checkAdminkey(String id, String adminkey)

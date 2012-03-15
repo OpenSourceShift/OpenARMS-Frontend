@@ -20,7 +20,7 @@ public class JoinPoll extends Controller {
 		try {
 			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(id));
 
-			String pollID = questionJSON.getString("pollID");
+			String token = questionJSON.getString("token");
 
 			String questionID = questionJSON.getString("questionID");
 			String question = questionJSON.getString("question");
@@ -29,17 +29,17 @@ public class JoinPoll extends Controller {
 			// questionJSON.getString("multipleAllowed");
 			String duration = questionJSON.getString("duration");
 
-			render(id, pollID, questionID, question, answersArray, duration);
+			render(id, token, questionID, question, answersArray, duration);
 		} catch (JSONException e) {
 			nopoll(id);
 		}
 	}
 
-	public static void submit(String pollID, String questionID, String answer)
+	public static void submit(String token, String questionID, String answer)
 			throws JSONException {
 
-		validation.required(pollID);
-		validation.match(pollID, "^\\d+$");
+		validation.required(token);
+		validation.match(token, "^\\d+$");
 		validation.required(questionID);
 		validation.match(questionID, "^\\d+$");
 		validation.required(answer);
@@ -47,28 +47,28 @@ public class JoinPoll extends Controller {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			index(pollID);
+			index(token);
 			return;
 		}
 
 		Vote v = new Vote();
-		v.pollID = Integer.parseInt(pollID);
+		v.token = Integer.parseInt(token);
 		v.questionID = Integer.parseInt(questionID);
 		v.answers = new String[] { answer };
 		v.rensponderID = request.remoteAddress + session.getId();
 
 		RestClient.getInstance().vote(v);
 
-		success(pollID);
+		success(token);
 	}
 
-	public static void success(String pollID) {
+	public static void success(String token) {
 		String question = null;
 		JSONArray answersArray = null;
 		String duration = null;
 
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(pollID));
+			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));
 
 			question = questionJSON.getString("question");
 			answersArray = questionJSON.getJSONArray("answers");
@@ -77,7 +77,7 @@ public class JoinPoll extends Controller {
 			try {
 				// Most like the poll has been inactivated, so we need the
 				// results instead
-				JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(pollID, null));
+				JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(token, null));
 
 				question = resultJSON.getString("question");
 				answersArray = resultJSON.getJSONArray("answers");
@@ -99,10 +99,10 @@ public class JoinPoll extends Controller {
 
 		durationString = df.format(m) + ":" + df.format(s);
 
-		render(pollID, question, answersArray, duration, durationString);
+		render(token, question, answersArray, duration, durationString);
 	}
 
-	public static void nopoll(String pollID) {
-		render(pollID);
+	public static void nopoll(String token) {
+		render(token);
 	}
 }

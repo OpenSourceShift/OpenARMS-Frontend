@@ -3,7 +3,7 @@ package models;
 import play.db.jpa.Model;
 
 public class Poll extends Model {
-	public int pollId;
+	public int token;
 	public String question;
 	public String[] answers;
 	public boolean multipleAllowed;
