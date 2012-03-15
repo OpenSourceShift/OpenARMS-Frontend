@@ -21,7 +21,8 @@ import play.mvc.Controller;
 
 public class QRController extends Controller {
 
-	private static BufferedImage generateImage (String URL, int size) {
+	private static BufferedImage generateImage (String polltoken, int size) {
+		String URL = ("http://openars.dk/" + polltoken);
 		BitMatrix bm;
         Writer writer = new QRCodeWriter();
 		try {
@@ -44,10 +45,12 @@ public class QRController extends Controller {
 		return null;
 	}
 	
-	public static void returnImage (String URL, int size) {
+	public static void returnImage () {
 		try {
-			FileOutputStream fos = new FileOutputStream("D:/image/image.jpg");
-			BufferedImage image = generateImage(URL, size);
+			String polltoken = params.get("token");
+			int size = params.get("size", Integer.class).intValue();
+			FileOutputStream fos = new FileOutputStream("Service/tmp/qrcodes/" +polltoken + "_" + size + ".jpg");
+			BufferedImage image = generateImage(polltoken, size);
 			ImageIO.write(image, "jpg", fos);
 			fos.close();
 
