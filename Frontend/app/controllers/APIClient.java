@@ -16,6 +16,8 @@ import play.mvc.*;
 import play.mvc.Http.StatusCode;
 
 public class APIClient extends Controller {
+	
+	public static APIClient singleton;
     
 	public DefaultHttpClient client;
 	/**
@@ -24,13 +26,17 @@ public class APIClient extends Controller {
 	public APIClient() {
 		client = new DefaultHttpClient();
 	}
-	/*
-	public VoteResponse send(VoteRequest request) throws OperationNotSupportedException {
-		throw new OperationNotSupportedException();
+	
+	public static APIClient getInstance() {
+		if(singleton == null) {
+			singleton = new APIClient();
+		}
+		return singleton;
 	}
 	
-	public JSONObject send(JSONObject request) throws OperationNotSupportedException {
-		throw new OperationNotSupportedException();
+	public api.Response send(api.Request request) {
+		// TODO: Serialize the request object and send it for the service.
+		// Also remember to do proper errorhandling
+		return null;
 	}
-	*/
 }
