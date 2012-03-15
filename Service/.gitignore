@@ -5,3 +5,6 @@ eclipse/*
 .classpath
 /crud
 /crud
+/eclipse
+/modules
+/tmp
