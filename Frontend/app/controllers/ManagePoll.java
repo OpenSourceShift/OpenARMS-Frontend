@@ -10,25 +10,25 @@ import Utility.RestClient;
 import play.mvc.Controller;
 
 public class ManagePoll extends Controller {
-	public static void index(String pollID, String adminkey) {
-		validation.required(pollID);
+	public static void index(String token, String adminkey) {
+		validation.required(token);
 		validation.required(adminkey);
 		boolean redirect = true;
 		if (validation.hasErrors()) {
-			pollID = session.get("pollID");
+			token = session.get("token");
 			adminkey = session.get("adminkey");
 			redirect = false;
 		}
 		
 		try {
-			boolean correct = RestClient.getInstance().checkAdminkey(pollID, adminkey);
+			boolean correct = RestClient.getInstance().checkAdminkey(token, adminkey);
 			if (correct) {
 				if (redirect) {
-					session.put("pollID", pollID);
+					session.put("token", token);
 					session.put("adminkey", adminkey);
 					ManagePoll.index(null, null);
 				} else {
-					render(pollID, adminkey);
+					render(token, adminkey);
 				}
 			}
 		} catch (Exception e) {
@@ -37,7 +37,7 @@ public class ManagePoll extends Controller {
 	}
 
 	public static void activate() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 
 		String duration = "";
@@ -45,7 +45,7 @@ public class ManagePoll extends Controller {
 		// Get the duration from the server
 		String res = null;
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(pollID));
+			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));
 
 			duration = questionJSON.getString("duration");
 
@@ -65,11 +65,11 @@ public class ManagePoll extends Controller {
 			e.printStackTrace();
 		}
 
-		render(pollID, adminkey, duration, durationString);
+		render(token, adminkey, duration, durationString);
 	}
 
 	public static void activateSubmit(String minutes, String seconds) {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 		
 		int s = 0;
@@ -91,7 +91,7 @@ public class ManagePoll extends Controller {
 
 				int duration = s + m * 60;
 
-				RestClient.getInstance().activate(pollID, adminkey, duration);
+				RestClient.getInstance().activate(token, adminkey, duration);
 			} catch (Exception e) {
 			}
 		}
@@ -100,14 +100,14 @@ public class ManagePoll extends Controller {
 	}
 
 	public static void edit() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
-		render(pollID, adminkey);
+		render(token, adminkey);
 	}
 
 	public static void statistics() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
-		render(pollID, adminkey);
+		render(token, adminkey);
 	}
 }
