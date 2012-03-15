@@ -14,12 +14,10 @@ public class AnnotationExclusionStrategy implements ExclusionStrategy {
 	private Class<?> clazz;
 	
 	public AnnotationExclusionStrategy(Class<?> clazz) {
-		System.out.println("Creating an AnnotationExclusionStrategy for "+clazz);
 		this.clazz = clazz;
 	}
 	
 	public boolean shouldSkipClass(Class<?> c) {
-		System.out.println("!!! shouldSkipClass called with "+c.toString());
 		Annotation a = c.getAnnotation(GsonSkip.class);
 		if(a instanceof GsonSkip) {
 			GsonSkip gs = (GsonSkip) a;
@@ -33,7 +31,6 @@ public class AnnotationExclusionStrategy implements ExclusionStrategy {
 	}
 
 	public boolean shouldSkipField(FieldAttributes fa) {
-		System.out.println("shouldSkipField called with "+fa.getName()+" of class "+fa.getDeclaredClass().getName());
 		Annotation a = fa.getAnnotation(GsonSkip.class);
 		if(a instanceof GsonSkip) {
 			GsonSkip gs = (GsonSkip) a;

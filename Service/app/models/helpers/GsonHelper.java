@@ -3,8 +3,6 @@ package models.helpers;
 import java.util.HashMap;
 import java.util.Map;
 
-import models.Poll;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
