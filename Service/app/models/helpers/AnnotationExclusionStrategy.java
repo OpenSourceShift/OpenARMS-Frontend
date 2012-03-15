@@ -5,8 +5,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
-import models.helpers.GsonSkip.Component;
-
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.reflect.TypeToken;
