@@ -72,7 +72,8 @@ public class QRController extends Controller {
 			int size = params.get("size", Integer.class).intValue();
 
 			String path = Play.applicationPath.getPath();
-			boolean exists = (new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
+			File f;
+			boolean exists = (f =new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
 
 			if (!exists) {
 				FileOutputStream fos = new FileOutputStream(path +  "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
@@ -80,7 +81,7 @@ public class QRController extends Controller {
 				ImageIO.write(image, "jpg", fos);
 				fos.close();
 			}
-
+			renderBinary(f);
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
 		} 
