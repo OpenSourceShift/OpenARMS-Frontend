@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
+import org.hibernate.cfg.AnnotatedClassType;
+
 import models.helpers.GsonSkip;
 
 import com.google.gson.ExclusionStrategy;
@@ -42,7 +44,7 @@ public class Poll extends Model {
     /**
      * The email of the person that created the poll.
      */
-    @GsonSkip(Poll.class)
+    @GsonSkip(clazz=Poll.class, application="OpenARMS 1.1 Service")
     public String email;
     /**
      * The question that the poll states, ex. "What is 2+2?"

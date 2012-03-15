@@ -23,7 +23,7 @@ public class Choice extends Model {
 	 * The poll that this is a choice for.
 	 */
 	@ManyToOne
-    @GsonSkip(Poll.class)
+    @GsonSkip(clazz = Poll.class, application="OpenARMS 1.1 Service")
 	public Poll poll;
 	/**
 	 * The human understandable text describing the choice.
