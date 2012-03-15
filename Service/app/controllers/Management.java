@@ -67,6 +67,9 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
+            String URL = ("http://openarms.dk/" + question.token);
+            QRController.returnImage(URL, 200);
+            
             renderJSON(new CreateResponseJSON(question.token, question.adminKey));
 
         } catch (IOException ex) {
