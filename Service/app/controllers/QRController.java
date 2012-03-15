@@ -15,12 +15,24 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import play.Play;
 import play.mvc.Controller;
 
 
-
+/**
+ * 
+ * @author Kronics_2
+ *
+ */
 public class QRController extends Controller {
-
+	
+	/** 
+	 * This function generates the QRcode of an URL based on the poll with a determined polltoken.
+	 * @param polltoken
+	 * @param size
+	 * @return
+	 */
+	
 	private static BufferedImage generateImage (String polltoken, int size) {
 		String URL = ("http://openars.dk/" + polltoken);
 		BitMatrix bm;
@@ -45,19 +57,28 @@ public class QRController extends Controller {
 		return null;
 	}
 	
+	/**
+	 * This function is called from the Routes file, it creates a file in the tmp folder with the image of
+	 * the QRCode if it doesn't exist, if it does, uses it. 
+	 */
+	
 	public static void returnImage () {
 		try {
 			String polltoken = params.get("token");
 			int size = params.get("size", Integer.class).intValue();
-			FileOutputStream fos = new FileOutputStream("Service/tmp/qrcodes/" +polltoken + "_" + size + ".jpg");
-			BufferedImage image = generateImage(polltoken, size);
-			ImageIO.write(image, "jpg", fos);
-			fos.close();
+
+			String path = Play.applicationPath.getAbsolutePath();
+			boolean exists = (new File(path  + polltoken + "_" + size + ".jpg")).exists();
+
+			if (!exists) {
+				FileOutputStream fos = new FileOutputStream(path  + polltoken + "_" + size + ".jpg");
+				BufferedImage image = generateImage(polltoken, size);
+				ImageIO.write(image, "jpg", fos);
+				fos.close();
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-		}
-         
-		 
+		} 
 	}
 }
