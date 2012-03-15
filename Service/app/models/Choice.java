@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.helpers.GsonSkip;
+
 import play.db.jpa.Model;
 
 /**
@@ -21,6 +23,7 @@ public class Choice extends Model {
 	 * The poll that this is a choice for.
 	 */
 	@ManyToOne
+    @GsonSkip(Poll.class)
 	public Poll poll;
 	/**
 	 * The human understandable text describing the choice.

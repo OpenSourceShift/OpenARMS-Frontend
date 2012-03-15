@@ -5,3 +5,14 @@
 #   email: bob@gmail.com
 #   password: secret
 #   fullname: Bob
+
+Poll(p1):
+  question: "What is 2+2?"
+
+Choice(c1):
+  text: "It is 3!"
+  poll: p1
+  
+Choice(c2):
+  text: "It is 4!!"
+  poll: p1
