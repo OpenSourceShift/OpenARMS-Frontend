@@ -22,7 +22,7 @@ import play.mvc.Http.Header;
 
 
 /**
- * Class QRController is resposible for creating, storing and rendering QRCode
+ * Class QRController is resposible for creating, storing and rendering QRCode.
  * @author Kronics_2
  *
  */
