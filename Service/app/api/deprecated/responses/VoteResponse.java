@@ -1,4 +1,4 @@
-package api.responses;
+package api.deprecated.responses;
 
 /**
  * @author veri

@@ -1,4 +1,4 @@
-package api;
+package api.deprecated;
 
 public class BaseJSON {
 	public String error_message = null;
