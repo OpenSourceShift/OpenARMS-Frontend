@@ -46,8 +46,10 @@ public class QRController extends Controller {
 	
 	public static void returnImage () {
 		try {
-			FileOutputStream fos = new FileOutputStream("D:/image/image3.jpg");
-			BufferedImage image = generateImage("URL", Integer.parseInt("size"));
+			FileOutputStream fos = new FileOutputStream("D:/image/image.jpg");
+			String URL = params.get("URL");
+			int size = params.get("size", Integer.class).intValue();
+			BufferedImage image = generateImage(URL, size);
 			ImageIO.write(image, "jpg", fos);
 			fos.close();
 
