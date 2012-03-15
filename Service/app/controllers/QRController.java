@@ -25,21 +25,17 @@ public class QRController extends Controller {
 		BitMatrix bm;
         Writer writer = new QRCodeWriter();
 		try {
-			bm = writer.encode("hello", BarcodeFormat.QR_CODE, 100, 100);
+			bm = writer.encode(URL, BarcodeFormat.QR_CODE, size, size);
 		
-        BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
         
-        for (int y = 0; y < 100; y++) {
-            for (int x = 0; x < 100; x++) {
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
                 int grayValue = (bm.get(x, y) ? 1 : 0) & 0xff;
-                image.setRGB(x, y, (grayValue == 0 ? 0 : 0xFFFFFF));
+                image.setRGB(x, y, (grayValue == 0 ?  0xFFFFFF : 0));
             }
         }
-        
-        /*FileOutputStream fos = new FileOutputStream("D:/image/image.jpg");
-		ImageIO.write(image, "RGB", fos);
-		fos.close();*/
-		
+
 		return image;
 		
 		} catch (Exception e) {
@@ -50,8 +46,8 @@ public class QRController extends Controller {
 	
 	public static void returnImage () {
 		try {
-			FileOutputStream fos = new FileOutputStream("D:/image/image.jpg");
-			BufferedImage image = generateImage("URL",Integer.parseInt("size"));
+			FileOutputStream fos = new FileOutputStream("D:/image/image3.jpg");
+			BufferedImage image = generateImage("URL", Integer.parseInt("size"));
 			ImageIO.write(image, "jpg", fos);
 			fos.close();
 
