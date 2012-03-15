@@ -18,9 +18,11 @@ public class GsonTest extends UnitTest {
 		List<Poll> polls = Poll.findAll();
     	assertEquals(polls.size(), 1);
     	
-    	String json = GsonHelper.get(Poll.class).toJson(polls.get(0));
-    	
+    	String json = GsonHelper.toJson(polls.get(0));
     	System.out.println(json);
+    	
+    	String p2 = GsonHelper.toJson(json);
+    	System.out.println(p2);
     	
     }
 }
