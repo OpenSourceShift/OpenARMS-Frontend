@@ -3,9 +3,9 @@ package api;
 import models.Poll;
 
 public class Request {
-	public static class CreateUserRequest extends Request {
+	public static class CreatePollRequest extends Request {
 		public Poll poll;
-		public CreateUserRequest(Poll p) {
+		public CreatePollRequest(Poll p) {
 			this.poll = p;
 		}
 	}
