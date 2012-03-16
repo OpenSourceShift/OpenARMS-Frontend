@@ -14,7 +14,6 @@ import api.helpers.GsonHelper;
 
 import play.test.Fixtures;
 import play.test.UnitTest;
-import test.Response;
 
 public class GsonTest extends UnitTest {
 
@@ -41,7 +40,7 @@ public class GsonTest extends UnitTest {
 		Fixtures.deleteAllModels();
 		Fixtures.loadModels("data.yml");
 		
-		Poll p = new Poll("123456", "Strange question ...", false, "spam@creen.dk");
+		Poll p = new Poll("123456", "Strange question ...", false);
 		p.choices = new LinkedList<Choice>();
 		
 		Choice c1 = new Choice(p, "Strange answer ..");

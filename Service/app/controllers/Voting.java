@@ -12,8 +12,8 @@ import play.cache.Cache;
 import play.mvc.Controller;
 import api.deprecated.QuestionJSON;
 import api.deprecated.ResultsJSON;
+import api.deprecated.requests.VoteRequest;
 import api.deprecated.responses.VoteResponse;
-import api.depricated.requests.VoteRequest;
 
 import com.google.gson.Gson;
 
