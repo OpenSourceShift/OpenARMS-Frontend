@@ -2,6 +2,7 @@ package api;
 
 import java.util.List;
 
+import api.Response.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.PollJSON;
 
@@ -10,9 +11,23 @@ import models.Poll;
 import models.Vote;
 import models.helpers.GsonSkip;
 
-public class Request {
+public abstract class Request {
+	public static enum Method {
+		GET,
+		POST,
+		PUT,
+		DELETE
+	}
+
+	@GsonSkip(classes={Request.class})
+	public static final Class EXPECTED_RESPONSE = null;
+	@GsonSkip(classes={Request.class})
+	public Method method;
+	
 	/* Poll specific communication */
 	public static class CreatePollRequest extends Request {
+		public static final Class EXPECTED_RESPONSE = CreatePollResponse.class;
+		
 		public PollJSON poll;
 		public CreatePollRequest(Poll p) {
 			this.poll = new PollJSON(p);
