@@ -53,7 +53,7 @@ public class QuestionJSON {
      * @return
      */
     public Poll makeModelFromJSON() {
-        Poll q = new Poll(token, question, multipleAllowed, email);
+        Poll q = new Poll(token, question, multipleAllowed);
         return q;
     }
 }
