@@ -11,6 +11,8 @@ import play.mvc.Controller;
 /*import Utility.RestClient;*/
 
 import api.Response.CreatePollResponse;
+import api.Request.CreatePollRequest;
+
 
 import com.google.gson.Gson;
 
@@ -71,7 +73,7 @@ public class CreatePoll extends Controller {
 			p.multipleAllowed = true;
 		}
 
-		CreatePollResponse response = (CreatePollResponse) APIClient.getInstance().send(new api.Request.CreatePollRequest(p));
+		CreatePollResponse response = (CreatePollResponse) APIClient.getInstance().send(new CreatePollRequest(p));
 		Poll poll = response.poll;
 		
 		/* ToDo: Authentication */
