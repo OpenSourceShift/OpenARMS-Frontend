@@ -23,17 +23,13 @@ public class AnnotationExclusionStrategy implements ExclusionStrategy {
 		for(Annotation a: c.getAnnotations()) {
 			if(a instanceof GsonSkip) {
 				GsonSkip gs = (GsonSkip) a;
-				if(gs.clazz() != null && gs.clazz().equals(clazz)) {
-					if(gs.application() != null && gs.application().equals(application)) {
-						return true;
-					} else if(gs.application() == null) {
-						return true;
-					}
-				} else if (gs.clazz() == null) {
-					if(gs.application() != null && gs.application().equals(application)) {
-						return true;
-					} else if(gs.application() == null) {
-						return true;
+				for(Class<?> someClass: gs.classes()) {
+					if(someClass.equals(clazz)) {
+						for(String someApplication: gs.applications()) {
+							if(someApplication.equals(this.application)) {
+								return true;
+							}
+						}
 					}
 				}
 			}
@@ -45,17 +41,13 @@ public class AnnotationExclusionStrategy implements ExclusionStrategy {
 		for(Annotation a: fa.getAnnotations()) {
 			if(a instanceof GsonSkip) {
 				GsonSkip gs = (GsonSkip) a;
-				if(gs.clazz() != null && gs.clazz().equals(clazz)) {
-					if(gs.application() != null && gs.application().equals(application)) {
-						return true;
-					} else if(gs.application() == null) {
-						return true;
-					}
-				} else if (gs.clazz() == null) {
-					if(gs.application() != null && gs.application().equals(application)) {
-						return true;
-					} else if(gs.application() == null) {
-						return true;
+				for(Class<?> someClass: gs.classes()) {
+					if(someClass.equals(clazz)) {
+						for(String someApplication: gs.applications()) {
+							if(someApplication.equals(this.application)) {
+								return true;
+							}
+						}
 					}
 				}
 			}

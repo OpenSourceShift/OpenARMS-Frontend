@@ -1,5 +1,7 @@
 package api;
 
+import api.entities.ChoiceJSON;
+import models.Choice;
 import models.Poll;
 
 public class Response {
@@ -9,9 +11,14 @@ public class Response {
 			this.poll = p;
 		}
 	}
-	public void render() {
-		
+
+	public static class CreateChoiceResponse extends Response {
+		public ChoiceJSON choice;
+		public CreateChoiceResponse(Choice c) {
+			this.choice = new ChoiceJSON(c);
+		}
 	}
+	
 	public String error_message = null;
 	public Response() {
 		

@@ -1,12 +1,15 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+
+import api.Response.CreatePollResponse;
 
 import models.helpers.GsonSkip;
 
@@ -23,12 +26,18 @@ public class Choice extends Model {
 	 * The poll that this is a choice for.
 	 */
 	@ManyToOne
-    @GsonSkip(clazz = Poll.class, application="OpenARMS 1.1 Service")
+    @GsonSkip(classes = {Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
 	public Poll poll;
 	/**
 	 * The human understandable text describing the choice.
 	 */
 	public String text;
+	
+	/**
+	 * Is this the correct choice for the poll?
+	 */
+	public boolean correct;
+	
 	/**
 	 * The votes that has used this choice when voting for an instance of a poll.
 	 */
@@ -38,6 +47,7 @@ public class Choice extends Model {
 	public Choice(Poll poll, String text) {
 		this.poll = poll;
 		this.text = text;
+		this.votes = new LinkedList<Vote>();
 	}
 
 	/**
