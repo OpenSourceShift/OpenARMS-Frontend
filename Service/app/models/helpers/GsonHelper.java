@@ -1,5 +1,10 @@
 package models.helpers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,5 +36,16 @@ public class GsonHelper {
 	
 	public static <C> C fromJson(String i, Class<C> c) {
 		return get(c.getClass()).fromJson(i, c);
+	}
+
+	public static <C> C fromJson(InputStream is, Class c) throws IOException {
+		String json = "";
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
+		String line;
+		while ((line = br.readLine()) != null) {
+			json += line;
+		}
+		br.close();
+		return (C) get(c.getClass()).fromJson(json, c);
 	}
 }
