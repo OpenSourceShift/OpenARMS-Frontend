@@ -29,8 +29,7 @@ public abstract class Request {
 		public static final Class EXPECTED_RESPONSE = CreatePollResponse.class;
 		
 		public PollJSON poll;
-		public CreatePollRequest(Poll p) {
-			this.poll = new PollJSON(p);
+		public CreatePollRequest(PollJSON p) {
 			// Reset any id ...
 			this.poll.id = null;
 			for(ChoiceJSON choice: this.poll.choices) {
@@ -55,7 +54,7 @@ public abstract class Request {
 	public static class CreateChoiceRequest extends Request {
 		public ChoiceJSON choice;
 		public CreateChoiceRequest(Choice c) {
-			this.choice = new ChoiceJSON(c);
+			this.choice = c.toJson();
 		}
 	}
 	

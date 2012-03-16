@@ -6,14 +6,15 @@ import java.util.List;
 import models.Choice;
 import models.Poll;
 
-public class PollJSON {
+public class PollJSON extends BaseJSON {
 	public Long id;
 	public String token;
 	public String reference;
+    public Boolean multipleAllowed;
 	public String question;
 	public List<ChoiceJSON> choices;
 	
-	
+	/*
 	public PollJSON(Poll p) {
 		this.id = p.id;
 		this.token = p.token;
@@ -42,4 +43,5 @@ public class PollJSON {
 		
 		return poll;
 	}
+	*/
 }

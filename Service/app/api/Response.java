@@ -13,15 +13,12 @@ public class Response {
 		public CreatePollResponse(PollJSON p) {
 			this.poll = p;
 		}
-		public CreatePollResponse(Poll p) {
-			this.poll = new PollJSON(p);
-		}
 	}
 
 	public static class CreateChoiceResponse extends Response {
 		public ChoiceJSON choice;
 		public CreateChoiceResponse(Choice c) {
-			this.choice = new ChoiceJSON(c);
+			this.choice = c.toJson();
 		}
 	}
 	

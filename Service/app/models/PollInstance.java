@@ -3,6 +3,9 @@ package models;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
+import api.entities.BaseJSON;
+import api.entities.Jsonable;
 import play.db.jpa.*;
 
 /**
@@ -11,7 +14,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class PollInstance extends Model implements Comparable<PollInstance> {
+public class PollInstance extends Model implements Comparable<PollInstance>, Jsonable {
 	private static final long serialVersionUID = -6371181092845400924L;
 	
 	/**
@@ -63,4 +66,9 @@ public class PollInstance extends Model implements Comparable<PollInstance> {
         hash = 71 * hash + (this.poll != null ? this.poll.hashCode() : 0);
         return hash;
     }
+
+	public BaseJSON toJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
