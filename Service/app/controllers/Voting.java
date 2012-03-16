@@ -1,20 +1,21 @@
 package controllers;
 
-import api.QuestionJSON;
-import api.ResultsJSON;
-import api.requests.VoteRequest;
-import api.responses.VoteResponse;
-
-import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import models.Choice;
 import models.Poll;
-import models.Vote;
 import models.PollInstance;
+import models.Vote;
 import play.cache.Cache;
-import play.mvc.*;
+import play.mvc.Controller;
+import api.deprecated.QuestionJSON;
+import api.deprecated.ResultsJSON;
+import api.deprecated.responses.VoteResponse;
+import api.depricated.requests.VoteRequest;
+
+import com.google.gson.Gson;
 
 /**
  * Controller which takes care of functions that are mainly for poll users

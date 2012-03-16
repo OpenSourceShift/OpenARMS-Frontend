@@ -4,10 +4,10 @@
  */
 package controllers;
 
-import api.ActivationJSON;
-import api.BaseJSON;
-import api.CreateResponseJSON;
-import api.QuestionJSON;
+import api.deprecated.ActivationJSON;
+import api.deprecated.BaseJSON;
+import api.deprecated.CreateResponseJSON;
+import api.deprecated.QuestionJSON;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

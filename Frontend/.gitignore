@@ -1,5 +1,5 @@
-tmp/*
-.settings/*
-eclipse/*
+/.settings
 .project
 .classpath
+/eclipse
+/tmp

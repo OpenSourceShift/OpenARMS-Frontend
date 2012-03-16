@@ -12,35 +12,44 @@ import com.google.gson.reflect.TypeToken;
 public class AnnotationExclusionStrategy implements ExclusionStrategy {
 	
 	private Class<?> clazz;
+	private String application;
 	
-	public AnnotationExclusionStrategy(Class<?> clazz) {
-		System.out.println("Creating an AnnotationExclusionStrategy for "+clazz);
+	public AnnotationExclusionStrategy(Class<?> clazz, String application) {
 		this.clazz = clazz;
+		this.application = application;
 	}
 	
 	public boolean shouldSkipClass(Class<?> c) {
-		System.out.println("!!! shouldSkipClass called with "+c.toString());
-		Annotation a = c.getAnnotation(GsonSkip.class);
-		if(a instanceof GsonSkip) {
-			GsonSkip gs = (GsonSkip) a;
-			if(gs.value() != null && gs.value().equals(clazz)) {
-				return true;
-			} else if (gs.value() != null) {
-				return true;
+		for(Annotation a: c.getAnnotations()) {
+			if(a instanceof GsonSkip) {
+				GsonSkip gs = (GsonSkip) a;
+				for(Class<?> someClass: gs.classes()) {
+					if(someClass.equals(clazz)) {
+						for(String someApplication: gs.applications()) {
+							if(someApplication.equals(this.application)) {
+								return true;
+							}
+						}
+					}
+				}
 			}
 		}
 		return false;
 	}
 
 	public boolean shouldSkipField(FieldAttributes fa) {
-		System.out.println("shouldSkipField called with "+fa.getName()+" of class "+fa.getDeclaredClass().getName());
-		Annotation a = fa.getAnnotation(GsonSkip.class);
-		if(a instanceof GsonSkip) {
-			GsonSkip gs = (GsonSkip) a;
-			if(gs.value() != null && clazz.equals(gs.value())) {
-				return true;
-			} else if (gs.value() != null) {
-				return true;
+		for(Annotation a: fa.getAnnotations()) {
+			if(a instanceof GsonSkip) {
+				GsonSkip gs = (GsonSkip) a;
+				for(Class<?> someClass: gs.classes()) {
+					if(someClass.equals(clazz)) {
+						for(String someApplication: gs.applications()) {
+							if(someApplication.equals(this.application)) {
+								return true;
+							}
+						}
+					}
+				}
 			}
 		}
 		return false;

@@ -6,7 +6,12 @@ import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
+import org.hibernate.cfg.AnnotatedClassType;
+
 import models.helpers.GsonSkip;
+
+import api.Response;
+import api.Response.CreatePollResponse;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -38,16 +43,22 @@ public class Poll extends Model {
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
+    @GsonSkip(classes={Poll.class})
     public String adminKey;
     /**
      * The email of the person that created the poll.
      */
-    @GsonSkip(Poll.class)
+    @GsonSkip(classes={Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
     public String email;
     /**
      * The question that the poll states, ex. "What is 2+2?"
      */
     public String question;
+    /**
+     * A human understanable reference that the teacher will use to
+     * remember the relation of the poll, i.e. a course number, subject or alike.
+     */
+    public String reference;
     /**
      * Is it allowed to add multiple answers?
      */

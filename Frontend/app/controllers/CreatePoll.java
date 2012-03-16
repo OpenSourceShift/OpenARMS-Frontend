@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import models.Poll;
 import play.mvc.Controller;
 
-import Utility.RestClient;
+/*import Utility.RestClient;*/
 
 import com.google.gson.Gson;
 
@@ -20,8 +20,8 @@ public class CreatePoll extends Controller {
 		render(email, question, answer);
 	}
 
-	public static void success(String pollID, String adminkey) {
-		render(pollID, adminkey);
+	public static void success(String token, String adminkey) {
+		render(token, adminkey);
 	}
 
 	public static void submit(String email, String question, String[] answer,
@@ -71,12 +71,13 @@ public class CreatePoll extends Controller {
 
 		// Send it
 		try {
-			JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));
-			String pollID = result.getString("pollID");
+			/*JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));*/
+			JSONObject result = new JSONObject(APIClient.getInstance().send(new api.Request.CreatePollRequest(p)));
+			String token = result.getString("token");
 			String adminkey = result.getString("adminKey");
 
 			// Redirect to success
-			success(pollID, adminkey);
+			success(token, adminkey);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
