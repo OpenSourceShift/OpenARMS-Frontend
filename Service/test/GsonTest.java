@@ -14,6 +14,7 @@ import api.Response.CreatePollResponse;
 
 import play.test.Fixtures;
 import play.test.UnitTest;
+import test.Response;
 
 public class GsonTest extends UnitTest {
 
@@ -90,4 +91,33 @@ public class GsonTest extends UnitTest {
     	System.out.println(json);
     	System.out.println();
     }
+
+
+	@Test
+	public String CreatePollRequestTest2() {
+		Fixtures.deleteAllModels();
+		Fixtures.loadModels("data.yml");
+		
+		Poll p = new Poll("123456", "Strange question ...", false);
+		p.choices = new LinkedList<Choice>();
+		
+		Choice c1 = new Choice(p, "Strange answer ..");
+		p.choices.add(c1);
+		
+		Choice c2 = new Choice(p, "... even worse");
+		p.choices.add(c2);
+		
+		CreatePollRequest r = new CreatePollRequest(p);
+		String json = GsonHelper.toJson(r);
+		
+		return json;
+	}
+	/*
+	@Test
+    public void CreatePollResponseTest2() {
+        Response response = GET("/");
+        assertIsOk(response);
+        assertContentType("text/html", response);
+        assertCharset("utf-8", response);
+    }*/
 }

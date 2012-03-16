@@ -45,11 +45,9 @@ public class Poll extends Model {
      */
     @GsonSkip(classes={Poll.class})
     public String adminKey;
-    /**
-     * The email of the person that created the poll.
-     */
-    @GsonSkip(classes={Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
-    public String email;
+    
+    /* TODO Create USER Attribute. */ 
+    
     /**
      * The question that the poll states, ex. "What is 2+2?"
      */
@@ -83,11 +81,10 @@ public class Poll extends Model {
      * @param multipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, boolean multipleAllowed, String email) {
+    public Poll(String token, String question, boolean multipleAllowed) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
-        this.email = email;
     }
 
     /**
