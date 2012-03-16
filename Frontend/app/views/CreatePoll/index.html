@@ -1,6 +1,5 @@
-#{extends 'main.html' /} #{ set title:'Create new poll' /} 
+#{extends 'main.html' /} #{ set title:'Create new poll' /}
 #{set moreStyles:'createpoll' /}
-
 <div id="main">
 	#{form @CreatePoll.submit(), id:'createpoll', class:'greybg wrapper' }
 		<h1>&{'create_poll'}</h1>
@@ -10,27 +9,29 @@
 				<p class="formError">#{error 'email' /}</p>
 			#{/ifError}
 			<input size="30" type="text" name="email" value="${email}" />
-		</div>				
-			
-		<div class="labeledinput">
+		</div>
+
+    <div class="labeledinput">
+
 			<label>&{'createpoll.form.question'}</label>
 			#{ifError 'question'}
 				<p class="formError">#{error 'question' /}</p>
 			#{/ifError}
-			<input size="30" type="text" name="question" value="${question}" />
+			<!--input size="30" type="text" name="question" value="${question}" /-->
+    #{rte /}
 		</div>
-		
+
 		<div class="labeledinput">
 			<label>&{'createpoll.form.pollType'}</label>
 			#{ifError 'type'}
 				<p class="formError">#{error 'type' /}</p>
-			#{/ifError}				
+			#{/ifError}
 			<select name="type" >
 				<option value="single">&{'createpoll.form.pollType.single'}</option>
 				<option value="multiple">&{'createpoll.form.pollType.multiple'}</option>
 			</select>
-		</div>	
-				
+		</div>
+
 		<div class="labeledinput">
 			<label>&{'createpoll.form.answers'}</label>
 			#{ifError 'answer'}
