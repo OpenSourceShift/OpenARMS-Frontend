@@ -10,6 +10,8 @@ import api.Request;
 import api.Request.CreateChoiceRequest;
 import api.Request.CreatePollRequest;
 import api.Response.CreatePollResponse;
+import api.entities.ChoiceJSON;
+import api.entities.PollJSON;
 import api.helpers.GsonHelper;
 
 import play.test.Fixtures;
@@ -40,13 +42,16 @@ public class GsonTest extends UnitTest {
 		Fixtures.deleteAllModels();
 		Fixtures.loadModels("data.yml");
 		
-		Poll p = new Poll("123456", "Strange question ...", false);
-		p.choices = new LinkedList<Choice>();
+		PollJSON p = new PollJSON();
+		p.question = "Strange question ...";
+		p.choices = new LinkedList<ChoiceJSON>();
 		
-		Choice c1 = new Choice(p, "Strange answer ..");
+		ChoiceJSON c1 = new ChoiceJSON();
+		c1.text = "Stupid answer.";
 		p.choices.add(c1);
 		
-		Choice c2 = new Choice(p, "... even worse");
+		ChoiceJSON c2 = new ChoiceJSON();
+		c1.text = "... even worse";
 		p.choices.add(c2);
     	
     	CreatePollRequest r = new CreatePollRequest(p);
@@ -64,8 +69,9 @@ public class GsonTest extends UnitTest {
 		Fixtures.loadModels("data.yml");
 		
 		Poll p = Poll.all().first();
+		PollJSON pAsJson = Poll.toJson(p);
     	
-		CreatePollResponse r = new CreatePollResponse(p);
+		CreatePollResponse r = new CreatePollResponse(pAsJson);
     	String json = GsonHelper.toJson(r);
     	
     	System.out.println();
@@ -93,23 +99,26 @@ public class GsonTest extends UnitTest {
 
 
 	@Test
-	public String CreatePollRequestTest2() {
+	public void CreatePollRequestTest2() {
 		Fixtures.deleteAllModels();
 		Fixtures.loadModels("data.yml");
+
+		PollJSON p = new PollJSON();
+		p.question = "Strange question ...";
+		p.choices = new LinkedList<ChoiceJSON>();
 		
-		Poll p = new Poll("123456", "Strange question ...", false);
-		p.choices = new LinkedList<Choice>();
-		
-		Choice c1 = new Choice(p, "Strange answer ..");
+		ChoiceJSON c1 = new ChoiceJSON();
+		c1.text = "Strange answer ..";
 		p.choices.add(c1);
 		
-		Choice c2 = new Choice(p, "... even worse");
+		ChoiceJSON c2 = new ChoiceJSON();
+		c1.text = "... even worse";
 		p.choices.add(c2);
 		
 		CreatePollRequest r = new CreatePollRequest(p);
 		String json = GsonHelper.toJson(r);
 		
-		return json;
+		System.out.println(json);
 	}
 	/*
 	@Test
