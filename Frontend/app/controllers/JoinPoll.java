@@ -38,7 +38,7 @@ public class JoinPoll extends Controller {
 			// questionJSON.getString("multipleAllowed");
 			String duration = questionJSON.getString("duration");*/
 			
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(id));
+			GetPollResponse response = (GetPollResponse) APIClient.send(new GetPollRequest(id));
 
 			String token = response.token;
 			long pollid = response.id;
@@ -48,7 +48,9 @@ public class JoinPoll extends Controller {
 			
 
 			render(id, token, pollid, question, answersArray, duration);
-		} catch (JsonParseException e) {
+		} catch (Exception e) {
+			// It failed
+			// TODO: Tell the user!
 			nopoll(id);
 		}
 	}

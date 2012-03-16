@@ -12,6 +12,7 @@ import play.mvc.Controller;
 
 import api.Response.CreatePollResponse;
 import api.Request.CreatePollRequest;
+import api.entities.PollJSON;
 
 
 import com.google.gson.Gson;
@@ -73,15 +74,21 @@ public class CreatePoll extends Controller {
 			p.multipleAllowed = true;
 		}
 
-		CreatePollResponse response = (CreatePollResponse) APIClient.getInstance().send(new CreatePollRequest(p));
-		Poll poll = response.poll;
-		
-		/* ToDo: Authentication */
-		
-		String token = poll.token;
-		String adminkey = null;
-
-		// Redirect to success
-		success(token, adminkey);
+		try {
+			CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
+			PollJSON poll = response.poll;
+			
+			/* ToDo: Authentication */
+			
+			String token = poll.token;
+			String adminkey = null;
+	
+			// Redirect to success
+			success(token, adminkey);
+		} catch (Exception e) {
+			// It failed!
+			// TODO: Tell the user!
+			e.printStackTrace();
+		}
 	}
 }

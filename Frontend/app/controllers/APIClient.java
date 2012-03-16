@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.naming.OperationNotSupportedException;
 
-import models.helpers.GsonHelper;
-
 import oauth.signpost.http.HttpRequest;
 
 import org.apache.http.HttpEntity;
@@ -23,6 +21,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 /*import org.json.JSONObject;*/
 
 import api.Request;
+import api.helpers.GsonHelper;
 
 import play.Play;
 import play.mvc.*;

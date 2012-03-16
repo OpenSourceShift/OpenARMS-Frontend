@@ -17,13 +17,19 @@ public class Poll extends Controller {
 		/*String res = RestClient.getInstance().getResults(id, adminkey);*/
 		/*JSONObject resJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getResults(id, adminkey)));
 		String res = resJSON.getString("res");*/
-		
-		GetResultsResponse response = (GetResultsResponse) APIClient.getInstance().send(new GetResultsRequest(id, adminkey));
-		String res = "wtf is res";
-		
-		System.out.println(res);
-		if (res != null && !res.isEmpty())
-			renderJSON(res);
-		renderJSON(false);
+		try {
+			
+			GetResultsResponse response = (GetResultsResponse) APIClient.send(new GetResultsRequest(id, adminkey));
+			String res = "wtf is res";
+			
+			System.out.println(res);
+			if (res != null && !res.isEmpty())
+				renderJSON(res);
+			renderJSON(false);
+		} catch(Exception e) {
+			// It failed
+			// TODO: Tell the user!
+			e.printStackTrace();
+		}
 	}
 }
