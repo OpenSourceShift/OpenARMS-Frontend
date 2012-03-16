@@ -1,20 +1,10 @@
 package controllers;
-
 import java.util.ArrayList;
-
-/*import org.json.JSONException;
-import org.json.JSONObject;*/
-
 import models.Poll;
 import play.mvc.Controller;
-
-/*import Utility.RestClient;*/
-
 import api.Response.CreatePollResponse;
 import api.Request.CreatePollRequest;
 import api.entities.PollJSON;
-
-
 import com.google.gson.Gson;
 
 public class CreatePoll extends Controller {
