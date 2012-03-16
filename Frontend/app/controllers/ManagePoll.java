@@ -9,6 +9,7 @@ import api.Request.CheckAdminkeyRequest;
 import api.Response.CheckAdminkeyResponse;
 import api.Response.GetPollResponse;
 import api.Request.GetPollRequest;
+import api.Request.ActivatePollRequest;
 
 
 /*import Utility.RestClient;*/
@@ -109,7 +110,7 @@ public class ManagePoll extends Controller {
 				int duration = s + m * 60;
 
 				/*RestClient.getInstance().activate(token, adminkey, duration);*/
-				APIClient.getInstance().send(new api.Request.activatePoll(token, adminkey, duration));
+				APIClient.getInstance().send(new ActivatePollRequest(token, adminkey, duration));
 			} catch (Exception e) {
 			}
 		}

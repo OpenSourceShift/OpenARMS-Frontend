@@ -11,7 +11,7 @@ import org.json.JSONObject;*/
 import api.Request.GetPollRequest;
 import api.Response.GetPollResponse;
 import api.Request.GetResultsRequest;
-import api.Request.GetResultsResponse;
+import api.Response.GetResultsResponse;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
