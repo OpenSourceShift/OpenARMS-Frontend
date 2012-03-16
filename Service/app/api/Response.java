@@ -46,19 +46,6 @@ public class Response {
 		}
 	}
 	
-	public static class GetQuestionResponse extends Response {
-		public String question;
-		public JsonArray answersArray;
-		public String duration;
-		
-		public GetQuestionResponse(String q, JsonArray a, String d)
-		{
-			this.question = q;
-			this.answersArray = a;
-			this.duration = d;
-		}
-	}
-	
 	public static class GetResultsResponse extends Response {
 		public String question;
 		public JsonArray answersArray;
