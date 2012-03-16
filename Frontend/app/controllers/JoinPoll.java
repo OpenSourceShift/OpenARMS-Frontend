@@ -1,23 +1,14 @@
 package controllers;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
-
-
-/*import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;*/
 import api.Request.GetPollRequest;
 import api.Response.GetPollResponse;
 import api.Request.GetResultsRequest;
 import api.Response.GetResultsResponse;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonObject;
-
 import play.mvc.Controller;
-/*import Utility.RestClient;*/
 
 public class JoinPoll extends Controller {
 	public static void index(String id) throws JsonParseException {
@@ -25,28 +16,12 @@ public class JoinPoll extends Controller {
 			redirect("/" + id);
 		}
 		try {
-			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(id));*/
-			/* ?? RestClient.getInstance().getQuestion here with 'id', in ManagePoll with 'token' ?? */
-			/*JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(id)));
-
-			String token = questionJSON.getString("token");
-
-			String questionID = questionJSON.getString("questionID");
-			String question = questionJSON.getString("question");
-			JSONArray answersArray = questionJSON.getJSONArray("answers");
-			// String multipleAllowed =
-			// questionJSON.getString("multipleAllowed");
-			String duration = questionJSON.getString("duration");*/
-			
 			GetPollResponse response = (GetPollResponse) APIClient.send(new GetPollRequest(id));
-
 			String token = response.token;
 			long pollid = response.id;
 			String question = response.question;
 			JsonArray answersArray = response.answersArray;
 			String duration = response.duration;
-			
-
 			render(id, token, pollid, question, answersArray, duration);
 		} catch (Exception e) {
 			// It failed
@@ -89,34 +64,17 @@ public class JoinPoll extends Controller {
 		String duration = null;
 
 		try {
-			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));*/
-			/*JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));
-			
-			question = questionJSON.getString("question");
-			answersArray = questionJSON.getJSONArray("answers");
-			duration = questionJSON.getString("duration");*/
-			
 			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
-			
 			question = response.question;
 			answersArray = response.answersArray;
 			duration = response.duration;
 			
 		} catch (Exception e) {
 			try {
-				// Most like the poll has been inactivated, so we need the
-				// results instead
-				/* JSONObject resultJSON = new JSONObject(RestClient.getInstance().getResults(token, null)); */
-				/*JSONObject resultJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getResults(token, null)));
-
-				question = resultJSON.getString("question");
-				answersArray = resultJSON.getJSONArray("answers");*/
+				// Most like the poll has been inactivated, so we need the results instead
 				GetResultsResponse response = (GetResultsResponse) APIClient.getInstance().send(new GetResultsRequest(token, null));
-
 				question = response.question;
 				answersArray = response.answersArray;
-				
-				
 				duration = "0";
 			} catch (Exception e2) {
 			}

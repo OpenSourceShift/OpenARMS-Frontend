@@ -1,19 +1,11 @@
 package controllers;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
-
-/*import org.json.JSONObject;*/
-
 import api.Request.CheckAdminkeyRequest;
 import api.Response.CheckAdminkeyResponse;
 import api.Response.GetPollResponse;
 import api.Request.GetPollRequest;
 import api.Request.ActivatePollRequest;
-
-
-/*import Utility.RestClient;*/
-
 import play.mvc.Controller;
 
 public class ManagePoll extends Controller {
@@ -28,12 +20,7 @@ public class ManagePoll extends Controller {
 		}
 		
 		try {
-			/*boolean correct = RestClient.getInstance().checkAdminkey(token, adminkey);*/
-			/*JSONObject correctJSON = new JSONObject(APIClient.getInstance().send(new api.Request.CheckAdminkey(token, adminkey)));*/
-			
 			CheckAdminkeyResponse response = (CheckAdminkeyResponse) APIClient.getInstance().send(new CheckAdminkeyRequest(token, adminkey));
-			
-			/*boolean correct = correctJSON.getBoolean("correct");*/
 			boolean correct = response.bool;
 			if (correct) {
 				if (redirect) {
@@ -58,20 +45,12 @@ public class ManagePoll extends Controller {
 		// Get the duration from the server
 		String res = null;
 		try {
-			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));*/
-			
-			/* ?? RestClient.getInstance().getQuestion here with 'token', in JoinPoll with 'id ?? */
-			/*JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));
-
-			duration = questionJSON.getString("duration");*/
-			
 			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
 			duration = response.duration;
 			// Parse the duration and turn it into minutes and seconds
 			int dur = Integer.parseInt(duration);
 			int m = (int) Math.floor(dur / 60);
 			int s = dur - m * 60;
-
 			// Add leading zeros and make the string.
 			char[] zeros = new char[2];
 			Arrays.fill(zeros, '0');
@@ -108,8 +87,6 @@ public class ManagePoll extends Controller {
 				}
 
 				int duration = s + m * 60;
-
-				/*RestClient.getInstance().activate(token, adminkey, duration);*/
 				APIClient.getInstance().send(new ActivatePollRequest(token, adminkey, duration));
 			} catch (Exception e) {
 			}
