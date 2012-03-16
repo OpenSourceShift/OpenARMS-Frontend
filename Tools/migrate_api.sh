@@ -8,7 +8,7 @@ echo "Class dir is at $CLASSDIR"
 echo "Target .jar file at $JARTARGET"
 
 cd $CLASSDIR
-echo $JARTARGET
-zip -r $JARTARGET api/
-
-
+#echo $JARTARGET
+jar cf $JARTARGET api/
+#zip -r $JARTARGET api/
+echo "Done."
