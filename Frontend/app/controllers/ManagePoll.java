@@ -5,6 +5,10 @@ import java.util.Arrays;
 
 import org.json.JSONObject;
 
+import api.Request.CheckAdminkeyRequest;
+import api.Response.CheckAdminkeyResponse;
+import api.Response.GetPollResponse;
+
 /*import Utility.RestClient;*/
 
 import play.mvc.Controller;
@@ -22,8 +26,12 @@ public class ManagePoll extends Controller {
 		
 		try {
 			/*boolean correct = RestClient.getInstance().checkAdminkey(token, adminkey);*/
-			JSONObject correctJSON = new JSONObject(APIClient.getInstance().send(new api.Request.CheckAdminkey(token, adminkey)));
-			boolean correct = correctJSON.getBoolean("correct");
+			/*JSONObject correctJSON = new JSONObject(APIClient.getInstance().send(new api.Request.CheckAdminkey(token, adminkey)));*/
+			
+			CheckAdminkeyResponse response = (CheckAdminkeyResponse) APIClient.getInstance().send(new CheckAdminkeyRequest(token, adminkey));
+			
+			/*boolean correct = correctJSON.getBoolean("correct");*/
+			boolean correct = response.bool;
 			if (correct) {
 				if (redirect) {
 					session.put("token", token);
@@ -50,10 +58,12 @@ public class ManagePoll extends Controller {
 			/*JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(token));*/
 			
 			/* ?? RestClient.getInstance().getQuestion here with 'token', in JoinPoll with 'id ?? */
-			JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));
+			/*JSONObject questionJSON = new JSONObject(APIClient.getInstance().send(new api.Request.getQuestion(token)));
 
-			duration = questionJSON.getString("duration");
-
+			duration = questionJSON.getString("duration");*/
+			
+			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new api.Request.GetPollRequest(token));
+			duration = response.duration;
 			// Parse the duration and turn it into minutes and seconds
 			int dur = Integer.parseInt(duration);
 			int m = (int) Math.floor(dur / 60);

@@ -10,6 +10,8 @@ import play.mvc.Controller;
 
 /*import Utility.RestClient;*/
 
+import api.Response.CreatePollResponse;
+
 import com.google.gson.Gson;
 
 public class CreatePoll extends Controller {
@@ -20,7 +22,7 @@ public class CreatePoll extends Controller {
 		render(email, question, answer);
 	}
 
-	public static void success(String token, String adminkey) {
+	public static void success(int token, String adminkey) {
 		render(token, adminkey);
 	}
 
@@ -69,17 +71,15 @@ public class CreatePoll extends Controller {
 			p.multipleAllowed = true;
 		}
 
-		// Send it
-		try {
-			/*JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));*/
-			JSONObject result = new JSONObject(APIClient.getInstance().send(new api.Request.CreatePollRequest(p)));
-			String token = result.getString("token");
-			String adminkey = result.getString("adminKey");
+		CreatePollResponse response = (CreatePollResponse) APIClient.getInstance().send(new api.Request.CreatePollRequest(p));
+		Poll poll = response.poll;
+		
+		/* ToDo: Authentication */
+		
+		int token = poll.token;
+		String adminkey = null;
 
-			// Redirect to success
-			success(token, adminkey);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		// Redirect to success
+		success(token, adminkey);
 	}
 }
