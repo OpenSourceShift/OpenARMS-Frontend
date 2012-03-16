@@ -5,7 +5,7 @@ import javax.naming.OperationNotSupportedException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
+/*import org.json.JSONObject;*/
 
 /*
 import api.requests.VoteRequest;

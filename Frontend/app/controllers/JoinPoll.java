@@ -5,12 +5,13 @@ import java.util.Arrays;
 
 import models.Vote;
 
-import org.json.JSONArray;
+/*import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONObject;*/
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonObject;
 
 import api.Request.GetPollRequest;
 import api.Response.GetPollResponse;
@@ -21,7 +22,7 @@ import play.mvc.Controller;
 /*import Utility.RestClient;*/
 
 public class JoinPoll extends Controller {
-	public static void index(String id) throws JSONException {
+	public static void index(String id) throws JsonParseException {
 		if (request.url.contains("joinpoll")) {
 			redirect("/" + id);
 		}
@@ -55,7 +56,7 @@ public class JoinPoll extends Controller {
 	}
 
 	public static void submit(String token, String questionID, String answer)
-			throws JSONException {
+			throws JsonParseException {
 
 		validation.required(token);
 		validation.match(token, "^\\d+$");
