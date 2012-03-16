@@ -22,7 +22,7 @@ public class CreatePoll extends Controller {
 		render(email, question, answer);
 	}
 
-	public static void success(int token, String adminkey) {
+	public static void success(String token, String adminkey) {
 		render(token, adminkey);
 	}
 
@@ -76,7 +76,7 @@ public class CreatePoll extends Controller {
 		
 		/* ToDo: Authentication */
 		
-		int token = poll.token;
+		String token = poll.token;
 		String adminkey = null;
 
 		// Redirect to success
