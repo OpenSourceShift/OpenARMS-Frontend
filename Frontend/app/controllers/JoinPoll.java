@@ -3,7 +3,6 @@ package controllers;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 
-import models.Vote;
 
 /*import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,14 +69,14 @@ public class JoinPoll extends Controller {
 			return;
 		}
 
-		Vote v = new Vote();
+		/*Vote v = new Vote();
 		v.token = Integer.parseInt(token);
 		v.questionID = Integer.parseInt(questionID);
 		v.answers = new String[] { answer };
 		v.rensponderID = request.remoteAddress + session.getId();
-
-		/*RestClient.getInstance().vote(v);*/
-		APIClient.getInstance().send(new api.Request.vote(v));
+		
+		*//*RestClient.getInstance().vote(v);*/
+		//APIClient.getInstance().send(new api.Request.vote(v));
 
 		success(token);
 	}
