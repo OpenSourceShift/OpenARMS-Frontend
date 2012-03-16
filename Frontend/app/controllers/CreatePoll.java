@@ -75,12 +75,14 @@ public class CreatePoll extends Controller {
 		}
 
 		try {
-			CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
-			PollJSON poll = response.poll;
+			//CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
+			//PollJSON poll = response.poll;
 			
 			/* ToDo: Authentication */
 			
-			String token = poll.token;
+			//String token = poll.token;
+			// TODO: Fix this..
+			String token = null;
 			String adminkey = null;
 	
 			// Redirect to success
