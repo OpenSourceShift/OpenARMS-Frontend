@@ -8,6 +8,8 @@ import java.util.Arrays;
 import api.Request.CheckAdminkeyRequest;
 import api.Response.CheckAdminkeyResponse;
 import api.Response.GetPollResponse;
+import api.Request.GetPollRequest;
+
 
 /*import Utility.RestClient;*/
 
@@ -62,7 +64,7 @@ public class ManagePoll extends Controller {
 
 			duration = questionJSON.getString("duration");*/
 			
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new api.Request.GetPollRequest(token));
+			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
 			duration = response.duration;
 			// Parse the duration and turn it into minutes and seconds
 			int dur = Integer.parseInt(duration);

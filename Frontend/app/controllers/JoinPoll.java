@@ -8,16 +8,15 @@ import models.Vote;
 /*import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;*/
+import api.Request.GetPollRequest;
+import api.Response.GetPollResponse;
+import api.Request.GetResultsRequest;
+import api.Request.GetResultsResponse;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonObject;
 
-import api.Request.GetPollRequest;
-import api.Response.GetPollResponse;
-import api.Response.GetQuestionResponse;
-import api.Response.GetResultsResponse;
-import api.Response.JoinPollResponse;
 import play.mvc.Controller;
 /*import Utility.RestClient;*/
 
@@ -40,7 +39,7 @@ public class JoinPoll extends Controller {
 			// questionJSON.getString("multipleAllowed");
 			String duration = questionJSON.getString("duration");*/
 			
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new api.Request.GetPollRequest(id));
+			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(id));
 
 			String token = response.token;
 			long pollid = response.id;
@@ -96,7 +95,7 @@ public class JoinPoll extends Controller {
 			answersArray = questionJSON.getJSONArray("answers");
 			duration = questionJSON.getString("duration");*/
 			
-			GetQuestionResponse response = (GetQuestionResponse) APIClient.getInstance().send(new api.Request.GetPollRequest(token));
+			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
 			
 			question = response.question;
 			answersArray = response.answersArray;
@@ -111,7 +110,7 @@ public class JoinPoll extends Controller {
 
 				question = resultJSON.getString("question");
 				answersArray = resultJSON.getJSONArray("answers");*/
-				GetResultsResponse response = (GetResultsResponse) APIClient.getInstance().send(new api.Request.getResults(token, null));
+				GetResultsResponse response = (GetResultsResponse) APIClient.getInstance().send(new GetResultsRequest(token, null));
 
 				question = response.question;
 				answersArray = response.answersArray;

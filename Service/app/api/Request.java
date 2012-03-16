@@ -54,11 +54,11 @@ public class Request {
 		}
 	}
 	
-	public static class activatePoll extends Request {
+	public static class ActivatePollRequest extends Request {
 		public String token;
 		public String adminkey;
 		public int duration;
-		public activatePoll(String t, String ak, int d)	{
+		public ActivatePollRequest(String t, String ak, int d)	{
 			this.token = t;
 			this.adminkey = ak;
 			this.duration = d;
@@ -72,10 +72,10 @@ public class Request {
 		}
 	}
 	
-	public static class getResults extends Request {
+	public static class GetResultsRequest extends Request {
 		public String token;
 		public String adminkey;
-		public getResults (String t, String ak) {
+		public GetResultsRequest (String t, String ak) {
 			this.token = t;
 			this.adminkey = ak;
 		}
