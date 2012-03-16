@@ -1,7 +1,10 @@
 /.settings
 .project
 .classpath
-/crud
 /eclipse
 /modules
 /tmp
+/test-result
+/crud
+/secure
+/bin
