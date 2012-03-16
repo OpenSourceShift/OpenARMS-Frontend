@@ -10,8 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import api.Response.CreatePollResponse;
+import api.helpers.GsonSkip;
 
-import models.helpers.GsonSkip;
 
 import play.db.jpa.Model;
 

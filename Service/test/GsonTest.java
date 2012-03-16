@@ -3,7 +3,6 @@ import java.util.List;
 
 import models.Choice;
 import models.Poll;
-import models.helpers.GsonHelper;
 
 import org.junit.Test;
 
@@ -11,6 +10,7 @@ import api.Request;
 import api.Request.CreateChoiceRequest;
 import api.Request.CreatePollRequest;
 import api.Response.CreatePollResponse;
+import api.helpers.GsonHelper;
 
 import play.test.Fixtures;
 import play.test.UnitTest;

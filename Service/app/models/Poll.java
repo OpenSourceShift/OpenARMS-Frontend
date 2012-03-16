@@ -8,10 +8,10 @@ import javax.persistence.*;
 
 import org.hibernate.cfg.AnnotatedClassType;
 
-import models.helpers.GsonSkip;
 
 import api.Response;
 import api.Response.CreatePollResponse;
+import api.helpers.GsonSkip;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;

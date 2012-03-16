@@ -1,4 +1,4 @@
-package models.helpers;
+package api.helpers;
 
 import java.lang.annotation.*;
 

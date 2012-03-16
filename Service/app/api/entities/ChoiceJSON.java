@@ -2,10 +2,11 @@ package api.entities;
 
 import java.util.List;
 
+import api.helpers.GsonSkip;
+
 import models.Choice;
 import models.Poll;
 import models.Vote;
-import models.helpers.GsonSkip;
 
 public class ChoiceJSON {
 	public Long poll_id;

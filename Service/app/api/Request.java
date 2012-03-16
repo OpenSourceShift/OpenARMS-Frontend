@@ -5,11 +5,11 @@ import java.util.List;
 import api.Response.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.PollJSON;
+import api.helpers.GsonSkip;
 
 import models.Choice;
 import models.Poll;
 import models.Vote;
-import models.helpers.GsonSkip;
 
 public abstract class Request {
 	public static enum Method {
