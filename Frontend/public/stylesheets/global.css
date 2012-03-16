@@ -1,5 +1,5 @@
 body{
-	background-color: #000;
+	background-color: #06799f; /*#000*/
 	color: #fff;
 	font-family: Verdana;
 	font-size: 12px;
@@ -50,13 +50,12 @@ input[type=password] {
 }
 
 .button:hover {
-	background-color: #AAF53D;	
+	background-color: #AAF53D;
 }
 
 .labeledinput {
 	margin-bottom: 5px;
 }
-	
 .labeledinput label {
 	display: block;
 }
@@ -79,14 +78,15 @@ input[type=password] {
 
 #content {
 	margin: 0 auto;
-    max-width: 600px;
+  max-width: 600px;
+  background-color: #ffd100; /**/
+  border-radius: 5px;
 }
 
 #header {
 	margin: 5% 0;
     overflow: hidden;
     text-align: center;
-    
 }
 
 #header img {

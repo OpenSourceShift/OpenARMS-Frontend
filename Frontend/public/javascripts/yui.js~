@@ -1,0 +1,12 @@
+jQuery(function($){
+
+});
+var myConfig = {
+  height: '300px',
+  width: '600px',
+  animate: 'true',
+  dompath: 'true',
+  focusAtStart: true
+};
+
+var myEditor = new YAHOO.widget.Editor('editor', myConfig);

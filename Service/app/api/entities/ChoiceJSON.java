@@ -22,4 +22,8 @@ public class ChoiceJSON {
 			votes.add(new VoteJSON(v));
 		}
 	}
+
+	public Choice toChoice() {
+		return new Choice(null, this.text);
+	}
 }

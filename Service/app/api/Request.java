@@ -39,6 +39,18 @@ public abstract class Request {
 		}
 	}
 	
+	public static class GetPollRequest extends Request {
+		public Long id;
+		public String token;
+		public GetPollRequest(Long i) {
+			this.id = i;
+		}
+		
+		public GetPollRequest(String t) {
+			this.token = t;
+		}
+	}
+	
 	/* Choice specific communication */
 	public static class CreateChoiceRequest extends Request {
 		public ChoiceJSON choice;
@@ -48,28 +60,20 @@ public abstract class Request {
 	}
 	
 	/* Requests that are deprecated in the API */
-	public static class CheckAdminkey extends Request {
+	public static class CheckAdminkeyRequest extends Request {
 		public String token;
 		public String adminkey;
-		public CheckAdminkey(String t, String ak) {
+		public CheckAdminkeyRequest(String t, String ak) {
 			this.token = t;
 			this.adminkey = ak;
 		}
 	}
 	
-	public static class getQuestion extends Request {
-		public String token;
-		public getQuestion(String t) {
-			this.token = t;
-		}
-	}
-	
-	public static class activatePoll extends Request {
+	public static class ActivatePollRequest extends Request {
 		public String token;
 		public String adminkey;
 		public int duration;
-		public activatePoll(String t, String ak, int d)
-		{
+		public ActivatePollRequest(String t, String ak, int d)	{
 			this.token = t;
 			this.adminkey = ak;
 			this.duration = d;
@@ -83,16 +87,15 @@ public abstract class Request {
 		}
 	}
 	
-	public static class getResults extends Request {
+	public static class GetResultsRequest extends Request {
 		public String token;
 		public String adminkey;
-		public getResults (String t, String ak) {
+		public GetResultsRequest (String t, String ak) {
 			this.token = t;
 			this.adminkey = ak;
 		}
 	}
 	
 	public void render() {
-		
 	}
 }
