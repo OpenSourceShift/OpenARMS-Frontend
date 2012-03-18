@@ -23,6 +23,7 @@ public abstract class Request {
 	public static final Class EXPECTED_RESPONSE = null;
 	@GsonSkip(classes={Request.class})
 	public Method method;
+	public abstract String getURL();
 	
 	/* Poll specific communication */
 	public static class CreatePollRequest extends Request {
@@ -36,6 +37,11 @@ public abstract class Request {
 				choice.id = null;
 			}
 		}
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	public static class GetPollRequest extends Request {
@@ -48,6 +54,12 @@ public abstract class Request {
 		public GetPollRequest(String t) {
 			this.token = t;
 		}
+
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	/* Choice specific communication */
@@ -55,6 +67,11 @@ public abstract class Request {
 		public ChoiceJSON choice;
 		public CreateChoiceRequest(Choice c) {
 			this.choice = c.toJson();
+		}
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	
@@ -65,6 +82,11 @@ public abstract class Request {
 		public CheckAdminkeyRequest(String t, String ak) {
 			this.token = t;
 			this.adminkey = ak;
+		}
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	
@@ -77,12 +99,22 @@ public abstract class Request {
 			this.adminkey = ak;
 			this.duration = d;
 		}
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 	
 	public static class vote extends Request {
 		public Vote vote;
 		public vote(Vote v) {
 			this.vote = v;
+		}
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	}
 	
@@ -93,8 +125,10 @@ public abstract class Request {
 			this.token = t;
 			this.adminkey = ak;
 		}
-	}
-	
-	public void render() {
+		@Override
+		public String getURL() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 }
