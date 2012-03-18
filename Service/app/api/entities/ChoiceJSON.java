@@ -25,8 +25,10 @@ public class ChoiceJSON extends BaseJSON {
 		}
 	}
 
+	
 	public Choice toChoice() {
-		return new Choice(null, this.text);
+		Poll poll = Poll.find("byPollID", this.poll_id).first();
+		return new Choice(poll, this.text);
 	}
 	*/
 }

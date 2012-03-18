@@ -54,6 +54,12 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
         PollInstance vr = (PollInstance) other;
         return this.endDateTime.equals(vr.endDateTime);
     }
+    /**
+     * This method closes a Poll Instance and change the end time to the time this function is invoked.
+     */
+    public void closePollInstance () {
+    	this.endDateTime = new Date(System.currentTimeMillis());
+    }
 
     /*
      * TODO: Consider if this is needed.
