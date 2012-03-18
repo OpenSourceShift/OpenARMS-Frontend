@@ -8,7 +8,7 @@ import models.Choice;
 import models.Poll;
 import models.Vote;
 
-public class ChoiceJSON extends BaseJSON {
+public class ChoiceJSON extends BaseModelJSON {
 	public Long poll_id;
 	public Long id;
 	public String text;

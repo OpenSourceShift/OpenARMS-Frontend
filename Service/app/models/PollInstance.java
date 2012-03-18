@@ -4,8 +4,9 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
 
-import api.entities.BaseJSON;
+import api.entities.BaseModelJSON;
 import api.entities.Jsonable;
+import api.entities.PollInstanceJSON;
 import play.db.jpa.*;
 
 /**
@@ -67,7 +68,7 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
         return hash;
     }
 
-	public BaseJSON toJson() {
+	public PollInstanceJSON toJson() {
 		// TODO Auto-generated method stub
 		return null;
 	}

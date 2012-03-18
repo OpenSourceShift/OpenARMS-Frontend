@@ -32,7 +32,7 @@ public class PollController extends Controller{
         	
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll poll = polljson.toPoll();
+            Poll poll = Poll.fromJson(polljson);
             
          // generate data and save question, try until we have unique poll ID
             do {
@@ -41,7 +41,7 @@ public class PollController extends Controller{
                         
             poll.save();
             
-            CreatePollResponse r = new CreatePollResponse(poll);
+            CreatePollResponse r = new CreatePollResponse(poll.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	//renderJSON(jsonresponse);
         	
@@ -65,7 +65,7 @@ public class PollController extends Controller{
 		    renderJSON("The question does not exist!");
 		}
 		
-		CreatePollResponse r = new CreatePollResponse(poll);
+		CreatePollResponse r = new CreatePollResponse(poll.toJson());
 		String jsonresponse = GsonHelper.toJson(r);
 		
 		renderJSON(jsonresponse);
@@ -81,7 +81,7 @@ public class PollController extends Controller{
         	
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll editedpoll = polljson.toPoll();
+            Poll editedpoll = Poll.fromJson(polljson);
             
             if (editedpoll.question != null) {
             	originalpoll.question = editedpoll.question;
@@ -95,7 +95,7 @@ public class PollController extends Controller{
             
             originalpoll.save();
             
-            CreatePollResponse r = new CreatePollResponse(originalpoll);
+            CreatePollResponse r = new CreatePollResponse(originalpoll.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -114,7 +114,7 @@ public class PollController extends Controller{
 		poll.reference = null;
 		poll.choices = null;
 		
-		CreatePollResponse r = new CreatePollResponse(poll);
+		CreatePollResponse r = new CreatePollResponse(poll.toJson());
     	String jsonresponse = GsonHelper.toJson(r);
     	renderJSON(jsonresponse);
 	}

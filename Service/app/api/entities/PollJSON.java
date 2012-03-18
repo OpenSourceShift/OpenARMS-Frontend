@@ -6,7 +6,7 @@ import java.util.List;
 import models.Choice;
 import models.Poll;
 
-public class PollJSON extends BaseJSON {
+public class PollJSON extends BaseModelJSON {
 	public Long id;
 	public String token;
 	public String reference;
