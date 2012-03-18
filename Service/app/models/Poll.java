@@ -90,6 +90,29 @@ public class Poll extends Model implements Jsonable {
         this.question = question;
         this.multipleAllowed = multipleAllowed;
     }
+    
+    /**
+     * Constructor Copy for Polls, this method creates a Poll object 
+     * with a new token and the same fields as the toCopy object.
+     * @param token  -- New token for the new Poll
+     * @param toCopy -- Poll object to be copied.
+     */
+    public Poll (String token, Poll toCopy) {
+    	this.token = token;
+    	this.multipleAllowed = toCopy.multipleAllowed;
+    	this.question = toCopy.question;
+    	this.reference = toCopy.reference;
+    	
+    	this.choices = new LinkedList<Choice>();
+		for(Choice c: toCopy.choices) {
+			this.choices.add(c);
+		} 
+		
+		// Update the references.
+		for (Choice c : this.choices) {
+					c.poll = this;
+		}
+    }
 
     /**
      * Activates the question for provided number of seconds.
