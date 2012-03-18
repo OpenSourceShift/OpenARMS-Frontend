@@ -41,13 +41,9 @@ public class PollController extends Controller{
                         
             poll.save();
             
-            CreatePollResponse r = new CreatePollResponse(poll.toJson());
+            CreatePollResponse r = new CreatePollResponse(poll);
         	String jsonresponse = GsonHelper.toJson(r);
-        	//renderJSON(jsonresponse);
-        	
-        	System.out.println();
-        	System.out.println(jsonresponse);
-        	System.out.println();
+        	renderJSON(jsonresponse);
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -64,7 +60,7 @@ public class PollController extends Controller{
 		    renderJSON("The question does not exist!");
 		}
 		
-		CreatePollResponse r = new CreatePollResponse(poll.toJson());
+		CreatePollResponse r = new CreatePollResponse(poll);
 		String jsonresponse = GsonHelper.toJson(r);
 		
 		renderJSON(jsonresponse);
@@ -93,7 +89,7 @@ public class PollController extends Controller{
             
             originalpoll.save();
             
-            CreatePollResponse r = new CreatePollResponse(originalpoll.toJson());
+            CreatePollResponse r = new CreatePollResponse(originalpoll);
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -112,7 +108,7 @@ public class PollController extends Controller{
 		poll.reference = null;
 		poll.choices = null;
 		
-		CreatePollResponse r = new CreatePollResponse(poll.toJson());
+		CreatePollResponse r = new CreatePollResponse(poll);
     	String jsonresponse = GsonHelper.toJson(r);
     	renderJSON(jsonresponse);
 	}

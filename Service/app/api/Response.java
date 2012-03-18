@@ -10,8 +10,8 @@ import models.Poll;
 public class Response {
 	public static class CreatePollResponse extends Response {
 		public PollJSON poll;
-		public CreatePollResponse(PollJSON p) {
-			this.poll = p;
+		public CreatePollResponse(Poll p) {
+			this.poll = p.toJson();
 		}
 	}
 

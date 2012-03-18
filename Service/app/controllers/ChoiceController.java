@@ -22,7 +22,7 @@ public class ChoiceController extends Controller{
         	
             String json = reader.readLine();
             ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice choice = choicejson.toChoice();
+            Choice choice = Choice.fromJson(choicejson);
             choice.save();
             CreateChoiceResponse r = new CreateChoiceResponse(choice);
         	String jsonresponse = GsonHelper.toJson(r);
@@ -59,7 +59,7 @@ public class ChoiceController extends Controller{
         	
             String json = reader.readLine();
             ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice editedchoice = choicejson.toChoice();
+            Choice editedchoice = Choice.fromJson(choicejson);
 
             originalchoice.text = editedchoice.text;
             
