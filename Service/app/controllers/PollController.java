@@ -53,7 +53,6 @@ public class PollController extends Controller{
             ex.printStackTrace();
             renderJSON(new String());
         }
-
     }
 	
 	public static void retrieve () {
@@ -69,7 +68,6 @@ public class PollController extends Controller{
 		String jsonresponse = GsonHelper.toJson(r);
 		
 		renderJSON(jsonresponse);
-		
 	}
 	
 	public static void edit () {
