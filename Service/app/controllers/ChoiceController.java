@@ -19,7 +19,7 @@ import play.mvc.Controller;
  *
  */
 
-public class ChoiceController extends Controller{
+public class ChoiceController extends APIController {
 
 	/**
 	 * Method that saves a new Choice in the DataBase.

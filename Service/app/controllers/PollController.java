@@ -29,7 +29,7 @@ import api.entities.PollJSON;
  *
  */
 
-public class PollController extends Controller{
+public class PollController extends APIController {
 
 	/**
 	 * Method that saves a new Poll in the DataBase.
@@ -41,7 +41,7 @@ public class PollController extends Controller{
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
             Poll poll = Poll.fromJson(polljson);
-            
+
          // Generates a Unique ID and saves the Poll.
             do {
                 poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
