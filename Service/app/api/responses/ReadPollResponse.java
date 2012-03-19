@@ -9,9 +9,7 @@ public class ReadPollResponse extends Response {
 	public PollJSON poll;
 	public ReadPollResponse() {
 	}
-	public ReadPollResponse(Poll p) {
-		this(p.toJson());
-	}
+
 	public ReadPollResponse(PollJSON json) {
 		this.poll = json;
 	}

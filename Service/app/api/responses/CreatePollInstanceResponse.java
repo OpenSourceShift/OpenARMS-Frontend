@@ -9,9 +9,7 @@ public class CreatePollInstanceResponse extends Response {
 	public PollInstanceJSON pollinstance;
 	public CreatePollInstanceResponse() {
 	}
-	public CreatePollInstanceResponse(PollInstance pi) {
-		this(pi.toJson());
-	}
+
 	public CreatePollInstanceResponse(PollInstanceJSON json) {
 		this.pollinstance = json;
 	}

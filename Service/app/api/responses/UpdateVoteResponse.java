@@ -12,9 +12,7 @@ public class UpdateVoteResponse extends Response {
 	public VoteJSON vote;
 	public UpdateVoteResponse() {
 	}
-	public UpdateVoteResponse(Vote v) {
-		this(v.toJson());
-	}
+
 	public UpdateVoteResponse(VoteJSON json) {
 		this.vote = json;
 	}

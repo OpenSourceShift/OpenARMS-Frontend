@@ -7,9 +7,7 @@ public class ReadChoiceResponse extends Response {
 	public ChoiceJSON choice;
 	public ReadChoiceResponse() {
 	}
-	public ReadChoiceResponse(Choice c) {
-		this(c.toJson());
-	}
+
 	public ReadChoiceResponse(ChoiceJSON json) {
 		this.choice = json;
 	}
