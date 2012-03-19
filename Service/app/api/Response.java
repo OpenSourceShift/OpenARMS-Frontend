@@ -5,9 +5,11 @@ import com.google.gson.JsonArray;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
+import api.entities.VoteJSON;
 import models.Choice;
 import models.Poll;
 import models.PollInstance;
+import models.Vote;
 
 public class Response {
 	public static class CreatePollResponse extends Response {
@@ -36,6 +38,13 @@ public class Response {
 		public PollInstanceJSON pollinstance;
 		public CreatePollInstanceResponse (PollInstance p) {
 			this.pollinstance = p.toJson();
+		}
+	}
+	
+	public static class CreateVoteResponse extends Response {
+		public VoteJSON vote;
+		public CreateVoteResponse (Vote v) {
+			this.vote = v.toJson();
 		}
 	}
 	
