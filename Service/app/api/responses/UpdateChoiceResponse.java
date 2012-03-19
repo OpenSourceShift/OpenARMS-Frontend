@@ -3,12 +3,12 @@ package api.responses;
 import models.Choice;
 import api.entities.ChoiceJSON;
 
-public class CreateChoiceResponse extends Response {
+public class UpdateChoiceResponse extends Response {
 	public ChoiceJSON choice;
-	public CreateChoiceResponse() {
+	public UpdateChoiceResponse() {
 	}
 
-	public CreateChoiceResponse(ChoiceJSON json) {
+	public UpdateChoiceResponse(ChoiceJSON json) {
 		this.choice = json;
 	}
 }

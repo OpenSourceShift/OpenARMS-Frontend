@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.UserJSON;
+import api.responses.CreateUserResponse;
 
 public class CreateUserRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreateUserResponse.class;

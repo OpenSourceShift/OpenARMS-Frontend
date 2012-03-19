@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.PollJSON;
+import api.responses.DeletePollResponse;
 
 public class DeletePollRequest extends Request {
 
