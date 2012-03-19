@@ -1,12 +1,16 @@
 package models;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.*;
 
 import api.entities.BaseModelJSON;
+import api.entities.ChoiceJSON;
 import api.entities.Jsonable;
 import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
+import api.entities.VoteJSON;
 import play.db.jpa.*;
 
 /**
@@ -37,10 +41,10 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     @ManyToOne
     public Poll poll;
 
-    public PollInstance(int duration, Poll poll) {
+    public PollInstance(Date startDateTime, Date endDateTime, Poll poll) {
         this.poll = poll;
-        this.startDateTime = new Date(System.currentTimeMillis());
-        this.endDateTime = new Date(startDateTime.getTime() + duration * 1000);
+        this.startDateTime = startDateTime;
+        this.endDateTime = endDateTime;
     }
 
     public int compareTo(PollInstance other) {
@@ -78,4 +82,21 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public static PollInstance fromJson (PollInstanceJSON json) {
+		Poll poll = Poll.find("byID", json.poll_id).first();
+		PollInstance result = new PollInstance(json.startDateTime, json.endDateTime, poll);
+		
+		result.votes = new LinkedList<Vote>();
+
+		// Update the choices
+		for (VoteJSON c : json.votes) {
+			result.votes.add(Vote.fromJson(c));	
+		}
+		// Update the references.
+		for (Vote c : result.votes) {
+			c.pollInstance = result;
+		}
+		return result;
+    }
 }
