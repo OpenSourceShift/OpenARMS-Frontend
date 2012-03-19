@@ -1,9 +1,20 @@
 package api.requests;
 
-public class UpdateChoiceRequest {
-/*
- * PUT /choice/555
-{ "choice": [ "text": "I need to correct my choice" ]
-}
- */
+import api.entities.ChoiceJSON;
+
+public class UpdateChoiceRequest extends Request {
+	public static final Class EXPECTED_RESPONSE = UpdateChoiceResponse.class;
+
+	public ChoiceJSON choice;
+	public UpdateChoiceRequest (ChoiceJSON c) {
+		this.choice = c;
+	}
+	
+	@Override
+	public String getURL() {
+		return "/choice/" + choice.id;
+	}
+
+	
+	
 }

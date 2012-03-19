@@ -1,15 +1,16 @@
 package api.requests;
 
-public class UpdatePollRequest {
+import api.entities.PollJSON;
 
-	/*
-	 * PUT /poll/123
-		{ "poll": [
-		     "reference": "Some text 2",
-		     "question": "What is 2+2 ?!",
-		 ]
-		}
-	 * 
-	 */
+public class UpdatePollRequest extends Request {
+	public static final Class EXPECTED_RESPONSE = UpdatePollResponse.class;
+	public PollJSON poll;
+	public UpdatePollRequest (PollJSON p) {
+		this.poll = p;
+	}
+	@Override
+	public String getURL() {
+		return "/poll/" + poll.id;
+	}
 	
 }

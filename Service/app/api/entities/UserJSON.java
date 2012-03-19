@@ -5,4 +5,5 @@ public class UserJSON extends BaseModelJSON {
 	public String email;
 	public String secret;
     public String backend;
+    public Long id;
 }

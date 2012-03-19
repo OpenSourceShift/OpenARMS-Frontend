@@ -1,11 +1,17 @@
 package api.requests;
 
-public class VoteOnPollInstanceRequest extends Request {
+import api.entities.VoteJSON;
 
+public class VoteOnPollInstanceRequest extends Request {
+	public static final Class EXPECTED_RESPONSE = VoteOnPollInstanceResponse.class;
+	public VoteJSON vote;
+	public VoteOnPollInstanceRequest (VoteJSON v) {
+		this.vote = v;
+	}
+	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/pollinstance/" + vote.pollInstanceid + "/vote";
 	}
 
 }
