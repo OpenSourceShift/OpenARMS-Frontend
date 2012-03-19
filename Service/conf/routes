@@ -11,7 +11,6 @@ POST    /vote/{<[0-9]+>id}                      Voting.vote
 GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
-GET     /test/{<[0-9]+>id}    					Management.test
 *       /admin									module:crud
 *       /admin		                            module:secure
 GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}     QRController.returnImage
