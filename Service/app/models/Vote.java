@@ -57,9 +57,11 @@ public class Vote extends Model implements Jsonable {
 		return null;
 	}
 
-	public VoteJSON fromJson(Vote v) {
-		// TODO Auto-generated method stub
-		return null;
+	public static Vote fromJson(VoteJSON v) {
+		Choice choice = Choice.find("byID", v.choiceid).first();
+		PollInstance pollinstance = PollInstance.find("byID", v.pollInstanceid).first();
+		Vote result = new Vote (choice, v.count, pollinstance);
+		return result;
 	}
 
 }

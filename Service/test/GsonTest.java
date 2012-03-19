@@ -6,10 +6,8 @@ import models.Poll;
 
 import org.junit.Test;
 
-import api.Request;
-import api.Request.CreateChoiceRequest;
-import api.Request.CreatePollRequest;
-import api.Response.CreatePollResponse;
+import api.requests.*;
+import api.responses.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
@@ -54,6 +52,7 @@ public class GsonTest extends UnitTest {
 		c1.text = "... even worse";
 		p.choices.add(c2);
     	
+		
     	CreatePollRequest r = new CreatePollRequest(p);
     	String json = GsonHelper.toJson(r);
     	
@@ -89,7 +88,7 @@ public class GsonTest extends UnitTest {
     	assertEquals(choices.size(), 2);
     	
     	Choice c = choices.get(0);
-    	CreateChoiceRequest r = new CreateChoiceRequest(c);
+    	CreateChoiceRequest r = new CreateChoiceRequest(c.toJson());
     	String json = GsonHelper.toJson(r);
 
     	System.out.println();

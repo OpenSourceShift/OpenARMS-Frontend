@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 import org.hibernate.cfg.AnnotatedClassType;
 
-
-import api.Response;
-import api.Response.CreatePollResponse;
+import api.responses.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.Jsonable;
 import api.entities.PollJSON;
@@ -64,7 +62,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * Is it allowed to add multiple answers?
      */
-    public boolean multipleAllowed;
+    public Boolean multipleAllowed;
     /**
      * All the possible choices associated with the poll.
      */
@@ -85,7 +83,7 @@ public class Poll extends Model implements Jsonable {
      * @param multipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, boolean multipleAllowed) {
+    public Poll(String token, String question, Boolean multipleAllowed) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
@@ -121,14 +119,14 @@ public class Poll extends Model implements Jsonable {
      * @param duration number of seconds to activate the question for
      * @return activated Question object - does not have to be used
      */
-    public Poll activateFor(int duration) {
+    public Poll activateFor(Date startDateTime, Date endDateTime) {
         if (isActive()) {
             PollInstance latestInstance = getLatestInstance();
-            latestInstance.startDateTime = new Date(System.currentTimeMillis());
-            latestInstance.endDateTime = new Date(latestInstance.startDateTime.getTime() + duration * 1000);
+            latestInstance.startDateTime = startDateTime;
+            latestInstance.endDateTime = endDateTime;
             latestInstance.save();
         } else {
-            new PollInstance(duration, this).save();
+            new PollInstance(startDateTime, endDateTime, this).save();
         }
         return this;
     }
@@ -277,14 +275,15 @@ public class Poll extends Model implements Jsonable {
     	result.choices = new LinkedList<Choice>();
 
 		// Update the choices
-		for (ChoiceJSON c : json.choices) {
-			result.choices.add(Choice.fromJson(c));	
-		}
-		// Update the references.
-		for (Choice c : result.choices) {
-			c.poll = result;
-		}
-		
+    	if (json.choices != null) {
+    		for (ChoiceJSON c : json.choices) {
+    			result.choices.add(Choice.fromJson(c));	
+    		}
+    		// Update the references.
+    		for (Choice c : result.choices) {
+    			c.poll = result;
+    		}
+    	}
 		// TODO: Check if we need to do this with otner collections on the Poll as well.
 		
 		return result;
