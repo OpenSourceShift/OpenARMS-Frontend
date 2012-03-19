@@ -73,7 +73,7 @@ public class PollController extends APIController {
 	
 			//Creates the PollJSON Response.
 			if (poll == null) {
-				renderJSON("The question does not exist!");
+				renderJSON("The Poll does not exist!");
 			}
 			
 			CreatePollResponse r = new CreatePollResponse(poll);

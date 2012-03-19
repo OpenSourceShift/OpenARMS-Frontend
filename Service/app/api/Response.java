@@ -3,9 +3,11 @@ package api;
 import com.google.gson.JsonArray;
 
 import api.entities.ChoiceJSON;
+import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import models.Choice;
 import models.Poll;
+import models.PollInstance;
 
 public class Response {
 	public static class CreatePollResponse extends Response {
@@ -27,6 +29,13 @@ public class Response {
 		public CheckAdminkeyResponse(boolean b)
 		{
 			this.bool = b;
+		}
+	}
+	
+	public static class CreatePollInstanceResponse extends Response {
+		public PollInstanceJSON pollinstance;
+		public CreatePollInstanceResponse (PollInstance p) {
+			this.pollinstance = p.toJson();
 		}
 	}
 	
