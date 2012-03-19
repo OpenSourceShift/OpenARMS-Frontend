@@ -38,18 +38,19 @@ public class PollController extends Controller{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		
         try {
-        	
+        	//Takes the PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
             Poll poll = Poll.fromJson(polljson);
             
-         // generate data and save question, try until we have unique poll ID
+         // Generates a Unique ID and saves the Poll.
             do {
                 poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
             } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
                         
             poll.save();
             
+            //Creates the PollJSON Response.
             CreatePollResponse r = new CreatePollResponse(poll);
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
@@ -66,12 +67,14 @@ public class PollController extends Controller{
 	public static void retrieve () {
 		String pollid = params.get("id");
 		
+		//Takes the Poll from the DataBase.
 		Poll poll = Poll.find("byPollID", pollid).first();
 		
 		if (poll == null) {
 		    renderJSON("The question does not exist!");
 		}
 		
+		//Creates the PollJSON Response.
 		CreatePollResponse r = new CreatePollResponse(poll);
 		String jsonresponse = GsonHelper.toJson(r);
 		
@@ -84,14 +87,18 @@ public class PollController extends Controller{
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String pollid = params.get("id");
+		
+		//Takes the Poll from the DataBase.
 		Poll originalpoll = Poll.find("byPollID", pollid).first();
 		
 		try {
         	
+			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
             Poll editedpoll = Poll.fromJson(polljson);
             
+            //Changes the old fields for the new ones.
             if (editedpoll.question != null) {
             	originalpoll.question = editedpoll.question;
             }
@@ -104,6 +111,7 @@ public class PollController extends Controller{
             
             originalpoll.save();
             
+            //Creates the PollJSON Response.
             CreatePollResponse r = new CreatePollResponse(originalpoll);
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
@@ -119,13 +127,18 @@ public class PollController extends Controller{
 	 */
 	public static void delete () {
 		String pollid = params.get("id");
+		
+		//Takes the Poll from the DataBase.
 		Poll poll = Poll.find("byPollID", pollid).first();
+		
+		//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 		poll.delete();
 		
 		poll.question = null;
 		poll.reference = null;
 		poll.choices = null;
 		
+		//Creates the PollJSON Response.
 		CreatePollResponse r = new CreatePollResponse(poll);
     	String jsonresponse = GsonHelper.toJson(r);
     	renderJSON(jsonresponse);
