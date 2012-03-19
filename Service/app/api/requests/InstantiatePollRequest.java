@@ -7,13 +7,12 @@ import api.responses.CreatePollInstanceResponse;
 public class InstantiatePollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreatePollInstanceResponse.class;
 	public PollInstanceJSON pollInstance;
-	public InstantiatePollRequest(PollInstance p) {
-		this.pollInstance = p.toJson();
+	public InstantiatePollRequest(PollInstanceJSON p) {
+		this.pollInstance = p;
 	}
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/poll/" + pollInstance.id +"/instantiate";
 	}
 	
 }

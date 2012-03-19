@@ -1,13 +1,16 @@
 package api.requests;
 
+import api.entities.ChoiceJSON;
+
 public class ReadChoiceRequest extends Request {
-	public Long id;
-	public ReadChoiceRequest (long i) {
-		this.id = i;
+	public static final Class EXPECTED_RESPONSE = ReadChoiceResponse.class;
+	public ChoiceJSON choice;
+	public ReadChoiceRequest (ChoiceJSON c) {
+		this.choice = c;
 	}
+	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/choice/" + choice.id;
 	}
 }
