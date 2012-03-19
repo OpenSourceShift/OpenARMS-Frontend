@@ -40,7 +40,7 @@ public class Choice extends Model implements Jsonable {
 	/**
 	 * Is this the correct choice for the poll?
 	 */
-	public boolean correct;
+	public Boolean correct;
 	
 	/**
 	 * The votes that has used this choice when voting for an instance of a poll.
@@ -96,6 +96,14 @@ public class Choice extends Model implements Jsonable {
     public ChoiceJSON toJson() {
     	return toJson(this);
     }
+
+    /**
+     * Turn this Choice into a ChoiceJSON
+     * @return PollJSON A PollJSON object that represents this poll.
+     */
+    public void loadJson(ChoiceJSON json) {
+    	// FIXME: Make it work
+    }
     
     /**
      * Turn a Choice into a ChoiceJSON
@@ -119,7 +127,8 @@ public class Choice extends Model implements Jsonable {
      * @return Choice the choice object.
      */
     public static Choice fromJson(ChoiceJSON json) {
-    	// TODO: Make this copy more than just the text ...
-		return null;
+    	Choice choice = new Choice(null, json.text);
+    	choice.loadJson(json);
+		return choice;
     }
 }

@@ -278,11 +278,11 @@ public class Poll extends Model implements Jsonable {
 
 		// Update the choices
     	if (json.choices != null) {
-    		for (ChoiceJSON c : json.choices) {
+    		for (ChoiceJSON c: json.choices) {
     			result.choices.add(Choice.fromJson(c));	
     		}
     		// Update the references.
-    		for (Choice c : result.choices) {
+    		for (Choice c: result.choices) {
     			c.poll = result;
     		}
     	}
