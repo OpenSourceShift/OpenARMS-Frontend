@@ -13,7 +13,7 @@ import api.entities.PollJSON;
 import api.helpers.GsonHelper;
 import play.mvc.Controller;
 
-public class ChoiceController extends Controller{
+public class ChoiceController extends APIController {
 
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));

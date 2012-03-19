@@ -23,18 +23,17 @@ import api.deprecated.CreateResponseJSON;
 import api.deprecated.QuestionJSON;
 import api.entities.PollJSON;
 
-public class PollController extends Controller{
+public class PollController extends APIController {
 
 	public static void create() {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-		
         try {
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
         	
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
             Poll poll = Poll.fromJson(polljson);
             
-         // generate data and save question, try until we have unique poll ID
+            // generate data and save question, try until we have unique poll ID
             do {
                 poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
             } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
@@ -45,9 +44,8 @@ public class PollController extends Controller{
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
+        } catch (Exception e) {
+            renderException(e);
         }
     }
 	
