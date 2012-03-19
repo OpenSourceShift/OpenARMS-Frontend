@@ -1,11 +1,18 @@
 package api.responses;
 
+import models.Choice;
 import models.PollInstance;
+import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 
-public class CreatePollInstanceResponse {
+public class CreatePollInstanceResponse extends Response {
 	public PollInstanceJSON pollinstance;
-	public CreatePollInstanceResponse (PollInstance p) {
-		this.pollinstance = p.toJson();
+	public CreatePollInstanceResponse() {
+	}
+	public CreatePollInstanceResponse(PollInstance pi) {
+		this(pi.toJson());
+	}
+	public CreatePollInstanceResponse(PollInstanceJSON json) {
+		this.pollinstance = json;
 	}
 }

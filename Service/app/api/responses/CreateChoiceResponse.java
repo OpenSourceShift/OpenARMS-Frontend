@@ -5,7 +5,12 @@ import api.entities.ChoiceJSON;
 
 public class CreateChoiceResponse extends Response {
 	public ChoiceJSON choice;
+	public CreateChoiceResponse() {
+	}
 	public CreateChoiceResponse(Choice c) {
-		this.choice = c.toJson();
+		this(c.toJson());
+	}
+	public CreateChoiceResponse(ChoiceJSON json) {
+		this.choice = json;
 	}
 }

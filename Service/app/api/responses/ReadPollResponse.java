@@ -1,21 +1,18 @@
 package api.responses;
 
-
-import com.google.gson.JsonArray;
+import models.Poll;
+import models.PollInstance;
+import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
 
 public class ReadPollResponse extends Response {
-	public String question;
-	public JsonArray answersArray;
-	public String duration;
-	public long id;
-	public String token;
-	
-	public ReadPollResponse(String q, JsonArray a, String d, long i, String t)
-	{
-		this.question = q;
-		this.answersArray = a;
-		this.duration = d;
-		this.id = i;
-		this.token = t;
+	public PollJSON poll;
+	public ReadPollResponse() {
+	}
+	public ReadPollResponse(Poll p) {
+		this(p.toJson());
+	}
+	public ReadPollResponse(PollJSON json) {
+		this.poll = json;
 	}
 }
