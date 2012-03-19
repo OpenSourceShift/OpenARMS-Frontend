@@ -127,6 +127,7 @@ public class Choice extends Model implements Jsonable {
      * @return Choice the choice object.
      */
     public static Choice fromJson(ChoiceJSON json) {
+    	//TODO: Change the loadJson. 
     	Choice choice = new Choice(null, json.text);
     	choice.loadJson(json);
 		return choice;
