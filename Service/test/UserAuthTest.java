@@ -2,7 +2,6 @@ import java.util.List;
 
 import models.SimpleUserAuthBinding;
 import models.User;
-import models.helpers.GsonHelper;
 
 import org.junit.Test;
 
