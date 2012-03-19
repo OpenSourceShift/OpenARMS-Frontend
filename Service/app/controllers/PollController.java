@@ -23,8 +23,17 @@ import api.deprecated.CreateResponseJSON;
 import api.deprecated.QuestionJSON;
 import api.entities.PollJSON;
 
+/**
+ * Class that manages the responses in the API for Polls.
+ * @author OpenARMS Service Team
+ *
+ */
+
 public class PollController extends Controller{
 
+	/**
+	 * Method that saves a new Poll in the DataBase.
+	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		
@@ -51,6 +60,9 @@ public class PollController extends Controller{
         }
     }
 	
+	/**
+	 * Method that gets a Poll from the DataBase.
+	 */
 	public static void retrieve () {
 		String pollid = params.get("id");
 		
@@ -66,6 +78,9 @@ public class PollController extends Controller{
 		renderJSON(jsonresponse);
 	}
 	
+	/**
+	 * Method that edits a Poll already existing in the DataBase.
+	 */
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String pollid = params.get("id");
@@ -99,6 +114,9 @@ public class PollController extends Controller{
         }
 	}
 	
+	/**
+	 * Method that deletes a Poll existing in the DataBase.
+	 */
 	public static void delete () {
 		String pollid = params.get("id");
 		Poll poll = Poll.find("byPollID", pollid).first();

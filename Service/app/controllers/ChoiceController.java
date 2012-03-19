@@ -13,8 +13,17 @@ import api.entities.PollJSON;
 import api.helpers.GsonHelper;
 import play.mvc.Controller;
 
+/**
+ * Class that manages the responses in the API for Choices.
+ * @author OpenARMS Service Team
+ *
+ */
+
 public class ChoiceController extends Controller{
 
+	/**
+	 * Method that saves a new Choice in the DataBase.
+	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		
@@ -35,6 +44,9 @@ public class ChoiceController extends Controller{
         
     }
 	
+	/**
+	 * Method that gets a Choice from the DataBase.
+	 */
 	public static void retrieve() {
 		String choiceid = params.get("id");
 		
@@ -50,6 +62,9 @@ public class ChoiceController extends Controller{
 		renderJSON(jsonresponse);
 	}
 	
+	/**
+	 * Method that edits a Choice already existing in the DataBase.
+	 */
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String choiceid = params.get("id");
@@ -75,6 +90,9 @@ public class ChoiceController extends Controller{
         }
 	}
 	
+	/**
+	 * Method that deletes a Choice existing in the DataBase.
+	 */
 	public static void delete () {
 		String choiceid = params.get("id");
 		Choice choice = Choice.find("byChoiceID", choiceid).first();
