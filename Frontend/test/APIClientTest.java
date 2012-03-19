@@ -2,9 +2,9 @@ import org.junit.Test;
 
 import play.test.FunctionalTest;
 import play.test.UnitTest;
-import api.Request.CreatePollRequest;
-import api.Response.CreatePollResponse;
-import api.entities.PollJSON;
+import api.requests.*;
+import api.responses.*;
+import api.entities.*;
 import controllers.APIClient;
 
 public class APIClientTest extends UnitTest {
