@@ -3,8 +3,6 @@ package api.entities;
 import java.util.Date;
 import java.util.List;
 
-import models.Vote;
-
 public class PollInstanceJSON extends BaseModelJSON {
 	public Long poll_id;
 	public Long id;
