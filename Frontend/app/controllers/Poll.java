@@ -1,12 +1,12 @@
 package controllers;
-import com.google.gson.JsonParseException;
-import api.Response.GetResultsResponse;
-import api.Request.GetResultsRequest;
 import play.mvc.Controller;
+
+import com.google.gson.JsonParseException;
 
 @Deprecated
 public class Poll extends Controller {
 	public static void getResults(String id, String adminkey) throws JsonParseException {
+		/*
 		try {
 			
 			GetResultsResponse response = (GetResultsResponse) APIClient.send(new GetResultsRequest(id, adminkey));
@@ -21,5 +21,6 @@ public class Poll extends Controller {
 			// TODO: Tell the user!
 			e.printStackTrace();
 		}
+		*/
 	}
 }

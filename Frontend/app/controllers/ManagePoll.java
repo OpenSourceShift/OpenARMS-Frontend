@@ -1,15 +1,12 @@
 package controllers;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import api.Request.CheckAdminkeyRequest;
-import api.Response.CheckAdminkeyResponse;
-import api.Response.GetPollResponse;
-import api.Request.GetPollRequest;
-import api.Request.ActivatePollRequest;
+
 import play.mvc.Controller;
 
 public class ManagePoll extends Controller {
 	public static void index(String token, String adminkey) {
+		/*
 		validation.required(token);
 		validation.required(adminkey);
 		boolean redirect = true;
@@ -34,9 +31,11 @@ public class ManagePoll extends Controller {
 		} catch (Exception e) {
 		}
 		Application.index();
+		*/
 	}
 
 	public static void activate() {
+		/*
 		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 
@@ -63,9 +62,11 @@ public class ManagePoll extends Controller {
 		}
 
 		render(token, adminkey, duration, durationString);
+		*/
 	}
 
 	public static void activateSubmit(String minutes, String seconds) {
+		/*
 		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 		
@@ -93,17 +94,22 @@ public class ManagePoll extends Controller {
 		}
 
 		activate();
+		*/
 	}
 
 	public static void edit() {
+		/*
 		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 		render(token, adminkey);
+		*/
 	}
 
 	public static void statistics() {
+		/*
 		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 		render(token, adminkey);
+		*/
 	}
 }

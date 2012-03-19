@@ -1,17 +1,15 @@
 package controllers;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import api.Request.GetPollRequest;
-import api.Response.GetPollResponse;
-import api.Request.GetResultsRequest;
-import api.Response.GetResultsResponse;
+
+import play.mvc.Controller;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
-import com.google.gson.JsonObject;
-import play.mvc.Controller;
 
 public class JoinPoll extends Controller {
 	public static void index(String id) throws JsonParseException {
+		/*
 		if (request.url.contains("joinpoll")) {
 			redirect("/" + id);
 		}
@@ -28,11 +26,11 @@ public class JoinPoll extends Controller {
 			// TODO: Tell the user!
 			nopoll(id);
 		}
+		*/
 	}
 
-	public static void submit(String token, String questionID, String answer)
-			throws JsonParseException {
-
+	public static void submit(String token, String questionID, String answer) throws JsonParseException {
+		/*
 		validation.required(token);
 		validation.match(token, "^\\d+$");
 		validation.required(questionID);
@@ -46,19 +44,20 @@ public class JoinPoll extends Controller {
 			return;
 		}
 
-		/*Vote v = new Vote();
-		v.token = Integer.parseInt(token);
-		v.questionID = Integer.parseInt(questionID);
-		v.answers = new String[] { answer };
-		v.rensponderID = request.remoteAddress + session.getId();
+		//Vote v = new Vote();
+		//v.token = Integer.parseInt(token);
+		//v.questionID = Integer.parseInt(questionID);
+		//v.answers = new String[] { answer };
+		//v.rensponderID = request.remoteAddress + session.getId();
 		
-		*//*RestClient.getInstance().vote(v);*/
+		//RestClient.getInstance().vote(v);
 		//APIClient.getInstance().send(new api.Request.vote(v));
-
 		success(token);
+		*/
 	}
 
 	public static void success(String token) {
+		/*
 		String question = null;
 		JsonArray answersArray = null;
 		String duration = null;
@@ -94,6 +93,7 @@ public class JoinPoll extends Controller {
 		durationString = df.format(m) + ":" + df.format(s);
 
 		render(token, question, answersArray, duration, durationString);
+		*/
 	}
 
 	public static void nopoll(String token) {

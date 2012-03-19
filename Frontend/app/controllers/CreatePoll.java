@@ -1,11 +1,8 @@
 package controllers;
 import java.util.ArrayList;
+
 import models.Poll;
 import play.mvc.Controller;
-import api.Response.CreatePollResponse;
-import api.Request.CreatePollRequest;
-import api.entities.PollJSON;
-import com.google.gson.Gson;
 
 public class CreatePoll extends Controller {
 	public static void index(String email, String question, String[] answer) {
