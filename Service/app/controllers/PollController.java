@@ -35,7 +35,7 @@ public class PollController extends APIController {
 	 * Method that saves a new Poll in the DataBase.
 	 */
 	public static void create() {
-        try {
+        try {	
 			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 	
 	    	//Takes the PollJSON and creates a new Poll object with this PollJSON.
@@ -56,6 +56,7 @@ public class PollController extends APIController {
 	    	renderJSON(jsonresponse);
         	
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderException(e);
 		}
 	}
@@ -72,7 +73,7 @@ public class PollController extends APIController {
 	
 			//Creates the PollJSON Response.
 			if (poll == null) {
-				renderJSON("The question does not exist!");
+				renderJSON("The Poll does not exist!");
 			}
 			
 			CreatePollResponse r = new CreatePollResponse(poll);

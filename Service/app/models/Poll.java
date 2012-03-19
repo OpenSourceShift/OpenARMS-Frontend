@@ -64,7 +64,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * Is it allowed to add multiple answers?
      */
-    public boolean multipleAllowed;
+    public Boolean multipleAllowed;
     /**
      * All the possible choices associated with the poll.
      */
@@ -85,7 +85,7 @@ public class Poll extends Model implements Jsonable {
      * @param multipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, boolean multipleAllowed) {
+    public Poll(String token, String question, Boolean multipleAllowed) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
@@ -277,14 +277,15 @@ public class Poll extends Model implements Jsonable {
     	result.choices = new LinkedList<Choice>();
 
 		// Update the choices
-		for (ChoiceJSON c : json.choices) {
-			result.choices.add(Choice.fromJson(c));	
-		}
-		// Update the references.
-		for (Choice c : result.choices) {
-			c.poll = result;
-		}
-		
+    	if (json.choices != null) {
+    		for (ChoiceJSON c : json.choices) {
+    			result.choices.add(Choice.fromJson(c));	
+    		}
+    		// Update the references.
+    		for (Choice c : result.choices) {
+    			c.poll = result;
+    		}
+    	}
 		// TODO: Check if we need to do this with otner collections on the Poll as well.
 		
 		return result;
