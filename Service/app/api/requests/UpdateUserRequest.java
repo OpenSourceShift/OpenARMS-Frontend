@@ -1,10 +1,13 @@
 package api.requests;
 
+import api.entities.UserJSON;
+
 public class UpdateUserRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = UpdateUserResponse.class;
 	public UserJSON user;
-	/* ? */
-	
+	public UpdateUserRequest (UserJSON u) {
+		this.user = u;
+	}
 	
 	@Override
 	public String getURL() {
