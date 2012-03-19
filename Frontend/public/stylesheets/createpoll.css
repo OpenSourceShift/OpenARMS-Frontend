@@ -8,3 +8,8 @@ li {
 .button {
 	display: inline;
 }
+
+li.answerContainer {
+	margin-bottom:12px;
+	
+}
