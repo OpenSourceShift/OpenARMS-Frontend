@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.ChoiceJSON;
+import api.responses.DeleteChoiceResponse;
 
 public class DeleteChoiceRequest extends Request {
 

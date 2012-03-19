@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.PollJSON;
+import api.responses.ReadPollResponse;
 
 public class ReadPollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadPollResponse.class;

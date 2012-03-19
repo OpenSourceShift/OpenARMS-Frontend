@@ -8,5 +8,5 @@ import api.entities.PollJSON;
 import api.entities.VoteJSON;
 
 
-public class VoteOnPollResponse extends CreateVoteResponse {
+public class VoteOnPollInstanceResponse extends CreateVoteResponse {
 }
