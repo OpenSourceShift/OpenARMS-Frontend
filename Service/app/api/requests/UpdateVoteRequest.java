@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.VoteJSON;
+import api.responses.UpdateVoteResponse;
 
 public class UpdateVoteRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = UpdateVoteResponse.class;

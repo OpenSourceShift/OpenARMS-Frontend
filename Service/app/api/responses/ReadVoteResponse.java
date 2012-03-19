@@ -8,12 +8,12 @@ import api.entities.PollJSON;
 import api.entities.VoteJSON;
 
 
-public class CreateVoteResponse extends Response {
+public class ReadVoteResponse extends Response {
 	public VoteJSON vote;
-	public CreateVoteResponse() {
+	public ReadVoteResponse() {
 	}
 
-	public CreateVoteResponse(VoteJSON json) {
+	public ReadVoteResponse(VoteJSON json) {
 		this.vote = json;
 	}
 }

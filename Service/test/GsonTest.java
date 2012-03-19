@@ -70,7 +70,7 @@ public class GsonTest extends UnitTest {
 		Poll p = Poll.all().first();
 		PollJSON pollAsJson = Poll.toJson(p);
     	
-		CreatePollResponse r = new CreatePollResponse(Poll.fromJson(pollAsJson));
+		CreatePollResponse r = new CreatePollResponse(pollAsJson);
     	String json = GsonHelper.toJson(r);
     	
     	System.out.println();

@@ -5,12 +5,12 @@ import models.PollInstance;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 
-public class ReadPollResponse extends Response {
+public class UpdatePollResponse extends Response {
 	public PollJSON poll;
-	public ReadPollResponse() {
+	public UpdatePollResponse() {
 	}
 
-	public ReadPollResponse(PollJSON json) {
+	public UpdatePollResponse(PollJSON json) {
 		this.poll = json;
 	}
 }

@@ -1,6 +1,8 @@
 package api.requests;
 
+import models.User;
 import api.entities.UserJSON;
+import api.responses.AuthenticateUserResponse;
 
 public class AuthenticateUserRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = AuthenticateUserResponse.class;
@@ -9,6 +11,9 @@ public class AuthenticateUserRequest extends Request {
 		this.user = u;
 	}
 	
+	public AuthenticateUserRequest () {
+	}
+		
 	@Override
 	public String getURL() {
 		return "/user/authenticate";

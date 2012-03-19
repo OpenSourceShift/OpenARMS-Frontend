@@ -45,7 +45,7 @@ public class PollController extends APIController {
 	        poll.save();
 	        
 	        //Creates the PollJSON Response.
-	        CreatePollResponse r = new CreatePollResponse(poll);
+	        CreatePollResponse r = new CreatePollResponse(poll.toJson());
 	    	String jsonresponse = GsonHelper.toJson(r);
 	    	renderJSON(jsonresponse);
         	
@@ -70,7 +70,7 @@ public class PollController extends APIController {
 				renderJSON("The Poll does not exist!");
 			}
 			
-			CreatePollResponse r = new CreatePollResponse(poll);
+			CreatePollResponse r = new CreatePollResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -111,7 +111,7 @@ public class PollController extends APIController {
             originalpoll.save();
             
             //Creates the PollJSON Response.
-            CreatePollResponse r = new CreatePollResponse(originalpoll);
+            CreatePollResponse r = new CreatePollResponse(originalpoll.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -163,7 +163,7 @@ public class PollController extends APIController {
 			poll.choices = null;
 			
 			//Creates the PollJSON Response.
-			CreatePollResponse r = new CreatePollResponse(poll);
+			CreatePollResponse r = new CreatePollResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 			renderJSON(jsonresponse);
 			

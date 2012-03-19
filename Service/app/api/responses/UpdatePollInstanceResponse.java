@@ -5,12 +5,12 @@ import models.PollInstance;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 
-public class CreatePollInstanceResponse extends Response {
+public class UpdatePollInstanceResponse extends Response {
 	public PollInstanceJSON pollinstance;
-	public CreatePollInstanceResponse() {
+	public UpdatePollInstanceResponse() {
 	}
 
-	public CreatePollInstanceResponse(PollInstanceJSON json) {
+	public UpdatePollInstanceResponse(PollInstanceJSON json) {
 		this.pollinstance = json;
 	}
 }

@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.PollJSON;
+import api.responses.UpdatePollResponse;
 
 public class UpdatePollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = UpdatePollResponse.class;
@@ -12,5 +13,4 @@ public class UpdatePollRequest extends Request {
 	public String getURL() {
 		return "/poll/" + poll.id;
 	}
-	
 }

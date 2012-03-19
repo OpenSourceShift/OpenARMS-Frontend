@@ -1,7 +1,6 @@
 package api.requests;
-
 import api.entities.UserJSON;
-
+import api.responses.DeleteUserResponse;
 
 public class DeleteUserRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = DeleteUserResponse.class;
@@ -11,7 +10,6 @@ public class DeleteUserRequest extends Request {
 	}
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
 		return "/user/" + user.id;
 	}
 }

@@ -211,6 +211,7 @@ public class Poll extends Model implements Jsonable {
      * Gets vote counts as an array of integers. Used for statistics.
      * @return int[] array of vote counts / results
      */
+    @Deprecated
     public int[] getVoteCounts() {
         int index = 0;
         int[] votes = new int[choices.size()];
@@ -224,7 +225,7 @@ public class Poll extends Model implements Jsonable {
             if (votesList.isEmpty()) {
                 votes[index] = 0;
             } else {
-                votes[index] = votesList.get(0).count;
+                //votes[index] = votesList.get(0).count;
             }
             index++;
         }

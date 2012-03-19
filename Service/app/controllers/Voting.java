@@ -63,6 +63,7 @@ public class Voting extends Controller {
      * Parameter {id} - poll ID <br/>
      * Request body: VoteJSON
      */
+    @Deprecated
     public static void vote() {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
@@ -100,7 +101,7 @@ public class Voting extends Controller {
                     // otherwise just increment the count value
                     for (Vote v : selectedChoice.votes) {
                         if (v.pollInstance.equals(question.getLatestInstance())) {
-                            v.count++;
+                            //v.count++;
                             v.save();
                         }
                     }
