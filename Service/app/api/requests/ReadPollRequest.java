@@ -7,6 +7,7 @@ public class ReadPollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadPollResponse.class;
 	public PollJSON poll;
 	public ReadPollRequest (PollJSON p) {
+		this.method = Method.GET;
 		this.poll = p;
 	}
 

@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.PollInstanceJSON;
+import api.requests.Request.Method;
 import api.responses.DeletePollInstanceResponse;
 
 public class DeletePollInstanceRequest extends Request {
@@ -9,6 +10,7 @@ public class DeletePollInstanceRequest extends Request {
 	public PollInstanceJSON pollInstance;
 	
 	public DeletePollInstanceRequest (PollInstanceJSON p) {
+		this.method = Method.DELETE;
 		this.pollInstance = p;
 	}
 	

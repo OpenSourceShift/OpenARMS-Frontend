@@ -7,6 +7,7 @@ public class VoteOnPollInstanceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = VoteOnPollInstanceResponse.class;
 	public VoteJSON vote;
 	public VoteOnPollInstanceRequest (VoteJSON v) {
+		this.method = Method.POST;
 		this.vote = v;
 	}
 	

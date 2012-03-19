@@ -36,7 +36,7 @@ public class ChoiceController extends APIController {
             choice.save();
             
             //Creates the ChoiceJSON Response.
-            CreateChoiceResponse r = new CreateChoiceResponse(choice);
+            CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
 	
@@ -60,7 +60,7 @@ public class ChoiceController extends APIController {
 				renderJSON("The Choice does not exist!");
 			}
 			
-			CreateChoiceResponse r = new CreateChoiceResponse(choice);
+			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -92,7 +92,7 @@ public class ChoiceController extends APIController {
             originalchoice.save();
 
             //Creates the ChoiceJSON Response.
-            CreateChoiceResponse r = new CreateChoiceResponse(originalchoice);
+            CreateChoiceResponse r = new CreateChoiceResponse(originalchoice.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -118,7 +118,7 @@ public class ChoiceController extends APIController {
 			choice.text = null;
 	
 			//Creates the ChoiceJSON Response.
-			CreateChoiceResponse r = new CreateChoiceResponse(choice);
+			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 			renderJSON(jsonresponse);
 		

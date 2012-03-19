@@ -1,15 +1,13 @@
-import org.junit.*;
+import org.junit.Test;
 
-import controllers.APIClient;
-
+import play.test.FunctionalTest;
+import play.test.UnitTest;
 import api.Request.CreatePollRequest;
 import api.Response.CreatePollResponse;
 import api.entities.PollJSON;
-import play.test.*;
-import play.mvc.*;
-import play.mvc.Http.*;
+import controllers.APIClient;
 
-public class APIClientTest extends FunctionalTest {
+public class APIClientTest extends UnitTest {
 
     @Test
     public void testThatTheAPIClientWorks() throws Exception {

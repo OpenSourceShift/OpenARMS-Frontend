@@ -1,7 +1,6 @@
 package api.entities;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class UserJSON extends BaseModelJSON {
 	public Long id;

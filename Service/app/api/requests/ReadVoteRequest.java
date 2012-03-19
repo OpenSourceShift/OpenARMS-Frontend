@@ -7,6 +7,7 @@ public class ReadVoteRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadVoteResponse.class;
 	public VoteJSON vote;
 	public ReadVoteRequest (VoteJSON v) {
+		this.method = Method.GET;
 		this.vote = v;
 	}
 	

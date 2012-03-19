@@ -2,16 +2,11 @@ package api.entities;
 
 import java.util.List;
 
-import api.helpers.GsonSkip;
-
-import models.Choice;
-import models.Poll;
-import models.Vote;
-
 public class ChoiceJSON extends BaseModelJSON {
 	public Long poll_id;
 	public Long id;
 	public String text;
+	public Boolean correct;
 	
 	public List<VoteJSON> votes;
 	

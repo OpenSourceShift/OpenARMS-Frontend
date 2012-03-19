@@ -1,6 +1,5 @@
 package api.responses;
 
-import models.Choice;
 import api.entities.ChoiceJSON;
 
 public class ReadChoiceResponse extends Response {

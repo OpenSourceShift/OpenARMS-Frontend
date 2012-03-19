@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.ChoiceJSON;
+import api.requests.Request.Method;
 import api.responses.DeleteChoiceResponse;
 
 public class DeleteChoiceRequest extends Request {
@@ -9,6 +10,7 @@ public class DeleteChoiceRequest extends Request {
 	
 	public ChoiceJSON choice;
 	public DeleteChoiceRequest (ChoiceJSON c) {
+		this.method = Method.DELETE;
 		this.choice = c;
 	}
 	
