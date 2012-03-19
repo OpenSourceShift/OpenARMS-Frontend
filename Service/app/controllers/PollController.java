@@ -36,7 +36,6 @@ public class PollController extends Controller{
 	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-		
         try {
         	//Takes the PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
@@ -54,45 +53,45 @@ public class PollController extends Controller{
             CreatePollResponse r = new CreatePollResponse(poll);
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
+        	
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
+	}
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
-    }
-	
 	/**
 	 * Method that gets a Poll from the DataBase.
 	 */
 	public static void retrieve () {
 		String pollid = params.get("id");
-		
+
 		//Takes the Poll from the DataBase.
-		Poll poll = Poll.find("byPollID", pollid).first();
-		
+		Poll poll = Poll.find("byID", pollid).first();
+
+		//Creates the PollJSON Response.
 		if (poll == null) {
-		    renderJSON("The question does not exist!");
+			renderJSON("The question does not exist!");
 		}
 		
-		//Creates the PollJSON Response.
 		CreatePollResponse r = new CreatePollResponse(poll);
 		String jsonresponse = GsonHelper.toJson(r);
-		
+
 		renderJSON(jsonresponse);
 	}
-	
+
 	/**
 	 * Method that edits a Poll already existing in the DataBase.
 	 */
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String pollid = params.get("id");
-		
+
 		//Takes the Poll from the DataBase.
-		Poll originalpoll = Poll.find("byPollID", pollid).first();
-		
+		Poll originalpoll = Poll.find("byID", pollid).first();
+
 		try {
-        	
+
 			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
             PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
@@ -117,30 +116,30 @@ public class PollController extends Controller{
         	renderJSON(jsonresponse);
             
 		} catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
 	}
-	
+
 	/**
 	 * Method that deletes a Poll existing in the DataBase.
 	 */
 	public static void delete () {
 		String pollid = params.get("id");
-		
+
 		//Takes the Poll from the DataBase.
-		Poll poll = Poll.find("byPollID", pollid).first();
+		Poll poll = Poll.find("byID", pollid).first();
 		
 		//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 		poll.delete();
-		
+
 		poll.question = null;
 		poll.reference = null;
 		poll.choices = null;
 		
 		//Creates the PollJSON Response.
 		CreatePollResponse r = new CreatePollResponse(poll);
-    	String jsonresponse = GsonHelper.toJson(r);
-    	renderJSON(jsonresponse);
+		String jsonresponse = GsonHelper.toJson(r);
+		renderJSON(jsonresponse);
 	}
 }

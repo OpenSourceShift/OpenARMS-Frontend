@@ -26,13 +26,13 @@ public class ChoiceController extends Controller{
 	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-		
         try {
         	
         	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
             String json = reader.readLine();
             ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
             Choice choice = Choice.fromJson(choicejson);
+            
             choice.save();
             
             //Creates the ChoiceJSON Response.
@@ -46,27 +46,26 @@ public class ChoiceController extends Controller{
         }
         
     }
-	
 	/**
 	 * Method that gets a Choice from the DataBase.
 	 */
 	public static void retrieve() {
 		String choiceid = params.get("id");
-		
+
 		//Takes the Choice from the DataBase.
-		Choice choice = Choice.find("byChoiceID", choiceid).first();
-		
+		Choice choice = Choice.find("byID", choiceid).first();
+	
+		//Creates the ChoiceJSON Response.
 		if (choice == null) {
-		    renderJSON("The Choice does not exist!");
+			renderJSON("The Choice does not exist!");
 		}
 		
-		//Creates the ChoiceJSON Response.
 		CreateChoiceResponse r = new CreateChoiceResponse(choice);
 		String jsonresponse = GsonHelper.toJson(r);
-		
+
 		renderJSON(jsonresponse);
 	}
-	
+
 	/**
 	 * Method that edits a Choice already existing in the DataBase.
 	 */
@@ -75,10 +74,9 @@ public class ChoiceController extends Controller{
 		String choiceid = params.get("id");
 		
 		//Takes the Choice from the DataBase.
-		Choice originalchoice = Choice.find("byChoiceID", choiceid).first();
-		
+		Choice originalchoice = Choice.find("byID", choiceid).first();
+
 		try {
-        	
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
             String json = reader.readLine();
             ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
@@ -94,12 +92,13 @@ public class ChoiceController extends Controller{
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
+
 		} catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
 	}
-	
+
 	/**
 	 * Method that deletes a Choice existing in the DataBase.
 	 */
@@ -107,17 +106,18 @@ public class ChoiceController extends Controller{
 		String choiceid = params.get("id");
 		
 		//Takes the Choice from the DataBase.
-		Choice choice = Choice.find("byChoiceID", choiceid).first();
+		Choice choice = Choice.find("byID", choiceid).first();
+
 		choice.delete();
-		
+
 		choice.id = null;
 		choice.poll = null;
 		choice.text = null;
-		
+
 		//Creates the ChoiceJSON Response.
 		CreateChoiceResponse r = new CreateChoiceResponse(choice);
-    	String jsonresponse = GsonHelper.toJson(r);
-    	renderJSON(jsonresponse);
+		String jsonresponse = GsonHelper.toJson(r);
+		renderJSON(jsonresponse);
 	}
 
 }
