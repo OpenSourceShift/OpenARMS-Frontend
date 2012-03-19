@@ -40,7 +40,7 @@
 			<ol id='answers'>
 				
 				    <li class="answerContainer yui-skin-sam">
-						<textarea name="answer[]" id="ans[0]" class="ans"></textarea><!--<input type="text" size="60" name="answer[]" value="${_}" class="ans" />-->
+						<textarea name="answer[]" id="ans[0]" class="ans">Hello</textarea><!--<input type="text" size="60" name="answer[]" value="${_}" class="ans" />-->
 						<img src="public/images/i/delete.png" class="removeAnswer">
 						<!--<input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" />-->
 					</li>
@@ -60,21 +60,36 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#editor").val("${question} - ${choices_json}");
-	var edit1= new YAHOO.widget.Editor('ans[0]', answerConfig);
-	edit1.render();
-	var edit2 = new YAHOO.widget.Editor('ans[1]', answerConfig);
-	edit2.render();
+	myFields = new Array();
+	$("#editor").val("${question} - ${choices}");
+	var answers = ${choices.raw()};
+	//$("#ans[0]").val(answers[0]["text"]);
+	alert($('#ans[0]').val());
+	myFields[0] = new YAHOO.widget.Editor('ans[0]', answerConfig);
+	myFields[0].render();
+	myFields[1] = new YAHOO.widget.Editor('ans[1]', answerConfig);
+	myFields[1].render();
 	$("#AddAnswerButton input").bind('click', function() {
 		var ans_count = $("#ans_count").val();
 		var new_ans_count = parseInt(ans_count)+1;
 		$("#ans_count").val(new_ans_count);
-		$('<li class="answerContainer yui-skin-sam"><textarea name="answer[]" id="ans['+ans_count+']" class="ans">'+ans_count+'</textarea><img src="public/images/i/delete.png" class="removeAnswer"> <!--<input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" />--></li>').insertBefore("#AddAnswerButton");
-		var edit = new YAHOO.widget.Editor('ans['+ans_count+']', answerConfig);
-		edit.render();
+		$('<li class="answerContainer yui-skin-sam"><textarea name="answer[]" id="ans['+ans_count+']" class="ans"></textarea><img src="public/images/i/delete.png" class="removeAnswer"> <!--<input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" />--></li>').insertBefore("#AddAnswerButton");
+		myFields[myFields.length] = new YAHOO.widget.Editor('ans['+ans_count+']', answerConfig);
+		myFields[myFields.length-1].render();
 		$('.answerContainer:last input').focus();
 		bindRemove();
 	});
+	
+	for (i=0; i<answers.length-2; i++) {
+		var ans_count = $("#ans_count").val();
+		var new_ans_count = parseInt(ans_count)+1;
+		$("#ans_count").val(new_ans_count);
+		$('<li class="answerContainer yui-skin-sam"><textarea name="answer[]" id="ans['+ans_count+']" class="ans">'+answers[i+2]["text"]+'</textarea><img src="public/images/i/delete.png" class="removeAnswer"> <!--<input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" />--></li>').insertBefore("#AddAnswerButton");
+		myFields[myFields.length] = new YAHOO.widget.Editor('ans['+(i+2)+']', answerConfig);
+		myFields[myFields.length-1].render();
+		$('.answerContainer:last input').focus();
+		bindRemove();
+	}
 	function bindRemove() {
 		$(".removeAnswer").bind('click', function() {
 			$(this).parent().remove();
@@ -87,8 +102,8 @@ $(document).ready(function(){
 	
 	function submit_question() {
 		myEditor.saveHTML();
-		edit1.saveHTML();
-		edit2.saveHTML();
+		for (i=0; i<myFields.length; i++)
+			myFields[i].saveHTML();
 		$("#createpoll").submit();
 	}
 	bindRemove();
