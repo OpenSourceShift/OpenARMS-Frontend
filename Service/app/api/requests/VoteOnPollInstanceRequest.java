@@ -1,6 +1,6 @@
 package api.requests;
 
-public class CreatePollInstanceRequest extends Request {
+public class VoteOnPollInstanceRequest extends Request {
 
 	@Override
 	public String getURL() {

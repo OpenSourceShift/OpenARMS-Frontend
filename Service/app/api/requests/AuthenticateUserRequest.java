@@ -1,6 +1,6 @@
 package api.requests;
 
-public class CreateAuthenticationRequest {
+public class AuthenticateUserRequest {
 /*
  * { "authenticate": [ "backend": "simple",
                     "username": "testuser",
