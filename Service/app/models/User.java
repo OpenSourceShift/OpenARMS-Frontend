@@ -49,25 +49,34 @@ public class User extends Model implements Jsonable {
      */
     public static UserJSON toJson(User user) {
     	UserJSON result = new UserJSON();
+    	result.id = user.id;
     	result.name = user.name;
     	result.email = user.email;
     	result.secret = user.secret;
     	result.backend = user.userAuth.getClass().toString();
+    	if (user.userAuth instanceof SimpleUserAuthBinding) {
+    		SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
+    		result.attributes.put("password",auth.password);
+    	}
 		return result;
     }
     
     /**
-     * Turn a UserJSON into a user
+     * Turn a UserJSON into a User
      * @param json UserJSON object
      * @return User object that represents a user.
      */
     public static User fromJson(UserJSON json) {
     	User result = new User();
+    	result.id = json.id;
     	result.name = json.name;
     	result.email = json.email;
     	result.secret = json.secret;
-    	if (json.backend.equals(Play.configuration.getProperty("simple_backend")))
-    		result.userAuth = new SimpleUserAuthBinding();
+    	if (json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
+    		SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
+    		auth.password = json.attributes.get("password");
+    		result.userAuth = auth;
+    	}
     	else
     		result.userAuth = null;
 		return result;
