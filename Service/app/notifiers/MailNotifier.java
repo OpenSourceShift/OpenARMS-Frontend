@@ -15,7 +15,8 @@ public class MailNotifier extends Mailer {
 
     public static void sendAdminLink(Poll question) {
         setSubject("Your admin link");
-        addRecipient(question.email);
+        // TODO: Add the email for the user that owns the poll.
+        //addRecipient(question.email);
         setFrom("OpenARMS.dk <no-reply@openarms.dk>");
         System.out.println("question: " + question);
         if (question != null) {
@@ -25,7 +26,8 @@ public class MailNotifier extends Mailer {
 
     public static void sendPollIDLink(Poll question) {
         setSubject("Your poll link");
-        addRecipient(question.email);
+        // TODO: Add the email for the user that owns the poll.
+        //addRecipient(question.email);
         setFrom("OpenARMS.dk <no-reply@openarms.dk>");
         System.out.println(question);
         if (question != null) {

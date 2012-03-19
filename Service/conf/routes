@@ -11,10 +11,19 @@ POST    /vote/{<[0-9]+>id}                      Voting.vote
 GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
-GET     /test/{<[0-9]+>id}    					Management.test
 *       /admin									module:crud
 *       /admin		                            module:secure
-GET    /QRimage/{<[0-9]+>URL}/{<[0-9]+>size}     QRController.returnImage
+GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}     QRController.returnImage
+GET		/poll/{<[0-9]+>id}						PollController.retrieve
+POST	/poll									PollController.create
+PUT		/poll/{<[0-9]+>id}						PollController.edit
+DELETE	/poll/{<[0-9]+>id}						PollController.delete
+GET		/choice/{<[0-9]+>id}					ChoiceController.retrieve
+POST	/choice									ChoiceController.create
+PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
+DELETE	/choice/{<[0-9]+>id}					ChoiceController.delete
+
+
 
 
 # Map static resources from the /app/public folder to the /public path

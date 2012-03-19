@@ -15,13 +15,30 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import play.Play;
 import play.mvc.Controller;
+import play.mvc.Http;
+import play.mvc.Http.Header;
 
 
-
+/**
+ * Class QRController is resposible for creating, storing and rendering QRCode.
+ * @author Kronics_2
+ *
+ */
 public class QRController extends Controller {
-
-	private static BufferedImage generateImage (String URL, int size) {
+	
+	/** 
+	 * This function generates the QRcode of an URL based on the poll with a determined polltoken.
+	 * @param polltoken - The poll token to use for linking the QRCode image to the poll.
+	 * @param size - The size of the image.
+	 * @return - Returns the image or null if error.
+	 */
+	
+	private static BufferedImage generateImage (String polltoken, int size) {
+		String httpheader = Http.Request.current().headers.get("host").value();
+		String URL = ("http://" + httpheader + "/" + polltoken);
+		
 		BitMatrix bm;
         Writer writer = new QRCodeWriter();
 		try {
@@ -44,17 +61,29 @@ public class QRController extends Controller {
 		return null;
 	}
 	
-	public static void returnImage (String URL, int size) {
+	/**
+	 * This function is called from the Routes file, it creates a file in the tmp folder with the image of
+	 * the QRCode if it doesn't exist, if it does, uses it. 
+	 */
+	
+	public static void returnImage () {
 		try {
-			FileOutputStream fos = new FileOutputStream("D:/image/image.jpg");
-			BufferedImage image = generateImage(URL, size);
-			ImageIO.write(image, "jpg", fos);
-			fos.close();
+			String polltoken = params.get("token");
+			int size = params.get("size", Integer.class).intValue();
 
+			String path = Play.applicationPath.getPath();
+			boolean exists = (new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg")).exists();
+
+			if (!exists) {
+				FileOutputStream fos = new FileOutputStream(path +  "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
+				BufferedImage image = generateImage(polltoken, size);
+				ImageIO.write(image, "jpg", fos);
+				fos.close();
+			}
+			File f = new File(path + "/tmp/qrcodes/" + polltoken + "_" + size + ".jpg");
+			renderBinary(f);
 		} catch (Exception e) {
 			e.printStackTrace(System.err);
-		}
-         
-		 
+		} 
 	}
 }

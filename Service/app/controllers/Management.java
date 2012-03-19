@@ -4,10 +4,10 @@
  */
 package controllers;
 
-import api.ActivationJSON;
-import api.BaseJSON;
-import api.CreateResponseJSON;
-import api.QuestionJSON;
+import api.deprecated.ActivationJSON;
+import api.deprecated.BaseJSON;
+import api.deprecated.CreateResponseJSON;
+import api.deprecated.QuestionJSON;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -67,9 +67,6 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
-            String URL = ("http://openarms.dk/" + question.token);
-            QRController.returnImage(URL, 200);
-            
             renderJSON(new CreateResponseJSON(question.token, question.adminKey));
 
         } catch (IOException ex) {

@@ -1,34 +1,34 @@
 package controllers;
-
 import java.text.DecimalFormat;
 import java.util.Arrays;
-
-import org.json.JSONObject;
-
-import Utility.RestClient;
-
+import api.Request.CheckAdminkeyRequest;
+import api.Response.CheckAdminkeyResponse;
+import api.Response.GetPollResponse;
+import api.Request.GetPollRequest;
+import api.Request.ActivatePollRequest;
 import play.mvc.Controller;
 
 public class ManagePoll extends Controller {
-	public static void index(String pollID, String adminkey) {
-		validation.required(pollID);
+	public static void index(String token, String adminkey) {
+		validation.required(token);
 		validation.required(adminkey);
 		boolean redirect = true;
 		if (validation.hasErrors()) {
-			pollID = session.get("pollID");
+			token = session.get("token");
 			adminkey = session.get("adminkey");
 			redirect = false;
 		}
 		
 		try {
-			boolean correct = RestClient.getInstance().checkAdminkey(pollID, adminkey);
+			CheckAdminkeyResponse response = (CheckAdminkeyResponse) APIClient.getInstance().send(new CheckAdminkeyRequest(token, adminkey));
+			boolean correct = response.bool;
 			if (correct) {
 				if (redirect) {
-					session.put("pollID", pollID);
+					session.put("token", token);
 					session.put("adminkey", adminkey);
 					ManagePoll.index(null, null);
 				} else {
-					render(pollID, adminkey);
+					render(token, adminkey);
 				}
 			}
 		} catch (Exception e) {
@@ -37,7 +37,7 @@ public class ManagePoll extends Controller {
 	}
 
 	public static void activate() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 
 		String duration = "";
@@ -45,15 +45,12 @@ public class ManagePoll extends Controller {
 		// Get the duration from the server
 		String res = null;
 		try {
-			JSONObject questionJSON = new JSONObject(RestClient.getInstance().getQuestion(pollID));
-
-			duration = questionJSON.getString("duration");
-
+			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
+			duration = response.duration;
 			// Parse the duration and turn it into minutes and seconds
 			int dur = Integer.parseInt(duration);
 			int m = (int) Math.floor(dur / 60);
 			int s = dur - m * 60;
-
 			// Add leading zeros and make the string.
 			char[] zeros = new char[2];
 			Arrays.fill(zeros, '0');
@@ -65,11 +62,11 @@ public class ManagePoll extends Controller {
 			e.printStackTrace();
 		}
 
-		render(pollID, adminkey, duration, durationString);
+		render(token, adminkey, duration, durationString);
 	}
 
 	public static void activateSubmit(String minutes, String seconds) {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
 		
 		int s = 0;
@@ -90,8 +87,7 @@ public class ManagePoll extends Controller {
 				}
 
 				int duration = s + m * 60;
-
-				RestClient.getInstance().activate(pollID, adminkey, duration);
+				APIClient.getInstance().send(new ActivatePollRequest(token, adminkey, duration));
 			} catch (Exception e) {
 			}
 		}
@@ -100,14 +96,14 @@ public class ManagePoll extends Controller {
 	}
 
 	public static void edit() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
-		render(pollID, adminkey);
+		render(token, adminkey);
 	}
 
 	public static void statistics() {
-		String pollID = session.get("pollID");
+		String token = session.get("token");
 		String adminkey = session.get("adminkey");
-		render(pollID, adminkey);
+		render(token, adminkey);
 	}
 }

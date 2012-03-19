@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -8,7 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import models.helpers.GsonSkip;
+import api.Response.CreatePollResponse;
+import api.entities.ChoiceJSON;
+import api.entities.Jsonable;
+import api.entities.PollJSON;
+import api.entities.VoteJSON;
+import api.helpers.GsonSkip;
+
 
 import play.db.jpa.Model;
 
@@ -17,18 +24,24 @@ import play.db.jpa.Model;
  * @author OpenARS Server API team
  */
 @Entity
-public class Choice extends Model {
+public class Choice extends Model implements Jsonable {
 	private static final long serialVersionUID = 7558864274526935981L;
 	/**
 	 * The poll that this is a choice for.
 	 */
 	@ManyToOne
-    @GsonSkip(Poll.class)
+    @GsonSkip(classes = {Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
 	public Poll poll;
 	/**
 	 * The human understandable text describing the choice.
 	 */
 	public String text;
+	
+	/**
+	 * Is this the correct choice for the poll?
+	 */
+	public boolean correct;
+	
 	/**
 	 * The votes that has used this choice when voting for an instance of a poll.
 	 */
@@ -38,6 +51,7 @@ public class Choice extends Model {
 	public Choice(Poll poll, String text) {
 		this.poll = poll;
 		this.text = text;
+		this.votes = new LinkedList<Vote>();
 	}
 
 	/**
@@ -72,4 +86,40 @@ public class Choice extends Model {
 		}
 		return latestVotes;
 	}
+	
+
+
+    /**
+     * Turn this Choice into a ChoiceJSON
+     * @return PollJSON A PollJSON object that represents this poll.
+     */
+    public ChoiceJSON toJson() {
+    	return toJson(this);
+    }
+    
+    /**
+     * Turn a Choice into a ChoiceJSON
+     * @return PollJSON A PollJSON object that represents this poll.
+     */
+    public static ChoiceJSON toJson(Choice c) {
+    	ChoiceJSON result = new ChoiceJSON();
+    	result.id = c.id;
+    	result.text = c.text;
+    	result.poll_id = c.poll.id;
+    	result.votes = new LinkedList<VoteJSON>();
+		for(Vote v: c.votes) {
+			result.votes.add(v.toJson());
+		}
+		return result;
+    }
+    
+    /**
+     * Turn a ChoiceJSON into a Choice
+     * @param json
+     * @return Choice the choice object.
+     */
+    public static Choice fromJson(ChoiceJSON json) {
+    	// TODO: Make this copy more than just the text ...
+		return null;
+    }
 }

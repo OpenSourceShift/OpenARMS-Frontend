@@ -1,6 +1,9 @@
 package models;
 
 import javax.persistence.*;
+
+import api.entities.Jsonable;
+import api.entities.VoteJSON;
 import play.db.jpa.*;
 
 /**
@@ -9,7 +12,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Vote extends Model {
+public class Vote extends Model implements Jsonable {
 	private static final long serialVersionUID = -4255311415057973971L;
 	
 	/**
@@ -48,5 +51,15 @@ public class Vote extends Model {
     public Vote(Choice answer, PollInstance instance) {
         this(answer, 1, instance);
     }
+
+	public VoteJSON toJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public VoteJSON fromJson(Vote v) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

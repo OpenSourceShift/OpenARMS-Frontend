@@ -1,0 +1,10 @@
+package api.helpers;
+
+import java.lang.annotation.*;
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD})
+public @interface GsonSkip {
+	Class<?>[] classes();
+	String[] applications() default "";
+}

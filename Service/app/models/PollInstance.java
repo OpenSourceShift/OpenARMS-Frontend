@@ -3,6 +3,10 @@ package models;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
+import api.entities.BaseModelJSON;
+import api.entities.Jsonable;
+import api.entities.PollInstanceJSON;
 import play.db.jpa.*;
 
 /**
@@ -11,7 +15,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class PollInstance extends Model implements Comparable<PollInstance> {
+public class PollInstance extends Model implements Comparable<PollInstance>, Jsonable {
 	private static final long serialVersionUID = -6371181092845400924L;
 	
 	/**
@@ -51,6 +55,12 @@ public class PollInstance extends Model implements Comparable<PollInstance> {
         PollInstance vr = (PollInstance) other;
         return this.endDateTime.equals(vr.endDateTime);
     }
+    /**
+     * This method closes a Poll Instance and change the end time to the time this function is invoked.
+     */
+    public void closePollInstance () {
+    	this.endDateTime = new Date(System.currentTimeMillis());
+    }
 
     /*
      * TODO: Consider if this is needed.
@@ -63,4 +73,9 @@ public class PollInstance extends Model implements Comparable<PollInstance> {
         hash = 71 * hash + (this.poll != null ? this.poll.hashCode() : 0);
         return hash;
     }
+
+	public PollInstanceJSON toJson() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

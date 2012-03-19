@@ -2,11 +2,20 @@ package models;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
-import models.helpers.GsonSkip;
+import org.hibernate.cfg.AnnotatedClassType;
+
+
+import api.Response;
+import api.Response.CreatePollResponse;
+import api.entities.ChoiceJSON;
+import api.entities.Jsonable;
+import api.entities.PollJSON;
+import api.helpers.GsonSkip;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -22,7 +31,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Poll extends Model {
+public class Poll extends Model implements Jsonable {
 	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**
@@ -38,20 +47,24 @@ public class Poll extends Model {
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
+    @GsonSkip(classes={Poll.class})
     public String adminKey;
-    /**
-     * The email of the person that created the poll.
-     */
-    @GsonSkip(Poll.class)
-    public String email;
+    
+    /* TODO Create USER Attribute. */ 
+    
     /**
      * The question that the poll states, ex. "What is 2+2?"
      */
     public String question;
     /**
+     * A human understanable reference that the teacher will use to
+     * remember the relation of the poll, i.e. a course number, subject or alike.
+     */
+    public String reference;
+    /**
      * Is it allowed to add multiple answers?
      */
-    public boolean multipleAllowed;
+    public Boolean multipleAllowed;
     /**
      * All the possible choices associated with the poll.
      */
@@ -72,11 +85,33 @@ public class Poll extends Model {
      * @param multipleAllowed whether there are multiple options allowed or not
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, boolean multipleAllowed, String email) {
+    public Poll(String token, String question, Boolean multipleAllowed) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
-        this.email = email;
+    }
+    
+    /**
+     * Constructor Copy for Polls, this method creates a Poll object 
+     * with a new token and the same fields as the toCopy object.
+     * @param token  -- New token for the new Poll
+     * @param toCopy -- Poll object to be copied.
+     */
+    public Poll (String token, Poll toCopy) {
+    	this.token = token;
+    	this.multipleAllowed = toCopy.multipleAllowed;
+    	this.question = toCopy.question;
+    	this.reference = toCopy.reference;
+    	
+    	this.choices = new LinkedList<Choice>();
+		for(Choice c: toCopy.choices) {
+			this.choices.add(c);
+		} 
+		
+		// Update the references.
+		for (Choice c : this.choices) {
+					c.poll = this;
+		}
     }
 
     /**
@@ -201,5 +236,58 @@ public class Poll extends Model {
     @Override
     public String toString() {
         return "AdminKey: " + this.adminKey + " PollID: " + this.token + " id: " + this.id;
+    }
+    
+    /**
+     * Turn this Poll into a PollJSON
+     * @return A PollJSON object that represents this poll.
+     */
+    public PollJSON toJson() {
+    	return toJson(this);
+    }
+
+    /**
+     * Turn a Poll into a PollJSON
+     * @param p the poll
+     * @return A PollJSON object that represents the poll.
+     */
+    public static PollJSON toJson(Poll p) {
+    	PollJSON result = new PollJSON();
+    	result.id = p.id;
+    	result.token = p.token;
+    	result.reference = p.reference;
+    	result.question = p.question;
+    	result.choices = new LinkedList<ChoiceJSON>();
+		for(Choice c: p.choices) {
+			result.choices.add(c.toJson());
+		}
+		return result;
+    }
+    
+    /**
+     * Turn a Poll into a PollJSON
+     * @return PollJSON A PollJSON object that represents this poll.
+     */
+    public static Poll fromJson(PollJSON json) {
+    	Poll result = new Poll(json.token, json.question, json.multipleAllowed);
+    	result.id = json.id;
+    	result.token = json.token;
+    	result.reference = json.reference;
+    	result.question = json.question;
+    	result.choices = new LinkedList<Choice>();
+
+		// Update the choices
+    	if (json.choices != null) {
+    		for (ChoiceJSON c : json.choices) {
+    			result.choices.add(Choice.fromJson(c));	
+    		}
+    		// Update the references.
+    		for (Choice c : result.choices) {
+    			c.poll = result;
+    		}
+    	}
+		// TODO: Check if we need to do this with otner collections on the Poll as well.
+		
+		return result;
     }
 }

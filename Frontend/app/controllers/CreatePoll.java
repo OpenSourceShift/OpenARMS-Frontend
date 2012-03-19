@@ -1,15 +1,10 @@
 package controllers;
-
 import java.util.ArrayList;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import models.Poll;
 import play.mvc.Controller;
-
-import Utility.RestClient;
-
+import api.Response.CreatePollResponse;
+import api.Request.CreatePollRequest;
+import api.entities.PollJSON;
 import com.google.gson.Gson;
 
 public class CreatePoll extends Controller {
@@ -20,8 +15,8 @@ public class CreatePoll extends Controller {
 		render(email, question, answer);
 	}
 
-	public static void success(String pollID, String adminkey) {
-		render(pollID, adminkey);
+	public static void success(String token, String adminkey) {
+		render(token, adminkey);
 	}
 
 	public static void submit(String email, String question, String[] answer,
@@ -69,15 +64,22 @@ public class CreatePoll extends Controller {
 			p.multipleAllowed = true;
 		}
 
-		// Send it
 		try {
-			JSONObject result = new JSONObject(RestClient.getInstance().createQuestion(p));
-			String pollID = result.getString("pollID");
-			String adminkey = result.getString("adminKey");
-
+			//CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
+			//PollJSON poll = response.poll;
+			
+			/* ToDo: Authentication */
+			
+			//String token = poll.token;
+			// TODO: Fix this..
+			String token = null;
+			String adminkey = null;
+	
 			// Redirect to success
-			success(pollID, adminkey);
-		} catch (JSONException e) {
+			success(token, adminkey);
+		} catch (Exception e) {
+			// It failed!
+			// TODO: Tell the user!
 			e.printStackTrace();
 		}
 	}
