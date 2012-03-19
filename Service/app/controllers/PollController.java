@@ -36,98 +36,98 @@ public class PollController extends Controller{
 	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-		
-        try {
-        	
-            String json = reader.readLine();
-            PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll poll = Poll.fromJson(polljson);
-            
-         // generate data and save question, try until we have unique poll ID
-            do {
-                poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
-            } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
-                        
-            poll.save();
-            
-            CreatePollResponse r = new CreatePollResponse(poll);
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
 
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
-    }
-	
+		try {
+
+			String json = reader.readLine();
+			PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
+			Poll poll = Poll.fromJson(polljson);
+
+			// generate data and save question, try until we have unique poll ID
+			do {
+				poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
+			} while (!Poll.find("byToken", poll.token).fetch().isEmpty());
+
+			poll.save();
+
+			CreatePollResponse r = new CreatePollResponse(poll);
+			String jsonresponse = GsonHelper.toJson(r);
+			renderJSON(jsonresponse);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
+	}
+
 	/**
 	 * Method that gets a Poll from the DataBase.
 	 */
 	public static void retrieve () {
 		String pollid = params.get("id");
-		
-		Poll poll = Poll.find("byPollID", pollid).first();
-		
+
+		Poll poll = Poll.find("byID", pollid).first();
+
 		if (poll == null) {
-		    renderJSON("The question does not exist!");
+			renderJSON("The question does not exist!");
 		}
-		
+
 		CreatePollResponse r = new CreatePollResponse(poll);
 		String jsonresponse = GsonHelper.toJson(r);
-		
+
 		renderJSON(jsonresponse);
 	}
-	
+
 	/**
 	 * Method that edits a Poll already existing in the DataBase.
 	 */
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String pollid = params.get("id");
-		Poll originalpoll = Poll.find("byPollID", pollid).first();
-		
+		Poll originalpoll = Poll.find("byID", pollid).first();
+
 		try {
-        	
-            String json = reader.readLine();
-            PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll editedpoll = Poll.fromJson(polljson);
-            
-            if (editedpoll.question != null) {
-            	originalpoll.question = editedpoll.question;
-            }
-            if (editedpoll.reference != null) {
-            	originalpoll.reference = editedpoll.reference;
-            }
-            if (editedpoll.choices != null) {
-            	originalpoll.choices = editedpoll.choices;
-            }
-            
-            originalpoll.save();
-            
-            CreatePollResponse r = new CreatePollResponse(originalpoll);
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-            
+
+			String json = reader.readLine();
+			PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
+			Poll editedpoll = Poll.fromJson(polljson);
+
+			if (editedpoll.question != null) {
+				originalpoll.question = editedpoll.question;
+			}
+			if (editedpoll.reference != null) {
+				originalpoll.reference = editedpoll.reference;
+			}
+			if (editedpoll.choices != null) {
+				originalpoll.choices = editedpoll.choices;
+			}
+
+			originalpoll.save();
+
+			CreatePollResponse r = new CreatePollResponse(originalpoll);
+			String jsonresponse = GsonHelper.toJson(r);
+			renderJSON(jsonresponse);
+
 		} catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
 	}
-	
+
 	/**
 	 * Method that deletes a Poll existing in the DataBase.
 	 */
 	public static void delete () {
 		String pollid = params.get("id");
-		Poll poll = Poll.find("byPollID", pollid).first();
+		Poll poll = Poll.find("byID", pollid).first();
 		poll.delete();
-		
+
 		poll.question = null;
 		poll.reference = null;
 		poll.choices = null;
-		
+
 		CreatePollResponse r = new CreatePollResponse(poll);
-    	String jsonresponse = GsonHelper.toJson(r);
-    	renderJSON(jsonresponse);
+		String jsonresponse = GsonHelper.toJson(r);
+		renderJSON(jsonresponse);
 	}
 }
