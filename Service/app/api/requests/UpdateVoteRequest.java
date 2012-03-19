@@ -1,11 +1,17 @@
 package api.requests;
 
-public class UpdateVoteRequest extends Request {
+import api.entities.VoteJSON;
 
+public class UpdateVoteRequest extends Request {
+	public static final Class EXPECTED_RESPONSE = UpdateVoteResponse.class;
+	public VoteJSON vote;
+	public UpdateVoteRequest (VoteJSON v) {
+		this.vote = v;
+	}
+	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/vote/" + vote.id;
 	}
 
 }

@@ -33,7 +33,7 @@ public class VoteController extends APIController {
           
 	        vote.save();
 	        
-	        //Creates the PollJSON Response.
+	        //Creates the VoteJSON Response.
 	        CreateVoteResponse r = new CreateVoteResponse(vote);
 	    	String jsonresponse = GsonHelper.toJson(r);
 	    	renderJSON(jsonresponse);
@@ -45,21 +45,21 @@ public class VoteController extends APIController {
 	}
 
 	/**
-	 * Method that gets a Poll from the DataBase.
+	 * Method that gets a Vote from the DataBase.
 	 */
 	public static void retrieve () {
 		try {
-			String pollid = params.get("id");
+			String voteid = params.get("id");
 	
-			//Takes the Poll from the DataBase.
-			Poll poll = Poll.find("byID", pollid).first();
+			//Takes the Vote from the DataBase.
+			Vote vote= Vote.find("byID", voteid).first();
 	
-			//Creates the PollJSON Response.
-			if (poll == null) {
-				renderJSON("The Poll does not exist!");
+			//Creates the VoteJSON Response.
+			if (vote == null) {
+				renderJSON("The Vote does not exist!");
 			}
 			
-			CreatePollResponse r = new CreatePollResponse(poll);
+			CreateVoteResponse r = new CreateVoteResponse(vote);
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -70,37 +70,34 @@ public class VoteController extends APIController {
 	}
 
 	/**
-	 * Method that edits a Poll already existing in the DataBase.
+	 * Method that edits a Vote already existing in the DataBase.
 	 */
 	public static void edit () {
 		try {
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-			String pollid = params.get("id");
+			String voteid = params.get("id");
 	
-			//Takes the Poll from the DataBase.
-			Poll originalpoll = Poll.find("byID", pollid).first();
+			//Takes the Vote from the DataBase.
+			Vote originalvote = Vote.find("byID", voteid).first();
 
-			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
+			//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
             String json = reader.readLine();
-            PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll editedpoll = Poll.fromJson(polljson);
+            VoteJSON votejson = GsonHelper.fromJson(json, VoteJSON.class);
+            Vote editedvote = Vote.fromJson(votejson);
             
             //Changes the old fields for the new ones.
-            if (editedpoll.question != null) {
-            	originalpoll.question = editedpoll.question;
-            }
-            if (editedpoll.reference != null) {
-            	originalpoll.reference = editedpoll.reference;
-            }
-            if (editedpoll.choices != null) {
-            	originalpoll.choices = editedpoll.choices;
-            }
+            if (editedvote.choice != null) {
+				originalvote.choice = editedvote.choice;
+			}
+            if (editedvote.pollInstance != null) {
+				originalvote.pollInstance = editedvote.pollInstance;
+			}
+ 
+            originalvote.save();
             
-            originalpoll.save();
-            
-            //Creates the PollJSON Response.
-            CreatePollResponse r = new CreatePollResponse(originalpoll);
+            //Creates the VoteJSON Response.
+            CreateVoteResponse r = new CreateVoteResponse(originalvote);
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -110,24 +107,23 @@ public class VoteController extends APIController {
 	}
 
 	/**
-	 * Method that deletes a Poll existing in the DataBase.
+	 * Method that deletes a Vote existing in the DataBase.
 	 */
 	public static void delete () {
 		try {
-			String pollid = params.get("id");
+			String voteid = params.get("id");
 	
-			//Takes the Poll from the DataBase.
-			Poll poll = Poll.find("byID", pollid).first();
+			//Takes the Vote from the DataBase.
+			Vote vote = Vote.find("byID", voteid).first();
 			
-			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
-			poll.delete();
-	
-			poll.question = null;
-			poll.reference = null;
-			poll.choices = null;
+			//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
+			vote.delete();
+			vote.choice = null;
+			vote.pollInstance = null;
+
 			
-			//Creates the PollJSON Response.
-			CreatePollResponse r = new CreatePollResponse(poll);
+			//Creates the VoteJSON Response.
+			CreateVoteResponse r = new CreateVoteResponse(vote);
 			String jsonresponse = GsonHelper.toJson(r);
 			renderJSON(jsonresponse);
 			

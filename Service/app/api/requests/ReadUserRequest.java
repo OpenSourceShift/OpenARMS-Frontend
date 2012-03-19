@@ -1,14 +1,12 @@
 package api.requests;
 
 public class ReadUserRequest extends Request {
-	public Long id;
-	public ReadUserRequest (long i) {
-		this.id = i;
-	}
+	public static final Class EXPECTED_RESPONSE = ReadUserResponse.class;
+	public UserJSON user;
+	/* ? */
 	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/user/" + user.id;
 	}
 }

@@ -1,19 +1,16 @@
 package api.requests;
 
+import api.entities.PollJSON;
+
 public class ReadPollRequest extends Request {
-	public Long id;
-	public String token;
-	public ReadPollRequest(Long i) {
-		this.id = i;
-	}
-	
-	public ReadPollRequest(String t) {
-		this.token = t;
+	public static final Class EXPECTED_RESPONSE = ReadPollResponse.class;
+	public PollJSON poll;
+	public ReadPollRequest (PollJSON p) {
+		this.poll = p;
 	}
 
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/poll/" + poll.id;
 	}
 }

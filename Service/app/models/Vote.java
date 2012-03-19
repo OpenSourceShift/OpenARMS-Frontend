@@ -25,10 +25,7 @@ public class Vote extends Model implements Jsonable {
      */
     @ManyToOne
     public PollInstance pollInstance;
-    /**
-     * An integer that increments as each vote for this particular Choice and PollInstance ticks in.
-     */
-    public int count;
+
 
     /**
      * Constructs a new Vote, only one Vote is created pr. Choice and PollInstance
@@ -37,20 +34,12 @@ public class Vote extends Model implements Jsonable {
      * @param count Count of votes for choice provided
      * @param instance Poll instance this vote should belong to
      */
-    public Vote(Choice choice, int count, PollInstance instance) {
+    public Vote(Choice choice, PollInstance instance) {
         this.choice = choice;
-        this.count = count;
         this.pollInstance = instance;
     }
 
-    /**
-     * Constructs a new Vote, with 1 as initial count.
-     * @param answer Represents answer that this vote should belong to
-     * @param instance Poll instance this vote should belong to
-     */
-    public Vote(Choice answer, PollInstance instance) {
-        this(answer, 1, instance);
-    }
+
 
 	public VoteJSON toJson() {
 		// TODO Auto-generated method stub
@@ -60,7 +49,7 @@ public class Vote extends Model implements Jsonable {
 	public static Vote fromJson(VoteJSON v) {
 		Choice choice = Choice.find("byID", v.choiceid).first();
 		PollInstance pollinstance = PollInstance.find("byID", v.pollInstanceid).first();
-		Vote result = new Vote (choice, v.count, pollinstance);
+		Vote result = new Vote (choice, pollinstance);
 		return result;
 	}
 
