@@ -1,15 +1,5 @@
 package api.requests;
 
-import api.Request;
-
-/*
-GET /poll/123
-
- */
-
-
-
-/* static? */
 public class ReadPollRequest extends Request {
 	public Long id;
 	public String token;
