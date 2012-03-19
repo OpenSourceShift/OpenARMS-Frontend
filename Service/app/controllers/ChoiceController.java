@@ -6,8 +6,8 @@ import java.io.InputStreamReader;
 
 import models.Choice;
 import models.Poll;
-import api.Response.CreateChoiceResponse;
-import api.Response.CreatePollResponse;
+import api.responses.CreateChoiceResponse;
+import api.responses.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;

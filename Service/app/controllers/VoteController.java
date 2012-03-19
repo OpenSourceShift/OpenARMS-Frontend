@@ -6,8 +6,8 @@ import java.util.Random;
 
 import models.Poll;
 import models.Vote;
-import api.Response.CreatePollResponse;
-import api.Response.CreateVoteResponse;
+import api.responses.CreatePollResponse;
+import api.responses.CreateVoteResponse;
 import api.entities.PollJSON;
 import api.entities.VoteJSON;
 import api.helpers.GsonHelper;

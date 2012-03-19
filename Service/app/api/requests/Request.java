@@ -1,6 +1,5 @@
-package api;
+package api.requests;
 
-import java.util.List;
 import api.helpers.GsonSkip;
 
 public abstract class Request {

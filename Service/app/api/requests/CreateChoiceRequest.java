@@ -1,22 +1,12 @@
 package api.requests;
-
 import models.Choice;
-import api.Request;
-import api.Response.CreateChoiceResponse;
+import api.responses.CreateChoiceResponse;
 import api.entities.ChoiceJSON;
-
-/*
- * { "choice": [ "pollid": 123,
-              "text": "This is my new choice",
-              "correct": 1 ]
-}
- */
 
 public class CreateChoiceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreateChoiceResponse.class;
 	public ChoiceJSON choice;
-	public CreateChoiceRequest(Choice c)
-	{
+	public CreateChoiceRequest(Choice c) {
 		this.choice = c.toJson();
 	}
 	

@@ -9,7 +9,7 @@ import models.Choice;
 import models.Poll;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
-import api.Response.CreatePollResponse;
+import api.responses.CreatePollResponse;
 import api.deprecated.CreateResponseJSON;
 import api.deprecated.QuestionJSON;
 import play.mvc.Controller;
