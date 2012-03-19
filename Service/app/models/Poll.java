@@ -9,9 +9,7 @@ import javax.persistence.*;
 
 import org.hibernate.cfg.AnnotatedClassType;
 
-
-import api.Response;
-import api.Response.CreatePollResponse;
+import api.responses.CreatePollResponse;
 import api.entities.ChoiceJSON;
 import api.entities.Jsonable;
 import api.entities.PollJSON;
