@@ -1,8 +1,13 @@
 package api.requests;
 
-public class ReadChoiceRequest {
-/*
- * GET /choice/1
-
- */
+public class ReadChoiceRequest extends Request {
+	public Long id;
+	public ReadChoiceRequest (long i) {
+		this.id = i;
+	}
+	@Override
+	public String getURL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
