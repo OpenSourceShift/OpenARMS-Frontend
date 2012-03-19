@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.PollInstanceJSON;
+import api.responses.ClosePollInstanceResponse;
 
 public class ClosePollInstanceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ClosePollInstanceResponse.class;
