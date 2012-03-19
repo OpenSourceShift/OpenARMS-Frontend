@@ -7,6 +7,7 @@ public class ReadUserRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadUserResponse.class;
 	public UserJSON user;
 	public ReadUserRequest (UserJSON u) {
+		this.method = Method.GET;
 		this.user = u;
 	}
 	

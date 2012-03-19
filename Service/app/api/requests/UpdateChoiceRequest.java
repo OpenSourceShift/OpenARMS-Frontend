@@ -8,6 +8,7 @@ public class UpdateChoiceRequest extends Request {
 
 	public ChoiceJSON choice;
 	public UpdateChoiceRequest (ChoiceJSON c) {
+		this.method = Method.PUT;
 		this.choice = c;
 	}
 	

@@ -7,6 +7,7 @@ public class ReadChoiceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadChoiceResponse.class;
 	public ChoiceJSON choice;
 	public ReadChoiceRequest (ChoiceJSON c) {
+		this.method = Method.GET;
 		this.choice = c;
 	}
 	
