@@ -69,9 +69,9 @@ public class GsonTest extends UnitTest {
 		Fixtures.loadModels("data.yml");
 		
 		Poll p = Poll.all().first();
-		PollJSON pAsJson = Poll.toJson(p);
+		PollJSON pollAsJson = Poll.toJson(p);
     	
-		CreatePollResponse r = new CreatePollResponse(pAsJson);
+		CreatePollResponse r = new CreatePollResponse(Poll.fromJson(pollAsJson));
     	String json = GsonHelper.toJson(r);
     	
     	System.out.println();
