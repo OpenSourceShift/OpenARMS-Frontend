@@ -12,9 +12,7 @@ public class ReadVoteResponse extends Response {
 	public VoteJSON vote;
 	public ReadVoteResponse() {
 	}
-	public ReadVoteResponse(Vote v) {
-		this(v.toJson());
-	}
+
 	public ReadVoteResponse(VoteJSON json) {
 		this.vote = json;
 	}

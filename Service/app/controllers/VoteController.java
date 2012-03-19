@@ -34,7 +34,7 @@ public class VoteController extends APIController {
 	        vote.save();
 	        
 	        //Creates the VoteJSON Response.
-	        CreateVoteResponse r = new CreateVoteResponse(vote);
+	        CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
 	    	String jsonresponse = GsonHelper.toJson(r);
 	    	renderJSON(jsonresponse);
         	
@@ -59,7 +59,7 @@ public class VoteController extends APIController {
 				renderJSON("The Vote does not exist!");
 			}
 			
-			CreateVoteResponse r = new CreateVoteResponse(vote);
+			CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -97,7 +97,7 @@ public class VoteController extends APIController {
             originalvote.save();
             
             //Creates the VoteJSON Response.
-            CreateVoteResponse r = new CreateVoteResponse(originalvote);
+            CreateVoteResponse r = new CreateVoteResponse(originalvote.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -123,7 +123,7 @@ public class VoteController extends APIController {
 
 			
 			//Creates the VoteJSON Response.
-			CreateVoteResponse r = new CreateVoteResponse(vote);
+			CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 			renderJSON(jsonresponse);
 			

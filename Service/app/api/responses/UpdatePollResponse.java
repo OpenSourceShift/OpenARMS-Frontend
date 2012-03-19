@@ -9,9 +9,7 @@ public class UpdatePollResponse extends Response {
 	public PollJSON poll;
 	public UpdatePollResponse() {
 	}
-	public UpdatePollResponse(Poll p) {
-		this(p.toJson());
-	}
+
 	public UpdatePollResponse(PollJSON json) {
 		this.poll = json;
 	}

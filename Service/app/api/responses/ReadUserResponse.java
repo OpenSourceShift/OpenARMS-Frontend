@@ -9,9 +9,7 @@ public class ReadUserResponse extends Response {
 	public UserJSON user;
 	public ReadUserResponse() {
 	}
-	public ReadUserResponse(User u) {
-		this(u.toJson());
-	}
+
 	public ReadUserResponse(UserJSON json) {
 		this.user = json;
 	}

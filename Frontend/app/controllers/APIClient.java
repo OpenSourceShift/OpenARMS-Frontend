@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.net.URI;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -77,11 +78,15 @@ public class APIClient extends Controller {
 		} else if(httpRequest instanceof HttpPut) {
 			((HttpPut) httpRequest).setEntity(bae);
 		}
+		// Setting the URI.
+		httpRequest.setURI(URI.create(request.getURL()));
+		
+		// TODO: Remember to set the encoding of the request.
 		
 		HttpResponse httpResponse = client.execute(host, httpRequest);
 		HttpEntity httpResponseEntity = httpResponse.getEntity();
 		// Check the response content-type.
-		if(httpResponseEntity.getContentType().getValue().equals("application/json")) {
+		if(httpResponseEntity.getContentType().getValue().startsWith("application/json")) {
 			return GsonHelper.fromJson(httpResponseEntity.getContent(), request.EXPECTED_RESPONSE);
 		} else {
 			throw new Exception("Http response didn't have the application/json content-type.");

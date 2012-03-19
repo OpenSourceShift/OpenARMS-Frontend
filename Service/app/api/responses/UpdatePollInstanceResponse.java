@@ -9,9 +9,7 @@ public class UpdatePollInstanceResponse extends Response {
 	public PollInstanceJSON pollinstance;
 	public UpdatePollInstanceResponse() {
 	}
-	public UpdatePollInstanceResponse(PollInstance pi) {
-		this(pi.toJson());
-	}
+
 	public UpdatePollInstanceResponse(PollInstanceJSON json) {
 		this.pollinstance = json;
 	}

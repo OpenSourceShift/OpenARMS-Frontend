@@ -63,6 +63,7 @@ public class Voting extends Controller {
      * Parameter {id} - poll ID <br/>
      * Request body: VoteJSON
      */
+    @Deprecated
     public static void vote() {
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));

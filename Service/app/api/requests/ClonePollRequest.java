@@ -9,6 +9,10 @@ public class ClonePollRequest extends Request {
 	public ClonePollRequest (PollJSON p) {
 		this.poll = p;
 	}
+	
+	public ClonePollRequest () {
+	}
+		
 	@Override
 	public String getURL() {
 		return "/poll/" + poll.id + "/clone";
