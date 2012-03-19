@@ -6,11 +6,11 @@ import api.entities.PollJSON;
 
 public class CreatePollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreatePollResponse.class;
-	public PollJSON poll;
-	public CreatePollRequest(Poll p) {
+	public Poll poll;
+	public CreatePollRequest(PollJSON p) {
 		// Reset any id ...
 		this.poll.id = null;
-		for(ChoiceJSON choice: this.poll.choices) {
+		for(ChoiceJSON choice: p.choices) {
 			choice.id = null;
 		}
 	}

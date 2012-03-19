@@ -7,9 +7,9 @@ import api.responses.CreatePollInstanceResponse;
 public class CreatePollInstanceRequest extends Request {
 	 
 	public static final Class EXPECTED_RESPONSE = CreatePollInstanceResponse.class;
-	public PollInstanceJSON pollInstance;
-	public CreatePollInstanceRequest(PollInstance p) {
-	this.pollInstance = p.toJson();
+	public PollInstance pollInstance;
+	public CreatePollInstanceRequest(PollInstanceJSON p) {
+	this.pollInstance.fromJson(p);
 	}	
 	
 	@Override

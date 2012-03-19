@@ -5,10 +5,10 @@ import api.responses.CreateVoteResponse;
 
 public class CreateVoteRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreateVoteResponse.class;
-	public VoteJSON vote;
-	public CreateVoteRequest(Vote v)
+	public Vote vote;
+	public CreateVoteRequest(VoteJSON v)
 	{
-		this.vote = v.toJson();
+		this.vote.fromJson(v);
 	}
 	
 	

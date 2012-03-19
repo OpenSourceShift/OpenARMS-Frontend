@@ -5,9 +5,10 @@ import api.entities.ChoiceJSON;
 
 public class CreateChoiceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreateChoiceResponse.class;
-	public ChoiceJSON choice;
-	public CreateChoiceRequest(Choice c) {
-		this.choice = c.toJson();
+	public Choice choice;
+	public CreateChoiceRequest(ChoiceJSON c)
+	{
+		this.choice.fromJson(c);
 	}
 	
 	@Override
