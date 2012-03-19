@@ -100,7 +100,8 @@ public class Voting extends Controller {
                     // otherwise just increment the count value
                     for (Vote v : selectedChoice.votes) {
                         if (v.pollInstance.equals(question.getLatestInstance())) {
-                            v.count++;
+                        	// TODO: Create a new vote instead of counting up the value ...
+                            //v.count++;
                             v.save();
                         }
                     }

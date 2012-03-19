@@ -81,6 +81,7 @@ public class Poll extends Model implements Jsonable {
      * @param token
      * @param question Text of the question
      * @param multipleAllowed whether there are multiple options allowed or not
+                            v.count++;
      * @param email e-mail address of the poll creator
      */
     public Poll(String token, String question, Boolean multipleAllowed) {
@@ -224,7 +225,8 @@ public class Poll extends Model implements Jsonable {
             if (votesList.isEmpty()) {
                 votes[index] = 0;
             } else {
-                votes[index] = votesList.get(0).count;
+            	// FIXME: A new vote should be created instead of counting up the value.
+                //votes[index] = votesList.get(0).count;
             }
             index++;
         }
