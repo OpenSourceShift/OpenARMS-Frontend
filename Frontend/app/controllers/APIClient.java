@@ -2,11 +2,11 @@ package controllers;
 
 import java.io.IOException;
 import java.net.URI;
-
+import api.requests.*;
+import api.responses.*;
 import javax.naming.OperationNotSupportedException;
 
 import oauth.signpost.http.HttpRequest;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -21,7 +21,7 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 /*import org.json.JSONObject;*/
 
-import api.Request;
+
 import api.helpers.GsonHelper;
 
 import play.Play;
@@ -51,7 +51,7 @@ public class APIClient extends Controller {
 		return singleton;
 	}
 	
-	private HttpRequestBase getBaseRequest(api.Request request) throws Exception {
+	private HttpRequestBase getBaseRequest(api.requests.Request request) throws Exception {
 		HttpRequestBase httpRequest;
 		if(request.method == Request.Method.GET) {
 			httpRequest = new HttpGet();
@@ -67,7 +67,7 @@ public class APIClient extends Controller {
 		return httpRequest;
 	}
 	
-	private api.Response sendRequest(api.Request request) throws Exception {
+	private Response sendRequest(Request request) throws Exception {
 		String json = GsonHelper.toJson(request);
 		HttpRequestBase httpRequest = getBaseRequest(request);
 		ByteArrayEntity bae = new ByteArrayEntity(json.getBytes());
@@ -93,7 +93,7 @@ public class APIClient extends Controller {
 		}
 	}
 	
-	public static api.Response send(api.Request request) throws Exception {
+	public static Response send(Request request) throws Exception {
 		return getInstance().sendRequest(request);
 	}
 }
