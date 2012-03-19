@@ -6,17 +6,12 @@ import api.entities.PollJSON;
 
 public class CreatePollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreatePollResponse.class;
-	public Poll poll;
+	public PollJSON poll;
 	public CreatePollRequest(PollJSON p) {
-		// Reset any id ...
-		this.poll.id = null;
-		for(ChoiceJSON choice: p.choices) {
-			choice.id = null;
-		}
+		this.poll = p;
 	}
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/poll";
 	}
 }

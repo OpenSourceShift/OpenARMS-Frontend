@@ -1,5 +1,15 @@
 package api.requests;
 
-public class DeleteVoteRequest {
+import api.entities.VoteJSON;
 
+public class DeleteVoteRequest extends Request {
+	public static final Class EXPECTED_RESPONSE = DeleteVoteResponse.class;
+	public VoteJSON vote;
+	public DeleteVoteRequest (VoteJSON v) {
+		this.vote = v;
+	}
+	@Override
+	public String getURL() {
+		return "/vote/" + vote.id;
+	}
 }

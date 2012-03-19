@@ -7,15 +7,14 @@ import api.responses.CreatePollInstanceResponse;
 public class CreatePollInstanceRequest extends Request {
 	 
 	public static final Class EXPECTED_RESPONSE = CreatePollInstanceResponse.class;
-	public PollInstance pollInstance;
+	public PollInstanceJSON pollInstance;
 	public CreatePollInstanceRequest(PollInstanceJSON p) {
-	this.pollInstance.fromJson(p);
+	this.pollInstance = p;
 	}	
 	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/pollinstance";
 	}
 
 }

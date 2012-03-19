@@ -1,14 +1,17 @@
 package api.requests;
 
+import api.entities.PollInstanceJSON;
+
 public class ReadPollInstanceRequest extends Request {
-	public Long id;
-	public ReadPollInstanceRequest (long i) {
-		this.id = i;
+	public static final Class EXPECTED_RESPONSE = ReadPollInstanceResponse.class;
+	public PollInstanceJSON pollInstance;
+	public ReadPollInstanceRequest (PollInstanceJSON p) {
+		this.pollInstance = p;
 	}
+	
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "/pollinstance/" + pollInstance.id;
 	}
 	
 }
