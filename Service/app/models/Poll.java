@@ -121,14 +121,14 @@ public class Poll extends Model implements Jsonable {
      * @param duration number of seconds to activate the question for
      * @return activated Question object - does not have to be used
      */
-    public Poll activateFor(int duration) {
+    public Poll activateFor(Date startDateTime, Date endDateTime) {
         if (isActive()) {
             PollInstance latestInstance = getLatestInstance();
-            latestInstance.startDateTime = new Date(System.currentTimeMillis());
-            latestInstance.endDateTime = new Date(latestInstance.startDateTime.getTime() + duration * 1000);
+            latestInstance.startDateTime = startDateTime;
+            latestInstance.endDateTime = endDateTime;
             latestInstance.save();
         } else {
-            new PollInstance(duration, this).save();
+            new PollInstance(startDateTime, endDateTime, this).save();
         }
         return this;
     }

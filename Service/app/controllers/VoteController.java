@@ -1,57 +1,40 @@
 package controllers;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
-import models.Choice;
 import models.Poll;
-import api.helpers.GsonHelper;
-import notifiers.MailNotifier;
+import models.Vote;
 import api.responses.CreatePollResponse;
-import api.deprecated.CreateResponseJSON;
-import api.deprecated.QuestionJSON;
-import play.mvc.Controller;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import api.deprecated.ActivationJSON;
-import api.deprecated.BaseJSON;
-import api.deprecated.CreateResponseJSON;
-import api.deprecated.QuestionJSON;
+import api.responses.CreateVoteResponse;
 import api.entities.PollJSON;
+import api.entities.VoteJSON;
+import api.helpers.GsonHelper;
 
 /**
- * Class that manages the responses in the API for Polls.
+ * Class that manages the responses in the API for Votes.
  * @author OpenARMS Service Team
  *
  */
 
-public class PollController extends APIController {
-
+public class VoteController extends APIController {
 	/**
-	 * Method that saves a new Poll in the DataBase.
+	 * Method that saves a new Vote in the DataBase.
 	 */
 	public static void create() {
         try {	
 			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 	
-	    	//Takes the PollJSON and creates a new Poll object with this PollJSON.
+	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
 	        String json = reader.readLine();
-	        PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-	        Poll poll = Poll.fromJson(polljson);
-	
-	        // Generates a Unique ID and saves the Poll.
-	        do {
-	            poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
-	        } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
-	                    
-	        poll.save();
+	        VoteJSON votejson = GsonHelper.fromJson(json, VoteJSON.class);
+	        Vote vote = Vote.fromJson(votejson);
+          
+	        vote.save();
 	        
 	        //Creates the PollJSON Response.
-	        CreatePollResponse r = new CreatePollResponse(poll);
+	        CreateVoteResponse r = new CreateVoteResponse(vote);
 	    	String jsonresponse = GsonHelper.toJson(r);
 	    	renderJSON(jsonresponse);
         	

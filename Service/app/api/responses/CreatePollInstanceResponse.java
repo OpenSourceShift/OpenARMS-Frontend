@@ -1,5 +1,11 @@
 package api.responses;
 
-public class CreatePollInstanceResponse {
+import models.PollInstance;
+import api.entities.PollInstanceJSON;
 
+public class CreatePollInstanceResponse {
+	public PollInstanceJSON pollinstance;
+	public CreatePollInstanceResponse (PollInstance p) {
+		this.pollinstance = p.toJson();
+	}
 }
