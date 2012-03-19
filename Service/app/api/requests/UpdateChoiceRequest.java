@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.entities.ChoiceJSON;
+import api.responses.Response;
 import api.responses.UpdateChoiceResponse;
 
 public class UpdateChoiceRequest extends Request {
@@ -8,13 +9,22 @@ public class UpdateChoiceRequest extends Request {
 
 	public ChoiceJSON choice;
 	public UpdateChoiceRequest (ChoiceJSON c) {
-		this.method = Method.PUT;
 		this.choice = c;
 	}
 	
 	@Override
 	public String getURL() {
 		return "/choice/" + choice.id;
+	}
+
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return UpdateChoiceResponse.class;
+	}
+
+	@Override
+	public Method getHttpMethod() {
+		return Method.PUT;
 	}
 
 	

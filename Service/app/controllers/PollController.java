@@ -9,7 +9,9 @@ import models.Choice;
 import models.Poll;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
+import api.requests.CreatePollRequest;
 import api.responses.CreatePollResponse;
+import play.Logger;
 import play.mvc.Controller;
 
 import com.google.gson.Gson;
@@ -29,28 +31,24 @@ public class PollController extends APIController {
 	 * Method that saves a new Poll in the DataBase.
 	 */
 	public static void create() {
-        try {	
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-	
-	    	//Takes the PollJSON and creates a new Poll object with this PollJSON.
-	        String json = reader.readLine();
-	        PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-	        Poll poll = Poll.fromJson(polljson);
-	
+        try {
+        	Logger.debug("PollController.create() received '%s'", request.body);
+        	
+        	CreatePollRequest req = GsonHelper.fromJson(request.body, CreatePollRequest.class);
+	        Poll poll = Poll.fromJson(req.poll);
+	        
 	        // Generates a Unique ID and saves the Poll.
+	        // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
 	        do {
 	            poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
 	        } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
-	                    
 	        poll.save();
 	        
-	        //Creates the PollJSON Response.
+	        // Creates the PollJSON Response.
 	        CreatePollResponse r = new CreatePollResponse(poll.toJson());
 	    	String jsonresponse = GsonHelper.toJson(r);
 	    	renderJSON(jsonresponse);
-        	
 		} catch (Exception e) {
-			e.printStackTrace();
 			renderException(e);
 		}
 	}

@@ -2,20 +2,30 @@ package api.requests;
 
 import api.entities.PollInstanceJSON;
 import api.requests.Request.Method;
+import api.responses.CreateChoiceResponse;
 import api.responses.CreatePollInstanceResponse;
+import api.responses.Response;
 
 public class CreatePollInstanceRequest extends Request {
 	 
-	public static final Class EXPECTED_RESPONSE = CreatePollInstanceResponse.class;
 	public PollInstanceJSON pollInstance;
 	public CreatePollInstanceRequest(PollInstanceJSON p) {
-		this.method = Method.POST;
 		this.pollInstance = p;
 	}
 	
 	@Override
 	public String getURL() {
 		return "/pollinstance";
+	}
+
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return CreatePollInstanceResponse.class;
+	}
+
+	@Override
+	public Method getHttpMethod() {
+		return Method.POST;
 	}
 
 }

@@ -1,17 +1,24 @@
 package api.requests;
 
 import api.responses.GenerateAuthChallangeResponse;
+import api.responses.Response;
 
 public class GenerateAuthChallangeRequest extends Request {
-	public static final Class EXPECTED_RESPONSE = GenerateAuthChallangeResponse.class;
 	public String backend;
 	
 	public GenerateAuthChallangeRequest() {
-		this.method = Method.GET;
 	}
 	@Override
 	public String getURL() {
 		return "/user/authenticate";
+	}
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return GenerateAuthChallangeResponse.class;
+	}
+	@Override
+	public Method getHttpMethod() {
+		return Method.GET;
 	}
 	
 }

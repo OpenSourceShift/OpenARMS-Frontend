@@ -113,7 +113,9 @@ public class Choice extends Model implements Jsonable {
     	ChoiceJSON result = new ChoiceJSON();
     	result.id = c.id;
     	result.text = c.text;
-    	result.poll_id = c.poll.id;
+    	if(c.poll != null) {
+        	result.poll_id = c.poll.id;
+        }
     	result.votes = new LinkedList<VoteJSON>();
 		for(Vote v: c.votes) {
 			result.votes.add(v.toJson());

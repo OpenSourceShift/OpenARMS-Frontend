@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import play.Logger;
 import play.Play;
 
 import com.google.gson.ExclusionStrategy;
@@ -49,6 +50,7 @@ public class GsonHelper {
 			json += line;
 		}
 		br.close();
+		Logger.debug("GsonHelper.fromJson() reads '%s' as a %s", json, c.getCanonicalName()); 
 		return (C)get(c.getClass()).fromJson(json, c);
 	}
 }

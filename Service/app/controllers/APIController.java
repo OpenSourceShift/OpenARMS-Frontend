@@ -32,7 +32,11 @@ public abstract class APIController extends Controller {
         response.setContentTypeIfNotSet("application/json; charset="+encoding);
         
         Response responseJson = new ExceptionResponse(e);
-        String respnseJsonString = GsonHelper.toJson(responseJson);
-		renderJSON(GsonHelper.toJson(respnseJsonString));
+		renderJSON(responseJson);
 	}
+	
+	protected static void renderJSON(Object o) {
+		renderText(GsonHelper.toJson(o));
+	}
+	
 }

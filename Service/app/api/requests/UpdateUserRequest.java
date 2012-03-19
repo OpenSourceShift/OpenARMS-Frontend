@@ -1,19 +1,28 @@
 package api.requests;
 
 import api.entities.UserJSON;
+import api.responses.Response;
 import api.responses.UpdateUserResponse;
 
 public class UpdateUserRequest extends Request {
-	public static final Class EXPECTED_RESPONSE = UpdateUserResponse.class;
 	public UserJSON user;
 	public UpdateUserRequest (UserJSON u) {
-		this.method = Method.PUT;
 		this.user = u;
 	}
 	
 	@Override
 	public String getURL() {
 		return "/user/" + user.id;
+	}
+
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return UpdateUserResponse.class;
+	}
+
+	@Override
+	public Method getHttpMethod() {
+		return Method.PUT;
 	}
 
 }

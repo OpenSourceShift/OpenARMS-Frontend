@@ -26,12 +26,9 @@ public class ChoiceController extends APIController {
 	 */
 	public static void create() {
         try {
-        	BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-        	
         	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            String json = reader.readLine();
-            ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice choice = Choice.fromJson(choicejson);
+            CreateChoiceResponse response = GsonHelper.fromJson(request.body, CreateChoiceResponse.class);
+            Choice choice = Choice.fromJson(response.choice);
             
             choice.save();
             

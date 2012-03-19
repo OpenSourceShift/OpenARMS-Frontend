@@ -1,17 +1,24 @@
 package api.requests;
 
 import api.entities.PollJSON;
+import api.responses.Response;
 import api.responses.UpdatePollResponse;
 
 public class UpdatePollRequest extends Request {
-	public static final Class EXPECTED_RESPONSE = UpdatePollResponse.class;
 	public PollJSON poll;
 	public UpdatePollRequest (PollJSON p) {
-		this.method = Method.PUT;
 		this.poll = p;
 	}
 	@Override
 	public String getURL() {
 		return "/poll/" + poll.id;
+	}
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return UpdatePollResponse.class;
+	}
+	@Override
+	public Method getHttpMethod() {
+		return Method.PUT;
 	}
 }

@@ -1,15 +1,23 @@
 package api.requests;
 
 import api.responses.ListAuthBackendsResponse;
+import api.responses.Response;
 
 public class ListAuthBackendsRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ListAuthBackendsResponse.class;
 	
 	public ListAuthBackendsRequest() {
-		this.method = Method.GET;
 	}
 	@Override
 	public String getURL() {
 		return "/user/authenticate";
+	}
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		return ListAuthBackendsResponse.class;
+	}
+	@Override
+	public Method getHttpMethod() {
+		return Method.GET;
 	}
 }

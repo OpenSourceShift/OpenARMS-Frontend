@@ -1,6 +1,7 @@
 package api.requests;
 
 import api.helpers.GsonSkip;
+import api.responses.Response;
 
 public abstract class Request {
 	public static enum Method {
@@ -10,9 +11,7 @@ public abstract class Request {
 		DELETE
 	}
 
-	@GsonSkip(classes={Request.class})
-	public static final Class EXPECTED_RESPONSE = null;
-	@GsonSkip(classes={Request.class})
-	public Method method;
+	public abstract Method getHttpMethod();
 	public abstract String getURL();
+	public abstract Class<? extends Response> getExpectedResponseClass();
 }
