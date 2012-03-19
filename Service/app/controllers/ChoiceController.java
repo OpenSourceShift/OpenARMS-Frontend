@@ -13,80 +13,98 @@ import api.entities.PollJSON;
 import api.helpers.GsonHelper;
 import play.mvc.Controller;
 
+/**
+ * Class that manages the responses in the API for Choices.
+ * @author OpenARMS Service Team
+ *
+ */
+
 public class ChoiceController extends APIController {
 
+	/**
+	 * Method that saves a new Choice in the DataBase.
+	 */
 	public static void create() {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-		
-        try {
-        	
-            String json = reader.readLine();
-            ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice choice = Choice.fromJson(choicejson);
-            choice.save();
-            CreateChoiceResponse r = new CreateChoiceResponse(choice);
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-	
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
-        
-    }
-	
+
+		try {
+
+			String json = reader.readLine();
+			ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
+			Choice choice = Choice.fromJson(choicejson);
+			choice.save();
+			CreateChoiceResponse r = new CreateChoiceResponse(choice);
+			String jsonresponse = GsonHelper.toJson(r);
+			renderJSON(jsonresponse);
+
+		} catch (IOException ex) {
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
+
+	}
+
+	/**
+	 * Method that gets a Choice from the DataBase.
+	 */
 	public static void retrieve() {
 		String choiceid = params.get("id");
-		
-		Choice choice = Choice.find("byChoiceID", choiceid).first();
-		
+
+		Choice choice = Choice.find("byID", choiceid).first();
+
 		if (choice == null) {
-		    renderJSON("The Choice does not exist!");
+			renderJSON("The Choice does not exist!");
 		}
-		
+
 		CreateChoiceResponse r = new CreateChoiceResponse(choice);
 		String jsonresponse = GsonHelper.toJson(r);
-		
+
 		renderJSON(jsonresponse);
 	}
-	
+
+	/**
+	 * Method that edits a Choice already existing in the DataBase.
+	 */
 	public static void edit () {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 		String choiceid = params.get("id");
-		Choice originalchoice = Choice.find("byChoiceID", choiceid).first();
-		
+		Choice originalchoice = Choice.find("byID", choiceid).first();
+
 		try {
-        	
-            String json = reader.readLine();
-            ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice editedchoice = Choice.fromJson(choicejson);
 
-            originalchoice.text = editedchoice.text;
-            
-            originalchoice.save();
+			String json = reader.readLine();
+			ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
+			Choice editedchoice = Choice.fromJson(choicejson);
 
-            CreateChoiceResponse r = new CreateChoiceResponse(originalchoice);
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-            
+			originalchoice.text = editedchoice.text;
+
+			originalchoice.save();
+
+			CreateChoiceResponse r = new CreateChoiceResponse(originalchoice);
+			String jsonresponse = GsonHelper.toJson(r);
+			renderJSON(jsonresponse);
+
 		} catch (IOException ex) {
-            ex.printStackTrace();
-            renderJSON(new String());
-        }
+			ex.printStackTrace();
+			renderJSON(new String());
+		}
 	}
-	
+
+	/**
+	 * Method that deletes a Choice existing in the DataBase.
+	 */
 	public static void delete () {
 		String choiceid = params.get("id");
-		Choice choice = Choice.find("byChoiceID", choiceid).first();
+		Choice choice = Choice.find("byID", choiceid).first();
 		choice.delete();
-		
+
 		choice.id = null;
 		choice.poll = null;
 		choice.text = null;
-		
+
 		CreateChoiceResponse r = new CreateChoiceResponse(choice);
-    	String jsonresponse = GsonHelper.toJson(r);
-    	renderJSON(jsonresponse);
+		String jsonresponse = GsonHelper.toJson(r);
+		renderJSON(jsonresponse);
 	}
 
 }
