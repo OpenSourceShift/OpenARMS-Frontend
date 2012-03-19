@@ -10,17 +10,11 @@ import models.Poll;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
 import api.responses.CreatePollResponse;
-import api.deprecated.CreateResponseJSON;
-import api.deprecated.QuestionJSON;
 import play.mvc.Controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import api.deprecated.ActivationJSON;
-import api.deprecated.BaseJSON;
-import api.deprecated.CreateResponseJSON;
-import api.deprecated.QuestionJSON;
 import api.entities.PollJSON;
 
 /**
@@ -121,6 +115,31 @@ public class PollController extends APIController {
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
+	
+	/**
+	 * Method that creates a new Poll from an already existing one in the DataBase.
+	 */
+	public static void copy () {
+		try {
+			String oldpollid = params.get("id_old");
+	
+			//Takes the Poll from the DataBase.
+			Poll oldpoll = Poll.find("byID", oldpollid).first();
+			
+			Poll newpoll = new Poll(null, oldpoll);
+	
+	        // Generates a new Unique ID and saves the Poll.
+	        do {
+	            newpoll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
+	        } while (!Poll.find("byToken", newpoll.token).fetch().isEmpty());
+	        
+	        //Saves the new poll in the DataBase.
+	        newpoll.save();
+			
 		} catch (Exception e) {
 			renderException(e);
 		}
