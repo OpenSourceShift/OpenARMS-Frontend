@@ -13,7 +13,7 @@ GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
 *       /admin									module:crud
 *       /admin		                            module:secure
-GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}     QRController.returnImage
+GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
 GET		/poll/{<[0-9]+>id}						PollController.retrieve
 POST	/poll									PollController.create
 PUT		/poll/{<[0-9]+>id}						PollController.edit
@@ -22,6 +22,15 @@ GET		/choice/{<[0-9]+>id}					ChoiceController.retrieve
 POST	/choice									ChoiceController.create
 PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
 DELETE	/choice/{<[0-9]+>id}					ChoiceController.delete
+GET		/pollinstance/{<[0-9]+>id}				PollInstanceController.retrieve
+POST	/pollinstance							PollInstanceController.create
+PUT		/pollinstance/{<[0-9]+>id}				PollInstanceController.edit
+DELETE	/pollinstance/{<[0-9]+>id}				PollInstanceController.delete
+GET     /pollinstance/close/{<[0-9]+>id}	    PollInstanceController.close
+GET		/vote/{<[0-9]+>id}						VoteController.retrieve
+POST	/vote									VoteController.create
+PUT		/vote/{<[0-9]+>id}						VoteController.edit
+DELETE	/vote/{<[0-9]+>id}						VoteController.delete
 
 
 

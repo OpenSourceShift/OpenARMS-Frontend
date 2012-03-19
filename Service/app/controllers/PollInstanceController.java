@@ -110,6 +110,26 @@ public class PollInstanceController extends APIController  {
 			renderException(e);
 		}
 	}
+	
+	/**
+	 * Method that closes a PollInstance before the end time has run out.
+	 */
+	public static void close () {
+		try {
+			
+			String pollinstanceid = params.get("id");
+			
+			//Takes the PollInstance from the DataBase.
+			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
+			
+			//Closes the PollInstance and save the changes in the DataBase.
+			pollinstance.closePollInstance();
+			pollinstance.save();
+			
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
 
 	/**
 	 * Method that deletes a PollInstance existing in the DataBase.
