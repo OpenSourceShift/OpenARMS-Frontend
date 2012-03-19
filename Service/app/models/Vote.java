@@ -1,8 +1,13 @@
 package models;
 
+import java.util.LinkedList;
+
 import javax.persistence.*;
 
+import api.entities.BaseModelJSON;
+import api.entities.ChoiceJSON;
 import api.entities.Jsonable;
+import api.entities.PollJSON;
 import api.entities.VoteJSON;
 import play.db.jpa.*;
 
@@ -40,10 +45,20 @@ public class Vote extends Model implements Jsonable {
     }
 
 
+    /**
+     * Turn this Vote into a VoteJSON
+     * @return VoteJSON A VoteJSON object that represents this Vote.
+     */
+    public VoteJSON toJson() {
+    	return toJson(this);
+    }
 
-	public VoteJSON toJson() {
-		// TODO Auto-generated method stub
-		return null;
+	public VoteJSON toJson(Vote v) {
+		VoteJSON result = new VoteJSON();
+    	result.id = v.id;
+    	result.choiceid = v.choice.id;
+    	result.pollInstanceid = v.pollInstance.id;
+		return result;
 	}
 
 	public static Vote fromJson(VoteJSON v) {
@@ -52,5 +67,9 @@ public class Vote extends Model implements Jsonable {
 		Vote result = new Vote (choice, pollinstance);
 		return result;
 	}
+
+
+
+	
 
 }
