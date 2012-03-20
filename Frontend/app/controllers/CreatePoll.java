@@ -1,25 +1,15 @@
 package controllers;
-
 import java.util.ArrayList;
-
-/*import org.json.JSONException;
-import org.json.JSONObject;*/
-
 import models.Poll;
 import play.mvc.Controller;
-
-/*import Utility.RestClient;*/
-
 import api.Response.CreatePollResponse;
 import api.Request.CreatePollRequest;
 import api.entities.PollJSON;
+import com.google.gson.Gson;
 import api.entities.ChoiceJSON;
 import java.util.LinkedList;
 import api.helpers.GsonHelper;
 import java.util.List;
-
-
-import com.google.gson.Gson;
 
 public class CreatePoll extends Controller {
 	public static void index(String email, String question, String[] answer) {
@@ -35,6 +25,7 @@ public class CreatePoll extends Controller {
 		}
 		choices = GsonHelper.toJson(choices_json);
 		render(email, question, answer, choices);
+
 	}
 
 	public static void success(String token, String adminkey) {
@@ -87,12 +78,14 @@ public class CreatePoll extends Controller {
 		}
 
 		try {
-			CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
-			PollJSON poll = response.poll;
+			//CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
+			//PollJSON poll = response.poll;
 			
 			/* ToDo: Authentication */
 			
-			String token = poll.token;
+			//String token = poll.token;
+			// TODO: Fix this..
+			String token = null;
 			String adminkey = null;
 	
 			// Redirect to success
