@@ -64,8 +64,9 @@ public class PollController extends APIController {
 			//Takes the Poll from the DataBase.
 			Poll poll = Poll.find("byID", pollid).first();
 	
-			//Creates the PollJSON Response.
+			//Creates the PollJSON Response
 			if (poll == null) {
+				throw new NotFoundException("Poll was not found!");
 				renderJSON("The Poll does not exist!");
 			}
 			
