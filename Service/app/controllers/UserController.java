@@ -33,8 +33,18 @@ public class UserController extends APIController {
 			// Takes the UserJSON from the http body
 			CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
 			User user = User.fromJson(req.user);
+			User currentuser = null;
 			if (user.userAuth instanceof SimpleUserAuthBinding) {
-				SimpleAuthBackend.authenticate(user);
+				currentuser = SimpleAuthBackend.authenticate(user);
+				if (currentuser != null) {
+				    //Creates the UserJSON Response.
+					CreateUserResponse response = new CreateUserResponse(currentuser.toJson());
+					String jsonResponse = GsonHelper.toJson(response);
+					renderJSON(jsonResponse);
+				} else
+					throw new UnauthorizedException();
+			} else {
+				throw new NotFoundException();
 			}
 		}
 		catch (Exception e) {
@@ -60,22 +70,18 @@ public class UserController extends APIController {
 	    	// Takes the UserJSON and creates a new User object with this UserJSON.
 	        CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
 	        User user = User.fromJson(req.user);
-	        UserAuthBinding auth = user.userAuth;
-	        user.userAuth = null;
-			
+	        user.userAuth.save();
 	        user.save();
-	        // Takes the authentication details from user and save them to DB and update user in DB
-	        if (auth instanceof SimpleUserAuthBinding) {
-	        	SimpleUserAuthBinding authSimple = (SimpleUserAuthBinding)auth;            
-	        	authSimple.save();
-	        	user.userAuth = authSimple;
-	        	user.save();
-	        }
+	        user.userAuth.user = user;
+	        user.userAuth.save();
+	           
 	        //Creates the UserJSON Response.
 	        CreateUserResponse response2 = new CreateUserResponse(user.toJson());
 	    	String jsonResponse = GsonHelper.toJson(response2);
+	    	System.out.println(jsonResponse);
 	    	renderJSON(jsonResponse);
 		} catch (Exception e) {
+			e.printStackTrace();
 			renderException(e);
 		}
 	}

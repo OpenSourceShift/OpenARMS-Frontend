@@ -6,9 +6,9 @@ public class ExceptionResponse extends Response {
 			this.error_message = "(No message attached)";
 		} else {
 			if(e.getMessage() == null) {
-				this.error_message = e.getClass().getCanonicalName()+": (No message attached)";
+				this.error_message = e.getClass().getName()+": (No message attached)";
 			} else {
-				this.error_message = e.getClass().getCanonicalName()+": "+e.getMessage();
+				this.error_message = e.getClass().getName()+": "+e.getMessage();
 			}
 		}
 	}

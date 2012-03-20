@@ -15,9 +15,9 @@ public abstract class AuthBackend extends Controller {
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
 	 */
-	public static boolean authenticate(User user) {
+	public static User authenticate(User user) {
 		//TODO: This will be modified
-		return false;
+		return null;
 	}
 	/**
 	 * Method that resets the password of the user and sends it to user via email.
