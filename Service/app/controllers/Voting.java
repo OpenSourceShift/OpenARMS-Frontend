@@ -138,13 +138,8 @@ public class Voting extends Controller {
             int[] votes = question.getVoteCounts();
             ResultsJSON result = new ResultsJSON(urlID, question.id, question.question, question.getChoicesArray(), votes);
             renderJSON(result);
-<<<<<<< HEAD
-        }
-        */
-=======
         }*/
 
->>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
         // otherwise do not respond with results
         if (question.isActive()) {
             renderJSON("voting in progress");

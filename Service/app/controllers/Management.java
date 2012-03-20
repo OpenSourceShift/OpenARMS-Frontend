@@ -67,11 +67,7 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
-<<<<<<< HEAD
             //renderJSON(new CreateResponseJSON(question.toJson()));
-=======
-            //renderJSON(new CreateResponseJSON(question.token, question.adminKey));
->>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -114,13 +110,8 @@ public class Management extends Controller {
                 renderJSON("activated");
             } else {
                 renderJSON("not activated");
-<<<<<<< HEAD
-            }
-			*/
-=======
             }*/
 
->>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
         } catch (IOException ex) {
             ex.printStackTrace();
             renderJSON(new String());
