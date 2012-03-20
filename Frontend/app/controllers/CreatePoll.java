@@ -1,26 +1,13 @@
 package controllers;
-import java.util.ArrayList;
-<<<<<<< HEAD
 import java.util.LinkedList;
 import java.util.List;
 
-import api.entities.ChoiceJSON;
-import api.entities.PollJSON;
-import api.requests.CreatePollRequest;
-import api.responses.CreatePollResponse;
-
-=======
->>>>>>> fc5c19e9c99017cd35ac2ce567805dcea9c8bf7e
-import models.Poll;
 import play.mvc.Controller;
-import api.responses.CreatePollResponse;
-import api.requests.CreatePollRequest;
-import api.entities.PollJSON;
-import com.google.gson.Gson;
 import api.entities.ChoiceJSON;
-import java.util.LinkedList;
+import api.entities.PollJSON;
 import api.helpers.GsonHelper;
-import java.util.List;
+import api.requests.CreatePollRequest;
+import api.responses.CreatePollResponse;
 
 public class CreatePoll extends Controller {
 
