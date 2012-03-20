@@ -4,27 +4,19 @@
  */
 package controllers;
 
-import api.deprecated.ActivationJSON;
-import api.deprecated.BaseJSON;
-import api.deprecated.CreateResponseJSON;
-import api.deprecated.QuestionJSON;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
-import javax.persistence.EntityManager;
-
 import models.Choice;
 import models.Poll;
 import notifiers.MailNotifier;
-import play.db.jpa.JPASupport;
 import play.mvc.Controller;
-import play.mvc.Http.StatusCode;
+import api.deprecated.ActivationJSON;
+import api.deprecated.QuestionJSON;
+
+import com.google.gson.Gson;
 
 /**
  * Controller which takes care of functions that poll administrator uses
@@ -131,14 +123,13 @@ public class Management extends Controller {
         String adminKey = params.get("adminKey");
         // retrieve and activate the question
         Poll question = Poll.find("byPollID", urlID).first();
-        /*
+        
         if (question != null && adminKey != null && question.adminKey.equals(adminKey)) {
             renderJSON(new BaseJSON());
         } else {
         	response.status = StatusCode.FORBIDDEN;
             renderJSON(new BaseJSON("Invalid admin link"));
         }
-        */
     }
     */
 }
