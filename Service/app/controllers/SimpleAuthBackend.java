@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import notifiers.MailNotifier;
+
 import models.SimpleUserAuthBinding;
 import models.User;
 import play.*;
@@ -17,6 +19,7 @@ public class SimpleAuthBackend extends AuthBackend {
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
 	 */
+	@Override
 	public boolean authorize() {
 	    boolean authorized = false;
 	    User user = null;
@@ -45,4 +48,22 @@ public class SimpleAuthBackend extends AuthBackend {
 	    }
 	    return authorized; 
 	}
+	
+	/**
+	 * Method that resets the password of the user and sends it to user via email.
+	 */
+	@Override
+	public void resetPassword() {
+		User user = null;
+		Header header = Http.Request.current().headers.get("passreset");
+		if (header != null) {
+			user = (User)User.find("name", Http.Request.current().user).fetch().get(0);
+			if (user != null) {
+				((SimpleUserAuthBinding)user.userAuth).generatePassword();
+				MailNotifier.sendPassword(user);
+			}
+		}
+	}
+	
+	
 }
