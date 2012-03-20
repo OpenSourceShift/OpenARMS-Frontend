@@ -38,9 +38,9 @@
 				<p class="formError">#{error 'answer' /}</p>
 			#{/ifError}
 			<ol id='answers'>
-				<span id="AddAnswerButton"><input class='button' type="button" value="&{'createpoll.form.addAnswer'}" /></span>
+				
 			</ol>
-			
+			<span id="AddAnswerButton"><input class='button' type="button" value="&{'createpoll.form.addAnswer'}" /></span>
 		</div>
 		<input type='button' id="submit_question" value="&{'createpoll.form.submit'}" class='button' />
 		<input type='submit' value="&{'createpoll.form.cancel'}" class='button'>
@@ -49,6 +49,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	$("#editor").val("${question}");
 	var answers = ${choices.raw()};
 	len = answers.length;
 	myFields = new Array();
