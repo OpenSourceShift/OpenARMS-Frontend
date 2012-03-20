@@ -35,7 +35,7 @@ public class PollInstanceController extends APIController  {
 	            
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.user.id != u.id) {
+			if (u == null || pollinstance.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 			
@@ -92,7 +92,7 @@ public class PollInstanceController extends APIController  {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalpollinstance.poll.user.id != u.id) {
+			if (u == null || originalpollinstance.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 
@@ -143,7 +143,7 @@ public class PollInstanceController extends APIController  {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.user.id != u.id) {
+			if (u == null || pollinstance.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 			
@@ -172,7 +172,7 @@ public class PollInstanceController extends APIController  {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.user.id != u.id) {
+			if (u == null || pollinstance.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 			

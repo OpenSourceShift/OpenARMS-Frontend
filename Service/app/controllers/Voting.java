@@ -132,6 +132,7 @@ public class Voting extends Controller {
         if (question == null) {
             renderJSON("");
         }
+        /*
         // return results when correct adminKey is provided or when question is not active
         /*if ((adminKey != null && question.adminKey.equals(adminKey)) || !question.isActive()) {
             int[] votes = question.getVoteCounts();

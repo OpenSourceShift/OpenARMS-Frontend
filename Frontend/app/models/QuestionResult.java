@@ -1,6 +1,7 @@
 package models;
 
 import play.db.jpa.Model;
+
 @Deprecated
 public class QuestionResult extends Model {
 	protected int token = 12;
