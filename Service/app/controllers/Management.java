@@ -55,7 +55,7 @@ public class Management extends Controller {
                 question.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
             } while (!Poll.find("byToken", question.token).fetch().isEmpty());
 
-            question.generateAdminKey(8);
+            //question.generateAdminKey(8);
             question.save();
 
             // send mail to the creator of question 
@@ -67,7 +67,7 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
-            renderJSON(new CreateResponseJSON(question.token, question.adminKey));
+            //renderJSON(new CreateResponseJSON(question.token, question.adminKey));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -104,13 +104,13 @@ public class Management extends Controller {
             }
 
             // only when provided adminKey is correct
-            if (question.adminKey.equals(adminKey)) {
+            /*if (question.adminKey.equals(adminKey)) {
                 //question.activateFor(activationMsg.getDuration());
                 question.save();
                 renderJSON("activated");
             } else {
                 renderJSON("not activated");
-            }
+            }*/
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -126,7 +126,7 @@ public class Management extends Controller {
      * Parameter {id} - poll ID <br/>
      * Parameter {adminKey} - randomly generated string at question creation <br/>
      */
-    public static void checkAdminLink() {
+   /* public static void checkAdminLink() {
         long urlID = params.get("id", Long.class).longValue();
         String adminKey = params.get("adminKey");
         // retrieve and activate the question
@@ -139,4 +139,5 @@ public class Management extends Controller {
             renderJSON(new BaseJSON("Invalid admin link"));
         }
     }
+    */
 }
