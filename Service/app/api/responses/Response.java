@@ -5,8 +5,7 @@ import api.helpers.GsonSkip;
 public class Response {
 	
 	public String error_message = null;
-	@GsonSkip(classes = {Response.class})
-	public int statusCode;
+	public Integer statusCode;
 	public Response() {
 		
 	}
