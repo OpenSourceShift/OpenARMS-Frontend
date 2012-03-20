@@ -6,6 +6,8 @@ import play.*;
 
 import javax.persistence.*;
 
+import notifiers.MailNotifier;
+
 import java.util.List;
 import java.util.Random;
 
@@ -32,5 +34,17 @@ public class SimpleUserAuthBinding extends UserAuthBinding {
 		if (user.equals(this.user) && password.equals(this.password))
 			secret = generateSecret();
 		return secret;
+	}
+	
+	/**
+	 * Method to generate and to change password for the user.
+	 */
+	public void generatePassword() {
+		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		Random random = new Random();
+		StringBuilder strBuild = new StringBuilder();
+		for (int i=0; i<8; i++)
+			strBuild.append(SECRET_CHARSET.charAt(random.nextInt(SECRET_CHARSET.length()-1)));
+		this.password = strBuild.toString();
 	}
 }

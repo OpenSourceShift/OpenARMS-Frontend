@@ -8,8 +8,8 @@ import play.mvc.*;
 import models.*;
 
 /**
- *
- * @author OpenARS Server API team
+ * Class to notify users via email.
+ * @author OpenARMS Service Team
  */
 public class MailNotifier extends Mailer {
 
@@ -33,6 +33,17 @@ public class MailNotifier extends Mailer {
         if (question != null) {
             send(question);
         }
+    }
+    
+    /**
+     * Method that sends a new password to the user
+     * @param user the user that requested password reset     
+     */
+    public static void sendPassword(User user) {
+        setSubject("Your new password");
+        addRecipient(user.email);
+        setFrom("OpenARMS.dk <no-reply@openarms.dk>");
+        send("Your new password: " + ((SimpleUserAuthBinding)user.userAuth).password);
     }
 
 }

@@ -5,8 +5,10 @@ import java.io.InputStreamReader;
 import java.util.Random;
 
 import controllers.APIController.NotFoundException;
+import controllers.APIController.UnauthorizedException;
 
 import models.Poll;
+import models.User;
 import models.Vote;
 import api.requests.CreateVoteRequest;
 import api.responses.CreatePollResponse;
@@ -31,6 +33,12 @@ public class VoteController extends APIController {
 	        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
 	        Vote vote = Vote.fromJson(req.vote);
           
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || vote.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 	        vote.save();
 	        
 	        //Creates the VoteJSON Response.
@@ -82,6 +90,12 @@ public class VoteController extends APIController {
 			if (originalvote == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || originalvote.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 
 			//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
 			CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
@@ -120,6 +134,12 @@ public class VoteController extends APIController {
 			if (vote == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || vote.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 			
 			//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
 			vote.delete();
