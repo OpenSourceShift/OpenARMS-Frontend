@@ -232,12 +232,6 @@ public class Poll extends Model implements Jsonable {
         }
         return votes;
     }
-
-    @Override
-    public String toString() {
-    	return "PollID: " + this.token + " id: " + this.id;
-       // return "User: " + this.admin.name + " PollID: " + this.token + " id: " + this.id;
-    }
     
     /**
      * Turn this Poll into a PollJSON

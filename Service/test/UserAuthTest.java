@@ -5,6 +5,8 @@ import models.User;
 
 import org.junit.Test;
 
+import controllers.UserController;
+
 import play.test.Fixtures;
 import play.test.UnitTest;
 
@@ -43,7 +45,7 @@ public class UserAuthTest extends UnitTest {
     	User user = users.get(0);
     	// Try to authenticate
     	SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
-    	String secret = auth.authenticate(user, "secret");
+    	String secret = auth.authenticate("secret");
     	// Check if authenticated
     	assertNotNull(secret);
     }

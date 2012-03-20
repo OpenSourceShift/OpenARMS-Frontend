@@ -89,6 +89,7 @@ public class PollController extends APIController {
 			renderException(e);
 		}
 	}
+	
 
 	/**
 	 * Method that edits a Poll already existing in the DataBase.

@@ -78,9 +78,16 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
         return hash;
     }
 
-	public PollInstanceJSON toJson() {
-		// TODO Auto-generated method stub
-		return null;
+    public PollInstanceJSON toJson() {
+    	return this.toJson(this);
+    }
+	public PollInstanceJSON toJson(PollInstance p) {
+    	PollInstanceJSON result = new PollInstanceJSON();
+    	result.id = p.id;
+    	result.poll_id = p.poll.id;
+    	result.startDateTime = p.startDateTime;
+    	result.endDateTime = p.endDateTime;
+		return result;
 	}
 	
 	public static PollInstance fromJson (PollInstanceJSON json) {
