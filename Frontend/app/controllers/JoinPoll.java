@@ -52,6 +52,10 @@ public class JoinPoll extends Controller {
 				APIClient.getInstance().send(new CreateVoteRequest(vote));
 			}
 		}
+		else {
+			throw new Exception("no answers submitted");
+		}
+		
 		/* TODO: validation
 		validation.required(stuff);
 		if (validation.hasErrors()) {
@@ -67,12 +71,12 @@ public class JoinPoll extends Controller {
 	public static void success(Long instanceId) {
 		// TODO: what should happen? just show the statistics of the instance?
 		
-		/*String question = null;
+		/* String question = null;
 		JsonArray answersArray = null;
 		String duration = null;
 
 		try {
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
+			ReadPollInstanceResponse response = (ReadPollInstanceResponse) APIClient.getInstance().send(new ReadPollInstanceRequest(instanceId));
 			question = response.question;
 			answersArray = response.answersArray;
 			duration = response.duration;
@@ -89,11 +93,10 @@ public class JoinPoll extends Controller {
 		}
 
 		render(token, question, answersArray, duration, durationString);
-		*/
+		
 	}
 
 	public static void nopoll(String token) {
-		// TODO: will this still be used?
-		render(token);
+		render(token); */
 	}
 }
