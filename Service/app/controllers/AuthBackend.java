@@ -1,5 +1,6 @@
 package controllers;
 
+import api.entities.UserJSON;
 import models.User;
 import play.*;
 import play.mvc.*;
@@ -14,7 +15,10 @@ public abstract class AuthBackend extends Controller {
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
 	 */
-	abstract public boolean authorize();
+	public static boolean authenticate(User user) {
+		//TODO: This will be modified
+		return false;
+	}
 	/**
 	 * Method that resets the password of the user and sends it to user via email.
 	 */
