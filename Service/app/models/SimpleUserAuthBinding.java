@@ -29,9 +29,9 @@ public class SimpleUserAuthBinding extends UserAuthBinding {
 	 * @param password password that we want to check
 	 * @return newly generated secret to keep user logged in the system 
 	 */
-	public String authenticate(User user, String password) {
+	public String authenticate(String password) {
 		String secret = null;
-		if (user.equals(this.user) && password.equals(this.password))
+		if (password.equals(this.password))
 			secret = generateSecret();
 		return secret;
 	}

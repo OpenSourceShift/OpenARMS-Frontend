@@ -67,7 +67,7 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
-            //renderJSON(new CreateResponseJSON(question.token, question.adminKey));
+            //renderJSON(new CreateResponseJSON(question.toJson()));
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -102,7 +102,7 @@ public class Management extends Controller {
             if (question == null) {
                 renderJSON("The question does not exist!");
             }
-
+        	/*
             // only when provided adminKey is correct
             /*if (question.adminKey.equals(adminKey)) {
                 //question.activateFor(activationMsg.getDuration());
@@ -131,13 +131,14 @@ public class Management extends Controller {
         String adminKey = params.get("adminKey");
         // retrieve and activate the question
         Poll question = Poll.find("byPollID", urlID).first();
-
+        /*
         if (question != null && adminKey != null && question.adminKey.equals(adminKey)) {
             renderJSON(new BaseJSON());
         } else {
         	response.status = StatusCode.FORBIDDEN;
             renderJSON(new BaseJSON("Invalid admin link"));
         }
+        */
     }
     */
 }

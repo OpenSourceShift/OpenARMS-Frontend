@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import api.entities.UserJSON;
+
 import notifiers.MailNotifier;
 
 import models.SimpleUserAuthBinding;
@@ -16,37 +18,26 @@ import play.mvc.Http.*;
  */
 public class SimpleAuthBackend extends AuthBackend {
 	/**
-	 * Method that authorize the user to access the system.
-	 * @return true if user authorized and false otherwise
+	 * Method that authenticates the user to access the system.
+	 * @return true if user authenticated and false otherwise
 	 */
-	@Override
-	public boolean authorize() {
-	    boolean authorized = false;
-	    User user = null;
-	    // Check the header of the request
-	    Header header = Http.Request.current().headers.get("authorization");
-	    if (header != null) {
-	    	if (Http.Request.current().password != null) {
-	    		// Get the user specified within the http request
-	    		user = (User)User.find("name", Http.Request.current().user).fetch().get(0);
-	    		if (user != null) {
-	    			// Check the authentication method
-	    			if (user.userAuth instanceof SimpleUserAuthBinding) {
-	    				SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
-	    				// Authenticate
-	    				user.secret = auth.authenticate(user, Http.Request.current().password);
-	    				authorized = true;
-	    			}
-	    		}
-	    	}
-	    }
+	public static boolean authenticate(User user) {
+	    boolean authenticated = false;
+	    // Find correct user in the DB
+	    User u = (User)User.find("name",user.name).first();
+	    if (u != null) {
+	    	SimpleUserAuthBinding auth = (SimpleUserAuthBinding)u.userAuth;
+	    	u.secret = auth.authenticate(((SimpleUserAuthBinding)user.userAuth).password);
+	    	if (user.secret != null)
+				authenticated = true;
+		}
 	    // Send the response in case user has not been authenticated
-	    if (!authorized) {
+	    if (!authenticated) {
 	    	Http.Response.current().status = 401;
 	    	Http.Response.current().setHeader("Content-Length", "0");
 	    	Http.Response.current().setHeader("WWW-Authenticate", "Basic");
 	    }
-	    return authorized; 
+	    return authenticated; 
 	}
 	
 	/**
