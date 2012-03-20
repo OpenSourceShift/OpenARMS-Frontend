@@ -1,6 +1,6 @@
 body{
-	background-color: #a60000; 
-	color: #a60000; 
+  background-color: #404040;
+	color: #fff;
 	font-family: Verdana;
 	font-size: 12px;
 	margin: 0;
@@ -11,7 +11,7 @@ body{
 #content {
 	margin: 1% auto;
   max-width: 600px;
-  background-color: #fff; 
+  background-color: #404040;
   border-radius: 5px;
   overflow: auto;
 }
@@ -22,7 +22,7 @@ a {
 	color: #fff;
 }
 hr{
-  background-color: #a60000; 
+  background-color: #fff;
   height: 2pt;
   border: none;
 }
@@ -53,22 +53,26 @@ input[type=password] {
 
 .button {
 	text-decoration: none;
-	padding: 5px 10px;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	border: 0;
-	cursor: pointer;
-	background-color: #02909d;
-  color: #fff;
+  font-family: Verdana;
+	background-color: #fba600;
+  color: #000;
 	min-width: 100px;
-  margin-top: 1%;
-}
-.button:hover {
-	background-color: #015d66;
-  color: #ffd100;
-}
+  min-height: 25px;
+  padding: 4px;
+  margin-top: 3%;
+  text-align: center;
+  vertical-align: middle;
 
+}
+.hovere-active{
+  background-color: #000;
+  color: #FBa600;
+  cursor: pointer;
+}
 .labeledinput {
 	margin-bottom: 5px;
 }
@@ -89,7 +93,7 @@ input[type=password] {
 	border: 1px solid #b07327;
 }
 #header {
-	margin: 20% 0;
+	margin: 10% 0;
   overflow: hidden;
   text-align: center;
 }
