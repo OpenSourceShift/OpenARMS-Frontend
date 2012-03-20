@@ -7,8 +7,13 @@ import api.responses.Response;
 public class ReadPollInstanceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadPollInstanceResponse.class;
 	public Long pollInstance_id;
+	public String pollInstance_token;
 	public ReadPollInstanceRequest (Long l) {
 		this.pollInstance_id = l;
+	}
+	
+	public ReadPollInstanceRequest (String s) {
+		this.pollInstance_token = s;
 	}
 	
 	@Override
