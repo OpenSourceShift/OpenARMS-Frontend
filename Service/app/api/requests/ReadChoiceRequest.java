@@ -5,14 +5,14 @@ import api.responses.ReadChoiceResponse;
 import api.responses.Response;
 
 public class ReadChoiceRequest extends Request {
-	public ChoiceJSON choice;
-	public ReadChoiceRequest (ChoiceJSON c) {
-		this.choice = c;
+	public Long choice_id;
+	public ReadChoiceRequest (Long l) {
+		this.choice_id = l;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/choice/" + choice.id;
+		return "/choice/" + choice_id;
 	}
 
 	@Override

@@ -5,14 +5,14 @@ import api.responses.ReadUserResponse;
 import api.responses.Response;
 
 public class ReadUserRequest extends Request {
-	public UserJSON user;
-	public ReadUserRequest (UserJSON u) {
-		this.user = u;
+	public Long user_id;
+	public ReadUserRequest (Long l) {
+		this.user_id = l;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/user/" + user.id;
+		return "/user/" + user_id;
 	}
 
 	@Override

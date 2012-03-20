@@ -5,13 +5,13 @@ import api.responses.DeleteUserResponse;
 import api.responses.Response;
 
 public class DeleteUserRequest extends Request {
-	public UserJSON user;
-	public DeleteUserRequest (UserJSON u) {
-		this.user = u;
+	public Long user_id;
+	public DeleteUserRequest (Long l) {
+		this.user_id = l;
 	}
 	@Override
 	public String getURL() {
-		return "/user/" + user.id;
+		return "/user/" + user_id;
 	}
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {

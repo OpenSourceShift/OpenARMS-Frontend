@@ -5,14 +5,14 @@ import api.responses.ReadVoteResponse;
 import api.responses.Response;
 
 public class ReadVoteRequest extends Request {
-	public VoteJSON vote;
-	public ReadVoteRequest (VoteJSON v) {
-		this.vote = v;
+	public Long vote_id;
+	public ReadVoteRequest (Long l) {
+		this.vote_id = l;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/vote/" + vote.id;
+		return "/vote/" + vote_id;
 	}
 
 	@Override

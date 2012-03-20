@@ -72,7 +72,7 @@ public class User extends Model implements Jsonable {
     	result.name = json.name;
     	result.email = json.email;
     	result.secret = json.secret;
-    	if (json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
+    	if (json.backend != null && json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
     		SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
     		auth.password = json.attributes.get("password");
     		result.userAuth = auth;

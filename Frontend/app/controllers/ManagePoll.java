@@ -107,9 +107,9 @@ public class ManagePoll extends Controller {
 
 	public static void statistics() {
 		/*
-		String token = session.get("token");
-		String adminkey = session.get("adminkey");
 		render(token, adminkey);
 		*/
+		String token = "asdasd";
+		render(token);
 	}
 }
