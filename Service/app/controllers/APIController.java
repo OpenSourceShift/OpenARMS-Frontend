@@ -6,9 +6,11 @@ import java.util.Map;
 import api.helpers.GsonHelper;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
+import play.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
+import play.test.Fixtures;
 
 public abstract class APIController extends Controller {
 	public static class NotFoundException extends Exception {}
@@ -44,6 +46,14 @@ public abstract class APIController extends Controller {
 	
 	protected static void renderJSON(Object o) {
 		renderText(GsonHelper.toJson(o));
+	}
+	
+	public static void loadTestData() {
+		if(Play.mode.equals(Play.Mode.DEV)) {
+			Fixtures.deleteAllModels();
+			Fixtures.loadModels("data.yml");
+			renderText("OK");
+		}
 	}
 	
 }

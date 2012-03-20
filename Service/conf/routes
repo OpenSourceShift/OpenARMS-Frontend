@@ -40,6 +40,8 @@ PUT		/user/{<[0-9]+>id}						UserController.edit
 DELETE	/user/{<[0-9]+>id}						UserController.delete
 POST	/user/authenticate						UserController.authenticate
 
+GET		/loadtestdata							APIController.loadTestData
+
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public
