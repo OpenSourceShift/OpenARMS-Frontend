@@ -1,0 +1,1 @@
+{"user":{"name":"test", "backend":"class models.SimpleUserAuthBinding", "attributes":{"password":"1234"}}}
