@@ -4,6 +4,9 @@ import api.entities.ChoiceJSON;
 import api.responses.Response;
 import api.responses.UpdateChoiceResponse;
 
+/**
+ * A request for the service: 
+ */
 public class UpdateChoiceRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = UpdateChoiceResponse.class;
 

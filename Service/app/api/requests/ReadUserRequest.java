@@ -4,6 +4,9 @@ import api.entities.UserJSON;
 import api.responses.ReadUserResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadUserRequest extends Request {
 	public Long user_id;
 	public ReadUserRequest (Long l) {

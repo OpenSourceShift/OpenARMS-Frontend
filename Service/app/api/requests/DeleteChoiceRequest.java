@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.DeleteChoiceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a choice
+ */
 public class DeleteChoiceRequest extends Request {
 	public Long choice_id;
 	public DeleteChoiceRequest (Long l) {

@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.DeletePollResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a poll
+ */
 public class DeletePollRequest extends Request {
 	
 	public Long poll_id;

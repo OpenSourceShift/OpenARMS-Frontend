@@ -4,6 +4,9 @@ import api.requests.Request.Method;
 import api.responses.DeleteUserResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a user
+ */
 public class DeleteUserRequest extends Request {
 	public Long user_id;
 	public DeleteUserRequest (Long l) {

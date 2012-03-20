@@ -4,6 +4,9 @@ import api.entities.UserJSON;
 import api.responses.Response;
 import api.responses.UpdateUserResponse;
 
+/**
+ * A request for the service: 
+ */
 public class UpdateUserRequest extends Request {
 	public UserJSON user;
 	public UpdateUserRequest (UserJSON u) {

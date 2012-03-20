@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.DeletePollInstanceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a poll instance
+ */
 public class DeletePollInstanceRequest extends Request {
 
 	public Long pollInstance_id;

@@ -4,6 +4,9 @@ import api.entities.PollInstanceJSON;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadPollInstanceRequest extends Request {
 	public Long pollInstance_id;
 	public ReadPollInstanceRequest (Long l) {
