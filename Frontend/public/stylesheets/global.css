@@ -1,15 +1,31 @@
 body{
-	background-color: #06799f;
-	color: #3c3b37;
+	background-color: #a60000; 
+	color: #a60000; 
 	font-family: Verdana;
 	font-size: 12px;
 	margin: 0;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
 }
-
+#content {
+	margin: 1% auto;
+  max-width: 600px;
+  background-color: #fff; 
+  border-radius: 5px;
+  overflow: auto;
+}
+#main{
+  overflow: auto;
+}
 a {
 	color: #fff;
 }
-
+hr{
+  background-color: #a60000; 
+  height: 2pt;
+  border: none;
+}
 h1, h2 {
 	font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
 	font-size: 18px;
@@ -48,7 +64,6 @@ input[type=password] {
 	min-width: 100px;
   margin-top: 1%;
 }
-
 .button:hover {
 	background-color: #015d66;
   color: #ffd100;
@@ -60,7 +75,6 @@ input[type=password] {
 .labeledinput label {
 	display: block;
 }
-
 .labeledinput input {
 	border: 0;
 	padding: 2px 5px;
@@ -68,9 +82,7 @@ input[type=password] {
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 }
-
-.formErrorNotice,
-.formError {
+.formErrorNotice, .formError {
 	padding: 5px;
 	color: #b07327;
 	background-color: #fff1c6;
@@ -81,14 +93,11 @@ input[type=password] {
   overflow: hidden;
   text-align: center;
 }
-
 #header img {
 	max-width: 100%;
 	border: 0;
 }
-
 .greybg {
-	background-color: #434343;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
@@ -125,5 +134,4 @@ input[type=password] {
 #footer{
   margin-left: 35%;
   font-size: 8pt;
-  color: #817b40;
 }
