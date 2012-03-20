@@ -4,3 +4,4 @@ cat /tmp/auth.log |sed "s/,/\n/g" > /tmp/auth1.log
 USERID=`cat /tmp/auth1.log  |grep id |cut -d ":" -f 3`
 SECRET=`cat /tmp/auth1.log  |grep secret |cut -d '"' -f 4`
 echo $USERID:$SECRET > auth.txt
+./req.sh POST newpoll.json poll auth.txt
