@@ -4,6 +4,7 @@
 
 # Import CRUD routes
 *		/admin									module:crud
+*		/api/{<.*>url}							APIClient.tunnel
 
 # Home page
 GET     /                                       Application.index

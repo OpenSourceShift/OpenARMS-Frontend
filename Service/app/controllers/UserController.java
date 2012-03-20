@@ -24,6 +24,35 @@ import api.helpers.GsonHelper;
  */
 public class UserController extends APIController {
 	/**
+	 * Method that authenticates the user.
+	 * It generates new secret for the user.
+	 * Used only when user is logging in.
+	 */
+	public static void authenticate() {
+		try {
+			// Takes the UserJSON from the http body
+			CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
+			User user = User.fromJson(req.user);
+			if (user.userAuth instanceof SimpleUserAuthBinding) {
+				SimpleAuthBackend.authenticate(user);
+			}
+		}
+		catch (Exception e) {
+			renderException(e);
+		}
+	}
+	
+	/**
+	 * Method that authorizes the user.
+	 * It keeps user logged in the system.
+	 * Used every time user sends any request.
+	 */
+	public static boolean authorize() {
+		User user = AuthBackend.getCurrentUser();
+		return (user != null);
+	}
+	
+	/**
 	 * Method that saves a new User in the DataBase.
 	 */
 	public static void create() {
@@ -33,12 +62,6 @@ public class UserController extends APIController {
 	        User user = User.fromJson(req.user);
 	        UserAuthBinding auth = user.userAuth;
 	        user.userAuth = null;
-	        
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || user.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
 			
 	        user.save();
 	        // Takes the authentication details from user and save them to DB and update user in DB

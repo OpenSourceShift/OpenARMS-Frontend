@@ -24,7 +24,7 @@ public abstract class APIController extends Controller {
 	
 	protected static void renderException(Exception e) {
 		System.err.println("Exception thrown in an APIController: "+e.getMessage());
-		e.printStackTrace();
+		//e.printStackTrace();
 		// Return this error to the user.
 		Integer statusCode = STATUS_CODES.get(e.getClass());
 		if(statusCode == null) {
@@ -32,11 +32,14 @@ public abstract class APIController extends Controller {
 		} else {
 			response.status = statusCode;
 		}
-		String encoding = Http.Response.current().encoding;
-        response.setContentTypeIfNotSet("application/json; charset="+encoding);
+		
+        response.contentType = "application/json";
+        // TODO: Find out if this is the right way to get the encoding.
+        response.encoding = Http.Response.current().encoding;
         
         Response responseJson = new ExceptionResponse(e);
-		renderJSON(responseJson);
+        String json = GsonHelper.toJson(responseJson);
+		renderJSON(json);
 	}
 	
 	protected static void renderJSON(Object o) {
