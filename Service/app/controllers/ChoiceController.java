@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import controllers.APIController.NotFoundException;
+
 import models.Choice;
 import models.Poll;
 import api.requests.CreateChoiceRequest;
@@ -53,11 +55,11 @@ public class ChoiceController extends APIController {
 			//Takes the Choice from the DataBase.
 			Choice choice = Choice.find("byID", choiceid).first();
 		
-			//Creates the ChoiceJSON Response.
 			if (choice == null) {
-				renderJSON("The Choice does not exist!");
+				throw new NotFoundException();
 			}
 			
+			//Creates the ChoiceJSON Response.
 			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
@@ -77,6 +79,10 @@ public class ChoiceController extends APIController {
 			
 			//Takes the Choice from the DataBase.
 			Choice originalchoice = Choice.find("byID", choiceid).first();
+			
+			if (originalchoice == null) {
+				throw new NotFoundException();
+			}
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
             CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
@@ -106,6 +112,10 @@ public class ChoiceController extends APIController {
 			
 			//Takes the Choice from the DataBase.
 			Choice choice = Choice.find("byID", choiceid).first();
+			
+			if (choice == null) {
+				throw new NotFoundException();
+			}
 	
 			choice.delete();
 	

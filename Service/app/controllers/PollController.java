@@ -63,12 +63,17 @@ public class PollController extends APIController {
 	
 			//Takes the Poll from the DataBase.
 			Poll poll = Poll.find("byID", pollid).first();
-	
-			//Creates the PollJSON Response.
+			
+	        /*
+	        if (poll.user != ??) {
+	        	throw new Unauthorized();
+	        }*/
+			
 			if (poll == null) {
-				renderJSON("The Poll does not exist!");
+				throw new NotFoundException();
 			}
 			
+			//Creates the PollJSON Response
 			CreatePollResponse r = new CreatePollResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
@@ -90,6 +95,10 @@ public class PollController extends APIController {
 	
 			//Takes the Poll from the DataBase.
 			Poll originalpoll = Poll.find("byID", pollid).first();
+			
+			if (originalpoll == null) {
+				throw new NotFoundException();
+			}
 
 			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
@@ -129,6 +138,10 @@ public class PollController extends APIController {
 			//Takes the Poll from the DataBase.
 			Poll oldpoll = Poll.find("byID", oldpollid).first();
 			
+			if (oldpoll == null) {
+				throw new NotFoundException();
+			}
+			
 			Poll newpoll = new Poll(null, oldpoll);
 	
 	        // Generates a new Unique ID and saves the Poll.
@@ -153,6 +166,10 @@ public class PollController extends APIController {
 	
 			//Takes the Poll from the DataBase.
 			Poll poll = Poll.find("byID", pollid).first();
+			
+			if (poll == null) {
+				throw new NotFoundException();
+			}
 			
 			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 			poll.delete();

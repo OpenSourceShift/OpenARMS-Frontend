@@ -1,15 +1,31 @@
 package controllers;
 import java.util.ArrayList;
-
 import models.Poll;
 import play.mvc.Controller;
+import api.responses.CreatePollResponse;
+import api.requests.CreatePollRequest;
+import api.entities.PollJSON;
+import com.google.gson.Gson;
+import api.entities.ChoiceJSON;
+import java.util.LinkedList;
+import api.helpers.GsonHelper;
+import java.util.List;
 
 public class CreatePoll extends Controller {
 	public static void index(String email, String question, String[] answer) {
+		String choices;
 		if (answer == null) {
 			answer = new String[] { "", "" };
 		}
-		render(email, question, answer);
+		List<ChoiceJSON> choices_json = new LinkedList<ChoiceJSON>();
+		for(String c: answer) {
+			ChoiceJSON cJSON = new ChoiceJSON();
+			cJSON.text = c;
+			choices_json.add(cJSON);
+		}
+		choices = GsonHelper.toJson(choices_json);
+		render(email, question, answer, choices);
+
 	}
 
 	public static void success(String token, String adminkey) {

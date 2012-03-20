@@ -38,32 +38,48 @@
 				<p class="formError">#{error 'answer' /}</p>
 			#{/ifError}
 			<ol id='answers'>
-				#{list answer}
-				    <li class="answerContainer">
-						<input type="text" size="60" name="answer[]" value="${_}" />
-						<input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" />
-					</li>
-				#{/list}
 				<span id="AddAnswerButton"><input class='button' type="button" value="&{'createpoll.form.addAnswer'}" /></span>
 			</ol>
+			
 		</div>
-		<input type='submit' value="&{'createpoll.form.submit'}" class='button' />
+		<input type='button' id="submit_question" value="&{'createpoll.form.submit'}" class='button' />
 		<input type='submit' value="&{'createpoll.form.cancel'}" class='button'>
 	#{/form}
 </div>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$("#AddAnswerButton input").bind('click', function() {
-		$('<li class="answerContainer"><input type="text" size="60" name="answer[]" value=""/> <input class="removeAnswer" type="button" value="&{'createpoll.form.removeAnswer'}" /></li>').insertBefore("#AddAnswerButton");
+	var answers = ${choices.raw()};
+	len = answers.length;
+	myFields = new Array();
+	for (i=0; i<len; i++) {
+		$("#answers").append("<li class=\"answerContainer yui-skin-sam\"><textarea name=\"answer[]\" id=\"ans"+i+"\" class=\"ans\">"+answers[i]["text"]+"</textarea><img src=\"public/images/i/delete.png\" class=\"removeAnswer\"></li>");
+		myFields[i] = new YAHOO.widget.Editor("ans"+i, answerConfig);
+		myFields[i].render();
+		bindRemove();
 		$('.answerContainer:last input').focus();
+	}
+	
+	$("#AddAnswerButton input").bind('click', function() {
+		$("#answers").append("<li class=\"answerContainer yui-skin-sam\"><textarea name=\"answer[]\" id=\"ans"+len+"\" class=\"ans\">"+len+"</textarea><img src=\"public/images/i/delete.png\" class=\"removeAnswer\"></li>");
+		myFields[len] = new YAHOO.widget.Editor("ans"+len, answerConfig);
+		myFields[len].render();
+		len++;
 		bindRemove();
 	});
+	
+	$("#submit_question").click(function(){
+		myEditor.saveHTML();
+		for (i=0; i<myFields.length; i++) {
+			myFields[i].saveHTML();
+		}
+		$("#createpoll").submit();
+	});
+
 	function bindRemove() {
 		$(".removeAnswer").bind('click', function() {
 			$(this).parent().remove();
 		});
 	};
-	bindRemove();
 });
 </script>
