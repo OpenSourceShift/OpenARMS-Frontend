@@ -45,7 +45,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
-    public User user;
+    public User admin;
     
     /* TODO Create USER Attribute. */ 
     
@@ -252,7 +252,9 @@ public class Poll extends Model implements Jsonable {
     	result.token = p.token;
     	result.reference = p.reference;
     	result.question = p.question;
-    	result.user = p.user.id;
+    	if (p.admin != null) {
+    	result.admin = p.admin.id;
+    	}
     	result.choices = new LinkedList<ChoiceJSON>();
 		for(Choice c: p.choices) {
 			result.choices.add(c.toJson());
@@ -271,8 +273,8 @@ public class Poll extends Model implements Jsonable {
     	result.reference = json.reference;
     	result.question = json.question;
     	
-    	User user = Poll.find("byID", json.user).first();
-    	result.user = user;
+    	User user = Poll.find("byID", json.admin).first();
+    	result.admin = user;
     	
     	result.choices = new LinkedList<Choice>();
 

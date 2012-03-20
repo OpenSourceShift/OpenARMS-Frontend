@@ -35,9 +35,13 @@ public class ChoiceController extends APIController {
             CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
             Choice choice = Choice.fromJson(req.choice);
             
+            if (choice.poll == null) {
+            	throw new NotFoundException();
+            }
+            
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || choice.poll.user.id != u.id) {
+			if (u == null || choice.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
             
@@ -94,7 +98,7 @@ public class ChoiceController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalchoice.poll.user.id != u.id) {
+			if (u == null || originalchoice.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 
@@ -133,7 +137,7 @@ public class ChoiceController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || choice.poll.user.id != u.id) {
+			if (u == null || choice.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 	

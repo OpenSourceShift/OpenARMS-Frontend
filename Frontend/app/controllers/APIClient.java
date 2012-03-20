@@ -18,8 +18,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import play.Logger;
 import play.Play;
 import play.mvc.Controller;
+import play.mvc.Http;
+import play.mvc.Http.Header;
+import play.mvc.Http.StatusCode;
 import api.helpers.GsonHelper;
 import api.requests.Request;
+import api.responses.ExceptionResponse;
 import api.responses.Response;
 
 public class APIClient extends Controller {
@@ -102,5 +106,48 @@ public class APIClient extends Controller {
 	
 	public static Response send(Request request) throws Exception {
 		return getInstance().sendRequest(request);
+	}
+
+	public static void tunnel(String url) {
+		try {
+			url = "/"+url; // As the initial slash is removed in routes.
+			
+			Logger.debug("tunnel() called, with url = "+url);
+			DefaultHttpClient client = new DefaultHttpClient();
+			
+			HttpRequestBase httpRequest;
+			if(request.method.equals("GET")) {
+				httpRequest = new HttpGet();
+			} else if(request.method.equals("POST")) {
+				httpRequest = new HttpPost();
+			} else if(request.method.equals("PUT")) {
+				httpRequest = new HttpPut();
+			} else if(request.method.equals("DELETE")) {
+				httpRequest = new HttpDelete();
+			} else {
+				System.err.println("Unknown HTTP-method of the API-request.");
+				throw new Exception("Unknown HTTP-method of the API-request.");
+			}
+			
+			httpRequest.setURI(URI.create(url));
+			HttpResponse httpResponse = client.execute(getInstance().host, httpRequest);
+			
+			// Set the status code.
+			response.status = httpResponse.getStatusLine().getStatusCode();
+			// Tunnel through the headers ...
+			for(org.apache.http.Header h: httpResponse.getAllHeaders()) {
+				response.setHeader(h.getName(), h.getValue());
+			}
+			// Write the response.
+			httpResponse.getEntity().writeTo(response.out);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.status = StatusCode.INTERNAL_ERROR;
+	        response.contentType = "application/json";
+	        
+	        Response responseJson = new ExceptionResponse(e);
+			renderJSON(responseJson);
+		}
 	}
 }

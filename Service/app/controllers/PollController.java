@@ -42,15 +42,18 @@ public class PollController extends APIController {
 	        
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || poll.user.id != u.id) {
+			if (u == null) {
 		        throw new UnauthorizedException();
 		    }
+			
+			poll.admin = u;
 	        
 	        // Generates a Unique ID and saves the Poll.
 	        // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
 	        do {
 	            poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
 	        } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
+	        
 	        poll.save();
 	        
 	        // Creates the PollJSON Response.
@@ -106,7 +109,7 @@ public class PollController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalpoll.user.id != u.id) {
+			if (u == null || originalpoll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 
@@ -154,7 +157,7 @@ public class PollController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || oldpoll.user.id != u.id) {
+			if (u == null || oldpoll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 			
@@ -189,7 +192,7 @@ public class PollController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || poll.user.id != u.id) {
+			if (u == null || poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 			

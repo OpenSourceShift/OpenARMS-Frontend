@@ -34,51 +34,53 @@ public class User extends Model implements Jsonable {
 	@OneToOne
 	public UserAuthBinding userAuth;
 
-	 /**
-     * Turn this User into a UserJSON.
-     * @return UserJSON object that represents this user
-     */
-    public UserJSON toJson() {
-    	return toJson(this);
-    }
+	/**
+	 * Turn this User into a UserJSON.
+	 * @return UserJSON object that represents this user
+	 */
+	public UserJSON toJson() {
+		return toJson(this);
+	}
 
-    /**
-     * Turn a User into a UserJSON
-     * @param user the user
-     * @return UserJSON object that represents the user
-     */
-    public static UserJSON toJson(User user) {
-    	UserJSON result = new UserJSON();
-    	result.id = user.id;
-    	result.name = user.name;
-    	result.email = user.email;
-    	result.secret = user.secret;
-    	result.backend = user.userAuth.getClass().toString();
-    	if (user.userAuth instanceof SimpleUserAuthBinding) {
-    		SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
-    		result.attributes.put("password",auth.password);
-    	}
+	/**
+	 * Turn a User into a UserJSON
+	 * @param user the user
+	 * @return UserJSON object that represents the user
+	 */
+	public static UserJSON toJson(User user) {
+		UserJSON result = new UserJSON();
+		result.id = user.id;
+		result.name = user.name;
+		result.email = user.email;
+		result.secret = user.secret;
+		if (user.userAuth != null) {
+			result.backend = user.userAuth.getClass().toString();
+			if (user.userAuth instanceof SimpleUserAuthBinding) {
+				SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
+				result.attributes.put("password",auth.password);
+			}
+		}
 		return result;
-    }
-    
-    /**
-     * Turn a UserJSON into a User
-     * @param json UserJSON object
-     * @return User object that represents a user.
-     */
-    public static User fromJson(UserJSON json) {
-    	User result = new User();
-    	result.id = json.id;
-    	result.name = json.name;
-    	result.email = json.email;
-    	result.secret = json.secret;
-    	if (json.backend != null && json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
-    		SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
-    		auth.password = json.attributes.get("password");
-    		result.userAuth = auth;
-    	}
-    	else
-    		result.userAuth = null;
+	}
+
+	/**
+	 * Turn a UserJSON into a User
+	 * @param json UserJSON object
+	 * @return User object that represents a user.
+	 */
+	public static User fromJson(UserJSON json) {
+		User result = new User();
+		result.id = json.id;
+		result.name = json.name;
+		result.email = json.email;
+		result.secret = json.secret;
+		if (json.backend != null && json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
+			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
+			auth.password = json.attributes.get("password");
+			result.userAuth = auth;
+		}
+		else
+			result.userAuth = null;
 		return result;
-    }
+	}
 }
