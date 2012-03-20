@@ -6,7 +6,7 @@ public class PollJSON extends BaseModelJSON {
 	public Long id;
 	public String token;
 	public String reference;
-	public Long user;
+	public Long admin;
     public Boolean multipleAllowed;
 	public String question;
 	public List<ChoiceJSON> choices;
