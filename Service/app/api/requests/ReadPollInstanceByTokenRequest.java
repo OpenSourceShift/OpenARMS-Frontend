@@ -4,15 +4,15 @@ import api.entities.PollInstanceJSON;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.Response;
 
-public class ReadPollInstanceRequest extends Request {
-	public Long pollInstance_id;
-	public ReadPollInstanceRequest (Long l) {
-		this.pollInstance_id = l;
+public class ReadPollInstanceByTokenRequest extends Request {
+	public String pollInstance_token;
+	public ReadPollInstanceByTokenRequest (String token) {
+		this.pollInstance_token = token;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/pollinstance/" + pollInstance_id;
+		return "/pollinstance/" + pollInstance_token;
 	}
 
 	@Override
