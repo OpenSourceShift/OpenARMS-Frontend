@@ -4,12 +4,12 @@
     <head>
         <title>#{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=600, user-scalable=yes" /> 
+        <meta name="viewport" content="width=600, user-scalable=yes" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/global.css'}" />
         #{if moreStyles}
         	<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/'}/#{get 'moreStyles' /}.css" />
         #{/if}
-        
+
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
         <script src="@{'/public/javascripts/jquery-1.4.2.min.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/jquery-ui-1.8.11.min.js'}" type="text/javascript" charset="utf-8"></script>
@@ -19,14 +19,17 @@
         #{/if}
     </head>
 <body>
-
-    	<div id="content">
-			<div id="header">
-				<a href="/"><img src="/public/images/logo_transparent_hd.png" /></a>
+  	<div id="content">
+      <div id="header">
+        <!--div id="signup">
+  			  <input type="submit" value="Sign Up" />
+        </div-->
+      	<a href="/"><img src="/public/images/logo_transparent_hd.png" /></a>
       </div>
       <hr />
-        #{doLayout /}
+      #{doLayout /}
 
+      <hr />
        <div id="language">
 				<img src="@{'/public/images/flags/de.png'}" title="Deutsch"/>
 				<img src="@{'/public/images/flags/da.png'}" title="Dansk"/>
@@ -38,10 +41,10 @@
 				<img src="@{'/public/images/flags/sk.png'}" title="Slovenský jazyk"/>
 				<img src="@{'/public/images/flags/es.png'}" title="Español"/>
 				<img src="@{'/public/images/flags/tr.png'}" title="Türkçe"/>
-			</div>
-        </div>
-        
-        <script type="text/javascript">
+      </div>
+      <span id="footer">this is footer with copyright ©</span>
+    </div>
+    <script type="text/javascript">
 		$(document).ready(function(){
 			$("#language img").bind('click', function() {
 				lang = $(this).attr('src');

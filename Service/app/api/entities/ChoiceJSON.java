@@ -2,19 +2,15 @@ package api.entities;
 
 import java.util.List;
 
-import api.helpers.GsonSkip;
-
-import models.Choice;
-import models.Poll;
-import models.Vote;
-
-public class ChoiceJSON {
+public class ChoiceJSON extends BaseModelJSON {
 	public Long poll_id;
 	public Long id;
 	public String text;
+	public Boolean correct;
 	
 	public List<VoteJSON> votes;
 	
+	/*
 	public ChoiceJSON(Choice c) {
 		this.id = c.id;
 		this.text = c.text;
@@ -24,7 +20,10 @@ public class ChoiceJSON {
 		}
 	}
 
+	
 	public Choice toChoice() {
-		return new Choice(null, this.text);
+		Poll poll = Poll.find("byPollID", this.poll_id).first();
+		return new Choice(poll, this.text);
 	}
+	*/
 }

@@ -8,6 +8,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import play.Logger;
 import play.Play;
 
 import com.google.gson.ExclusionStrategy;
@@ -38,7 +39,10 @@ public class GsonHelper {
 		return get(c.getClass()).fromJson(i, c);
 	}
 
-	public static <C> C fromJson(InputStream is, Class c) throws IOException {
+	public static <C> C fromJson(InputStream is, Class c) throws Exception {
+		if(c == null) {
+			throw new Exception("Second argument Class c, cannot be null.");
+		}
 		String json = "";
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		String line;
@@ -46,6 +50,7 @@ public class GsonHelper {
 			json += line;
 		}
 		br.close();
-		return (C) get(c.getClass()).fromJson(json, c);
+		Logger.debug("GsonHelper.fromJson() reads '%s' as a %s", json, c.getCanonicalName()); 
+		return (C)get(c.getClass()).fromJson(json, c);
 	}
 }

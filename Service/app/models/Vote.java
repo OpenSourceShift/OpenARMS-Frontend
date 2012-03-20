@@ -1,6 +1,14 @@
 package models;
 
+import java.util.LinkedList;
+
 import javax.persistence.*;
+
+import api.entities.BaseModelJSON;
+import api.entities.ChoiceJSON;
+import api.entities.Jsonable;
+import api.entities.PollJSON;
+import api.entities.VoteJSON;
 import play.db.jpa.*;
 
 /**
@@ -9,7 +17,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Vote extends Model {
+public class Vote extends Model implements Jsonable {
 	private static final long serialVersionUID = -4255311415057973971L;
 	
 	/**
@@ -22,10 +30,7 @@ public class Vote extends Model {
      */
     @ManyToOne
     public PollInstance pollInstance;
-    /**
-     * An integer that increments as each vote for this particular Choice and PollInstance ticks in.
-     */
-    public int count;
+
 
     /**
      * Constructs a new Vote, only one Vote is created pr. Choice and PollInstance
@@ -34,19 +39,37 @@ public class Vote extends Model {
      * @param count Count of votes for choice provided
      * @param instance Poll instance this vote should belong to
      */
-    public Vote(Choice choice, int count, PollInstance instance) {
+    public Vote(Choice choice, PollInstance instance) {
         this.choice = choice;
-        this.count = count;
         this.pollInstance = instance;
     }
 
+
     /**
-     * Constructs a new Vote, with 1 as initial count.
-     * @param answer Represents answer that this vote should belong to
-     * @param instance Poll instance this vote should belong to
+     * Turn this Vote into a VoteJSON
+     * @return VoteJSON A VoteJSON object that represents this Vote.
      */
-    public Vote(Choice answer, PollInstance instance) {
-        this(answer, 1, instance);
+    public VoteJSON toJson() {
+    	return toJson(this);
     }
+
+	public VoteJSON toJson(Vote v) {
+		VoteJSON result = new VoteJSON();
+    	result.id = v.id;
+    	result.choiceid = v.choice.id;
+    	result.pollInstanceid = v.pollInstance.id;
+		return result;
+	}
+
+	public static Vote fromJson(VoteJSON v) {
+		Choice choice = Choice.find("byID", v.choiceid).first();
+		PollInstance pollinstance = PollInstance.find("byID", v.pollInstanceid).first();
+		Vote result = new Vote (choice, pollinstance);
+		return result;
+	}
+
+
+
+	
 
 }

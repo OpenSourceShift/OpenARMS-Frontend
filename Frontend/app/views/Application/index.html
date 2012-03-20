@@ -1,42 +1,59 @@
-#{extends 'main.html' /} #{set title:'OpenARS' /}
+#{extends 'main.html' /}
+#{set title:'OpenARS' /}
 #{set moreStyles:'index' /}
-	<div id="main">
-		#{form @JoinPoll.index(), id:'joinpoll'}
-			<div class="wrapper">
-				<span id="pollid">
-					<span>&{'join_poll_pollid'}</span>
-					<input type="text" name="id" value="" autocomplete="off" autofocus="autofocus" />
-				</span>
-				<div class="centered">
-					<p>&{'join_poll_teaser'}</p>
-					<input type="submit" value="&{'join_poll_submit'}" class="button" />
-				</div>
-			</div>
-		#{/form}
-		<div id="bottomoptions">
-			<div id='createpoll' class="greybg">
-				<div class="wrapper">
-					<h2>&{'create_poll'}</h2>
-					<p>&{'create_poll_teaser'}</p>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js"></script>
+<script src="@{'/public/javascripts/hoveredbuttons.js'}" type="text/javascript" charset="utf-8"></script>
+<script src="@{'/public/javascripts/selectopt.js'}" type="text/javascript" charset="utf-8"></script>
+
+<div id="main">
+  <div class="tools">
+    <div align="center" class="setopt" id="join-button"><span>&{'join_poll'}</span></div>
+    <div align="center" class="setopt" id="create-button"><span>&{'create_poll'}</span></div>
+    <div align="center" class="setopt" id="manage-button"><span>&{'manage_poll'}</span></div>
+  </div>
+  <div class="description">
+    <div id="joinD">
+  	  #{form @JoinPoll.index(), id:'joinpoll'}
+      <div class="wrapper">
+  		  <span id="pollid">
+  				<span>&{'join_poll_pollid'}</span>
+  				<input type="text" name="id" value="" autocomplete="off" autofocus="autofocus" />
+  			</span>
+  			<div class="centered">
+  			  <p>&{'join_poll_teaser'}</p>
+  				<input type="submit" value="&{'join_poll_submit'}" class="button" />
+        </div>
+      </div>
+      #{/form}
+    </div>
+
+    <div id="createD">
+      <div id='createpoll' >
+        <div class="wrapper">
+ 		      <h2>&{'create_poll'}</h2>
+  				<p>&{'create_poll_teaser'}</p>
 					#{a @CreatePoll.index(), class:'button'}&{'create_poll_link'}#{/a}
-				</div>
-			</div>
-			
-			#{form @ManagePoll.index(), id:'managepoll', class:'greybg' }
-				<div class="wrapper">
-					<h2>&{'manage_poll'}</h2>
-					<p>&{'manage_poll_teaser'}</p>
-					<div class="labeledinput">
-						<label>&{'manage_poll_pollid'}</label><input type="text" name="pollID" value="" />
-					</div>
-					<div class="labeledinput">
-						<label>&{'manage_poll_password'}</label><input type="password" name="adminkey" value="" />
-					</div>
-					<input type="submit" value="&{'manage_poll_submit'}" class="button" />
-				</div>
-			#{/form}
-		</div>
-	</div>
+  			</div>
+  		</div>
+    </div>
+
+    <div id="manageD">
+      #{form @ManagePoll.index(), id:'managepoll'}
+  		<div class="wrapper">
+  			<h2>&{'manage_poll'}</h2>
+  			<p>&{'manage_poll_teaser'}</p>
+  			<div class="labeledinput">
+  				<label>&{'manage_poll_pollid'}</label><input type="text" name="pollID" value="" />
+  			</div>
+  			<div class="labeledinput">
+  				<label>&{'manage_poll_password'}</label><input type="password" name="adminkey" value="" />
+  			</div>
+  			<input type="submit" value="&{'manage_poll_submit'}" class="button" />
+  		</div>
+  		#{/form}
+    </div>
+  </div>
+</div>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#pollid input").focus();
@@ -47,8 +64,7 @@
 	$('#joinpoll').bind('submit', function() {
 		if($('#joinpoll input').val() == "") {
 			$(this).effect("shake", { times:3 }, 50, function() {$('#pollid input').focus()});
-			
 			return false;
 		}
 	});
-	</script>
+</script>

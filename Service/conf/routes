@@ -11,10 +11,33 @@ POST    /vote/{<[0-9]+>id}                      Voting.vote
 GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
-GET     /test/{<[0-9]+>id}    					Management.test
 *       /admin									module:crud
 *       /admin		                            module:secure
-GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}     QRController.returnImage
+GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
+GET		/poll/{<[0-9]+>id}						PollController.retrieve
+POST	/poll									PollController.create
+PUT		/poll/{<[0-9]+>id}						PollController.edit
+DELETE	/poll/{<[0-9]+>id}						PollController.delete
+POST    /poll/{<[0-9]+>id_old}/copy				PollController.copy
+GET		/choice/{<[0-9]+>id}					ChoiceController.retrieve
+POST	/choice									ChoiceController.create
+PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
+DELETE	/choice/{<[0-9]+>id}					ChoiceController.delete
+GET		/pollinstance/{<[0-9]+>id}				PollInstanceController.retrieve
+POST	/pollinstance							PollInstanceController.create
+PUT		/pollinstance/{<[0-9]+>id}				PollInstanceController.edit
+DELETE	/pollinstance/{<[0-9]+>id}				PollInstanceController.delete
+PUT     /pollinstance/{<[0-9]+>id}/close	    PollInstanceController.close
+GET		/vote/{<[0-9]+>id}						VoteController.retrieve
+POST	/vote									VoteController.create
+PUT		/vote/{<[0-9]+>id}						VoteController.edit
+DELETE	/vote/{<[0-9]+>id}						VoteController.delete
+GET		/user/{<[0-9]+>id}						UserController.retrieve
+POST	/user									UserController.create
+PUT		/user/{<[0-9]+>id}						UserController.edit
+DELETE	/user/{<[0-9]+>id}						UserController.delete
+
+
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/                                staticDir:public

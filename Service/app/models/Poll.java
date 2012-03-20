@@ -2,15 +2,17 @@ package models;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import javax.persistence.*;
 
 import org.hibernate.cfg.AnnotatedClassType;
 
-
-import api.Response;
-import api.Response.CreatePollResponse;
+import api.responses.CreatePollResponse;
+import api.entities.ChoiceJSON;
+import api.entities.Jsonable;
+import api.entities.PollJSON;
 import api.helpers.GsonSkip;
 
 import com.google.gson.ExclusionStrategy;
@@ -27,7 +29,7 @@ import play.db.jpa.*;
  * @author OpenARS Server API team
  */
 @Entity
-public class Poll extends Model {
+public class Poll extends Model implements Jsonable {
 	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**
@@ -60,7 +62,7 @@ public class Poll extends Model {
     /**
      * Is it allowed to add multiple answers?
      */
-    public boolean multipleAllowed;
+    public Boolean multipleAllowed;
     /**
      * All the possible choices associated with the poll.
      */
@@ -79,12 +81,36 @@ public class Poll extends Model {
      * @param token
      * @param question Text of the question
      * @param multipleAllowed whether there are multiple options allowed or not
+                            v.count++;
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, boolean multipleAllowed) {
+    public Poll(String token, String question, Boolean multipleAllowed) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
+    }
+    
+    /**
+     * Constructor Copy for Polls, this method creates a Poll object 
+     * with a new token and the same fields as the toCopy object.
+     * @param token  -- New token for the new Poll
+     * @param toCopy -- Poll object to be copied.
+     */
+    public Poll (String token, Poll toCopy) {
+    	this.token = token;
+    	this.multipleAllowed = toCopy.multipleAllowed;
+    	this.question = toCopy.question;
+    	this.reference = toCopy.reference;
+    	
+    	this.choices = new LinkedList<Choice>();
+		for(Choice c: toCopy.choices) {
+			this.choices.add(c);
+		} 
+		
+		// Update the references.
+		for (Choice c : this.choices) {
+					c.poll = this;
+		}
     }
 
     /**
@@ -94,14 +120,14 @@ public class Poll extends Model {
      * @param duration number of seconds to activate the question for
      * @return activated Question object - does not have to be used
      */
-    public Poll activateFor(int duration) {
+    public Poll activateFor(Date startDateTime, Date endDateTime) {
         if (isActive()) {
             PollInstance latestInstance = getLatestInstance();
-            latestInstance.startDateTime = new Date(System.currentTimeMillis());
-            latestInstance.endDateTime = new Date(latestInstance.startDateTime.getTime() + duration * 1000);
+            latestInstance.startDateTime = startDateTime;
+            latestInstance.endDateTime = endDateTime;
             latestInstance.save();
         } else {
-            new PollInstance(duration, this).save();
+            new PollInstance(startDateTime, endDateTime, this).save();
         }
         return this;
     }
@@ -186,6 +212,7 @@ public class Poll extends Model {
      * Gets vote counts as an array of integers. Used for statistics.
      * @return int[] array of vote counts / results
      */
+    @Deprecated
     public int[] getVoteCounts() {
         int index = 0;
         int[] votes = new int[choices.size()];
@@ -199,7 +226,8 @@ public class Poll extends Model {
             if (votesList.isEmpty()) {
                 votes[index] = 0;
             } else {
-                votes[index] = votesList.get(0).count;
+            	// FIXME: A new vote should be created instead of counting up the value.
+                //votes[index] = votesList.get(0).count;
             }
             index++;
         }
@@ -209,5 +237,58 @@ public class Poll extends Model {
     @Override
     public String toString() {
         return "AdminKey: " + this.adminKey + " PollID: " + this.token + " id: " + this.id;
+    }
+    
+    /**
+     * Turn this Poll into a PollJSON
+     * @return A PollJSON object that represents this poll.
+     */
+    public PollJSON toJson() {
+    	return toJson(this);
+    }
+
+    /**
+     * Turn a Poll into a PollJSON
+     * @param p the poll
+     * @return A PollJSON object that represents the poll.
+     */
+    public static PollJSON toJson(Poll p) {
+    	PollJSON result = new PollJSON();
+    	result.id = p.id;
+    	result.token = p.token;
+    	result.reference = p.reference;
+    	result.question = p.question;
+    	result.choices = new LinkedList<ChoiceJSON>();
+		for(Choice c: p.choices) {
+			result.choices.add(c.toJson());
+		}
+		return result;
+    }
+    
+    /**
+     * Turn a Poll into a PollJSON
+     * @return PollJSON A PollJSON object that represents this poll.
+     */
+    public static Poll fromJson(PollJSON json) {
+    	Poll result = new Poll(json.token, json.question, json.multipleAllowed);
+    	result.id = json.id;
+    	result.token = json.token;
+    	result.reference = json.reference;
+    	result.question = json.question;
+    	result.choices = new LinkedList<Choice>();
+
+		// Update the choices
+    	if (json.choices != null) {
+    		for (ChoiceJSON c: json.choices) {
+    			result.choices.add(Choice.fromJson(c));	
+    		}
+    		// Update the references.
+    		for (Choice c: result.choices) {
+    			c.poll = result;
+    		}
+    	}
+		// TODO: Check if we need to do this with otner collections on the Poll as well.
+		
+		return result;
     }
 }

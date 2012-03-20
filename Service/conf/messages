@@ -7,7 +7,7 @@ poll=Poll
 text=Description
 
 # Poll.java
-token=Poll ID
+token=Token
 adminKey=Administration Key
 email=E-Mail
 question=Question
@@ -21,3 +21,12 @@ endDateTime=Ending Date & Time
 choice=Choice
 pollInstance=Poll Instance
 count=Number of Votes
+
+# User.java
+name=Name
+secret=Secret
+userAuth=User Authentication
+
+# SimpleUserAuthBinding.java
+password=Password
+user=User

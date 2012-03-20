@@ -105,7 +105,7 @@ public class Management extends Controller {
 
             // only when provided adminKey is correct
             if (question.adminKey.equals(adminKey)) {
-                question.activateFor(activationMsg.getDuration());
+                //question.activateFor(activationMsg.getDuration());
                 question.save();
                 renderJSON("activated");
             } else {
