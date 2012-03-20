@@ -96,7 +96,7 @@ public class Voting extends Controller {
                 }
                 // if there are no votes for this answer in DB, create one
                 if (!selectedChoice.inLatestPollInstance()) {
-                    new Vote(selectedChoice, question.getLatestInstance()).save();
+//                    new Vote(selectedChoice, question.getLatestInstance()).save();
                 } else {
                     // otherwise just increment the count value
                     for (Vote v : selectedChoice.votes) {
