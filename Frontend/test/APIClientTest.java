@@ -25,8 +25,7 @@ public class APIClientTest extends UnitTest {
 	
 	@Test
     public void testLogin() throws Exception {
-		APIClient apiClient = APIClient.getInstance();
-		apiClient = new APIClient(apiClient.host.getHostName(), apiClient.host.getPort(), (long) 1, "openarms");
+		APIClient apiClient = new APIClient((long) 1, "openarms");
 		
     	PollJSON pj1 = new PollJSON();
     	pj1.question = "This is the first question.";

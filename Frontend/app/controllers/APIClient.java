@@ -49,10 +49,22 @@ public class APIClient extends Controller {
 	 */
 	public APIClient() {
 		this(
-			Play.configuration.getProperty("openarms.service_host"),
-			Integer.parseInt(Play.configuration.getProperty("openarms.service_port")),
 			session.get("user_id")==null ? null : Long.parseLong(session.get("user_id")),
 			session.get("user_secret")==null ? null : Crypto.decryptAES(session.get("user_secret"))
+		);
+	}
+
+	/**
+	 * Constructing a new API client, try to reuse these.
+	 * @param userId
+	 * @param userSecret
+	 */
+	public APIClient(Long userId, String userSecret) {
+		this(
+			Play.configuration.getProperty("openarms.service_host"),
+			Integer.parseInt(Play.configuration.getProperty("openarms.service_port")),
+			userId,
+			userSecret
 		);
 	}
 	
@@ -201,4 +213,6 @@ public class APIClient extends Controller {
 			renderJSON(responseJson);
 		}
 	}
+	
+	// TODO: Add a method to invoke the /loadtestdata on the service.
 }
