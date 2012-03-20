@@ -14,7 +14,7 @@ fi;
 
 if [ "$AUTH" != "" ]; then
 	#BASE64AUTH=`echo $AUTH | base64`
-	AUTHOPT="-u '$AUTH'"
+	AUTHOPT="-u $AUTH"
 else
 	AUTHOPT=""
 fi;
