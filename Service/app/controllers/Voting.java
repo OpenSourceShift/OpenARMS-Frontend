@@ -132,13 +132,14 @@ public class Voting extends Controller {
         if (question == null) {
             renderJSON("");
         }
+        /*
         // return results when correct adminKey is provided or when question is not active
         if ((adminKey != null && question.adminKey.equals(adminKey)) || !question.isActive()) {
             int[] votes = question.getVoteCounts();
             ResultsJSON result = new ResultsJSON(urlID, question.id, question.question, question.getChoicesArray(), votes);
             renderJSON(result);
         }
-
+        */
         // otherwise do not respond with results
         if (question.isActive()) {
             renderJSON("voting in progress");
