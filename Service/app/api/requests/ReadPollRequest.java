@@ -6,14 +6,14 @@ import api.responses.Response;
 
 public class ReadPollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = ReadPollResponse.class;
-	public Long poll_id;
-	public ReadPollRequest (Long l) {
-		this.poll_id = l;
+	public String poll_token;
+	public ReadPollRequest (String s) {
+		this.poll_token = s;
 	}
 
 	@Override
 	public String getURL() {
-		return "/poll/" + poll_id;
+		return "/poll/" + poll_token;
 	}
 
 	@Override
