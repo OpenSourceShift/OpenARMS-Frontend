@@ -34,6 +34,7 @@ public class PollController extends APIController {
         try {
         	Logger.debug("PollController.create() received '%s'", request.body);
         	
+        	//TODO: try fromJson with null
         	CreatePollRequest req = GsonHelper.fromJson(request.body, CreatePollRequest.class);
 	        Poll poll = Poll.fromJson(req.poll);
 	        

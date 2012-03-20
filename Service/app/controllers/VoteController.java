@@ -6,6 +6,7 @@ import java.util.Random;
 
 import models.Poll;
 import models.Vote;
+import api.requests.CreateVoteRequest;
 import api.responses.CreatePollResponse;
 import api.responses.CreateVoteResponse;
 import api.entities.PollJSON;
@@ -23,13 +24,10 @@ public class VoteController extends APIController {
 	 * Method that saves a new Vote in the DataBase.
 	 */
 	public static void create() {
-        try {	
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-	
+        try {
 	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-	        String json = reader.readLine();
-	        VoteJSON votejson = GsonHelper.fromJson(json, VoteJSON.class);
-	        Vote vote = Vote.fromJson(votejson);
+	        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
+	        Vote vote = Vote.fromJson(req.vote);
           
 	        vote.save();
 	        
@@ -74,17 +72,14 @@ public class VoteController extends APIController {
 	 */
 	public static void edit () {
 		try {
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 			String voteid = params.get("id");
 	
 			//Takes the Vote from the DataBase.
 			Vote originalvote = Vote.find("byID", voteid).first();
 
 			//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
-            String json = reader.readLine();
-            VoteJSON votejson = GsonHelper.fromJson(json, VoteJSON.class);
-            Vote editedvote = Vote.fromJson(votejson);
+			CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
+            Vote editedvote = Vote.fromJson(req.vote);
             
             //Changes the old fields for the new ones.
             if (editedvote.choice != null) {

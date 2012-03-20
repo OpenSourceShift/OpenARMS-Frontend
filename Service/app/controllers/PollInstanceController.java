@@ -6,6 +6,7 @@ import java.util.Random;
 
 import models.Poll;
 import models.PollInstance;
+import api.requests.CreatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.entities.PollInstanceJSON;
@@ -24,12 +25,9 @@ public class PollInstanceController extends APIController  {
 	 */
 	public static void create() {
         try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
-	
 	    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
-	        String json = reader.readLine();
-	        PollInstanceJSON pollinstancejson = GsonHelper.fromJson(json, PollInstanceJSON.class);
-	        PollInstance pollinstance = PollInstance.fromJson(pollinstancejson);
+	        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
+	        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
 	                    
 	        pollinstance.save();
 	        
@@ -73,17 +71,14 @@ public class PollInstanceController extends APIController  {
 	 */
 	public static void edit () {
 		try {
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 			String pollinstanceid = params.get("id");
 	
 			//Takes the PollInstance from the DataBase.
 			PollInstance originalpollinstance = PollInstance.find("byID", pollinstanceid).first();
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
-            String json = reader.readLine();
-            PollInstanceJSON pollinstancejson = GsonHelper.fromJson(json, PollInstanceJSON.class);
-            PollInstance editedpollinstance = PollInstance.fromJson(pollinstancejson);
+			CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
+            PollInstance editedpollinstance = PollInstance.fromJson(req.pollInstance);
             
             //Changes the old fields for the new ones.
             if (editedpollinstance.startDateTime != null) {
