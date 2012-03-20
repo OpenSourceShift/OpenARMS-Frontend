@@ -89,8 +89,31 @@ public class PollController extends APIController {
 			renderException(e);
 		}
 	}
+	/**
+	 * Method that gets a Poll from the DataBase.
+	 */
+	public static void retrieveByToken () {
+		try {
+			String polltoken = params.get("token");
 	
-
+			//Takes the Poll from the DataBase.
+			Poll poll = Poll.find("byToken", polltoken).first();
+			
+			if (poll == null) {
+				throw new NotFoundException();
+			}
+			
+			//Creates the PollJSON Response
+			CreatePollResponse r = new CreatePollResponse(poll.toJson());
+			String jsonresponse = GsonHelper.toJson(r);
+	
+			renderJSON(jsonresponse);
+			
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
+	
 	/**
 	 * Method that edits a Poll already existing in the DataBase.
 	 */
