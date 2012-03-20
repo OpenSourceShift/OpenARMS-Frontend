@@ -71,6 +71,18 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.poll.id);
     	assertEquals(response.poll.question, p.question);
     }
+    
+    @Test
+    public void testRetrievePoll() throws Exception {
+    	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
+    	PollJSON p = new PollJSON();
+    	Long a = 1L;
+    	p.id = a;
+    	ReadPollResponse response =  (ReadPollResponse) APIClient.send(new ReadPollRequest(p));
+    	failIfNotSuccessful(response);
+    	assertNotNull(response.poll.id);
+    	assertEquals(response.poll.id,a);
+    }
     /*
     @Test
     public void testCreateVote() throws Exception {
