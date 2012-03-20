@@ -13,8 +13,6 @@ import models.Choice;
 import models.Poll;
 import notifiers.MailNotifier;
 import play.mvc.Controller;
-import api.deprecated.ActivationJSON;
-import api.deprecated.QuestionJSON;
 
 import com.google.gson.Gson;
 
@@ -35,6 +33,7 @@ public class Management extends Controller {
      */
     public static void createQuestion() {
 
+    	/*
         BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
         try {
             String json = reader.readLine();
@@ -65,7 +64,7 @@ public class Management extends Controller {
             ex.printStackTrace();
             renderJSON(new String());
         }
-
+		*/
     }
 
     /**
@@ -79,6 +78,7 @@ public class Management extends Controller {
      * Request body: ActivationJSON with duration set
      */
     public static void activation() {
+    	/*
         long urlID = params.get("id", Long.class).longValue();
         String adminKey = params.get("adminKey");
 
@@ -94,20 +94,21 @@ public class Management extends Controller {
             if (question == null) {
                 renderJSON("The question does not exist!");
             }
-        	/*
+        	
             // only when provided adminKey is correct
-            /*if (question.adminKey.equals(adminKey)) {
+            if (question.adminKey.equals(adminKey)) {
                 //question.activateFor(activationMsg.getDuration());
                 question.save();
                 renderJSON("activated");
             } else {
                 renderJSON("not activated");
-            }*/
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace();
             renderJSON(new String());
         }
+        */
     }
 
     /**

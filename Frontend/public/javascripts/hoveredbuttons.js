@@ -1,5 +1,5 @@
 jQuery(function($){
-  var hovered = $('.tools').children();
+  var hovered = $('#content').find('.button');
   $.each(hovered, function(){
     var $item = $(this);
     $item.hover(function(){
