@@ -45,8 +45,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
-    @GsonSkip(classes={Poll.class})
-    public String adminKey;
+    public User user;
     
     /* TODO Create USER Attribute. */ 
     
@@ -151,7 +150,7 @@ public class Poll extends Model implements Jsonable {
      * @param length int length of generated string
      * @return String generated string
      */
-    public void generateAdminKey(int length) {
+    /*public void generateAdminKey(int length) {
         Random rand = new Random(System.currentTimeMillis());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
@@ -159,7 +158,7 @@ public class Poll extends Model implements Jsonable {
             sb.append(ADMINKEY_CHARSET.charAt(pos));
         }
         adminKey = sb.toString();
-    }
+    }*/
 
     /**
      * Gets array of answers as strings.
@@ -236,7 +235,7 @@ public class Poll extends Model implements Jsonable {
 
     @Override
     public String toString() {
-        return "AdminKey: " + this.adminKey + " PollID: " + this.token + " id: " + this.id;
+        return "User: " + this.user.name + " PollID: " + this.token + " id: " + this.id;
     }
     
     /**
@@ -258,6 +257,7 @@ public class Poll extends Model implements Jsonable {
     	result.token = p.token;
     	result.reference = p.reference;
     	result.question = p.question;
+    	result.user = p.user.id;
     	result.choices = new LinkedList<ChoiceJSON>();
 		for(Choice c: p.choices) {
 			result.choices.add(c.toJson());
@@ -275,6 +275,10 @@ public class Poll extends Model implements Jsonable {
     	result.token = json.token;
     	result.reference = json.reference;
     	result.question = json.question;
+    	
+    	User user = Poll.find("byID", json.user).first();
+    	result.user = user;
+    	
     	result.choices = new LinkedList<Choice>();
 
 		// Update the choices
