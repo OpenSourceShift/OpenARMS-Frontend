@@ -48,8 +48,6 @@ public class Poll extends Model implements Jsonable {
     @ManyToOne
     public User admin;
     
-    /* TODO Create USER Attribute. */ 
-    
     /**
      * The question that the poll states, ex. "What is 2+2?"
      */
@@ -137,6 +135,7 @@ public class Poll extends Model implements Jsonable {
      * TODO: Implement this in a faster way, using a hybernate query.
      * @return PollInstance The latest instance of the poll (based on endDateTime)
      */
+    @Deprecated
     public PollInstance getLatestInstance() {
         if (instances.isEmpty()) {
             return null;
@@ -289,7 +288,7 @@ public class Poll extends Model implements Jsonable {
     			c.poll = result;
     		}
     	}
-		// TODO: Check if we need to do this with otner collections on the Poll as well.
+		// TODO: Check if we need to do this with other collections on the Poll as well.
 		
 		return result;
     }

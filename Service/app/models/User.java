@@ -57,6 +57,7 @@ public class User extends Model implements Jsonable {
 			result.backend = user.userAuth.getClass().toString();
 			if (user.userAuth instanceof SimpleUserAuthBinding) {
 				SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
+				result.attributes = new HashMap<String, String>();
 				result.attributes.put("password",auth.password);
 			}
 		}
