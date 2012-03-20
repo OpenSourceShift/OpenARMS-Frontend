@@ -7,14 +7,14 @@ import api.responses.Response;
 
 public class DeletePollRequest extends Request {
 	
-	public PollJSON poll;
-	public DeletePollRequest (PollJSON p) {
-		this.poll = p;
+	public Long poll_id;
+	public DeletePollRequest (Long l) {
+		this.poll_id = l;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/poll/" + poll.id;
+		return "/poll/" + poll_id;
 	}
 
 	@Override

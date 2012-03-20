@@ -6,14 +6,14 @@ import api.responses.DeleteChoiceResponse;
 import api.responses.Response;
 
 public class DeleteChoiceRequest extends Request {
-	public ChoiceJSON choice;
-	public DeleteChoiceRequest (ChoiceJSON c) {
-		this.choice = c;
+	public Long choice_id;
+	public DeleteChoiceRequest (Long l) {
+		this.choice_id = l;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/choice/" + choice.id;
+		return "/choice/" + choice_id;
 	}
 
 	@Override
