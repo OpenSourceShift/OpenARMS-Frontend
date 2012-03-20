@@ -134,12 +134,17 @@ public class Voting extends Controller {
         }
         /*
         // return results when correct adminKey is provided or when question is not active
-        if ((adminKey != null && question.adminKey.equals(adminKey)) || !question.isActive()) {
+        /*if ((adminKey != null && question.adminKey.equals(adminKey)) || !question.isActive()) {
             int[] votes = question.getVoteCounts();
             ResultsJSON result = new ResultsJSON(urlID, question.id, question.question, question.getChoicesArray(), votes);
             renderJSON(result);
+<<<<<<< HEAD
         }
         */
+=======
+        }*/
+
+>>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
         // otherwise do not respond with results
         if (question.isActive()) {
             renderJSON("voting in progress");

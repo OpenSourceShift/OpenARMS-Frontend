@@ -67,7 +67,11 @@ public class Management extends Controller {
                 new Choice(question, a).save();
             }
 
+<<<<<<< HEAD
             //renderJSON(new CreateResponseJSON(question.toJson()));
+=======
+            //renderJSON(new CreateResponseJSON(question.token, question.adminKey));
+>>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -104,14 +108,19 @@ public class Management extends Controller {
             }
         	/*
             // only when provided adminKey is correct
-            if (question.adminKey.equals(adminKey)) {
+            /*if (question.adminKey.equals(adminKey)) {
                 //question.activateFor(activationMsg.getDuration());
                 question.save();
                 renderJSON("activated");
             } else {
                 renderJSON("not activated");
+<<<<<<< HEAD
             }
 			*/
+=======
+            }*/
+
+>>>>>>> branch 'master' of ssh://git@github.com/atiti/OpenARMS.git
         } catch (IOException ex) {
             ex.printStackTrace();
             renderJSON(new String());
@@ -126,7 +135,7 @@ public class Management extends Controller {
      * Parameter {id} - poll ID <br/>
      * Parameter {adminKey} - randomly generated string at question creation <br/>
      */
-    public static void checkAdminLink() {
+   /* public static void checkAdminLink() {
         long urlID = params.get("id", Long.class).longValue();
         String adminKey = params.get("adminKey");
         // retrieve and activate the question
@@ -140,4 +149,5 @@ public class Management extends Controller {
         }
         */
     }
+    */
 }

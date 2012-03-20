@@ -7,13 +7,13 @@ import api.responses.Response;
 
 public class DeleteVoteRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = DeleteVoteResponse.class;
-	public VoteJSON vote;
-	public DeleteVoteRequest (VoteJSON v) {
-		this.vote = v;
+	public Long vote_id;
+	public DeleteVoteRequest (Long l) {
+		this.vote_id = l;
 	}
 	@Override
 	public String getURL() {
-		return "/vote/" + vote.id;
+		return "/vote/" + vote_id;
 	}
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
