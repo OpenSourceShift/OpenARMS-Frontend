@@ -30,10 +30,13 @@ public class SimpleUserAuthBinding extends UserAuthBinding {
 	 * @return newly generated secret to keep user logged in the system 
 	 */
 	public String authenticate(String password) {
-		String secret = null;
-		if (password.equals(this.password))
-			secret = generateSecret();
-		return secret;
+		String s = null;
+		Logger.debug("this.password: %s and password: %s equals: %s", this.password, password, password.equals(this.password));
+		if (password.equals(this.password)) {
+			s = generateSecret();
+			Logger.debug("Secret generated: %s", s);
+		}
+		return s;
 	}
 	
 	/**
