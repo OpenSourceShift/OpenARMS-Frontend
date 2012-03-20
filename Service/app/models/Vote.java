@@ -19,7 +19,10 @@ import play.db.jpa.*;
 @Entity
 public class Vote extends Model implements Jsonable {
 	private static final long serialVersionUID = -4255311415057973971L;
-	
+	/**
+	 * The User that made the vote.
+	 */
+	public User user;
 	/**
 	 * The Choice selected by the student.
 	 */
@@ -39,9 +42,10 @@ public class Vote extends Model implements Jsonable {
      * @param count Count of votes for choice provided
      * @param instance Poll instance this vote should belong to
      */
-    public Vote(Choice choice, PollInstance instance) {
+    public Vote(Choice choice, PollInstance instance, User user) {
         this.choice = choice;
         this.pollInstance = instance;
+        this.user = user;
     }
 
 
@@ -58,13 +62,15 @@ public class Vote extends Model implements Jsonable {
     	result.id = v.id;
     	result.choiceid = v.choice.id;
     	result.pollInstanceid = v.pollInstance.id;
+    	result.userid = v.user.id;
 		return result;
 	}
 
 	public static Vote fromJson(VoteJSON v) {
 		Choice choice = Choice.find("byID", v.choiceid).first();
 		PollInstance pollinstance = PollInstance.find("byID", v.pollInstanceid).first();
-		Vote result = new Vote (choice, pollinstance);
+		User user = User.find("byID", v.userid).first();
+		Vote result = new Vote (choice, pollinstance, user);
 		return result;
 	}
 

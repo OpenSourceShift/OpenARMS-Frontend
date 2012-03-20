@@ -5,8 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Random;
 
+import controllers.AuthBackend;
 import models.Choice;
 import models.Poll;
+import models.User;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
 import api.requests.CreatePollRequest;
@@ -38,6 +40,12 @@ public class PollController extends APIController {
         	CreatePollRequest req = GsonHelper.fromJson(request.body, CreatePollRequest.class);
 	        Poll poll = Poll.fromJson(req.poll);
 	        
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+	        
 	        // Generates a Unique ID and saves the Poll.
 	        // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
 	        do {
@@ -63,11 +71,6 @@ public class PollController extends APIController {
 	
 			//Takes the Poll from the DataBase.
 			Poll poll = Poll.find("byID", pollid).first();
-			
-	        /*
-	        if (poll.user != ??) {
-	        	throw new Unauthorized();
-	        }*/
 			
 			if (poll == null) {
 				throw new NotFoundException();
@@ -99,6 +102,12 @@ public class PollController extends APIController {
 			if (originalpoll == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || originalpoll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 
 			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
             String json = reader.readLine();
@@ -142,6 +151,12 @@ public class PollController extends APIController {
 				throw new NotFoundException();
 			}
 			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || oldpoll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 			Poll newpoll = new Poll(null, oldpoll);
 	
 	        // Generates a new Unique ID and saves the Poll.
@@ -170,6 +185,12 @@ public class PollController extends APIController {
 			if (poll == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 			
 			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 			poll.delete();
