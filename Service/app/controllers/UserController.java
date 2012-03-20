@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import play.mvc.Http;
+
 import controllers.APIController.NotFoundException;
 import controllers.APIController.UnauthorizedException;
 
@@ -70,8 +72,8 @@ public class UserController extends APIController {
 	        	user.save();
 	        }
 	        //Creates the UserJSON Response.
-	        CreateUserResponse response = new CreateUserResponse(user.toJson());
-	    	String jsonResponse = GsonHelper.toJson(response);
+	        CreateUserResponse response2 = new CreateUserResponse(user.toJson());
+	    	String jsonResponse = GsonHelper.toJson(response2);
 	    	renderJSON(jsonResponse);
 		} catch (Exception e) {
 			renderException(e);
