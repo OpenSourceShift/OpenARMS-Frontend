@@ -2,79 +2,81 @@ package controllers;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import play.mvc.Controller;
+import api.requests.CreateVoteRequest;
 import api.requests.ReadPollInstanceByTokenRequest;
 import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
 import api.entities.ChoiceJSON;
+import api.entities.VoteJSON;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 
 public class JoinPoll extends Controller {
 	public static void index(String token) {
 		try {
-			// get the Poll Instance Data
+			/** get the Poll Instance Data */
 			ReadPollInstanceResponse instanceResponse = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
 			Long poll_id = instanceResponse.pollinstance.poll_id;
-			Long instanceId = instanceResponse.pollinstance.id;
-			Date startDateTime = instanceResponse.pollinstance.startDateTime;
+			// Long instanceId = instanceResponse.pollinstance.id;
+			// Date startDateTime = instanceResponse.pollinstance.startDateTime;
 			Date endDateTime = instanceResponse.pollinstance.endDateTime;
 			
-			// get the Poll Data
+			/** get the Poll Data */
 			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));
-			String pollReference = pollResponse.poll.reference;
-			Long pollUserId = pollResponse.poll.admin;
-			Boolean pollMultipleAllowed = pollResponse.poll.multipleAllowed;
+			// String pollReference = pollResponse.poll.reference;
+			// Long pollUserId = pollResponse.poll.admin;
+			// Boolean pollMultipleAllowed = pollResponse.poll.multipleAllowed;
 			String pollQuestion = pollResponse.poll.question;
 			List<ChoiceJSON> pollChoices = pollResponse.poll.choices;
 			
-			// render it, poll data + poll instance data !?
-			render(token, poll_id, instanceId, startDateTime, endDateTime, pollReference, pollUserId, pollMultipleAllowed, pollQuestion, pollChoices);
-			
+			/** render the JoinPoll.Index */
+			render(poll_id, endDateTime, pollQuestion, pollChoices);
 		} catch (Exception e)
 		{
 			// TODO: tell the user it failed
 		}
 	}
 
-	public static void submit(String token, String questionID, String answer) throws JsonParseException {
-		/*
-		validation.required(token);
-		validation.match(token, "^\\d+$");
-		validation.required(questionID);
-		validation.match(questionID, "^\\d+$");
-		validation.required(answer);
-
+	public static void submit(Long instanceId, Long[] votes) throws Exception {
+		if (votes != null) {
+			for (Long l : votes) {
+				VoteJSON vote = new VoteJSON();
+				vote.choiceid = l;
+				vote.pollInstanceid = instanceId;
+				APIClient.getInstance().send(new CreateVoteRequest(vote));
+			}
+		}
+		else {
+			throw new Exception("no answers submitted");
+		}
+		
+		/* TODO: validation
+		validation.required(stuff);
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
 			index(token);
 			return;
-		}
-
-		//Vote v = new Vote();
-		//v.token = Integer.parseInt(token);
-		//v.questionID = Integer.parseInt(questionID);
-		//v.answers = new String[] { answer };
-		//v.rensponderID = request.remoteAddress + session.getId();
+		} */
 		
-		//RestClient.getInstance().vote(v);
-		//APIClient.getInstance().send(new api.Request.vote(v));
-		success(token);
-		*/
+		success(instanceId);
 	}
 
-	public static void success(String token) {
-		/*
-		String question = null;
+	public static void success(Long instanceId) {
+		// TODO: what should happen? just show the statistics of the instance?
+		
+		/* String question = null;
 		JsonArray answersArray = null;
 		String duration = null;
 
 		try {
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
+			ReadPollInstanceResponse response = (ReadPollInstanceResponse) APIClient.getInstance().send(new ReadPollInstanceRequest(instanceId));
 			question = response.question;
 			answersArray = response.answersArray;
 			duration = response.duration;
@@ -89,25 +91,12 @@ public class JoinPoll extends Controller {
 			} catch (Exception e2) {
 			}
 		}
-		
-		String durationString = "00:00";
-		// Parse the duration and turn it into minutes and seconds
-		int dur = Integer.parseInt(duration);
-		int m = (int) Math.floor(dur / 60);
-		int s = dur - m * 60;
-
-		// Add leading zeros and make the string.
-		char[] zeros = new char[2];
-		Arrays.fill(zeros, '0');
-		DecimalFormat df = new DecimalFormat(String.valueOf(zeros));
-
-		durationString = df.format(m) + ":" + df.format(s);
 
 		render(token, question, answersArray, duration, durationString);
-		*/
+		
 	}
 
 	public static void nopoll(String token) {
-		render(token);
+		render(token); */
 	}
 }

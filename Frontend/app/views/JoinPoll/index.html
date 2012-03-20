@@ -7,12 +7,12 @@
 		<h1>${question}</h1>
 		<hr />
 		#{form @JoinPoll.submit()}
-			<input type="hidden" name="pollID" value="${pollID}" />
-			<input type="hidden" name="questionID" value="${questionID}" />
-			<input type="hidden" name="end" value="${end}" />
+			<input type="hidden" name="pollID" value="${poll_id}" />
+			<input type="hidden" name="questionID" value="${pollQuestion}" />
+			<input type="hidden" name="end" value="${endDateTime}" />
 			<ul>
 				#{list 0..answersArray.length()-1, as:'i'}
-					<li><label><input type="radio" name="answer" value="${answersArray.get(i)}"/>${answersArray.get(i)}</label></li>
+					<li><label><input type="radio" name="answer" value="${pollChoices.get(i)}"/>${answersArray.get(i)}</label></li>
 				#{/list}
 			</ul>
 			<input type="submit" value="&{'vote'}" class="button" />
