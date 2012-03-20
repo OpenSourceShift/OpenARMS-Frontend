@@ -15,6 +15,7 @@ GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
 *       /admin		                            module:secure
 GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
 GET		/poll/{<[0-9]+>id}						PollController.retrieve
+GET		/poll/token/{<[A-Za-z0-9]+>token}		PollController.retrieveByToken
 POST	/poll									PollController.create
 PUT		/poll/{<[0-9]+>id}						PollController.edit
 DELETE	/poll/{<[0-9]+>id}						PollController.delete
