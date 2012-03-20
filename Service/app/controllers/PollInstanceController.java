@@ -5,9 +5,11 @@ import java.io.InputStreamReader;
 import java.util.Random;
 
 import controllers.APIController.NotFoundException;
+import controllers.APIController.UnauthorizedException;
 
 import models.Poll;
 import models.PollInstance;
+import models.User;
 import api.requests.CreatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
@@ -30,7 +32,13 @@ public class PollInstanceController extends APIController  {
 	    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 	        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
 	        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
-	                    
+	            
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || pollinstance.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 	        pollinstance.save();
 	        
 	        //Creates the PollInstanceJSON Response.
@@ -81,6 +89,12 @@ public class PollInstanceController extends APIController  {
 			if (originalpollinstance == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || originalpollinstance.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 			CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
@@ -127,6 +141,12 @@ public class PollInstanceController extends APIController  {
 				throw new NotFoundException();
 			}
 			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || pollinstance.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 			//Closes the PollInstance and save the changes in the DataBase.
 			pollinstance.closePollInstance();
 			pollinstance.save();
@@ -149,6 +169,12 @@ public class PollInstanceController extends APIController  {
 			if (pollinstance == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || pollinstance.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 			
 			//Deletes the PollInstance from the DataBase and creates an empty PollInstanceJSON for the response.
 			pollinstance.delete();

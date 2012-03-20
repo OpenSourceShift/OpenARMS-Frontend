@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import controllers.APIController.NotFoundException;
+import controllers.APIController.UnauthorizedException;
 
 import models.SimpleUserAuthBinding;
 import models.User;
@@ -30,6 +31,13 @@ public class UserController extends APIController {
 	        User user = User.fromJson(req.user);
 	        UserAuthBinding auth = user.userAuth;
 	        user.userAuth = null;
+	        
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 	        user.save();
 	        // Takes the authentication details from user and save them to DB and update user in DB
 	        if (auth instanceof SimpleUserAuthBinding) {
@@ -61,6 +69,12 @@ public class UserController extends APIController {
 				throw new NotFoundException();
 			}
 			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
 			//Creates the UserJSON Response.
 			CreateUserResponse response = new CreateUserResponse(user.toJson());
 			String jsonResponse = GsonHelper.toJson(response);
@@ -84,6 +98,12 @@ public class UserController extends APIController {
 			if (originalUser == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || originalUser.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 			
 			//Takes the edited UserJSON and creates a new User object with this UserJSON.
 			CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
@@ -134,6 +154,12 @@ public class UserController extends APIController {
 			if (user == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 			
 			//Deletes the Authentication from the DataBase.
 			if (user.userAuth instanceof SimpleUserAuthBinding) {

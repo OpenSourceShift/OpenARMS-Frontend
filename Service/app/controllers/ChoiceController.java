@@ -5,9 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import controllers.APIController.NotFoundException;
+import controllers.APIController.UnauthorizedException;
 
 import models.Choice;
 import models.Poll;
+import models.User;
 import api.requests.CreateChoiceRequest;
 import api.responses.CreateChoiceResponse;
 import api.responses.CreatePollResponse;
@@ -32,6 +34,12 @@ public class ChoiceController extends APIController {
         	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
             CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
             Choice choice = Choice.fromJson(req.choice);
+            
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || choice.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
             
             choice.save();
             
@@ -83,6 +91,12 @@ public class ChoiceController extends APIController {
 			if (originalchoice == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || originalchoice.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
             CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
@@ -116,6 +130,12 @@ public class ChoiceController extends APIController {
 			if (choice == null) {
 				throw new NotFoundException();
 			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || choice.poll.user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
 	
 			choice.delete();
 	
