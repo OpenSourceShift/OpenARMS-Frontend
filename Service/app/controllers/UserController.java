@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import controllers.APIController.NotFoundException;
+
 import models.SimpleUserAuthBinding;
 import models.User;
 import models.UserAuthBinding;
@@ -55,11 +57,11 @@ public class UserController extends APIController {
 			//Takes the User from the DataBase.
 			User user = User.find("byID", userid).first();
 	
-			//Creates the UserJSON Response.
 			if (user == null) {
-				renderJSON("The User does not exist!");
+				throw new NotFoundException();
 			}
 			
+			//Creates the UserJSON Response.
 			CreateUserResponse response = new CreateUserResponse(user.toJson());
 			String jsonResponse = GsonHelper.toJson(response);
 			renderJSON(jsonResponse);
@@ -78,8 +80,9 @@ public class UserController extends APIController {
 	
 			//Takes the User from the DataBase.
 			User originalUser = User.find("byID", userid).first();
+			
 			if (originalUser == null) {
-				renderJSON("The User does not exist!");
+				throw new NotFoundException();
 			}
 			
 			//Takes the edited UserJSON and creates a new User object with this UserJSON.
@@ -127,6 +130,10 @@ public class UserController extends APIController {
 	
 			//Takes the User from the DataBase.
 			User user = User.find("byID", userid).first();
+			
+			if (user == null) {
+				throw new NotFoundException();
+			}
 			
 			//Deletes the Authentication from the DataBase.
 			if (user.userAuth instanceof SimpleUserAuthBinding) {

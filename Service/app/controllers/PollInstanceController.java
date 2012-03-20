@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Random;
 
+import controllers.APIController.NotFoundException;
+
 import models.Poll;
 import models.PollInstance;
 import api.requests.CreatePollInstanceRequest;
@@ -51,11 +53,11 @@ public class PollInstanceController extends APIController  {
 			//Takes the PollInstance from the DataBase.
 			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
 	
-			//Creates the PollInstanceJSON Response.
 			if (pollinstance == null) {
-				renderJSON("The Poll Instance does not exist!");
+				throw new NotFoundException();
 			}
 			
+			//Creates the PollInstanceJSON Response.
 			CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
@@ -75,6 +77,10 @@ public class PollInstanceController extends APIController  {
 	
 			//Takes the PollInstance from the DataBase.
 			PollInstance originalpollinstance = PollInstance.find("byID", pollinstanceid).first();
+			
+			if (originalpollinstance == null) {
+				throw new NotFoundException();
+			}
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 			CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
@@ -117,6 +123,10 @@ public class PollInstanceController extends APIController  {
 			//Takes the PollInstance from the DataBase.
 			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
 			
+			if (pollinstance == null) {
+				throw new NotFoundException();
+			}
+			
 			//Closes the PollInstance and save the changes in the DataBase.
 			pollinstance.closePollInstance();
 			pollinstance.save();
@@ -135,6 +145,10 @@ public class PollInstanceController extends APIController  {
 	
 			//Takes the PollInstance from the DataBase.
 			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
+			
+			if (pollinstance == null) {
+				throw new NotFoundException();
+			}
 			
 			//Deletes the PollInstance from the DataBase and creates an empty PollInstanceJSON for the response.
 			pollinstance.delete();
