@@ -45,6 +45,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * The admin key, this is used to gain administrative access to the poll.
      */
+    @ManyToOne
     public User admin;
     
     /* TODO Create USER Attribute. */ 

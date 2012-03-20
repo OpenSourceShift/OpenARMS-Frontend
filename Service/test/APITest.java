@@ -5,6 +5,7 @@ import models.Choice;
 import models.Poll;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 import api.*;
 import api.requests.CreatePollRequest;
@@ -16,8 +17,8 @@ import play.test.UnitTest;
 public class APITest extends UnitTest {
 
 	@Test
-    public void checkAllClassesOfTheAPIPackage() {
-		System.out.println(Play.classloader.getAllClasses());
-		CreatePollRequest req = new CreatePollRequest(null);
+    public void createModels() {
+		Fixtures.deleteAllModels();
+		Fixtures.loadModels("data.yml");
     }
 }

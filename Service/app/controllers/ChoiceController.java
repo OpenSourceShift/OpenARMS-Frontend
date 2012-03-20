@@ -11,8 +11,12 @@ import models.Choice;
 import models.Poll;
 import models.User;
 import api.requests.CreateChoiceRequest;
+import api.requests.UpdateChoiceRequest;
 import api.responses.CreateChoiceResponse;
 import api.responses.CreatePollResponse;
+import api.responses.DeleteChoiceResponse;
+import api.responses.ReadChoiceResponse;
+import api.responses.UpdateChoiceResponse;
 import api.entities.ChoiceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
@@ -72,7 +76,7 @@ public class ChoiceController extends APIController {
 			}
 			
 			//Creates the ChoiceJSON Response.
-			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
+			ReadChoiceResponse r = new ReadChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -103,7 +107,7 @@ public class ChoiceController extends APIController {
 		    }
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
+			UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
             Choice editedchoice = Choice.fromJson(req.choice);
 
             //Changes the old text field for the new one.
@@ -112,7 +116,7 @@ public class ChoiceController extends APIController {
             originalchoice.save();
 
             //Creates the ChoiceJSON Response.
-            CreateChoiceResponse r = new CreateChoiceResponse(originalchoice.toJson());
+            UpdateChoiceResponse r = new UpdateChoiceResponse(originalchoice.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -137,18 +141,15 @@ public class ChoiceController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
+			// TODO: Check for null's along the choice.poll.admin.id chain.
 			if (u == null || choice.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 	
 			choice.delete();
 	
-			choice.id = null;
-			choice.poll = null;
-			choice.text = null;
-	
 			//Creates the ChoiceJSON Response.
-			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
+			DeleteChoiceResponse r = new DeleteChoiceResponse();
 			String jsonresponse = GsonHelper.toJson(r);
 			renderJSON(jsonresponse);
 		

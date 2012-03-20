@@ -24,7 +24,7 @@ public abstract class APIController extends Controller {
 	
 	protected static void renderException(Exception e) {
 		System.err.println("Exception thrown in an APIController: "+e.getMessage());
-		//e.printStackTrace();
+		e.printStackTrace();
 		// Return this error to the user.
 		Integer statusCode = STATUS_CODES.get(e.getClass());
 		if(statusCode == null) {

@@ -12,6 +12,7 @@ import models.User;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
 import api.requests.CreatePollRequest;
+import api.requests.UpdatePollRequest;
 import api.responses.CreatePollResponse;
 import play.Logger;
 import play.mvc.Controller;
@@ -117,31 +118,30 @@ public class PollController extends APIController {
 	/**
 	 * Method that edits a Poll already existing in the DataBase.
 	 */
-	public static void edit () {
+	public static void edit() {
 		try {
-			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 			String pollid = params.get("id");
 	
-			//Takes the Poll from the DataBase.
+			// Takes the Poll from the DataBase.
 			Poll originalpoll = Poll.find("byID", pollid).first();
 			
 			if (originalpoll == null) {
 				throw new NotFoundException();
 			}
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+	        // If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalpoll.admin.id != u.id) {
+			if(originalpoll.admin == null) {
+		    	throw new Exception("Inconsistant datastructure, the poll has no admin!");
+		    } else if (u == null || !originalpoll.admin.id.equals(u.id)) {
 		        throw new UnauthorizedException();
 		    }
 
-			//Takes the edited PollJSON and creates a new Poll object with this PollJSON.
-            String json = reader.readLine();
-            PollJSON polljson = GsonHelper.fromJson(json, PollJSON.class);
-            Poll editedpoll = Poll.fromJson(polljson);
+			// Takes the edited PollJSON and creates a new Poll object with this PollJSON.
+			UpdatePollRequest req = GsonHelper.fromJson(request.body, UpdatePollRequest.class);
+            Poll editedpoll = Poll.fromJson(req.poll);
             
-            //Changes the old fields for the new ones.
+            // Changes the old fields for the new ones.
             if (editedpoll.question != null) {
             	originalpoll.question = editedpoll.question;
             }
@@ -155,10 +155,9 @@ public class PollController extends APIController {
             originalpoll.save();
             
             //Creates the PollJSON Response.
-            CreatePollResponse r = new CreatePollResponse(originalpoll.toJson());
-        	String jsonresponse = GsonHelper.toJson(r);
+            CreatePollResponse res = new CreatePollResponse(originalpoll.toJson());
+        	String jsonresponse = GsonHelper.toJson(res);
         	renderJSON(jsonresponse);
-            
 		} catch (Exception e) {
 			renderException(e);
 		}
