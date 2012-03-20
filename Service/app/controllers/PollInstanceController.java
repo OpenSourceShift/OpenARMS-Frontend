@@ -2,6 +2,8 @@ package controllers;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import controllers.APIController.NotFoundException;
@@ -75,7 +77,41 @@ public class PollInstanceController extends APIController  {
 			renderException(e);
 		}
 	}
-
+	/**
+	 * Method that gets a PollInstance by a token from the DataBase.
+	 */
+	public static void retrieveByToken () {
+		try {
+			String pollinstancetoken = params.get("token");
+	
+			PollInstance pollinstance = null;
+			//Takes the PollInstance from the DataBase.
+			List<PollInstance> pollinstances = PollInstance.find("byPoll.token", pollinstancetoken).fetch();
+			Date lastdate = new Date(0);
+			
+			// FIXME: This should be rewritten to do "orderby" in the database, instead of looping through stuff here
+			for(PollInstance pi: pollinstances ) {
+				if (lastdate.before(pi.endDateTime)) {
+					lastdate = pi.endDateTime;
+					pollinstance = pi;
+				}
+			}
+			
+			if (pollinstance == null) {
+				throw new NotFoundException();
+			}
+			
+			//Creates the PollInstanceJSON Response.
+			CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
+			String jsonresponse = GsonHelper.toJson(r);
+	
+			renderJSON(jsonresponse);
+			
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
+	
 	/**
 	 * Method that edits a PollInstance already existing in the DataBase.
 	 */
