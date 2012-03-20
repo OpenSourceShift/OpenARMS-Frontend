@@ -1,32 +1,43 @@
 package controllers;
 import java.text.DecimalFormat;
 import java.util.Arrays;
-
+import java.util.Date;
+import java.util.List;
 import play.mvc.Controller;
-
+import api.requests.ReadPollInstanceByTokenRequest;
+import api.requests.ReadPollInstanceRequest;
+import api.requests.ReadPollRequest;
+import api.responses.ReadPollInstanceResponse;
+import api.responses.ReadPollResponse;
+import api.entities.ChoiceJSON;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonParseException;
 
 public class JoinPoll extends Controller {
-	public static void index(String id) throws JsonParseException {
-		/*
-		if (request.url.contains("joinpoll")) {
-			redirect("/" + id);
-		}
+	public static void index(String token) {
 		try {
-			GetPollResponse response = (GetPollResponse) APIClient.send(new GetPollRequest(id));
-			String token = response.token;
-			long pollid = response.id;
-			String question = response.question;
-			JsonArray answersArray = response.answersArray;
-			String duration = response.duration;
-			render(id, token, pollid, question, answersArray, duration);
-		} catch (Exception e) {
-			// It failed
-			// TODO: Tell the user!
-			nopoll(id);
+			// get the Poll Instance Data
+			ReadPollInstanceResponse instanceResponse = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+			Long poll_id = instanceResponse.pollinstance.poll_id;
+			Long instanceId = instanceResponse.pollinstance.id;
+			Date startDateTime = instanceResponse.pollinstance.startDateTime;
+			Date endDateTime = instanceResponse.pollinstance.endDateTime;
+			
+			// get the Poll Data
+			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));
+			String pollReference = pollResponse.poll.reference;
+			Long pollUserId = pollResponse.poll.admin;
+			Boolean pollMultipleAllowed = pollResponse.poll.multipleAllowed;
+			String pollQuestion = pollResponse.poll.question;
+			List<ChoiceJSON> pollChoices = pollResponse.poll.choices;
+			
+			// render it, poll data + poll instance data !?
+			render(token, poll_id, instanceId, startDateTime, endDateTime, pollReference, pollUserId, pollMultipleAllowed, pollQuestion, pollChoices);
+			
+		} catch (Exception e)
+		{
+			// TODO: tell the user it failed
 		}
-		*/
 	}
 
 	public static void submit(String token, String questionID, String answer) throws JsonParseException {
