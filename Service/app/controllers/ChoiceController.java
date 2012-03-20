@@ -4,8 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import controllers.APIController.NotFoundException;
+
 import models.Choice;
 import models.Poll;
+import api.requests.CreateChoiceRequest;
 import api.responses.CreateChoiceResponse;
 import api.responses.CreatePollResponse;
 import api.entities.ChoiceJSON;
@@ -27,8 +30,8 @@ public class ChoiceController extends APIController {
 	public static void create() {
         try {
         	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            CreateChoiceResponse response = GsonHelper.fromJson(request.body, CreateChoiceResponse.class);
-            Choice choice = Choice.fromJson(response.choice);
+            CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
+            Choice choice = Choice.fromJson(req.choice);
             
             choice.save();
             
@@ -52,11 +55,11 @@ public class ChoiceController extends APIController {
 			//Takes the Choice from the DataBase.
 			Choice choice = Choice.find("byID", choiceid).first();
 		
-			//Creates the ChoiceJSON Response.
 			if (choice == null) {
-				renderJSON("The Choice does not exist!");
+				throw new NotFoundException();
 			}
 			
+			//Creates the ChoiceJSON Response.
 			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
@@ -72,16 +75,18 @@ public class ChoiceController extends APIController {
 	 */
 	public static void edit () {
 		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(request.body));
 			String choiceid = params.get("id");
 			
 			//Takes the Choice from the DataBase.
 			Choice originalchoice = Choice.find("byID", choiceid).first();
+			
+			if (originalchoice == null) {
+				throw new NotFoundException();
+			}
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            String json = reader.readLine();
-            ChoiceJSON choicejson = GsonHelper.fromJson(json, ChoiceJSON.class);
-            Choice editedchoice = Choice.fromJson(choicejson);
+            CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
+            Choice editedchoice = Choice.fromJson(req.choice);
 
             //Changes the old text field for the new one.
             originalchoice.text = editedchoice.text;
@@ -107,6 +112,10 @@ public class ChoiceController extends APIController {
 			
 			//Takes the Choice from the DataBase.
 			Choice choice = Choice.find("byID", choiceid).first();
+			
+			if (choice == null) {
+				throw new NotFoundException();
+			}
 	
 			choice.delete();
 	
