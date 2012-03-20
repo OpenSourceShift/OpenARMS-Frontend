@@ -4,6 +4,9 @@ import api.requests.Request.Method;
 import api.responses.CreateChoiceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Creates a choice
+ */
 public class CreateChoiceRequest extends Request {
 	public ChoiceJSON choice;
 	public CreateChoiceRequest(ChoiceJSON c) {

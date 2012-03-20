@@ -4,6 +4,9 @@ import api.entities.PollJSON;
 import api.responses.Response;
 import api.responses.UpdatePollResponse;
 
+/**
+ * A request for the service: 
+ */
 public class UpdatePollRequest extends Request {
 	public PollJSON poll;
 	public UpdatePollRequest (PollJSON p) {

@@ -4,6 +4,9 @@ import api.entities.VoteJSON;
 import api.responses.Response;
 import api.responses.VoteOnPollInstanceResponse;
 
+/**
+ * A request for the service: 
+ */
 public class VoteOnPollInstanceRequest extends Request {
 	public VoteJSON vote;
 	public VoteOnPollInstanceRequest (VoteJSON v) {

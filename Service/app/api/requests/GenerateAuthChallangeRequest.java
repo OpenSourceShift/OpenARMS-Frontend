@@ -3,6 +3,9 @@ package api.requests;
 import api.responses.GenerateAuthChallangeResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class GenerateAuthChallangeRequest extends Request {
 	public String backend;
 	

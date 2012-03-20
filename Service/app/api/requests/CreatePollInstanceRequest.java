@@ -6,6 +6,9 @@ import api.responses.CreateChoiceResponse;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Creates a poll instance
+ */
 public class CreatePollInstanceRequest extends Request {
 	 
 	public PollInstanceJSON pollInstance;

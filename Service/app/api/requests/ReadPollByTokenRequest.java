@@ -4,6 +4,9 @@ import api.entities.PollJSON;
 import api.responses.ReadPollResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadPollByTokenRequest extends Request {
 	public String token;
 	public ReadPollByTokenRequest (String token) {

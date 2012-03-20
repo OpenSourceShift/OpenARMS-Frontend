@@ -4,6 +4,9 @@ import api.entities.ChoiceJSON;
 import api.responses.ReadChoiceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadChoiceRequest extends Request {
 	public Long choice_id;
 	public ReadChoiceRequest (Long l) {

@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.DeleteVoteResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a vote
+ */
 public class DeleteVoteRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = DeleteVoteResponse.class;
 	public Long vote_id;

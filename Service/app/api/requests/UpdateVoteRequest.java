@@ -4,6 +4,9 @@ import api.entities.VoteJSON;
 import api.responses.Response;
 import api.responses.UpdateVoteResponse;
 
+/**
+ * A request for the service: 
+ */
 public class UpdateVoteRequest extends Request {
 	public VoteJSON vote;
 	public UpdateVoteRequest (VoteJSON v) {

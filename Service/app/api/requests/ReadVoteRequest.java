@@ -4,6 +4,9 @@ import api.entities.VoteJSON;
 import api.responses.ReadVoteResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadVoteRequest extends Request {
 	public Long vote_id;
 	public ReadVoteRequest (Long l) {
