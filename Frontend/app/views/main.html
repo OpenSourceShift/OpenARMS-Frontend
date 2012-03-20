@@ -4,7 +4,7 @@
     <head>
         <title>#{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=600, user-scalable=yes" /> 
+        <meta name="viewport" content="width=600, user-scalable=yes" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/global.css'}" />
         #{if moreStyles}
         	<link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/'}/#{get 'moreStyles' /}.css" />
@@ -20,8 +20,11 @@
     </head>
 <body>
   	<div id="content">
-			<div id="header">
-				<a href="/"><img src="/public/images/logo_transparent_hd.png" /></a>
+      <div id="header">
+        <!--div id="signup">
+  			  <input type="submit" value="Sign Up" />
+        </div-->
+      	<a href="/"><img src="/public/images/logo_transparent_hd.png" /></a>
       </div>
       <hr />
       #{doLayout /}

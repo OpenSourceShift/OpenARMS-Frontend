@@ -131,10 +131,10 @@ YAHOO.util.Event.onAvailable('flickr_search', function() {
 var gutter = null;
 
 var myConfig = {
-    height: '300px',
+    height: '150px',
     width: '550px',
-    animate: true,
-    dompath: true,
+    animate: false,
+    dompath: false,
     focusAtStart: true,
 	  toolbar: {
         //titlebar: 'My Editor',
@@ -158,7 +158,60 @@ var myConfig = {
                             { text: 'Verdana' }
                         ]
                     },
-                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 75 ], disabled: true },
+                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
+                    { type: 'separator' },
+                    { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
+                    { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
+                ]
+            },
+	    { type: 'separator' },
+	    { group: 'indentlist', label: 'Lists',
+	        buttons: [
+	            { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' },
+	            { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' }
+	        ]
+	    },
+	    { type: 'separator' },
+	    { group: 'insertitem', label: 'Insert Item',
+	        buttons: [
+	            { type: 'push', label: 'HTML Link CTRL + SHIFT + L', value: 'createlink', disabled: true }, 
+	            { type: 'push', label: 'Insert Image', value: 'insertimage' }
+	        ]
+	    }
+
+        ]
+    }
+};
+
+var answerConfig = {
+    height: '85px',
+    width: '520px',
+    animate: false,
+    dompath: false,
+    focusAtStart: true,
+	  toolbar: {
+        //titlebar: 'My Editor',
+        buttons: [
+            { group: 'textstyle', label: 'Font Style',
+                buttons: [
+                    { type: 'push', label: 'Bold', value: 'bold' },
+                    { type: 'push', label: 'Italic', value: 'italic' },
+                    { type: 'push', label: 'Underline', value: 'underline' },
+                    { type: 'separator' },
+                    { type: 'select', label: 'Arial', value: 'fontname', disabled: true,
+                        menu: [
+                            { text: 'Arial', checked: true },
+                            { text: 'Arial Black' },
+                            { text: 'Comic Sans MS' },
+                            { text: 'Courier New' },
+                            { text: 'Lucida Console' },
+                            { text: 'Tahoma' },
+                            { text: 'Times New Roman' },
+                            { text: 'Trebuchet MS' },
+                            { text: 'Verdana' }
+                        ]
+                    },
+                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
                     { type: 'separator' },
                     { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
                     { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
@@ -184,7 +237,7 @@ var myConfig = {
 };
 
 YAHOO.log('Editor loaded..', 'info', 'example');
-var myEditor = new YAHOO.widget.Editor('editor', myConfig);
+var myEditor = new YAHOO.widget.Editor('editor', myConfig);;
 
 /* Flicker Button
   myEditor.on('toolbarLoaded', function() {
