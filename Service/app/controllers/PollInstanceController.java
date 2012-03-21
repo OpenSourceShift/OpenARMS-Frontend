@@ -41,19 +41,17 @@ public class PollInstanceController extends APIController  {
 	    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 	        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
 	        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
-	        Poll p = Poll.find("byId", req.pollInstance.poll_id).first();
-	        if(p == null) {
+	      	if(pollinstance.poll == null) {
 		        throw new NotFoundException("The poll_id references a non-exsistant poll.");
 	        }
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
 			System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
 			// TODO: Check the null values along the way
-			if (u == null || !p.admin.equals(u)) {
+			if (u == null || !pollinstance.poll.admin.equals(u)) {
 		        throw new UnauthorizedException();
 		    }
 			
-			pollinstance.poll = p;
 	        pollinstance.save();
 	        
 	        //Creates the PollInstanceJSON Response.

@@ -10,6 +10,7 @@ public class PollJSON extends BaseModelJSON {
     public Boolean multipleAllowed;
 	public String question;
 	public List<ChoiceJSON> choices;
+	public List<PollInstanceJSON> pollinstances;
 	
 	/*
 	public PollJSON(Poll p) {
