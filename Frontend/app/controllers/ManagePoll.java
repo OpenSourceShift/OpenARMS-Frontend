@@ -1,43 +1,69 @@
 package controllers;
 import java.util.Calendar;
+import java.util.List;
 
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
+import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.ReadPollByTokenRequest;
+import api.requests.ReadPollRequest;
+import api.requests.UpdatePollRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.ReadPollResponse;
+import api.responses.UpdatePollResponse;
 
 public class ManagePoll extends Controller {
-	public static void index(String token, String adminkey) {
-		/*
-		validation.required(token);
-		validation.required(adminkey);
-		boolean redirect = true;
-		if (validation.hasErrors()) {
-			token = session.get("token");
-			adminkey = session.get("adminkey");
-			redirect = false;
-		}
-		
+	public static void index(Long id) {
 		try {
-			CheckAdminkeyResponse response = (CheckAdminkeyResponse) APIClient.getInstance().send(new CheckAdminkeyRequest(token, adminkey));
-			boolean correct = response.bool;
-			if (correct) {
-				if (redirect) {
-					session.put("token", token);
-					session.put("adminkey", adminkey);
-					ManagePoll.index(null, null);
-				} else {
-					render(token, adminkey);
-				}
+			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+			String pollToken = response.poll.token;
+			String pollReference = response.poll.reference;
+			Boolean pollMultipleAllowed = response.poll.multipleAllowed;
+			String pollQuestion = response.poll.question;
+			List<ChoiceJSON> pollChoices = response.poll.choices;
+			
+			validation.required(pollToken);
+			validation.required(pollReference);
+			validation.required(pollMultipleAllowed);
+			validation.required(pollQuestion);
+			validation.required(pollChoices);
+			
+			if (!validation.hasErrors()) {
+				render(pollToken, pollReference, pollMultipleAllowed, pollQuestion, pollChoices);
+			}
+			else {
+				// TODO: error handling
 			}
 		} catch (Exception e) {
+			// TODO: tell the user it failed
 		}
-		Application.index();
-		*/
+	}
+	
+	public static void update(String token, String reference, Boolean multipleAllowed, String question, List<ChoiceJSON> choices) {
+		validation.required(reference);
+		validation.required(multipleAllowed);
+		validation.required(question);
+		validation.required(choices);
+		
+		if (!validation.hasErrors()) {
+			// TODO: error handling
+			}
+		
+		PollJSON pollJson = new PollJSON();
+		pollJson.choices = choices;
+		pollJson.multipleAllowed = multipleAllowed;
+		pollJson.question = question;
+		pollJson.reference = reference;
+		
+		try {
+			UpdatePollResponse response = (UpdatePollResponse) APIClient.send(new UpdatePollRequest(pollJson));
+		} catch (Exception e) {
+			// TODO: tell the user it failed
+		}	
 	}
 
 	public static void activate() {
