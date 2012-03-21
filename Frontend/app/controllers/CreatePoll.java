@@ -12,7 +12,7 @@ import api.responses.CreatePollResponse;
 public class CreatePoll extends Controller {
 
 	public static void index(String email, String question, String[] answer) {
-		if (Application.session.isEmpty()) {
+		if (LoginUser.isLoggedIn()) {
 			LoginUser.forward = "createpoll";
 			LoginUser.index("");
 		}
