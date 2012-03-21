@@ -179,18 +179,15 @@ public class PollController extends APIController {
 			if (oldpoll == null) {
 				throw new NotFoundException();
 			}
-
-<<<<<<< HEAD
+			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			/*User u = AuthBackend.getCurrentUser();
 			if (u == null || oldpoll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }*/
-=======
 
 			requireUser(oldpoll.admin);
->>>>>>> 95709ed14abc15d64fc751a64fe913e1f7d79ef3
-			
+
 			Poll newpoll = new Poll(null, oldpoll);
 	
 	        // Generates a new Unique ID and saves the Poll.
