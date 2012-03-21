@@ -41,7 +41,7 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response2);
     	assertEquals(pj2.question, response2.poll.question);
     }
-/*
+	/*
     @Test
     public void testCreateChoice() throws Exception {
     	ChoiceJSON c = new ChoiceJSON();
@@ -61,7 +61,7 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.pollinstance.id);
     	assertEquals(response.pollinstance.poll_id, p.poll_id);
     }
-  
+  	*/
 	@Test
     public void testCreateUser() throws Exception {
 		UserJSON u = new UserJSON();
@@ -76,7 +76,7 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.user.id);
     	assertEquals(response.user.name, u.name);
-    }  */
+    }
 	/*
     @Test
     public void testCreatePoll() throws Exception {
