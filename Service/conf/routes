@@ -4,6 +4,7 @@
 
 # Home page
 
+# OpenARS 1.0
 POST    /newPoll                                Management.createQuestion
 POST    /activation/{<[0-9]+>id}/{adminKey}     Management.activation
 GET     /checkAdminKey/{<[0-9]+>id}/{adminKey}  Management.checkAdminLink
@@ -11,6 +12,8 @@ POST    /vote/{<[0-9]+>id}                      Voting.vote
 GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
+
+# OpenARMS 2.0
 *       /admin									module:crud
 *       /admin		                            module:secure
 GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
@@ -39,8 +42,7 @@ POST	/user									UserController.create
 PUT		/user/{<[0-9]+>id}						UserController.edit
 DELETE	/user/{<[0-9]+>id}						UserController.delete
 POST	/user/authenticate						UserController.authenticate
-
-GET		/loadtestdata							APIController.loadTestData
+GET		/loadtestdata/{<.+>yaml_file}			APIController.loadTestData
 
 
 # Map static resources from the /app/public folder to the /public path

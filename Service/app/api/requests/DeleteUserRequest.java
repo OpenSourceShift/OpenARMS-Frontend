@@ -1,7 +1,5 @@
 package api.requests;
-import api.entities.UserJSON;
-import api.requests.Request.Method;
-import api.responses.DeleteUserResponse;
+import api.responses.EmptyResponse;
 import api.responses.Response;
 
 /**
@@ -18,7 +16,7 @@ public class DeleteUserRequest extends Request {
 	}
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return DeleteUserResponse.class;
+		return EmptyResponse.class;
 	}
 	@Override
 	public Method getHttpMethod() {

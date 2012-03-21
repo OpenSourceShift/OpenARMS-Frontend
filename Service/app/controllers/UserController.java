@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import play.Logger;
 import play.mvc.Http;
 
 import controllers.APIController.NotFoundException;
@@ -12,8 +13,11 @@ import controllers.APIController.UnauthorizedException;
 import models.SimpleUserAuthBinding;
 import models.User;
 import models.UserAuthBinding;
+import api.requests.AuthenticateUserRequest;
 import api.requests.CreateUserRequest;
+import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
+import api.responses.EmptyResponse;
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
 
@@ -31,23 +35,22 @@ public class UserController extends APIController {
 	public static void authenticate() {
 		try {
 			// Takes the UserJSON from the http body
-			CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
-			User user = User.fromJson(req.user);
-			User currentuser = null;
-			if (user.userAuth instanceof SimpleUserAuthBinding) {
-				currentuser = SimpleAuthBackend.authenticate(user);
-				if (currentuser != null) {
+			AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
+			User user = User.find("byEmail", req.user.email).first();
+			if (user != null && user.userAuth instanceof SimpleUserAuthBinding) {
+				user = SimpleAuthBackend.authenticate(user);
+				if (user != null) {
 				    //Creates the UserJSON Response.
-					CreateUserResponse response = new CreateUserResponse(currentuser.toJson());
-					String jsonResponse = GsonHelper.toJson(response);
-					renderJSON(jsonResponse);
-				} else
+					AuthenticateUserResponse response = new AuthenticateUserResponse(user.toJson());
+					renderJSON(response.toJson());
+				} else {
 					throw new UnauthorizedException();
+				}
 			} else {
 				throw new NotFoundException();
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
+			//renderText(e.getMessage());
 			renderException(e);
 		}
 	}
@@ -200,17 +203,8 @@ public class UserController extends APIController {
     		}
 			//Deletes the User from the DataBase and creates an empty UserJSON for the response.
 			user.delete();
-	
-			user.id = null;
-			user.name = null;
-			user.email = null;
-			user.secret = null;
-			user.userAuth = null;
-			
-			//Creates the UserJSON response.
-			CreateUserResponse response = new CreateUserResponse(user.toJson());
-			String jsonResponse = GsonHelper.toJson(response);
-			renderJSON(jsonResponse);
+
+			renderJSON(new EmptyResponse().toJson());
 			
 		} catch (Exception e) {
 			renderException(e);

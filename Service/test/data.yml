@@ -6,13 +6,17 @@
 #   password: secret
 #   fullname: Bob
 
+SimpleUserAuthBinding(suab1):
+  password: openarms
+
 User(u1):
-   email: spam@creen.dk
-   secret: openarms
+  email: spam@creen.dk
+  userAuth: suab1
 
 Poll(p1):
   question: "What is 2+2?"
   admin: u1
+  token: 123456
 
 Choice(c1):
   text: "It is 3!"

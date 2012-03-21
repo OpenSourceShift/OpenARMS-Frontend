@@ -26,7 +26,7 @@ public class SimpleAuthBackend extends AuthBackend {
 	public static User authenticate(User user) {
 	    // Find correct user in the DB
 	    User u = null;
-	    u = (User)User.find("name",user.name).first();
+	    u = (User)User.find("email", user.email).first();
 	    if (u != null) {
 	    	Logger.debug("authenticate() found user: %s", u.toString());
 	    	SimpleUserAuthBinding auth = (SimpleUserAuthBinding)u.userAuth;

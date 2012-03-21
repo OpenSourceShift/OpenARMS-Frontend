@@ -18,6 +18,7 @@ import models.Vote;
 import api.requests.CreatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
+import api.responses.EmptyResponse;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
@@ -37,13 +38,19 @@ public class PollInstanceController extends APIController  {
 	    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 	        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
 	        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
-	            
+	        Poll p = Poll.find("byId", req.pollInstance.poll_id).first();
+	        if(p == null) {
+		        throw new NotFoundException("The poll_id references a non-exsistant poll.");
+	        }
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.admin.id != u.id) {
+			System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
+			// TODO: Check the null values along the way
+			if (u == null || !p.admin.equals(u)) {
 		        throw new UnauthorizedException();
 		    }
 			
+			pollinstance.poll = p;
 	        pollinstance.save();
 	        
 	        //Creates the PollInstanceJSON Response.
@@ -217,17 +224,8 @@ public class PollInstanceController extends APIController  {
 			
 			//Deletes the PollInstance from the DataBase and creates an empty PollInstanceJSON for the response.
 			pollinstance.delete();
-	
-			pollinstance.endDateTime = null;
-			pollinstance.startDateTime = null;
-			pollinstance.poll = null;
-			pollinstance.votes = null;
-			
-			//Creates the PollInstanceJSON Response.
-			CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-			renderJSON(jsonresponse);
-			
+
+			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
 			renderException(e);
 		}

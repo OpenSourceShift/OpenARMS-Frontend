@@ -1,8 +1,6 @@
 package api.requests;
 
-import api.entities.ChoiceJSON;
-import api.requests.Request.Method;
-import api.responses.DeleteChoiceResponse;
+import api.responses.EmptyResponse;
 import api.responses.Response;
 
 /**
@@ -21,7 +19,7 @@ public class DeleteChoiceRequest extends Request {
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return DeleteChoiceResponse.class;
+		return EmptyResponse.class;
 	}
 
 	@Override

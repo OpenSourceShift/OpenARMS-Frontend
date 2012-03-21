@@ -3,6 +3,7 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -20,24 +21,18 @@ import play.Play;
 import play.libs.Codec;
 import play.libs.Crypto;
 import play.mvc.Controller;
-import play.mvc.Http;
-import play.mvc.Http.Header;
 import play.mvc.Http.StatusCode;
+import api.entities.UserJSON;
 import api.helpers.GsonHelper;
+import api.requests.AuthenticateUserRequest;
+import api.requests.LoadTestDataRequest;
 import api.requests.Request;
+import api.responses.AuthenticateUserResponse;
+import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
 
 public class APIClient extends Controller {
-	/**
-	 * The singleton
-	 */
-	private static APIClient singleton;
-	
-	/**
-	 * The users password, descrupted but base 64 encoded.
-	 */
-	private String decryptedUserSecretBase64Encoded;
 
 	/**
 	 * The host to use when contacting the service, this will be set by the constructor.
@@ -48,24 +43,7 @@ public class APIClient extends Controller {
 	 * Constructing a new API client, try to reuse these.
 	 */
 	public APIClient() {
-		this(
-			session.get("user_id")==null ? null : Long.parseLong(session.get("user_id")),
-			session.get("user_secret")==null ? null : Crypto.decryptAES(session.get("user_secret"))
-		);
-	}
-
-	/**
-	 * Constructing a new API client, try to reuse these.
-	 * @param userId
-	 * @param userSecret
-	 */
-	public APIClient(Long userId, String userSecret) {
-		this(
-			Play.configuration.getProperty("openarms.service_host"),
-			Integer.parseInt(Play.configuration.getProperty("openarms.service_port")),
-			userId,
-			userSecret
-		);
+		this(Play.configuration.getProperty("openarms.service_host"), Integer.valueOf(Play.configuration.getProperty("openarms.service_port")));
 	}
 	
 	/**
@@ -76,19 +54,17 @@ public class APIClient extends Controller {
 	 * @param userId
 	 * @param userSecret
 	 */
-	public APIClient(String hostname, int port, Long userId, String userSecret) {
+	public APIClient(String hostname, int port) {
 		host = new HttpHost(hostname, port);
-		if(userSecret != null && !userSecret.isEmpty() && userId != null) {
-			String authenticationString = userId+":"+userSecret;
-			decryptedUserSecretBase64Encoded = Codec.encodeBASE64(authenticationString.getBytes());
-		}
+	}
+	
+	public void setAuthentication(Long userId, String userSecret) {
+		session.put("user_id", userId);
+		session.put("user_secret", Crypto.decryptAES(userSecret));
 	}
 	
 	public static APIClient getInstance() {
-		if(singleton == null) {
-			singleton = new APIClient();
-		}
-		return singleton;
+		return new APIClient();
 	}
 	
 	private HttpRequestBase getBaseRequest(api.requests.Request request) throws Exception {
@@ -122,8 +98,14 @@ public class APIClient extends Controller {
 		}
 		// Setting the URI.
 		httpRequest.setURI(URI.create(request.getURL()));
-		// Set the authentication header
-		if(decryptedUserSecretBase64Encoded != null) {
+		// Set the authentication header to match the user_secret known from the user session.
+		String encryptedUserSecret = session.get("user_secret");
+		String userId = session.get("user_id");
+		if(encryptedUserSecret != null && !encryptedUserSecret.isEmpty() && userId != null && !userId.isEmpty()) {
+			Logger.debug("encryptedUserSecret = "+encryptedUserSecret);
+			String decryptedUserSecret = Crypto.decryptAES(encryptedUserSecret);
+			String authenticationString = userId+":"+decryptedUserSecret;
+			String decryptedUserSecretBase64Encoded = Codec.encodeBASE64(authenticationString.getBytes());
 			httpRequest.addHeader("Authorization", "Basic "+decryptedUserSecretBase64Encoded);
 		}
 		
@@ -214,5 +196,24 @@ public class APIClient extends Controller {
 		}
 	}
 	
-	// TODO: Add a method to invoke the /loadtestdata on the service.
+	public static EmptyResponse loadServiceData(String yamlDataFile) throws Exception {
+		LoadTestDataRequest req = new LoadTestDataRequest(yamlDataFile);
+		return (EmptyResponse) APIClient.send(req);
+	}
+
+	public static boolean authenticateSimple(String email, String password) throws Exception {
+		UserJSON u = new UserJSON();
+		u.email = email;
+		u.attributes = new HashMap<String,String>();
+		u.attributes.put("password", password);
+		AuthenticateUserRequest req = new AuthenticateUserRequest(u, "class models.SimpleUserAuthBinding");
+		AuthenticateUserResponse res = (AuthenticateUserResponse) APIClient.send(req);
+		if(StatusCode.success(res.statusCode) && res.user != null && res.user.id != null && res.user.secret != null) {
+			session.put("user_id", res.user.id);
+			session.put("user_secret", Crypto.encryptAES(res.user.secret));
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
