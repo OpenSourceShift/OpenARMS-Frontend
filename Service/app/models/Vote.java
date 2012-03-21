@@ -48,6 +48,11 @@ public class Vote extends Model implements Jsonable {
         this.pollInstance = instance;
         this.user = user;
     }
+    
+    public static Vote copy (Vote v) {
+    	Vote v2 = new Vote(v.choice,v.pollInstance,v.user);
+    	return v2;
+    }
 
 
     /**

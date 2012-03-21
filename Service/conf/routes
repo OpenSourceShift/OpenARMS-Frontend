@@ -22,7 +22,7 @@ GET		/poll/token/{<[A-Za-z0-9]+>token}		PollController.retrieveByToken
 POST	/poll									PollController.create
 PUT		/poll/{<[0-9]+>id}						PollController.edit
 DELETE	/poll/{<[0-9]+>id}						PollController.delete
-POST    /poll/{<[0-9]+>id_old}/copy				PollController.copy
+POST    /poll/{<[0-9]+>id_old}/clone			PollController.copy
 GET		/choice/{<[0-9]+>id}					ChoiceController.retrieve
 POST	/choice									ChoiceController.create
 PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
