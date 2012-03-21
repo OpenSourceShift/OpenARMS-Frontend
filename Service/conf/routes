@@ -16,7 +16,7 @@ GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
 # OpenARMS 2.0
 *       /admin									module:crud
 *       /admin		                            module:secure
-GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
+GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage(format:'jpg')
 GET		/poll/{<[0-9]+>id}						PollController.retrieve
 GET		/poll/token/{<[A-Za-z0-9]+>token}		PollController.retrieveByToken
 POST	/poll									PollController.create
