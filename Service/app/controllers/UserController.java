@@ -15,6 +15,7 @@ import models.User;
 import models.UserAuthBinding;
 import api.requests.AuthenticateUserRequest;
 import api.requests.CreateUserRequest;
+import api.requests.UpdateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
@@ -141,7 +142,7 @@ public class UserController extends APIController {
 		    }
 			
 			//Takes the edited UserJSON and creates a new User object with this UserJSON.
-			CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
+			UpdateUserRequest req = GsonHelper.fromJson(request.body, UpdateUserRequest.class);
             User editedUser = User.fromJson(req.user);
             
             //Changes the old fields for the new ones.
