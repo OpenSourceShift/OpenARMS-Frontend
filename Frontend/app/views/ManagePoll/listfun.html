@@ -17,10 +17,16 @@
 </script>
 
 <div id="main">
-	<!-- #{polls /} -->
-	<a class="show_hide" href="#" rel="#slidingDiv">View</a><br />
-	<div id="slidingDiv">test2</div>
- 	<a class="show_hide" href="#" rel="#slidingDiv_2">View</a><br />
-	<div id="slidingDiv_2">test3</div>
+		<ul>
+		<div class="demo-show">
+			#{list pollsJson, as:'poll'}
+				<h3><li>${poll.question}</li></h3>
+				<div>
+				#{list poll.pollinstances, as:'pollInstance'}
+					<li>${pollInstance.id}</li>
+				#{/list}
+				</div>
+			#{/list}
+		</div>
+		</ul>
 </div>
-

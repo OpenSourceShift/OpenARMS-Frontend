@@ -1,12 +1,14 @@
-body{
-font-family:Verdana, Geneva, sans-serif;
-font-size:14px;}
-
-#slidingDiv, #slidingDiv_2{
-        /* height:100px; */
-        background-color: #99CCFF;
-        padding:20px;
-        margin-top:10px;
-        border-bottom:5px solid #3399FF;
-        display:none;
+.demo-show {
+  width: 350px;
+  margin: 1em .5em;
+}
+.demo-show h3 {
+  margin: 0;
+  padding: .25em;
+  background: #bfcd93;
+  border-top: 1px solid #386785;
+  border-bottom: 1px solid #386785;
+}
+.demo-show div {
+  padding: .5em .25em;
 }
