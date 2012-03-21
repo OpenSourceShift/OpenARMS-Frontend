@@ -1,17 +1,9 @@
 # you describe your data using the YAML notation here
 # and then load them using Fixtures.load("data.yml")
 
-# User(bob):
-#   email: bob@gmail.com
-#   password: secret
-#   fullname: Bob
-
-SimpleUserAuthBinding(suab1):
-  password: openarms
-
 User(u1):
+  name: Donald Duck
   email: spam@creen.dk
-  userAuth: suab1
 
 Poll(p1):
   question: "What is 2+2?"
@@ -25,3 +17,19 @@ Choice(c1):
 Choice(c2):
   text: "It is 4!!"
   poll: p1
+
+Vote():
+  choice: c1
+  pollInstance: pi1
+
+Vote():
+  choice: c1
+  pollInstance: pi1
+
+Vote():
+  choice: c1
+  pollInstance: pi1
+
+Vote():
+  choice: c2
+  pollInstance: pi1

@@ -86,27 +86,13 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     public PollInstanceJSON toJson() {
     	return this.toJson(this);
     }
+    
 	public PollInstanceJSON toJson(PollInstance p) {
     	PollInstanceJSON result = new PollInstanceJSON();
     	result.id = p.id;
     	result.poll_id = p.poll.id;
     	result.startDateTime = p.startDateTime;
     	result.endDateTime = p.endDateTime;
-    	// Create vote summaries for all votes.
-    	Map<Vote, VoteSummaryJSON> votes = new HashMap<Vote, VoteSummaryJSON>();
-    	for(Vote v: p.votes) {
-    		VoteSummaryJSON summary = votes.get(v);
-    		if(summary == null) {
-    			summary = new VoteSummaryJSON();
-    			summary.choice_id = v.choice.id;
-    			summary.choice_text = v.choice.text;
-    			summary.count = (long) 0;
-    			summary.id = v.id;
-    			// Add it to the result.
-    			result.votes.add(summary);
-    		}
-    		summary.count++;
-    	}
 		return result;
 	}
 	

@@ -2,20 +2,24 @@ package controllers;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
+import api.entities.VoteJSON;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.ReadPollByTokenRequest;
 import api.requests.ReadPollRequest;
 import api.requests.UpdatePollRequest;
-import api.responses.AuthenticateUserResponse;
+import api.requests.VoteOnPollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.ReadPollResponse;
 import api.responses.Response;
 import api.responses.UpdatePollResponse;
+import api.responses.VoteOnPollInstanceResponse;
 
 public class ManagePoll extends Controller {
 	public static void index(Long id) {
@@ -113,7 +117,7 @@ public class ManagePoll extends Controller {
 			if(!StatusCode.success(res1.statusCode)) {
 				throw new Exception("Couldn't read poll with token 123456.");
 			}
-
+			
 			PollInstanceJSON pi = new PollInstanceJSON();
 			pi.poll_id = res1.poll.id;
 			pi.startDateTime = Calendar.getInstance().getTime();
@@ -124,6 +128,20 @@ public class ManagePoll extends Controller {
 			if(!StatusCode.success(res2.statusCode)) {
 				throw new Exception("Couldn't create poll instance with token time now.");
 			}
+
+        	for(ChoiceJSON c: res1.poll.choices) {
+        		int voteCount = (int)(Math.round(Math.random()*100.0));
+		        for(int vIndex = 0; vIndex < voteCount; vIndex++) {
+		        	Logger.debug("Creating a new vote (%d/%d) for choice %s on pollinstance %s", vIndex, voteCount, c.id, res2.pollinstance.id);
+		        	VoteJSON v = new VoteJSON();
+		        	v.choiceid = c.id;
+		        	v.pollInstanceid = res2.pollinstance.id;
+		        	VoteOnPollInstanceResponse res = (VoteOnPollInstanceResponse)APIClient.send(new VoteOnPollInstanceRequest(v));
+		        	if(!StatusCode.success(res.statusCode)) {
+						throw new Exception("Couldn't create vote.");
+		        	}
+		        }
+        	}
 			
 			Long pollinstance_id = res2.pollinstance.id;
 			render(pollinstance_id);
