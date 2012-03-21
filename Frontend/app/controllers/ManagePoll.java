@@ -146,13 +146,11 @@ public class ManagePoll extends Controller {
 				throw new Exception("Could not authenticate");
 			}
 
-			// Load service data.
 			ReadPollResponse res1 = (ReadPollResponse)APIClient.send(new ReadPollByTokenRequest("123456"));
 			if(!StatusCode.success(res1.statusCode)) {
 				throw new Exception("Couldn't read poll with token 123456.");
 			}
 
-			// Load service data.
 			PollInstanceJSON pi = new PollInstanceJSON();
 			pi.poll_id = res1.poll.id;
 			pi.startDateTime = Calendar.getInstance().getTime();
@@ -170,5 +168,9 @@ public class ManagePoll extends Controller {
 			e.printStackTrace();
 			// TODO: Use an error template.
 		}
+	}
+
+	public static void testStatistics() {
+		renderText("{\"pollID\":518196,\"questionID\":127,\"question\":\"Question?\",\"answers\":[\"Answer 1\",\"Answer 2\", \"Answer 3\"],\"votes\":[50, 10, 40]}");
 	}
 }
