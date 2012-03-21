@@ -15,12 +15,10 @@ import play.mvc.Controller;
 
 public class LoginUser extends Controller {
 
-	public static void index(String email, String password) {
+	public static void index(String email) {
 		if (email == null)
 			email = "";
-		if (password == null)
-			password = "";
-		render(email, password);
+		render(email);
 	}
 	
 	public static void success(String email) {
@@ -36,7 +34,7 @@ public class LoginUser extends Controller {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			index(email, password);
+			index(email);
 			return;
 		}
 		
@@ -48,7 +46,7 @@ public class LoginUser extends Controller {
 			if (APIClient.authenticateSimple(email, password))
 				success(email);
 			else
-				index(email,"");
+				index(email);
 		} catch (Exception e) {
 			// It failed!
 			// TODO: Tell the user!
@@ -56,7 +54,7 @@ public class LoginUser extends Controller {
 			params.flash();
 			validation.addError(null, e.getMessage());
 			validation.keep();
-			index(email, password);
+			index(email);
 		}
 	}
 }
