@@ -1,5 +1,8 @@
 package api.responses;
 
+import java.util.List;
+
+import api.entities.PollJSON;
 import api.entities.UserJSON;
 
 public class ReadUserResponse extends Response {

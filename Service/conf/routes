@@ -28,6 +28,7 @@ POST	/choice									ChoiceController.create
 PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
 DELETE	/choice/{<[0-9]+>id}					ChoiceController.delete
 GET		/pollinstance/{<[0-9]+>id}				PollInstanceController.retrieve
+GET		/pollinstance/{<[0-9]+>id}/summary		PollInstancecontroller.summary
 GET		/pollinstance/token/{<[A-Za-z0-9]+>token}	PollInstanceController.retrieveByToken
 POST	/pollinstance							PollInstanceController.create
 PUT		/pollinstance/{<[0-9]+>id}				PollInstanceController.edit
@@ -39,6 +40,7 @@ POST	/vote									VoteController.create
 PUT		/vote/{<[0-9]+>id}						VoteController.edit
 DELETE	/vote/{<[0-9]+>id}						VoteController.delete
 GET		/user/{<[0-9]+>id}						UserController.retrieve
+GET		/user/{<[0-9]+>id}/details				UserController.details
 POST	/user									UserController.create
 PUT		/user/{<[0-9]+>id}						UserController.edit
 DELETE	/user/{<[0-9]+>id}						UserController.delete

@@ -244,7 +244,7 @@ public class UserController extends APIController {
 				for(PollInstance pi: p.instances) {
 					tmpp.pollinstances.add(pi.toJson());
 				}
-				polljsonlist.add(p.toJson());
+				polljsonlist.add(tmpp);
 			}
 			
 			
