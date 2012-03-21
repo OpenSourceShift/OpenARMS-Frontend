@@ -61,6 +61,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * Is it allowed to add multiple answers?
      */
+    @Required
     public Boolean multipleAllowed;
     /**
      * All the possible choices associated with the poll.
