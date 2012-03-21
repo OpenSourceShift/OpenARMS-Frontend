@@ -62,6 +62,10 @@ public class LoginUser extends Controller {
 		}
 	}
 	
+	public static Long getCurrentUserId() {
+		return Long.valueOf(session.get("user_id"));
+	}
+	
 	public static boolean isLoggedIn() {
 		return (session.get("user_id") != null && session.get("user_secret") != null);
 	}
