@@ -44,31 +44,27 @@ public class PollInstanceController extends APIController  {
 	
 	/**
 	 * Method that saves a new PollInstance in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void create() {
-        try {
-	    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
-	        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
-	        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
-	      	if(pollinstance.poll == null) {
-		        throw new NotFoundException("The poll_id references a non-exsistant poll.");
-	        }
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
-			// TODO: Check the null values along the way
-			AuthBackend.requireUser(pollinstance.poll.admin);
-			
-	        pollinstance.save();
-	        
-	        //Creates the PollInstanceJSON Response.
-	        CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
-	    	String jsonresponse = GsonHelper.toJson(r);
-	    	renderJSON(jsonresponse);
-        	
-		} catch (Exception e) {
-			renderException(e);
-		}
+	public static void create() throws Exception {
+    	//Takes the PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
+        CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
+        PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
+      	if(pollinstance.poll == null) {
+	        throw new NotFoundException("The poll_id references a non-exsistant poll.");
+        }
+        //If current user is not the same as the poll creator or there is no current user, throws an exception
+		User u = AuthBackend.getCurrentUser();
+		System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
+		// TODO: Check the null values along the way
+		AuthBackend.requireUser(pollinstance.poll.admin);
+		
+        pollinstance.save();
+        
+        //Creates the PollInstanceJSON Response.
+        CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
+    	String jsonresponse = GsonHelper.toJson(r);
+    	renderJSON(jsonresponse);
 	}
 	
 	/**

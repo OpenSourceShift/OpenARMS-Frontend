@@ -8,14 +8,14 @@ import api.responses.Response;
  * A request for the service: 
  */
 public class ReadPollInstanceByTokenRequest extends Request {
-	public String pollInstance_token;
+	public String token;
 	public ReadPollInstanceByTokenRequest (String token) {
-		this.pollInstance_token = token;
+		this.token = token;
 	}
 	
 	@Override
 	public String getURL() {
-		return "/pollinstance/" + pollInstance_token;
+		return "/pollinstance/token/" + token;
 	}
 
 	@Override
