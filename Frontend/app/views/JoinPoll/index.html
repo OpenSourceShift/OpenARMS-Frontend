@@ -4,13 +4,15 @@
 
 <div id="main" class="greybg">
 	<div class="wrapper">
-		<h1>${question}</h1>
+		<h1>${poll.question}</h1>
 		<hr />
 		#{form @JoinPoll.submit()}
-			<input type="hidden" name="poll_id" value="${poll_id}" />
+			<input type="hidden" name="token" value="${poll.token}" />
+			<input type="hidden" name="pollinstance_id" value="${pollInstance.id}" />
+			<input type="hidden" name="poll_id" value="${poll.id}" />
 			<ul>
 				#{list items:poll.choices, as:'c'}
-					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answer" value="${c_index}"/>${c.text}</label></li>
+					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c_index}"/>${c.text}</label></li>
 				#{/list}
 			</ul>
 			<input type="submit" value="&{'vote'}" class="button" />
