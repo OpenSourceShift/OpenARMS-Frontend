@@ -1,50 +1,47 @@
 package controllers;
-import java.text.DecimalFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Http.StatusCode;
+import api.entities.PollJSON;
+import api.entities.VoteJSON;
 import api.requests.CreateVoteRequest;
 import api.requests.ReadPollInstanceByTokenRequest;
-import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
-import api.entities.ChoiceJSON;
-import api.entities.VoteJSON;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParseException;
 
 public class JoinPoll extends Controller {
-	public static void index(String token) {
-		try {
-			Logger.debug("Initial token is %s", token);
-			
-			/** get the Poll Instance Data */
-			ReadPollInstanceResponse instanceResponse = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
-			Long poll_id = instanceResponse.pollinstance.poll_id;
-			// Long instanceId = instanceResponse.pollinstance.id;
-			// Date startDateTime = instanceResponse.pollinstance.startDateTime;
-			Date endDateTime = instanceResponse.pollinstance.end;
-			
-			/** get the Poll Data */
-			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));
-			// String pollReference = pollResponse.poll.reference;
-			// Long pollUserId = pollResponse.poll.admin;
-			// Boolean pollMultipleAllowed = pollResponse.poll.multipleAllowed;
-			String pollQuestion = pollResponse.poll.question;
-			List<ChoiceJSON> pollChoices = pollResponse.poll.choices;
-			
-			/** render the JoinPoll.Index */
-			render(poll_id, endDateTime, pollQuestion, pollChoices);
-		} catch (Exception e) {
-			// TODO: tell the user it failed
-			flash.put("error", e.getMessage());
+	public static void index(String token) throws Exception {
+		Logger.debug("Initial token is %s", token);
+		if(token == null) {
+			notFound("No poll without a token.");
 		}
+		
+		/** get the Poll Instance Data */
+		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+		if(res.statusCode.equals(StatusCode.NOT_FOUND)) {
+			notFound("Poll not found.");
+		} else if (StatusCode.error(res.statusCode)) {
+			notFound("Error finding the poll.");
+		}
+		
+		Long poll_id = res.pollinstance.poll_id;
+		// Long instanceId = instanceResponse.pollinstance.id;
+		// Date startDateTime = instanceResponse.pollinstance.startDateTime;
+		Date end = res.pollinstance.end;
+
+		// TODO: Consider if this is even nessesary to get the poll, as choices are allready defined in the instance response (as VoteSummaryJSONs).
+		ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));
+		if(pollResponse.statusCode.equals(StatusCode.NOT_FOUND)) {
+			notFound("Poll not found.");
+		} else if (StatusCode.error(pollResponse.statusCode)) {
+			notFound("Error finding the poll.");
+		}
+		
+		PollJSON poll = pollResponse.poll;
+		render(poll);
 	}
 
 	public static void submit(Long instanceId, Long[] votes) throws Exception {
