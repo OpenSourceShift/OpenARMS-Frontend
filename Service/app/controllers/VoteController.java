@@ -19,20 +19,16 @@ import api.responses.UpdateVoteResponse;
 public class VoteController extends APIController {
 	/**
 	 * Method that saves a new Vote in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void create() {
-        try {
-	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-	        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-			User u = AuthBackend.getCurrentUser();
-	        req.vote.userid = u.id;
-	        CreateVoteResponse res = create(req.vote);
-	    	String jsonresponse = GsonHelper.toJson(res);
-	    	renderJSON(jsonresponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-			renderException(e);
-		}
+	public static void create() throws Exception {
+    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
+        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
+		User u = AuthBackend.getCurrentUser();
+        req.vote.userid = u.id;
+        CreateVoteResponse res = create(req.vote);
+    	String jsonresponse = GsonHelper.toJson(res);
+    	renderJSON(jsonresponse);
 	}
 
 	/**
@@ -53,55 +49,51 @@ public class VoteController extends APIController {
 
 	/**
 	 * Method that gets a Vote from the DataBase.
+	 * @throws Exception 
 	 */
-	public static void retrieve () {
-		try {
-			String voteid = params.get("id");
-	
-			//Takes the Vote from the DataBase.
-			Vote vote= Vote.find("byID", voteid).first();
-			
-			if (vote == null) {
-				throw new NotFoundException();
-			}
-	
-			//Creates the VoteJSON Response.
-			ReadVoteResponse r = new ReadVoteResponse(vote.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-	
-			renderJSON(jsonresponse);
-			
-		} catch (Exception e) {
-			renderException(e);
+	public static void retrieve () throws Exception {
+		String voteid = params.get("id");
+
+		//Takes the Vote from the DataBase.
+		Vote vote= Vote.find("byID", voteid).first();
+		
+		if (vote == null) {
+			throw new NotFoundException();
 		}
+
+		//Creates the VoteJSON Response.
+		ReadVoteResponse r = new ReadVoteResponse(vote.toJson());
+		String jsonresponse = GsonHelper.toJson(r);
+
+		renderJSON(jsonresponse);
 	}
 
 	/**
 	 * Method that edits a Vote already existing in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void edit () {
-		try {
-			String voteid = params.get("id");
-	
-			//Takes the Vote from the DataBase.
-			Vote originalvote = Vote.find("byID", voteid).first();
-			
-			if (originalvote == null) {
-				throw new NotFoundException();
-			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalvote.user.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
-			AuthBackend.requireUser(originalvote.user);
+	public static void edit () throws Exception {
+		String voteid = params.get("id");
 
-			//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
-			CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-            Vote editedvote = Vote.fromJson(req.vote);
-            
-            //Changes the old fields for the new ones.
+		//Takes the Vote from the DataBase.
+		Vote originalvote = Vote.find("byID", voteid).first();
+		
+		if (originalvote == null) {
+			throw new NotFoundException();
+		}
+		
+        //If current user is not the same as the poll creator or there is no current user, throws an exception
+		User u = AuthBackend.getCurrentUser();
+		if (u == null || originalvote.user.id != u.id) {
+	        throw new UnauthorizedException();
+	    }
+		AuthBackend.requireUser(originalvote.user);
+
+		//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
+		CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
+        Vote editedvote = Vote.fromJson(req.vote);
+        
+        //Changes the old fields for the new ones.
             if (editedvote.choice != null) {
 				originalvote.choice = editedvote.choice;
 			}
@@ -112,37 +104,30 @@ public class VoteController extends APIController {
             originalvote.save();
             
             //Creates the VoteJSON Response.
-            UpdateVoteResponse r = new UpdateVoteResponse(originalvote.toJson());
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-            
-		} catch (Exception e) {
-			renderException(e);
-		}
+        UpdateVoteResponse r = new UpdateVoteResponse(originalvote.toJson());
+    	String jsonresponse = GsonHelper.toJson(r);
+    	renderJSON(jsonresponse);
 	}
 
 	/**
 	 * Method that deletes a Vote existing in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void delete () {
-		try {
-			String voteid = params.get("id");
-	
-			//Takes the Vote from the DataBase.
-			Vote vote = Vote.find("byID", voteid).first();
-			
-			if (vote == null) {
-				throw new NotFoundException();
-			}
+	public static void delete () throws Exception {
+		String voteid = params.get("id");
 
-			AuthBackend.requireUser(vote.user);
-			
-			//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
-			vote.delete();
-
-			renderJSON(new EmptyResponse().toJson());
-		} catch (Exception e) {
-			renderException(e);
+		//Takes the Vote from the DataBase.
+		Vote vote = Vote.find("byID", voteid).first();
+		
+		if (vote == null) {
+			throw new NotFoundException();
 		}
+
+		AuthBackend.requireUser(vote.user);
+		
+		//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
+		vote.delete();
+
+		renderJSON(new EmptyResponse().toJson());
 	}
 }
