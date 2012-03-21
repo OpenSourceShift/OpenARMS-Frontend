@@ -86,14 +86,17 @@ public class PollInstanceController extends APIController  {
 		Logger.debug("We have in total %d votes in the db.", Vote.count());
 		Logger.debug("This poll instance (#%d) has %d votes.", pi.id, Vote.find("byPollInstance.id", pi.id).fetch().size());
     	// Create vote summaries for all votes.
+		long vote_count = 0;
     	for(Choice c: pi.poll.choices) {
     		VoteSummaryJSON summary = new VoteSummaryJSON();
 			summary.choice_id = c.id;
 			summary.choice_text = c.text;
 			summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
+			vote_count += summary.count;
 			// Add it to the result.
     		r.pollinstance.votes.add(summary);
     	}
+    	r.pollinstance.vote_count = vote_count;
 		
 		String jsonresponse = GsonHelper.toJson(r);
 
@@ -257,49 +260,6 @@ public class PollInstanceController extends APIController  {
 			renderException(e);
 		}
 	}
-	/**
-	 * Method that generates a summary of a PollInstance existing in the DataBase.
-	 */
-	public static void summary() {
-		try {
-			String pollinstanceid = params.get("id");
-	
-			//Takes the PollInstance from the DataBase.
-			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
-			
-			if (pollinstance == null) {
-				throw new NotFoundException();
-			}
-			
-			//If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
-			
-			List<Vote> votelist = Vote.find("byPollInstance", pollinstance).fetch();
-			Map<Long, Integer> counts = new HashMap<Long,Integer>();
-			
-			for(Vote v : votelist) {
-				if (counts.containsKey(v.choice.id))
-					counts.put(v.choice.id, counts.get(v.choice.id)+1);
-				else
-					counts.put(v.choice.id, 1);
-			}
-	        
-			System.out.println(counts.toString());
-			
-			// TODO: Use a new response class to return the summary
-			//Creates the PollInstanceJSON Response.
-			//CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
-			//String jsonresponse = GsonHelper.toJson(r);
-			//renderJSON(jsonresponse);
-			
-		} catch (Exception e) {
-			renderException(e);
-		}
-	}
-	
 	public static void vote() {
         try {
 	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.

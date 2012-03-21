@@ -243,21 +243,24 @@ public class UserController extends APIController {
 			List<PollJSON> pollsJ = new LinkedList<PollJSON>();
 			
 			for(Poll p: polls) {
-				PollJSON tmpp = p.toJson();
-				tmpp.pollinstances = new LinkedList<PollInstanceJSON>();
+				PollJSON pJ = p.toJson();
+				pJ.pollinstances = new LinkedList<PollInstanceJSON>();
 				for(PollInstance pi: p.instances) {
 					PollInstanceJSON piJson = pi.toJson();
+					long vote_count = 0;
 			    	for(Choice c: pi.poll.choices) {
 			    		VoteSummaryJSON summary = new VoteSummaryJSON();
 						summary.choice_id = c.id;
 						summary.choice_text = c.text;
 						summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
+						vote_count += summary.count;
 						// Add it to the result.
 						piJson.votes.add(summary);
 			    	}
-					tmpp.pollinstances.add(piJson);
+			    	piJson.vote_count = vote_count;
+			    	pJ.pollinstances.add(piJson);
 				}
-				pollsJ.add(tmpp);
+				pollsJ.add(pJ);
 			}
 			
 			
