@@ -14,6 +14,7 @@ import api.requests.UpdatePollRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.ReadPollResponse;
+import api.responses.Response;
 import api.responses.UpdatePollResponse;
 
 public class ManagePoll extends Controller {
@@ -140,7 +141,10 @@ public class ManagePoll extends Controller {
 	public static void statistics() {
 		try {
 			// Load service data.
-			APIClient.loadServiceData("data.yml");
+			Response res0 = APIClient.loadServiceData("data.yml");
+			if(!StatusCode.success(res0.statusCode)) {
+				throw new Exception("Couldn't load test data.");
+			}
 			boolean authenticated = APIClient.authenticateSimple("spam@creen.dk", "openarms");
 			if(!authenticated) {
 				throw new Exception("Could not authenticate");
