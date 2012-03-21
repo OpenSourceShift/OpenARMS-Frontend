@@ -128,6 +128,12 @@ public class APIClient extends Controller {
 			return response;
 		} else {
 			Logger.debug("APIClient receives something with the wrong content-type.");
+			//Logger.debug(httpResponseEntity.getContent());
+			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
+			String line;
+			while ((line = br.readLine()) != null) {
+				Logger.debug("APIClient receives: %s", line);
+			}
 			throw new Exception("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
 		}
 	}
