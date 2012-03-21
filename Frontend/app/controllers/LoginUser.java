@@ -14,7 +14,8 @@ import api.responses.CreatePollResponse;
 import play.mvc.Controller;
 
 public class LoginUser extends Controller {
-
+	public static String forward = "";
+	
 	public static void index(String email) {
 		if (email == null)
 			email = "";
@@ -39,8 +40,11 @@ public class LoginUser extends Controller {
 		// If no: Create a new user and create the poll, and bind these two together.
 
 		try {
-			if (APIClient.authenticateSimple(email, password))
+			if (APIClient.authenticateSimple(email, password)) {
+				if (forward.equals("createpoll"))
+					CreatePoll.index("", "", null);
 				Application.index();
+			}
 			else {
 				params.flash();
 				validation.addError("invalid", "Invalid email or password.");
