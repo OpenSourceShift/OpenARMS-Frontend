@@ -16,6 +16,7 @@ import api.requests.UpdateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadUserDetailsResponse;
 import api.responses.ReadUserResponse;
 import api.responses.UpdateUserResponse;
 
