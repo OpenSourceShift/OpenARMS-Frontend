@@ -14,6 +14,8 @@ import api.requests.CreateVoteRequest;
 import api.responses.CreatePollResponse;
 import api.responses.CreateVoteResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadVoteResponse;
+import api.responses.UpdateVoteResponse;
 import api.entities.PollJSON;
 import api.entities.VoteJSON;
 import api.helpers.GsonHelper;
@@ -68,7 +70,7 @@ public class VoteController extends APIController {
 			}
 	
 			//Creates the VoteJSON Response.
-			CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
+			ReadVoteResponse r = new ReadVoteResponse(vote.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -113,7 +115,7 @@ public class VoteController extends APIController {
             originalvote.save();
             
             //Creates the VoteJSON Response.
-            CreateVoteResponse r = new CreateVoteResponse(originalvote.toJson());
+            UpdateVoteResponse r = new UpdateVoteResponse(originalvote.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             

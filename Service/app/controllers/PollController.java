@@ -15,6 +15,8 @@ import api.requests.CreatePollRequest;
 import api.requests.UpdatePollRequest;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadPollResponse;
+import api.responses.UpdatePollResponse;
 import play.Logger;
 import play.mvc.Controller;
 
@@ -82,7 +84,7 @@ public class PollController extends APIController {
 			}
 			
 			//Creates the PollJSON Response
-			CreatePollResponse r = new CreatePollResponse(poll.toJson());
+			ReadPollResponse r = new ReadPollResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -106,7 +108,7 @@ public class PollController extends APIController {
 			}
 			
 			//Creates the PollJSON Response
-			CreatePollResponse r = new CreatePollResponse(poll.toJson());
+			ReadPollResponse r = new ReadPollResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -156,7 +158,7 @@ public class PollController extends APIController {
             originalpoll.save();
             
             //Creates the PollJSON Response.
-            CreatePollResponse res = new CreatePollResponse(originalpoll.toJson());
+            UpdatePollResponse res = new UpdatePollResponse(originalpoll.toJson());
         	String jsonresponse = GsonHelper.toJson(res);
         	renderJSON(jsonresponse);
 		} catch (Exception e) {
@@ -194,6 +196,10 @@ public class PollController extends APIController {
 	        //Saves the new poll in the DataBase.
 	        newpoll.save();
 			
+	        // Creates the PollJSON Response.
+	        CreatePollResponse r = new CreatePollResponse(newpoll.toJson());
+	    	String jsonresponse = GsonHelper.toJson(r);
+	    	renderJSON(jsonresponse);
 		} catch (Exception e) {
 			renderException(e);
 		}

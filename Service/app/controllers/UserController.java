@@ -18,6 +18,8 @@ import api.requests.CreateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadUserResponse;
+import api.responses.UpdateUserResponse;
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
 
@@ -109,7 +111,7 @@ public class UserController extends APIController {
 		    }
 			
 			//Creates the UserJSON Response.
-			CreateUserResponse response = new CreateUserResponse(user.toJson());
+			ReadUserResponse response = new ReadUserResponse(user.toJson());
 			String jsonResponse = GsonHelper.toJson(response);
 			renderJSON(jsonResponse);
 			
@@ -165,7 +167,7 @@ public class UserController extends APIController {
             
             
             //Creates the PollJSON Response.
-            CreateUserResponse response = new CreateUserResponse(originalUser.toJson());
+            UpdateUserResponse response = new UpdateUserResponse(originalUser.toJson());
         	String jsonResponse = GsonHelper.toJson(response);
         	renderJSON(jsonResponse);
             

@@ -19,6 +19,8 @@ import api.requests.CreatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadPollInstanceResponse;
+import api.responses.UpdatePollInstanceResponse;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
@@ -78,7 +80,7 @@ public class PollInstanceController extends APIController  {
 			}
 			
 			//Creates the PollInstanceJSON Response.
-			CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
+			ReadPollInstanceResponse r = new ReadPollInstanceResponse(pollinstance.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -112,7 +114,7 @@ public class PollInstanceController extends APIController  {
 			}
 			
 			//Creates the PollInstanceJSON Response.
-			CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
+			ReadPollInstanceResponse r = new ReadPollInstanceResponse(pollinstance.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -163,7 +165,7 @@ public class PollInstanceController extends APIController  {
             originalpollinstance.save();
             
             //Creates the PollInstanceJSON Response.
-            CreatePollInstanceResponse r = new CreatePollInstanceResponse(originalpollinstance.toJson());
+            UpdatePollInstanceResponse r = new UpdatePollInstanceResponse(originalpollinstance.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -197,6 +199,7 @@ public class PollInstanceController extends APIController  {
 			pollinstance.closePollInstance();
 			pollinstance.save();
 			
+			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
 			renderException(e);
 		}
