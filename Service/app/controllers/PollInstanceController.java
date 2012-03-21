@@ -3,6 +3,8 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
 
@@ -12,6 +14,7 @@ import controllers.APIController.UnauthorizedException;
 import models.Poll;
 import models.PollInstance;
 import models.User;
+import models.Vote;
 import api.requests.CreatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
@@ -223,6 +226,48 @@ public class PollInstanceController extends APIController  {
 			pollinstance.delete();
 
 			renderJSON(new EmptyResponse().toJson());
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
+	/**
+	 * Method that generates a summary of a PollInstance existing in the DataBase.
+	 */
+	public static void summary() {
+		try {
+			String pollinstanceid = params.get("id");
+	
+			//Takes the PollInstance from the DataBase.
+			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
+			
+			if (pollinstance == null) {
+				throw new NotFoundException();
+			}
+			
+			//If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || pollinstance.poll.admin.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
+			List<Vote> votelist = Vote.find("byPollInstance", pollinstance).fetch();
+			Map<Long, Integer> counts = new HashMap<Long,Integer>();
+			
+			for(Vote v : votelist) {
+				if (counts.containsKey(v.choice.id))
+					counts.put(v.choice.id, counts.get(v.choice.id)+1);
+				else
+					counts.put(v.choice.id, 1);
+			}
+	        
+			System.out.println(counts.toString());
+			
+			// TODO: Use a new response class to return the summary
+			//Creates the PollInstanceJSON Response.
+			//CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
+			//String jsonresponse = GsonHelper.toJson(r);
+			//renderJSON(jsonresponse);
+			
 		} catch (Exception e) {
 			renderException(e);
 		}
