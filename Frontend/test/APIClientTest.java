@@ -22,7 +22,7 @@ public class APIClientTest extends UnitTest {
     		fail("did not get the HTTP-OK status-code from the service, got "+response.statusCode+": "+response.error_message);
 		}
 	}
-	
+	/*
 	@Test
     public void testLogin() throws Exception {
 		APIClient apiClient = new APIClient();
@@ -42,7 +42,7 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response2);
     	assertEquals(pj2.question, response2.poll.question);
     }
-	/*
+	*//*
     @Test
     public void testCreateChoice() throws Exception {
     	ChoiceJSON c = new ChoiceJSON();
@@ -62,15 +62,17 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.pollinstance.id);
     	assertEquals(response.pollinstance.poll_id, p.poll_id);
     }
-  	*/
+  	
 	@Test
     public void testCreateUser() throws Exception {
+    	// WORKING
 		UserJSON u = new UserJSON();
-		u.name = "test";
+		u.name = "openarms";
 		u.email = "avas@dfsdf.com";
 		u.secret = null;
 		u.attributes = new HashMap<String, String>();
 		u.attributes.put("password", "1234");
+		u.backend = "class models.SimpleUserAuthBinding";
 
 		CreateUserResponse response = (CreateUserResponse) APIClient.send(new CreateUserRequest(u));
 
@@ -78,35 +80,68 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.user.id);
     	assertEquals(response.user.name, u.name);
     }
-	/*
+	 
     @Test
     public void testCreatePoll() throws Exception {
+    	//APIClient apiClient = new APIClient();
+		//apiClient.setAuthentication((long) 1, "openarms");
+		
     	PollJSON p = new PollJSON();
     	ChoiceJSON c = new ChoiceJSON();
+    	ChoiceJSON c2 = new ChoiceJSON();
+    	c2.text = "TestChoice2";
     	c.text = "TestChoice";
     	p.question = "poll question";
     	p.reference = "Test";
-    	p.choices = new LinkedList();
+    	p.choices = new LinkedList<ChoiceJSON>();
     	p.choices.add(c);
+    	p.choices.add(c2);
     	CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
     	failIfNotSuccessful(response);
     	assertNotNull(response.poll.id);
     	assertEquals(response.poll.question, p.question);
-    }
-    
+    }*/
+    /*
     @Test
     public void testRetrievePoll() throws Exception {
     	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
     	PollJSON p = new PollJSON();
-    	Long a = 1L;
-    	p.id = a;
-    	ReadPollResponse response =  (ReadPollResponse) APIClient.send(new ReadPollRequest(p.id));
+    	Long id = (long) 1;
+    	ReadPollResponse response =  (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
     	failIfNotSuccessful(response);
     	assertNotNull(response.poll.id);
-    	assertEquals(response.poll.id,a);
+    	assertEquals(response.poll.id,id);
     }
-    */
-    /*
+    
+    @Test
+    public void testRetrievePollbyToken() throws Exception {
+    	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
+    	String token = "128162";
+    	ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
+    	failIfNotSuccessful(response);
+    	assertNotNull(response.poll.token);
+    	assertEquals(response.poll.token,token);
+    }
+   */  
+    @Test
+    public void testEditPoll() throws Exception {
+    	PollJSON p = new PollJSON();
+    	ChoiceJSON c = new ChoiceJSON();
+    	ChoiceJSON c2 = new ChoiceJSON();
+    	c2.text = "TestChoice3";
+    	c.text = "TestChoice4";
+    	p.question = "poll question edited";
+    	p.reference = "Testeditred";
+    	p.choices = new LinkedList<ChoiceJSON>();
+    	p.choices.add(c);
+    	p.choices.add(c2);
+    	p.id = (long) 1;
+    	UpdatePollResponse response =  (UpdatePollResponse) APIClient.send(new UpdatePollRequest(p));
+    	failIfNotSuccessful(response);
+    	assertNotNull(response.poll.token);
+    	assertEquals(response.poll.id,p.id);
+    }
+   /*
     @Test
     public void testCreateVote() throws Exception {
     	VoteJSON v = new VoteJSON();
