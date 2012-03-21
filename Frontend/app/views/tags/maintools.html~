@@ -1,0 +1,15 @@
+<script src="@{'/public/javascripts/hoveredbuttons.js'}" type="text/javascript" charset="utf-8"></script>
+<div class="tools">
+  <div align="center" class="setopt" id="join-button"><span>Join</span></div>
+  <div align="center" class="setopt" id="create-button"><span>Create</span></div>
+  <div align="center" class="setopt" id="manage-button"><span>Manage</span></div>
+</div>
+<div class="description">
+  <div id="initialD">
+  
+  </div>
+  <div id="joinD"></div>
+  <div id="createD"></div>
+  <div id="manageD"></div>
+</div>
+

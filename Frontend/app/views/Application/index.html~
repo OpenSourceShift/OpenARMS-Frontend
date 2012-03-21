@@ -4,7 +4,6 @@
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.1.7/underscore-min.js"></script>
 <script src="@{'/public/javascripts/hoveredbuttons.js'}" type="text/javascript" charset="utf-8"></script>
 <script src="@{'/public/javascripts/selectopt.js'}" type="text/javascript" charset="utf-8"></script>
-<script src="@{'/public/javascripts/signup.js'}" type="text/javascript" charset="utf-8"></script>
 
 <div id="main">
   <div class="tools">
@@ -14,22 +13,7 @@
   </div>
   <div class="description">
     <div id="initD">
-      &{'want.sign.up'}
-    </div>
-    <div id="register">
-      <div class="labeledinput">
-        <label>&{'add.email'}</label>
-        <input type="text" name="email" value="" autocomplete="off" autofocus="autofocus" />
-      </div>
-      <div class="labeledinput">
-        <label>&{'add.passw'}</label>
-        <input type="text" name="passw" value="" autocomplete="off"/>
-      </div>
-      <div class="labeledinput">
-        <label>&{'add.confirm.passw'}</label>
-        <input type="text" name="passw" value="" autocomplete="off"/>
-      </div>
-
+      
     </div>
     <div id="joinD">
   	  #{form @JoinPoll.index(), id:'joinpoll'}
