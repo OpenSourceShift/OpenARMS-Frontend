@@ -16,6 +16,7 @@ import models.PollInstance;
 import models.User;
 import models.Vote;
 import api.requests.CreatePollInstanceRequest;
+import api.requests.UpdatePollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
@@ -145,7 +146,7 @@ public class PollInstanceController extends APIController  {
 		    }
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
-			CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
+			UpdatePollInstanceRequest req = GsonHelper.fromJson(request.body, UpdatePollInstanceRequest.class);
             PollInstance editedpollinstance = PollInstance.fromJson(req.pollInstance);
             
             //Changes the old fields for the new ones.
