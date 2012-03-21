@@ -129,6 +129,10 @@ public class Choice extends Model implements Jsonable {
 	    	for (VoteJSON v : json.votes) {
 	    		choice.votes.add(Vote.fromJson(v));
 	    	}
+	    	// Update the references.
+    		for (Vote v: choice.votes) {
+    			v.choice = choice;
+    		}
     	}
 		return choice;
     }
