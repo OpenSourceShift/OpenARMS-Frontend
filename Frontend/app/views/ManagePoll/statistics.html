@@ -82,8 +82,7 @@ $(document).ready(function() {
 				
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
-	//$.getJSON('@{Poll.getResults()}?id=${pollID}', function(data) {
-	$.getJSON('/api/poll/${pollID}', function(data) {
+	$.getJSON('@{ManagePoll.testStatistics()}', function(data) {
 		console.log("Returns: ", data);
 		$('.loading').hide();
 		var chart = new Highcharts.Chart({
@@ -96,7 +95,7 @@ $(document).ready(function() {
 		                // set up the updating of the chart each second
 		                var series = this.series[0];
 		                setInterval(function() {
-		                    $.getJSON('/api/poll/${pollID}', function(data) {
+		                    $.getJSON('@{ManagePoll.testStatistics()}', function(data) {
 		                        series.setData(data.votes);
 		                    });
 		            	}, 5000);
@@ -115,13 +114,16 @@ $(document).ready(function() {
 			},
 			yAxis: {
 				min: 0,
+				max: 100,
 				title: {
 					text: '&{'joinpoll.success.yAxis'}'
 				}
 			},
 			tooltip: {
 				formatter: function() {
-					return ''+ this.x +': '+ this.y +' &{'joinpoll.success.votes'}';
+					allVotes = 389;
+					yInVotes = Math.round(this.y*allVotes/100);
+					return yInVotes +' &{'joinpoll.success.votes'}';
 				}
 			},
 		    legend: {

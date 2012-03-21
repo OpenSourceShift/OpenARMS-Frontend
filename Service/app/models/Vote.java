@@ -22,6 +22,7 @@ public class Vote extends Model implements Jsonable {
 	/**
 	 * The User that made the vote.
 	 */
+	@ManyToOne
 	public User user;
 	/**
 	 * The Choice selected by the student.
