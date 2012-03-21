@@ -1,7 +1,7 @@
 package api.requests;
 
 import api.entities.PollJSON;
-import api.responses.ReadPollResponse;
+import api.responses.ReadPollByTokenResponse;
 import api.responses.Response;
 
 /**
@@ -20,7 +20,7 @@ public class ReadPollByTokenRequest extends Request {
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return ReadPollResponse.class;
+		return ReadPollByTokenResponse.class;
 	}
 
 	@Override
