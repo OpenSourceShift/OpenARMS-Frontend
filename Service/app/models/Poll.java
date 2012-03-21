@@ -103,9 +103,8 @@ public class Poll extends Model implements Jsonable {
     	
     	this.choices = new LinkedList<Choice>();
 		for(Choice c: toCopy.choices) {
-			this.choices.add(c);
-		} 
-		
+			this.choices.add(Choice.copy(c));
+		}
 		// Update the references.
 		for (Choice c : this.choices) {
 					c.poll = this;

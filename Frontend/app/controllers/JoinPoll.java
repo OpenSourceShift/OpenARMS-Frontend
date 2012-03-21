@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import play.Logger;
 import play.mvc.Controller;
 import api.requests.CreateVoteRequest;
 import api.requests.ReadPollInstanceByTokenRequest;
@@ -20,6 +22,8 @@ import com.google.gson.JsonParseException;
 public class JoinPoll extends Controller {
 	public static void index(String token) {
 		try {
+			Logger.debug("Initial token is %s", token);
+			
 			/** get the Poll Instance Data */
 			ReadPollInstanceResponse instanceResponse = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
 			Long poll_id = instanceResponse.pollinstance.poll_id;
@@ -37,9 +41,9 @@ public class JoinPoll extends Controller {
 			
 			/** render the JoinPoll.Index */
 			render(poll_id, endDateTime, pollQuestion, pollChoices);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			// TODO: tell the user it failed
+			flash.put("error", e.getMessage());
 		}
 	}
 

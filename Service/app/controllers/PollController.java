@@ -172,17 +172,21 @@ public class PollController extends APIController {
 	public static void copy () {
 		try {
 			String oldpollid = params.get("id_old");
-	
+
 			//Takes the Poll from the DataBase.
 			Poll oldpoll = Poll.find("byID", oldpollid).first();
 			
 			if (oldpoll == null) {
 				throw new NotFoundException();
 			}
-
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			/*User u = AuthBackend.getCurrentUser();
+			if (u == null || oldpoll.admin.id != u.id) {
+		        throw new UnauthorizedException();
+		    }*/
 
 			AuthBackend.requireUser(oldpoll.admin);
-			
 			Poll newpoll = new Poll(null, oldpoll);
 	
 	        // Generates a new Unique ID and saves the Poll.

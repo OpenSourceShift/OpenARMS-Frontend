@@ -87,6 +87,13 @@ public class Choice extends Model implements Jsonable {
 		return latestVotes;
 	}
 	
+	public static Choice copy (Choice c) {
+		Choice c2 = new Choice(null, c.text);
+		c2.votes = new LinkedList<Vote>();
+		c2.votes = null;
+		return c2;
+	}
+	
 
 
     /**

@@ -35,7 +35,7 @@
       <div class="wrapper">
   		  <span id="pollid">
   				<span>&{'join_poll_pollid'}</span>
-  				<input type="text" name="id" value="" autocomplete="off" autofocus="autofocus" />
+  				<input type="text" name="token" value="" autocomplete="off" autofocus="autofocus" />
   			</span>
   			<div class="centered">
   			  <p>&{'join_poll_teaser'}</p>
@@ -82,6 +82,7 @@
 	$('#joinpoll').bind('submit', function() {
 		if($('#joinpoll input').val() == "") {
 			$(this).effect("shake", { times:3 }, 50, function() {$('#pollid input').focus()});
+			// Never follow the form.
 			return false;
 		}
 	});

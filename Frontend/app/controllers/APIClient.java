@@ -110,7 +110,7 @@ public class APIClient extends Controller {
 		}
 		
 		// TODO: Remember to set the encoding of the request.
-		Logger.debug("APIClient sends: %s to %s %s", json, host.toString(), httpRequest.getURI());
+		Logger.debug("APIClient sends: %s to %s%s as %s", json, host.toString(), httpRequest.getURI(), httpRequest.getMethod());
 		
 		HttpResponse httpResponse = client.execute(host, httpRequest);
 		HttpEntity httpResponseEntity = httpResponse.getEntity();
