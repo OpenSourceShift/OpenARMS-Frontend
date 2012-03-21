@@ -72,6 +72,19 @@ public abstract class APIController extends Controller {
 		renderText(GsonHelper.toJson(o));
 	}
 	
+	public static void requireUser(User user) throws UnauthorizedException {
+		User currentUser = AuthBackend.getCurrentUser();
+		if(user != null) {
+			if(currentUser == null) {
+				throw new UnauthorizedException("This action requires authentication. Please use the /user/authenticate to get your user secret.");
+			} else {
+				if(!user.equals(currentUser)) {
+					throw new UnauthorizedException("This action requires authentication.");
+				}
+			}
+		}
+	}
+	
 	public static void loadTestData(String yaml_file) {
 		try {
 			if(Play.mode.equals(Play.Mode.DEV)) {

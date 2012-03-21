@@ -140,12 +140,8 @@ public class UserController extends APIController {
 			if (originalUser == null) {
 				throw new NotFoundException();
 			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalUser.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+
+			requireUser(originalUser);
 			
 			//Takes the edited UserJSON and creates a new User object with this UserJSON.
 			UpdateUserRequest req = GsonHelper.fromJson(request.body, UpdateUserRequest.class);
@@ -197,11 +193,7 @@ public class UserController extends APIController {
 				throw new NotFoundException();
 			}
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || user.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(user);
 			
 			//Deletes the Authentication from the DataBase.
 			if (user.userAuth instanceof SimpleUserAuthBinding) {
@@ -232,14 +224,10 @@ public class UserController extends APIController {
 			if (user == null) {
 				throw new NotFoundException();
 			}
+
+			requireUser(user);
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User currentUser = AuthBackend.getCurrentUser();
-			if (currentUser == null || !currentUser.equals(user)) {
-		        throw new UnauthorizedException();
-		    }
-			
-			List<Poll> polls = Poll.find("byAdmin.id", currentUser.id).fetch();
+			List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();
 			List<PollJSON> pollsJ = new LinkedList<PollJSON>();
 			
 			for(Poll p: polls) {

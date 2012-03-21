@@ -57,9 +57,7 @@ public class PollInstanceController extends APIController  {
 			User u = AuthBackend.getCurrentUser();
 			System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
 			// TODO: Check the null values along the way
-			if (u == null || !pollinstance.poll.admin.equals(u)) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(pollinstance.poll.admin);
 			
 	        pollinstance.save();
 	        
@@ -166,10 +164,7 @@ public class PollInstanceController extends APIController  {
 			}
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalpollinstance.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(originalpollinstance.poll.admin);
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 			UpdatePollInstanceRequest req = GsonHelper.fromJson(request.body, UpdatePollInstanceRequest.class);
@@ -216,11 +211,7 @@ public class PollInstanceController extends APIController  {
 				throw new NotFoundException();
 			}
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(pollinstance.poll.admin);
 			
 			//Closes the PollInstance and save the changes in the DataBase.
 			pollinstance.closePollInstance();
@@ -245,12 +236,8 @@ public class PollInstanceController extends APIController  {
 			if (pollinstance == null) {
 				throw new NotFoundException();
 			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || pollinstance.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+
+			requireUser(pollinstance.poll.admin);
 			
 			//Deletes the PollInstance from the DataBase and creates an empty PollInstanceJSON for the response.
 			pollinstance.delete();

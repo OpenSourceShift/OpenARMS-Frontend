@@ -46,14 +46,9 @@ public class PollController extends APIController {
         	//TODO: try fromJson with null
         	CreatePollRequest req = GsonHelper.fromJson(request.body, CreatePollRequest.class);
 	        Poll poll = Poll.fromJson(req.poll);
-	        
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			/*User u = AuthBackend.getCurrentUser();
-			if (u == null) {
-		        throw new UnauthorizedException();
-		    }
-			
-			poll.admin = u;*/
+
+	        // Set the admin to this user.
+	        poll.admin = AuthBackend.getCurrentUser();
 	        
 	        // Generates a Unique ID and saves the Poll.
 	        // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
@@ -134,14 +129,8 @@ public class PollController extends APIController {
 			if (originalpoll == null) {
 				throw new NotFoundException();
 			}
-			
-	        // If current user is not the same as the poll creator or there is no current user, throws an exception
-			/*User u = AuthBackend.getCurrentUser();
-			if(originalpoll.admin == null) {
-		    	throw new Exception("Inconsistant datastructure, the poll has no admin!");
-		    } else if (u == null || !originalpoll.admin.id.equals(u.id)) {
-		        throw new UnauthorizedException();
-		    }*/
+
+			requireUser(originalpoll.admin);
 
 			// Takes the edited PollJSON and creates a new Poll object with this PollJSON.
 			UpdatePollRequest req = GsonHelper.fromJson(request.body, UpdatePollRequest.class);
@@ -190,12 +179,9 @@ public class PollController extends APIController {
 			if (oldpoll == null) {
 				throw new NotFoundException();
 			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || oldpoll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+
+
+			requireUser(oldpoll.admin);
 			
 			Poll newpoll = new Poll(null, oldpoll);
 	
@@ -230,11 +216,7 @@ public class PollController extends APIController {
 				throw new NotFoundException();
 			}
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(poll.admin);
 			
 			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 			poll.delete();

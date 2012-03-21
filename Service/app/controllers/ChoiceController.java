@@ -31,11 +31,8 @@ public class ChoiceController extends APIController {
             	throw new NotFoundException();
             }
             
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || choice.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+            // The current user should be the admin of the poll that the choice will belong to.
+			requireUser(choice.poll.admin);
             
             choice.save();
             
@@ -88,11 +85,7 @@ public class ChoiceController extends APIController {
 				throw new NotFoundException();
 			}
 			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || originalchoice.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+			requireUser(originalchoice.poll.admin);
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
 			UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
@@ -126,13 +119,8 @@ public class ChoiceController extends APIController {
 			if (choice == null) {
 				throw new NotFoundException();
 			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			// TODO: Check for null's along the choice.poll.admin.id chain.
-			if (u == null || choice.poll.admin.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+
+			requireUser(choice.poll.admin);
 	
 			choice.delete();
 	
