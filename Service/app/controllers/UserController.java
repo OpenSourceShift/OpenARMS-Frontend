@@ -76,9 +76,14 @@ public class UserController extends APIController {
 	    	// Takes the UserJSON and creates a new User object with this UserJSON.
 	        CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
 	        User user = User.fromJson(req.user);
-	        if (user.userAuth instanceof SimpleUserAuthBinding)
-	        	((SimpleUserAuthBinding)user.userAuth).save();
+	     	user.userAuth.save();
 	        user.save();
+	        user.userAuth.user = user;
+	        user.userAuth.save();
+	        
+	        // if (user.userAuth instanceof SimpleUserAuthBinding)
+	        // 	((SimpleUserAuthBinding)user.userAuth).save();
+	        //user.save();
 	           
 	        //Creates the UserJSON Response.
 	        CreateUserResponse response2 = new CreateUserResponse(user.toJson());
