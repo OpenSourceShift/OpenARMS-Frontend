@@ -3,6 +3,7 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -17,37 +18,53 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import play.Logger;
 import play.Play;
+import play.libs.Codec;
+import play.libs.Crypto;
 import play.mvc.Controller;
-import play.mvc.Http;
-import play.mvc.Http.Header;
 import play.mvc.Http.StatusCode;
+import api.entities.UserJSON;
 import api.helpers.GsonHelper;
+import api.requests.AuthenticateUserRequest;
+import api.requests.LoadTestDataRequest;
 import api.requests.Request;
+import api.responses.AuthenticateUserResponse;
+import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
 
 public class APIClient extends Controller {
-	
-	public static APIClient singleton;
-	
+
+	/**
+	 * The host to use when contacting the service, this will be set by the constructor.
+	 */
 	public HttpHost host;
 	
 	/**
 	 * Constructing a new API client, try to reuse these.
 	 */
 	public APIClient() {
-		this(Play.configuration.getProperty("openarms.service_host"), Integer.parseInt(Play.configuration.getProperty("openarms.service_port")));
+		this(Play.configuration.getProperty("openarms.service_host"), Integer.valueOf(Play.configuration.getProperty("openarms.service_port")));
 	}
 	
+	/**
+	 * Constructs a new API client, from a set of try to reuse these.
+	 * 
+	 * @param hostname
+	 * @param port
+	 * @param userId
+	 * @param userSecret
+	 */
 	public APIClient(String hostname, int port) {
 		host = new HttpHost(hostname, port);
 	}
 	
+	public void setAuthentication(Long userId, String userSecret) {
+		session.put("user_id", userId);
+		session.put("user_secret", Crypto.decryptAES(userSecret));
+	}
+	
 	public static APIClient getInstance() {
-		if(singleton == null) {
-			singleton = new APIClient();
-		}
-		return singleton;
+		return new APIClient();
 	}
 	
 	private HttpRequestBase getBaseRequest(api.requests.Request request) throws Exception {
@@ -66,7 +83,7 @@ public class APIClient extends Controller {
 		return httpRequest;
 	}
 	
-	private Response sendRequest(Request request) throws Exception {
+	public Response sendRequest(Request request) throws Exception {
 		DefaultHttpClient client = new DefaultHttpClient();
 		
 		String json = GsonHelper.toJson(request);
@@ -81,9 +98,19 @@ public class APIClient extends Controller {
 		}
 		// Setting the URI.
 		httpRequest.setURI(URI.create(request.getURL()));
+		// Set the authentication header to match the user_secret known from the user session.
+		String encryptedUserSecret = session.get("user_secret");
+		String userId = session.get("user_id");
+		if(encryptedUserSecret != null && !encryptedUserSecret.isEmpty() && userId != null && !userId.isEmpty()) {
+			Logger.debug("encryptedUserSecret = "+encryptedUserSecret);
+			String decryptedUserSecret = Crypto.decryptAES(encryptedUserSecret);
+			String authenticationString = userId+":"+decryptedUserSecret;
+			String decryptedUserSecretBase64Encoded = Codec.encodeBASE64(authenticationString.getBytes());
+			httpRequest.addHeader("Authorization", "Basic "+decryptedUserSecretBase64Encoded);
+		}
 		
 		// TODO: Remember to set the encoding of the request.
-		Logger.debug("APIClient sends: %s to %s", json, host.toString());
+		Logger.debug("APIClient sends: %s to %s %s", json, host.toString(), httpRequest.getURI());
 		
 		HttpResponse httpResponse = client.execute(host, httpRequest);
 		HttpEntity httpResponseEntity = httpResponse.getEntity();
@@ -100,7 +127,8 @@ public class APIClient extends Controller {
 			response.statusCode = httpResponse.getStatusLine().getStatusCode();
 			return response;
 		} else {
-			throw new Exception("Http response didn't have the application/json content-type.");
+			Logger.debug("APIClient receives something with the wrong content-type.");
+			throw new Exception("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
 		}
 	}
 	
@@ -112,7 +140,6 @@ public class APIClient extends Controller {
 		try {
 			url = "/"+url; // As the initial slash is removed in routes.
 			
-			Logger.debug("tunnel() called, with url = "+url);
 			DefaultHttpClient client = new DefaultHttpClient();
 			
 			HttpRequestBase httpRequest;
@@ -130,6 +157,24 @@ public class APIClient extends Controller {
 			}
 			
 			httpRequest.setURI(URI.create(url));
+			// Set the authentication header to match the user_secret known from the user session.
+			String encryptedUserSecret = session.get("user_secret");
+			String userId = session.get("user_id");
+			if(encryptedUserSecret != null && !encryptedUserSecret.isEmpty() && userId != null && !userId.isEmpty()) {
+				Logger.debug("encryptedUserSecret = "+encryptedUserSecret);
+				String decryptedUserSecret = Crypto.decryptAES(encryptedUserSecret);
+				String authenticationString = userId+":"+decryptedUserSecret;
+				String decryptedUserSecretBase64Encoded = Codec.encodeBASE64(authenticationString.getBytes());
+				httpRequest.addHeader("Authorization", "Basic "+decryptedUserSecretBase64Encoded);
+			}
+
+			if(Logger.isDebugEnabled()) {
+				Logger.debug("APIClient tunnel sends: "+httpRequest.getMethod()+" for "+httpRequest.getURI()+" on "+getInstance().host);
+				for(org.apache.http.Header h: httpRequest.getAllHeaders()) {
+					Logger.debug(" - with the following headers ("+httpRequest.getAllHeaders().length+" in total): "+h.getName()+" = "+h.getValue());
+				}
+			}
+			
 			HttpResponse httpResponse = client.execute(getInstance().host, httpRequest);
 			
 			// Set the status code.
@@ -148,6 +193,27 @@ public class APIClient extends Controller {
 	        
 	        Response responseJson = new ExceptionResponse(e);
 			renderJSON(responseJson);
+		}
+	}
+	
+	public static EmptyResponse loadServiceData(String yamlDataFile) throws Exception {
+		LoadTestDataRequest req = new LoadTestDataRequest(yamlDataFile);
+		return (EmptyResponse) APIClient.send(req);
+	}
+
+	public static boolean authenticateSimple(String email, String password) throws Exception {
+		UserJSON u = new UserJSON();
+		u.email = email;
+		u.attributes = new HashMap<String,String>();
+		u.attributes.put("password", password);
+		AuthenticateUserRequest req = new AuthenticateUserRequest(u, "class models.SimpleUserAuthBinding");
+		AuthenticateUserResponse res = (AuthenticateUserResponse) APIClient.send(req);
+		if(StatusCode.success(res.statusCode) && res.user != null && res.user.id != null && res.user.secret != null) {
+			session.put("user_id", res.user.id);
+			session.put("user_secret", Crypto.encryptAES(res.user.secret));
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

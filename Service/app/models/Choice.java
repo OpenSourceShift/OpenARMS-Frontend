@@ -96,14 +96,6 @@ public class Choice extends Model implements Jsonable {
     public ChoiceJSON toJson() {
     	return toJson(this);
     }
-
-    /**
-     * Turn this Choice into a ChoiceJSON
-     * @return PollJSON A PollJSON object that represents this poll.
-     */
-    public void loadJson(ChoiceJSON json) {
-    	// FIXME: Make it work
-    }
     
     /**
      * Turn a Choice into a ChoiceJSON
@@ -129,9 +121,13 @@ public class Choice extends Model implements Jsonable {
      * @return Choice the choice object.
      */
     public static Choice fromJson(ChoiceJSON json) {
-    	//TODO: Change the loadJson. 
-    	Choice choice = new Choice(null, json.text);
-    	choice.loadJson(json);
+    	Poll poll = Poll.find("byID", json.poll_id).first();
+    	Choice choice = new Choice(poll, json.text);
+    	choice.correct = json.correct;
+    	choice.votes = new LinkedList<Vote>();
+    	for (VoteJSON v : json.votes) {
+    		choice.votes.add(Vote.fromJson(v));
+    	}
 		return choice;
     }
 }

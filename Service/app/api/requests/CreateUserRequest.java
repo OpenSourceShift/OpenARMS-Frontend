@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.CreateUserResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Creates a user
+ */
 public class CreateUserRequest extends Request {
 	public UserJSON user;
 	public CreateUserRequest (UserJSON u) {

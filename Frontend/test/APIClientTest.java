@@ -3,6 +3,8 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import play.libs.Crypto;
+import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 import play.test.UnitTest;
 import api.requests.*;
@@ -20,7 +22,27 @@ public class APIClientTest extends UnitTest {
     		fail("did not get the HTTP-OK status-code from the service, got "+response.statusCode+": "+response.error_message);
 		}
 	}
-/*
+	
+	@Test
+    public void testLogin() throws Exception {
+		APIClient apiClient = new APIClient();
+		apiClient.setAuthentication((long) 1, "openarms");
+		
+    	PollJSON pj1 = new PollJSON();
+    	pj1.question = "This is the first question.";
+    	CreatePollResponse response1 = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
+    	failIfNotSuccessful(response1);
+    	assertEquals(pj1.question, response1.poll.question);
+    	assertNotNull(response1.poll.id);
+    	
+    	PollJSON pj2 = new PollJSON();
+    	pj2.id = (long) response1.poll.id;
+    	pj2.question = "This is a new question: "+Math.random();
+    	UpdatePollResponse response2 = (UpdatePollResponse) apiClient.sendRequest(new UpdatePollRequest(pj2));
+    	failIfNotSuccessful(response2);
+    	assertEquals(pj2.question, response2.poll.question);
+    }
+	/*
     @Test
     public void testCreateChoice() throws Exception {
     	ChoiceJSON c = new ChoiceJSON();
@@ -40,7 +62,7 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.pollinstance.id);
     	assertEquals(response.pollinstance.poll_id, p.poll_id);
     }
-  
+  	*/
 	@Test
     public void testCreateUser() throws Exception {
 		UserJSON u = new UserJSON();
@@ -55,8 +77,8 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.user.id);
     	assertEquals(response.user.name, u.name);
-    }  */
-	
+    }
+	/*
     @Test
     public void testCreatePoll() throws Exception {
     	PollJSON p = new PollJSON();
@@ -71,6 +93,19 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.poll.id);
     	assertEquals(response.poll.question, p.question);
     }
+    
+    @Test
+    public void testRetrievePoll() throws Exception {
+    	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
+    	PollJSON p = new PollJSON();
+    	Long a = 1L;
+    	p.id = a;
+    	ReadPollResponse response =  (ReadPollResponse) APIClient.send(new ReadPollRequest(p.id));
+    	failIfNotSuccessful(response);
+    	assertNotNull(response.poll.id);
+    	assertEquals(response.poll.id,a);
+    }
+    */
     /*
     @Test
     public void testCreateVote() throws Exception {

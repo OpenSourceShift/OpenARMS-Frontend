@@ -5,6 +5,9 @@ import api.requests.Request.Method;
 import api.responses.ClosePollInstanceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Closes the poll instance by setting its end to now.
+ */
 public class ClosePollInstanceRequest extends Request {
 	public PollInstanceJSON pollInstance;
 	public ClosePollInstanceRequest (PollInstanceJSON p) {

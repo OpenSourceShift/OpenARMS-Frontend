@@ -1,10 +1,11 @@
 package api.requests;
 
-import api.entities.PollJSON;
-import api.requests.Request.Method;
-import api.responses.DeletePollResponse;
+import api.responses.EmptyResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: Deletes a poll
+ */
 public class DeletePollRequest extends Request {
 	
 	public Long poll_id;
@@ -19,7 +20,7 @@ public class DeletePollRequest extends Request {
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return DeletePollResponse.class;
+		return EmptyResponse.class;
 	}
 
 	@Override

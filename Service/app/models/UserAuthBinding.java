@@ -24,18 +24,18 @@ public abstract class UserAuthBinding extends Model{
 	 * @return secret converted to string
 	 */
 	public String generateSecret() {
-		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ;$_-!?#:*=";
+		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Random random = new Random();
 		StringBuilder strBuild = null;
-		List<User> users = User.findAll();
+		//List<User> users = User.findAll();
 		do {
 			strBuild = new StringBuilder();
 			for (int i=0; i<50; i++)
 				strBuild.append(SECRET_CHARSET.charAt(random.nextInt(SECRET_CHARSET.length()-1)));
-			for (User user : users) {
-				if ((strBuild != null) && (strBuild.toString().equals(user.secret)))
-					strBuild = null;
-			}
+			//for (User user : users) {
+			//	if ((strBuild != null) && (strBuild.toString().equals(user.secret)))
+			//		strBuild = null;
+			//}
 		} while (strBuild == null);
 		return strBuild.toString();
 	} 

@@ -4,6 +4,7 @@
 
 # Home page
 
+# OpenARS 1.0
 POST    /newPoll                                Management.createQuestion
 POST    /activation/{<[0-9]+>id}/{adminKey}     Management.activation
 GET     /checkAdminKey/{<[0-9]+>id}/{adminKey}  Management.checkAdminLink
@@ -11,10 +12,13 @@ POST    /vote/{<[0-9]+>id}                      Voting.vote
 GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
+
+# OpenARMS 2.0
 *       /admin									module:crud
 *       /admin		                            module:secure
 GET     /qr/{<[0-9]+>token}/{<[0-9]+>size}      QRController.returnImage
 GET		/poll/{<[0-9]+>id}						PollController.retrieve
+GET		/poll/token/{<[A-Za-z0-9]+>token}		PollController.retrieveByToken
 POST	/poll									PollController.create
 PUT		/poll/{<[0-9]+>id}						PollController.edit
 DELETE	/poll/{<[0-9]+>id}						PollController.delete
@@ -24,6 +28,7 @@ POST	/choice									ChoiceController.create
 PUT		/choice/{<[0-9]+>id}					ChoiceController.edit
 DELETE	/choice/{<[0-9]+>id}					ChoiceController.delete
 GET		/pollinstance/{<[0-9]+>id}				PollInstanceController.retrieve
+GET		/pollinstance/token/{<[A-Za-z0-9]+>token}	PollInstanceController.retrieveByToken
 POST	/pollinstance							PollInstanceController.create
 PUT		/pollinstance/{<[0-9]+>id}				PollInstanceController.edit
 DELETE	/pollinstance/{<[0-9]+>id}				PollInstanceController.delete
@@ -37,6 +42,7 @@ POST	/user									UserController.create
 PUT		/user/{<[0-9]+>id}						UserController.edit
 DELETE	/user/{<[0-9]+>id}						UserController.delete
 POST	/user/authenticate						UserController.authenticate
+GET		/loadtestdata/{<.+>yaml_file}			APIController.loadTestData
 
 
 # Map static resources from the /app/public folder to the /public path

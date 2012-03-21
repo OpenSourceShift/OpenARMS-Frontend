@@ -57,6 +57,7 @@ public class User extends Model implements Jsonable {
 			result.backend = user.userAuth.getClass().toString();
 			if (user.userAuth instanceof SimpleUserAuthBinding) {
 				SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
+				result.attributes = new HashMap<String, String>();
 				result.attributes.put("password",auth.password);
 			}
 		}
@@ -76,6 +77,7 @@ public class User extends Model implements Jsonable {
 		result.secret = json.secret;
 		if (json.backend != null && json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
 			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
+			auth.user = result;
 			auth.password = json.attributes.get("password");
 			result.userAuth = auth;
 		}

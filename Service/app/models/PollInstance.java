@@ -11,6 +11,7 @@ import api.entities.Jsonable;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.entities.VoteJSON;
+import play.data.validation.Required;
 import play.db.jpa.*;
 
 /**
@@ -39,6 +40,7 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 	 * The Poll that this is an instance of.
 	 */
     @ManyToOne
+    @Required
     public Poll poll;
 
     public PollInstance(Date startDateTime, Date endDateTime, Poll poll) {
@@ -78,9 +80,16 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
         return hash;
     }
 
-	public PollInstanceJSON toJson() {
-		// TODO Auto-generated method stub
-		return null;
+    public PollInstanceJSON toJson() {
+    	return this.toJson(this);
+    }
+	public PollInstanceJSON toJson(PollInstance p) {
+    	PollInstanceJSON result = new PollInstanceJSON();
+    	result.id = p.id;
+    	result.poll_id = p.poll.id;
+    	result.startDateTime = p.startDateTime;
+    	result.endDateTime = p.endDateTime;
+		return result;
 	}
 	
 	public static PollInstance fromJson (PollInstanceJSON json) {
@@ -89,9 +98,11 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		
 		result.votes = new LinkedList<Vote>();
 
-		// Update the choices
-		for (VoteJSON c : json.votes) {
-			result.votes.add(Vote.fromJson(c));	
+		// Update the votes
+		if(json.votes != null) {
+			for (VoteJSON c : json.votes) {
+				result.votes.add(Vote.fromJson(c));	
+			}
 		}
 		// Update the references.
 		for (Vote c : result.votes) {

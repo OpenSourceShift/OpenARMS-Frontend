@@ -3,6 +3,8 @@ package controllers;
 import java.util.List;
 
 import api.entities.UserJSON;
+import api.helpers.GsonHelper;
+import api.responses.CreateUserResponse;
 
 import notifiers.MailNotifier;
 
@@ -21,23 +23,20 @@ public class SimpleAuthBackend extends AuthBackend {
 	 * Method that authenticates the user to access the system.
 	 * @return true if user authenticated and false otherwise
 	 */
-	public static boolean authenticate(User user) {
-	    boolean authenticated = false;
+	public static User authenticate(User user) {
 	    // Find correct user in the DB
-	    User u = (User)User.find("name",user.name).first();
+	    User u = null;
+	    u = (User)User.find("email", user.email).first();
 	    if (u != null) {
+	    	Logger.debug("authenticate() found user: %s", u.toString());
 	    	SimpleUserAuthBinding auth = (SimpleUserAuthBinding)u.userAuth;
-	    	u.secret = auth.authenticate(((SimpleUserAuthBinding)user.userAuth).password);
-	    	if (user.secret != null)
-				authenticated = true;
+	    	Logger.debug("Got password: %s", ((SimpleUserAuthBinding)user.userAuth).password);
+	    	String s = auth.authenticate(((SimpleUserAuthBinding)user.userAuth).password);
+	    	u.secret = s;
+	    	u.save();
+	    	Logger.debug("Got secret: %s Saved secret: %s", s, user.secret);
 		}
-	    // Send the response in case user has not been authenticated
-	    if (!authenticated) {
-	    	Http.Response.current().status = 401;
-	    	Http.Response.current().setHeader("Content-Length", "0");
-	    	Http.Response.current().setHeader("WWW-Authenticate", "Basic");
-	    }
-	    return authenticated; 
+	    return u; 
 	}
 	
 	/**

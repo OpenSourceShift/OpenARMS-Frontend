@@ -4,16 +4,18 @@ import api.entities.PollJSON;
 import api.responses.ReadPollResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class ReadPollRequest extends Request {
-	public static final Class EXPECTED_RESPONSE = ReadPollResponse.class;
-	public String poll_token;
-	public ReadPollRequest (String s) {
-		this.poll_token = s;
+	public Long id;
+	public ReadPollRequest (Long id) {
+		this.id = id;
 	}
 
 	@Override
 	public String getURL() {
-		return "/poll/" + poll_token;
+		return "/poll/" + id;
 	}
 
 	@Override

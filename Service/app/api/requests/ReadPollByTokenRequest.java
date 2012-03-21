@@ -1,26 +1,26 @@
 package api.requests;
 
-import api.entities.ChoiceJSON;
-import api.responses.ReadChoiceResponse;
+import api.entities.PollJSON;
+import api.responses.ReadPollResponse;
 import api.responses.Response;
 
 /**
  * A request for the service: 
  */
-public class ReadChoiceRequest extends Request {
-	public Long choice_id;
-	public ReadChoiceRequest (Long l) {
-		this.choice_id = l;
+public class ReadPollByTokenRequest extends Request {
+	public String token;
+	public ReadPollByTokenRequest (String token) {
+		this.token = token;
 	}
-	
+
 	@Override
 	public String getURL() {
-		return "/choice/" + choice_id;
+		return "/poll/token/" + token;
 	}
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return ReadChoiceResponse.class;
+		return ReadPollResponse.class;
 	}
 
 	@Override

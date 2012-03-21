@@ -15,9 +15,9 @@ public abstract class AuthBackend extends Controller {
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
 	 */
-	public static boolean authenticate(User user) {
+	public static User authenticate(User user) {
 		//TODO: This will be modified
-		return false;
+		return null;
 	}
 	/**
 	 * Method that resets the password of the user and sends it to user via email.
@@ -30,14 +30,17 @@ public abstract class AuthBackend extends Controller {
 	    if (header != null) {
 	    	String user = Http.Request.current().user;
 	    	String secret = Http.Request.current().password;
+	    	Logger.debug("getCurrentUser() called with user = %s and secret = %s.", user, secret);
 	    	
 	    	u = User.findById(Long.parseLong(user));
-	    	if (u.secret.equals(secret)) {
+	    	if (u != null && u.secret != null && u.secret.equals(secret)) {
 	    		return u;
 	    	} else {
 	    		return null;
 	    	}
+	    } else {
+	    	Logger.debug("getCurrentUser() called but HTTP authorization header not set.");
+	    	return null;
 	    }
-		return null;
 	}
 }

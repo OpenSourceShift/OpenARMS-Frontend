@@ -4,6 +4,9 @@ import api.entities.PollInstanceJSON;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.Response;
 
+/**
+ * A request for the service: 
+ */
 public class InstantiatePollRequest extends Request {
 	public static final Class EXPECTED_RESPONSE = CreatePollInstanceResponse.class;
 	public PollInstanceJSON pollInstance;

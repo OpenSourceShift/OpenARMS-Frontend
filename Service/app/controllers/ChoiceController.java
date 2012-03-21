@@ -1,22 +1,14 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import controllers.APIController.NotFoundException;
-import controllers.APIController.UnauthorizedException;
-
 import models.Choice;
-import models.Poll;
 import models.User;
-import api.requests.CreateChoiceRequest;
-import api.responses.CreateChoiceResponse;
-import api.responses.CreatePollResponse;
-import api.entities.ChoiceJSON;
-import api.entities.PollJSON;
 import api.helpers.GsonHelper;
-import play.mvc.Controller;
+import api.requests.CreateChoiceRequest;
+import api.requests.UpdateChoiceRequest;
+import api.responses.CreateChoiceResponse;
+import api.responses.EmptyResponse;
+import api.responses.ReadChoiceResponse;
+import api.responses.UpdateChoiceResponse;
 
 /**
  * Class that manages the responses in the API for Choices.
@@ -72,7 +64,7 @@ public class ChoiceController extends APIController {
 			}
 			
 			//Creates the ChoiceJSON Response.
-			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
+			ReadChoiceResponse r = new ReadChoiceResponse(choice.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -103,7 +95,7 @@ public class ChoiceController extends APIController {
 		    }
 
 			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
+			UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
             Choice editedchoice = Choice.fromJson(req.choice);
 
             //Changes the old text field for the new one.
@@ -112,7 +104,7 @@ public class ChoiceController extends APIController {
             originalchoice.save();
 
             //Creates the ChoiceJSON Response.
-            CreateChoiceResponse r = new CreateChoiceResponse(originalchoice.toJson());
+            UpdateChoiceResponse r = new UpdateChoiceResponse(originalchoice.toJson());
         	String jsonresponse = GsonHelper.toJson(r);
         	renderJSON(jsonresponse);
             
@@ -137,21 +129,14 @@ public class ChoiceController extends APIController {
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
+			// TODO: Check for null's along the choice.poll.admin.id chain.
 			if (u == null || choice.poll.admin.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
 	
 			choice.delete();
 	
-			choice.id = null;
-			choice.poll = null;
-			choice.text = null;
-	
-			//Creates the ChoiceJSON Response.
-			CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-			renderJSON(jsonresponse);
-		
+			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
 			renderException(e);
 		}

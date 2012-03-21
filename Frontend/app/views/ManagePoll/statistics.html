@@ -82,7 +82,6 @@ $(document).ready(function() {
 				
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
-	//$.getJSON('@{Poll.getResults()}?id=${pollID}', function(data) {
 	$.getJSON('@{ManagePoll.testStatistics()}', function(data) {
 		console.log("Returns: ", data);
 		$('.loading').hide();
