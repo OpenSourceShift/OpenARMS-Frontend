@@ -1,28 +1,24 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.List;
 
-import play.Logger;
-import play.mvc.Http;
-
-import controllers.APIController.NotFoundException;
-import controllers.APIController.UnauthorizedException;
-
+import models.Poll;
+import models.PollInstance;
 import models.SimpleUserAuthBinding;
 import models.User;
-import models.UserAuthBinding;
+import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
+import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
 import api.requests.CreateUserRequest;
 import api.requests.UpdateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadUserDetailsResponse;
 import api.responses.ReadUserResponse;
 import api.responses.UpdateUserResponse;
-import api.entities.UserJSON;
-import api.helpers.GsonHelper;
 
 /**
  * Class that manages the responses in the API for Users.
@@ -40,8 +36,12 @@ public class UserController extends APIController {
 			// Takes the UserJSON from the http body
 			AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
 			User user = User.find("byEmail", req.user.email).first();
-			if (user != null && user.userAuth instanceof SimpleUserAuthBinding) {
-				user = SimpleAuthBackend.authenticate(user);
+			if (user == null) {
+				throw new NotFoundException("No user with this email, found on the system.");
+			} else if (!(user.userAuth instanceof SimpleUserAuthBinding)) {
+				throw new NotFoundException("This user has no support for the choosen backend.");
+			} else {
+				user = SimpleAuthBackend.authenticate(req);
 				if (user != null) {
 				    //Creates the UserJSON Response.
 					AuthenticateUserResponse response = new AuthenticateUserResponse(user.toJson());
@@ -49,8 +49,6 @@ public class UserController extends APIController {
 				} else {
 					throw new UnauthorizedException();
 				}
-			} else {
-				throw new NotFoundException();
 			}
 		} catch (Exception e) {
 			//renderText(e.getMessage());
@@ -217,4 +215,48 @@ public class UserController extends APIController {
 			renderException(e);
 		}
 	}
+	
+	/**
+	 * Method that gets a User from the DataBase.
+	 */
+	public static void details() {
+		try {
+			String userid = params.get("id");
+	
+			//Takes the User from the DataBase.
+			User user = User.find("byID", userid).first();
+	
+			if (user == null) {
+				throw new NotFoundException();
+			}
+			
+	        //If current user is not the same as the poll creator or there is no current user, throws an exception
+			User u = AuthBackend.getCurrentUser();
+			if (u == null || user.id != u.id) {
+		        throw new UnauthorizedException();
+		    }
+			
+			List<Poll> polllist = Poll.find("byAdmin.id", u.id).fetch();
+			List<PollJSON> polljsonlist = new LinkedList<PollJSON>();
+			
+			for(Poll p: polllist) {
+				PollJSON tmpp = p.toJson();
+				tmpp.pollinstances = new LinkedList<PollInstanceJSON>();
+				for(PollInstance pi: p.instances) {
+					tmpp.pollinstances.add(pi.toJson());
+				}
+				polljsonlist.add(tmpp);
+			}
+			
+			
+			//Creates the UserJSON Response.
+			ReadUserDetailsResponse response = new ReadUserDetailsResponse(user.toJson(), polljsonlist);
+			String jsonResponse = GsonHelper.toJson(response);
+			renderJSON(jsonResponse);
+			
+		} catch (Exception e) {
+			renderException(e);
+		}
+	}
+	
 }

@@ -3,6 +3,13 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.Choice;
+import models.PollInstance;
+import models.SimpleUserAuthBinding;
+import models.User;
+import models.Vote;
+
+import play.Logger;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -70,6 +77,16 @@ public abstract class APIController extends Controller {
 			if(Play.mode.equals(Play.Mode.DEV)) {
 				Fixtures.deleteAllModels();
 				Fixtures.loadModels(yaml_file);
+				
+				// Create the binding
+		        User user = User.find("byEmail", "spam@creen.dk").first();
+		        SimpleUserAuthBinding authBinding = new SimpleUserAuthBinding();
+		        authBinding.user = user;
+		        authBinding.password = "openarms";
+		        authBinding.save();
+		        user.userAuth = authBinding;
+		        user.userAuth.save();
+		        
 				renderJSON(new EmptyResponse().toJson());
 			} else {
 				throw new UnauthorizedException("This action is only activated when the application runs in development mode.");

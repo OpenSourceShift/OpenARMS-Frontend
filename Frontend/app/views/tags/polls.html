@@ -1,0 +1,14 @@
+<div id="polls">
+</div>
+
+<script type="text/javascript">
+$(document.ready(function() {
+	$("#polls").append("test");
+	
+	var polls = ${polls.raw()};
+	length = polls.length;
+	for (i=0; i<length; i++) {
+		$("#polls").append("<li class='poll'><div id='p"+i+"'></div></li>");
+	}
+}
+</script>

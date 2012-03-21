@@ -6,6 +6,7 @@ import org.junit.Test;
 import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
+import play.test.Fixtures;
 import play.test.UnitTest;
 import api.requests.*;
 import api.responses.*;
@@ -25,8 +26,10 @@ public class APIClientTest extends UnitTest {
 	/*
 	@Test
     public void testLogin() throws Exception {
+		APIClient.loadServiceData("data.yml");
 		APIClient apiClient = new APIClient();
-		apiClient.setAuthentication((long) 1, "openarms");
+		boolean authenticated = apiClient.authenticateSimple("spam@creen.dk", "openarms");
+		assertTrue(authenticated);
 		
     	PollJSON pj1 = new PollJSON();
     	pj1.question = "This is the first question.";
@@ -62,7 +65,12 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.pollinstance.id);
     	assertEquals(response.pollinstance.poll_id, p.poll_id);
     }
+<<<<<<< HEAD
   	
+=======
+  	*/
+	/*
+>>>>>>> 0b5d00f674abca40e14a4e385db8a6088ae373c4
 	@Test
     public void testCreateUser() throws Exception {
     	// WORKING
@@ -80,7 +88,12 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.user.id);
     	assertEquals(response.user.name, u.name);
     }
+<<<<<<< HEAD
 	 
+=======
+    */
+	/*
+>>>>>>> 0b5d00f674abca40e14a4e385db8a6088ae373c4
     @Test
     public void testCreatePoll() throws Exception {
     	//APIClient apiClient = new APIClient();

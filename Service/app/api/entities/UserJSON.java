@@ -1,6 +1,6 @@
 package api.entities;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class UserJSON extends BaseModelJSON {
 	public Long id;
@@ -8,5 +8,5 @@ public class UserJSON extends BaseModelJSON {
 	public String email;
 	public String secret;
     public String backend;
-    public HashMap<String, String> attributes;
+    public Map<String, String> attributes;
 }

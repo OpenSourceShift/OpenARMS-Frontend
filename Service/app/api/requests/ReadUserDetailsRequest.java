@@ -1,25 +1,26 @@
 package api.requests;
 
-import api.responses.ReadPollResponse;
+import api.entities.UserJSON;
+import api.responses.ReadUserResponse;
 import api.responses.Response;
 
 /**
  * A request for the service: 
  */
-public class ReadPollByTokenRequest extends Request {
-	public String token;
-	public ReadPollByTokenRequest (String token) {
-		this.token = token;
+public class ReadUserDetailsRequest extends Request {
+	public Long user_id;
+	public ReadUserDetailsRequest (Long l) {
+		this.user_id = l;
 	}
-
+	
 	@Override
 	public String getURL() {
-		return "/poll/token/" + token;
+		return "/user/" + user_id + "/details";
 	}
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return ReadPollResponse.class;
+		return ReadUserResponse.class;
 	}
 
 	@Override
