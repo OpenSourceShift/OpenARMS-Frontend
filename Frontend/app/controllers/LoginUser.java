@@ -61,4 +61,8 @@ public class LoginUser extends Controller {
 			index(email);
 		}
 	}
+	
+	public static boolean isLoggedIn() {
+		return (session.get("user_id") != null && session.get("user_secret") != null);
+	}
 }
