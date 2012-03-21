@@ -25,7 +25,8 @@ public class APIClientTest extends UnitTest {
 	
 	@Test
     public void testLogin() throws Exception {
-		APIClient apiClient = new APIClient((long) 1, "openarms");
+		APIClient apiClient = new APIClient();
+		apiClient.setAuthentication((long) 1, "openarms");
 		
     	PollJSON pj1 = new PollJSON();
     	pj1.question = "This is the first question.";

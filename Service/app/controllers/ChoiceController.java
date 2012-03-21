@@ -1,26 +1,14 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
-import controllers.APIController.NotFoundException;
-import controllers.APIController.UnauthorizedException;
-
 import models.Choice;
-import models.Poll;
 import models.User;
+import api.helpers.GsonHelper;
 import api.requests.CreateChoiceRequest;
 import api.requests.UpdateChoiceRequest;
 import api.responses.CreateChoiceResponse;
-import api.responses.CreatePollResponse;
-import api.responses.DeleteChoiceResponse;
+import api.responses.EmptyResponse;
 import api.responses.ReadChoiceResponse;
 import api.responses.UpdateChoiceResponse;
-import api.entities.ChoiceJSON;
-import api.entities.PollJSON;
-import api.helpers.GsonHelper;
-import play.mvc.Controller;
 
 /**
  * Class that manages the responses in the API for Choices.
@@ -148,11 +136,7 @@ public class ChoiceController extends APIController {
 	
 			choice.delete();
 	
-			//Creates the ChoiceJSON Response.
-			DeleteChoiceResponse r = new DeleteChoiceResponse();
-			String jsonresponse = GsonHelper.toJson(r);
-			renderJSON(jsonresponse);
-		
+			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
 			renderException(e);
 		}

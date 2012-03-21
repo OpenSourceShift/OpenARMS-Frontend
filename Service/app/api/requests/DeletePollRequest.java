@@ -1,8 +1,6 @@
 package api.requests;
 
-import api.entities.PollJSON;
-import api.requests.Request.Method;
-import api.responses.DeletePollResponse;
+import api.responses.EmptyResponse;
 import api.responses.Response;
 
 /**
@@ -22,7 +20,7 @@ public class DeletePollRequest extends Request {
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return DeletePollResponse.class;
+		return EmptyResponse.class;
 	}
 
 	@Override

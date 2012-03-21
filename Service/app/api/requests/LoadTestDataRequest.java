@@ -4,23 +4,26 @@ import api.responses.EmptyResponse;
 import api.responses.Response;
 
 /**
- * A request for the service: Deletes a vote
+ * A request for the service: Deletes a choice
  */
-public class DeleteVoteRequest extends Request {
-	public Long vote_id;
-	public DeleteVoteRequest (Long l) {
-		this.vote_id = l;
+public class LoadTestDataRequest extends Request {
+	public String yaml_file;
+	public LoadTestDataRequest (String yaml_file) {
+		this.yaml_file = yaml_file;
 	}
+	
 	@Override
 	public String getURL() {
-		return "/vote/" + vote_id;
+		return "/loadtestdata/" + yaml_file;
 	}
+
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
 		return EmptyResponse.class;
 	}
+
 	@Override
 	public Method getHttpMethod() {
-		return Method.DELETE;
+		return Method.GET;
 	}
 }

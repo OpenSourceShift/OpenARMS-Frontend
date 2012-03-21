@@ -24,7 +24,7 @@ public abstract class UserAuthBinding extends Model{
 	 * @return secret converted to string
 	 */
 	public String generateSecret() {
-		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ;$_-!?#:*=";
+		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Random random = new Random();
 		StringBuilder strBuild = null;
 		//List<User> users = User.findAll();
