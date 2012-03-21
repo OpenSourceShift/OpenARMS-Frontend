@@ -1,7 +1,6 @@
 package controllers;
  
 import play.Play;
-import models.*;
 
 /**
  * Controller class for a securing administration interface.
