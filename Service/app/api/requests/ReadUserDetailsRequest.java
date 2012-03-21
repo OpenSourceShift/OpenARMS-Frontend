@@ -1,7 +1,7 @@
 package api.requests;
 
 import api.entities.UserJSON;
-import api.responses.ReadUserResponse;
+import api.responses.ReadUserDetailsResponse;
 import api.responses.Response;
 
 /**
@@ -20,7 +20,7 @@ public class ReadUserDetailsRequest extends Request {
 
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return ReadUserResponse.class;
+		return ReadUserDetailsResponse.class;
 	}
 
 	@Override

@@ -273,9 +273,6 @@ public class Poll extends Model implements Jsonable {
     	result.reference = json.reference;
     	result.question = json.question;
     	
-    	User user = Poll.find("byID", json.admin).first();
-    	result.admin = user;
-    	
     	result.choices = new LinkedList<Choice>();
 
 		// Update the choices

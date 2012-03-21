@@ -2,6 +2,21 @@
 #{set moreStyles:'managepoll' /}
 
 <div id="main">
+	<div id="pollcontainer">
+		<ul>
+			#{list items:pollsJson, as:'poll'}
+				<li><ul>
+					#{list items:${poll}, as:'instance'}
+						<li>${instance}</li>
+					#{/list}
+				</ul></li>
+			#{/list}
+		</ul>
+	</div>
+</div>
+
+
+<!-- <div id="main">
 	<div id="activatepoll" class="greybg">
 		#{form @ManagePoll.activateSubmit(), id:'activatepoll', class:'wrapper' }
 			<h2>&{'managepoll.activatepoll.header'}</h2>
@@ -33,4 +48,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->

@@ -89,9 +89,8 @@ public class Choice extends Model implements Jsonable {
 	
 	public static Choice copy (Choice c) {
 		Choice c2 = new Choice(null, c.text);
-		for (Vote v : c.votes) {
-			c2.votes.add(Vote.copy(v));
-		}
+		c2.votes = new LinkedList<Vote>();
+		c2.votes = null;
 		return c2;
 	}
 	

@@ -12,6 +12,10 @@ import api.responses.CreatePollResponse;
 public class CreatePoll extends Controller {
 
 	public static void index(String email, String question, String[] answer) {
+		if (LoginUser.isLoggedIn()) {
+			LoginUser.forward = "createpoll";
+			LoginUser.index("");
+		}
 		String choices;
 		if (answer == null) {
 			answer = new String[] { "", "" };

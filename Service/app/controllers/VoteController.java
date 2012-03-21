@@ -95,6 +95,7 @@ public class VoteController extends APIController {
 			if (u == null || originalvote.user.id != u.id) {
 		        throw new UnauthorizedException();
 		    }
+			requireUser(originalvote.user);
 
 			//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
 			CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
@@ -133,12 +134,8 @@ public class VoteController extends APIController {
 			if (vote == null) {
 				throw new NotFoundException();
 			}
-			
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || vote.user.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
+
+			requireUser(vote.user);
 			
 			//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
 			vote.delete();
