@@ -3,12 +3,15 @@ package controllers;
 import java.util.LinkedList;
 import java.util.List;
 
+import models.Choice;
 import models.Poll;
 import models.PollInstance;
 import models.SimpleUserAuthBinding;
 import models.User;
+import models.Vote;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
+import api.entities.VoteSummaryJSON;
 import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
 import api.requests.CreateUserRequest;
@@ -16,6 +19,7 @@ import api.requests.UpdateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadUserDetailsResponse;
 import api.responses.ReadUserResponse;
 import api.responses.UpdateUserResponse;
 
@@ -230,26 +234,35 @@ public class UserController extends APIController {
 			}
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
-			if (u == null || user.id != u.id) {
+			User currentUser = AuthBackend.getCurrentUser();
+			if (currentUser == null || !currentUser.equals(user)) {
 		        throw new UnauthorizedException();
 		    }
 			
-			List<Poll> polllist = Poll.find("byAdmin.id", u.id).fetch();
-			List<PollJSON> polljsonlist = new LinkedList<PollJSON>();
+			List<Poll> polls = Poll.find("byAdmin.id", currentUser.id).fetch();
+			List<PollJSON> pollsJ = new LinkedList<PollJSON>();
 			
-			for(Poll p: polllist) {
+			for(Poll p: polls) {
 				PollJSON tmpp = p.toJson();
 				tmpp.pollinstances = new LinkedList<PollInstanceJSON>();
 				for(PollInstance pi: p.instances) {
-					tmpp.pollinstances.add(pi.toJson());
+					PollInstanceJSON piJson = pi.toJson();
+			    	for(Choice c: pi.poll.choices) {
+			    		VoteSummaryJSON summary = new VoteSummaryJSON();
+						summary.choice_id = c.id;
+						summary.choice_text = c.text;
+						summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
+						// Add it to the result.
+						piJson.votes.add(summary);
+			    	}
+					tmpp.pollinstances.add(piJson);
 				}
-				polljsonlist.add(tmpp);
+				pollsJ.add(tmpp);
 			}
 			
 			
 			//Creates the UserJSON Response.
-			ReadUserDetailsResponse response = new ReadUserDetailsResponse(user.toJson(), polljsonlist);
+			ReadUserDetailsResponse response = new ReadUserDetailsResponse(user.toJson(), pollsJ);
 			String jsonResponse = GsonHelper.toJson(response);
 			renderJSON(jsonResponse);
 			
