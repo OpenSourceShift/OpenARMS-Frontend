@@ -92,6 +92,8 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	result.poll_id = p.poll.id;
     	result.startDateTime = p.startDateTime;
     	result.endDateTime = p.endDateTime;
+    	result.votes = new LinkedList<VoteSummaryJSON>();
+    	
     	// Create vote summaries for all votes.
     	Map<Vote, VoteSummaryJSON> votes = new HashMap<Vote, VoteSummaryJSON>();
     	for(Vote v: p.votes) {
@@ -101,7 +103,6 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     			summary.choice_id = v.choice.id;
     			summary.choice_text = v.choice.text;
     			summary.count = (long) 0;
-    			summary.id = v.id;
     			// Add it to the result.
     			result.votes.add(summary);
     		}
