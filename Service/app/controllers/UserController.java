@@ -49,7 +49,7 @@ public class UserController extends APIController {
 			AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
 			User user = User.find("byEmail", req.user.email).first();
 			if (user != null && user.userAuth instanceof SimpleUserAuthBinding) {
-				user = SimpleAuthBackend.authenticate(user);
+				user = SimpleAuthBackend.authenticate(req);
 				if (user != null) {
 				    //Creates the UserJSON Response.
 					AuthenticateUserResponse response = new AuthenticateUserResponse(user.toJson());

@@ -10,6 +10,7 @@
 GET     /                                       Application.index
 GET     /createpoll                            	CreatePoll.index
 GET     /joinpoll                            	JoinPoll.index
+GET 	/login									LoginUser.index
 
 GET     /{<[0-9]+>id}                           JoinPoll.index
 GET     /{<[0-9]+>pollID}/{adminkey}            ManagePoll.index

@@ -1,0 +1,26 @@
+#{extends 'main.html' /} #{ set title:'Login' /}
+#{set moreStyles:'login' /}
+<div id="main">
+	#{form @LoginUser.submit(), id:'login', class:'greybg wrapper' }
+		<h1>&{'userlogin'}</h1>
+		
+		<div class="labeledinput">
+			<label>&{'loginuser.email'}</label>
+			#{ifError 'email'}
+				<p class="formError">#{error 'email' /}</p>
+			#{/ifError}
+			<input size="30" type="text" name="email" value="${email}" />
+		</div>
+		
+		<div class="labeledinput">
+			<label>&{'loginuser.password'}</label>
+			#{ifError 'password'}
+				<p class="formError">#{error 'password' /}</p>
+			#{/ifError}
+			<input size="30" type="password" name="password" value="${password}" />
+		</div>
+
+		<input type='submit' value="&{'loginuser.submit'}" class='button' />
+		<input type='button' value="&{'loginuser.cancel'}" class='button' onClick="history.back()">
+	#{/form}
+</div>
