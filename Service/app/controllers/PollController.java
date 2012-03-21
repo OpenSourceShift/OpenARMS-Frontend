@@ -14,6 +14,7 @@ import notifiers.MailNotifier;
 import api.requests.CreatePollRequest;
 import api.requests.UpdatePollRequest;
 import api.responses.CreatePollResponse;
+import api.responses.EmptyResponse;
 import play.Logger;
 import play.mvc.Controller;
 
@@ -220,16 +221,8 @@ public class PollController extends APIController {
 			
 			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 			poll.delete();
-	
-			poll.question = null;
-			poll.reference = null;
-			poll.choices = null;
-			
-			//Creates the PollJSON Response.
-			CreatePollResponse r = new CreatePollResponse(poll.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-			renderJSON(jsonresponse);
-			
+
+			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
 			renderException(e);
 		}

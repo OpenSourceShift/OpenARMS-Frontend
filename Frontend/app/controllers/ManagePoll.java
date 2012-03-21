@@ -1,8 +1,14 @@
 package controllers;
-import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.Calendar;
 
 import play.mvc.Controller;
+import play.mvc.Http.StatusCode;
+import api.entities.PollInstanceJSON;
+import api.requests.CreatePollInstanceRequest;
+import api.requests.ReadPollByTokenRequest;
+import api.responses.AuthenticateUserResponse;
+import api.responses.CreatePollInstanceResponse;
+import api.responses.ReadPollResponse;
 
 public class ManagePoll extends Controller {
 	public static void index(String token, String adminkey) {
@@ -106,10 +112,37 @@ public class ManagePoll extends Controller {
 	}
 
 	public static void statistics() {
-		/*
-		render(token, adminkey);
-		*/
-		String token = "asdasd";
-		render(token);
+		try {
+			// Load service data.
+			APIClient.loadServiceData("data.yml");
+			boolean authenticated = APIClient.authenticateSimple("spam@creen.dk", "openarms");
+			if(!authenticated) {
+				throw new Exception("Could not authenticate");
+			}
+
+			// Load service data.
+			ReadPollResponse res1 = (ReadPollResponse)APIClient.send(new ReadPollByTokenRequest("123456"));
+			if(!StatusCode.success(res1.statusCode)) {
+				throw new Exception("Couldn't read poll with token 123456.");
+			}
+
+			// Load service data.
+			PollInstanceJSON pi = new PollInstanceJSON();
+			pi.poll_id = res1.poll.id;
+			pi.startDateTime = Calendar.getInstance().getTime();
+			Calendar endDateTimeCalendar = Calendar.getInstance();
+			endDateTimeCalendar.set(Calendar.YEAR, 2020);
+			pi.endDateTime = endDateTimeCalendar.getTime();
+			CreatePollInstanceResponse res2 = (CreatePollInstanceResponse)APIClient.send(new CreatePollInstanceRequest(pi));
+			if(!StatusCode.success(res2.statusCode)) {
+				throw new Exception("Couldn't create poll instance with token time now.");
+			}
+			
+			Long pollinstance_id = res2.pollinstance.id;
+			render(pollinstance_id);
+		} catch(Exception e) {
+			e.printStackTrace();
+			// TODO: Use an error template.
+		}
 	}
 }

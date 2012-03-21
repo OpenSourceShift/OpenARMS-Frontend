@@ -3,18 +3,35 @@ package controllers;
 import java.util.HashMap;
 import java.util.Map;
 
-import api.helpers.GsonHelper;
-import api.responses.ExceptionResponse;
-import api.responses.Response;
 import play.Play;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
 import play.test.Fixtures;
+import api.helpers.GsonHelper;
+import api.responses.EmptyResponse;
+import api.responses.ExceptionResponse;
+import api.responses.Response;
 
 public abstract class APIController extends Controller {
-	public static class NotFoundException extends Exception {}
-	public static class UnauthorizedException extends Exception {}
+	
+	public static class NotFoundException extends Exception {
+		public NotFoundException() {
+			this(null);
+		}
+		public NotFoundException(String message) {
+			super(message);
+		}
+	}
+	
+	public static class UnauthorizedException extends Exception {
+		public UnauthorizedException() {
+			this(null);
+		}
+		public UnauthorizedException(String message) {
+			super(message);
+		}
+	}
 	
 	public static Map<Class<? extends Exception>, Integer> STATUS_CODES = new HashMap<Class<? extends Exception>, Integer>();
 	
@@ -48,11 +65,17 @@ public abstract class APIController extends Controller {
 		renderText(GsonHelper.toJson(o));
 	}
 	
-	public static void loadTestData() {
-		if(Play.mode.equals(Play.Mode.DEV)) {
-			Fixtures.deleteAllModels();
-			Fixtures.loadModels("data.yml");
-			renderText("OK");
+	public static void loadTestData(String yaml_file) {
+		try {
+			if(Play.mode.equals(Play.Mode.DEV)) {
+				Fixtures.deleteAllModels();
+				Fixtures.loadModels(yaml_file);
+				renderJSON(new EmptyResponse().toJson());
+			} else {
+				throw new UnauthorizedException("This action is only activated when the application runs in development mode.");
+			}
+		} catch (Exception e) {
+			renderException(e);
 		}
 	}
 	
