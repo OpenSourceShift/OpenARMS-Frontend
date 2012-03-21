@@ -50,11 +50,20 @@ public class PollController extends APIController {
         // Set the admin to this user.
         poll.admin = AuthBackend.getCurrentUser();
         
+        
+ 		StringBuilder strBuild = new StringBuilder();
+	    
         // Generates a Unique ID and saves the Poll.
         // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
-        do {
-            poll.token = String.valueOf(new Random(System.currentTimeMillis()).nextInt(999999));
-        } while (!Poll.find("byToken", poll.token).fetch().isEmpty());
+	    String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		Random random = new Random();
+
+		do {
+			strBuild.delete(0,strBuild.length());
+			for (int i=0; i<10; i++)
+				strBuild.append(SECRET_CHARSET.charAt(random.nextInt(SECRET_CHARSET.length()-1)));
+			poll.token = strBuild.toString();
+		} while (!Poll.find("byToken", poll.token).fetch().isEmpty());
         
         poll.save();
         

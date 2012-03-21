@@ -13,7 +13,7 @@
 	create_poll_link=Crear encuesta &raquo;
 	manage_poll=Administrar encuesta
 	manage_poll_teaser=Si ya has creado una encuesta, y deseas activarla, editarla u obtener las estadísticas de la misma, introduce aquí el ID junto con la contraseña que recibiste después de crear la encuesta.
-	manage_poll_pollid=ID de la encuesta:
+	manage_poll_token=Token de la encuesta:
 	manage_poll_password=Contraseña:
 	manage_poll_submit=Login &raquo;
 	question=Pregunta
