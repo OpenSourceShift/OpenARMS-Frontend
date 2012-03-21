@@ -45,7 +45,7 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response2);
     	assertEquals(pj2.question, response2.poll.question);
     }
-	*//*
+    
     @Test
     public void testCreateChoice() throws Exception {
     	ChoiceJSON c = new ChoiceJSON();
@@ -65,12 +65,7 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.pollinstance.id);
     	assertEquals(response.pollinstance.poll_id, p.poll_id);
     }
-<<<<<<< HEAD
-  	
-=======
-  	*/
-	/*
->>>>>>> 0b5d00f674abca40e14a4e385db8a6088ae373c4
+    
 	@Test
     public void testCreateUser() throws Exception {
     	// WORKING
@@ -88,12 +83,7 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.user.id);
     	assertEquals(response.user.name, u.name);
     }
-<<<<<<< HEAD
-	 
-=======
-    */
-	/*
->>>>>>> 0b5d00f674abca40e14a4e385db8a6088ae373c4
+
     @Test
     public void testCreatePoll() throws Exception {
     	//APIClient apiClient = new APIClient();
@@ -113,12 +103,11 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.poll.id);
     	assertEquals(response.poll.question, p.question);
-    }*/
-    /*
+    }
+	
     @Test
     public void testRetrievePoll() throws Exception {
     	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
-    	PollJSON p = new PollJSON();
     	Long id = (long) 1;
     	ReadPollResponse response =  (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
     	failIfNotSuccessful(response);
@@ -129,13 +118,13 @@ public class APIClientTest extends UnitTest {
     @Test
     public void testRetrievePollbyToken() throws Exception {
     	// IS NEEDED TO CREATE POLL IN ADMIN TO WORKING TEST PROPERLY !!! :)
-    	String token = "128162";
+    	String token = "7897";
     	ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
     	failIfNotSuccessful(response);
     	assertNotNull(response.poll.token);
     	assertEquals(response.poll.token,token);
     }
-   */  
+
     @Test
     public void testEditPoll() throws Exception {
     	PollJSON p = new PollJSON();
@@ -154,7 +143,16 @@ public class APIClientTest extends UnitTest {
     	assertNotNull(response.poll.token);
     	assertEquals(response.poll.id,p.id);
     }
-   /*
+    */
+    @Test
+    public void testClonePoll() throws Exception {
+    	Long id = (long) 2;
+    	ClonePollResponse response =  (ClonePollResponse) APIClient.send(new ClonePollRequest(id));
+    	failIfNotSuccessful(response);
+    	assertNotNull(response.poll.token);
+    	assertNotSame(response.poll.id,id);
+    }
+ /*
     @Test
     public void testCreateVote() throws Exception {
     	VoteJSON v = new VoteJSON();
