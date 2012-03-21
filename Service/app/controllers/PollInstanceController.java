@@ -57,7 +57,7 @@ public class PollInstanceController extends APIController  {
 			User u = AuthBackend.getCurrentUser();
 			System.out.println("Logged in with this user: "+u.email+" ("+u.id+")");
 			// TODO: Check the null values along the way
-			requireUser(pollinstance.poll.admin);
+			AuthBackend.requireUser(pollinstance.poll.admin);
 			
 	        pollinstance.save();
 	        
@@ -164,7 +164,7 @@ public class PollInstanceController extends APIController  {
 			}
 			
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			requireUser(originalpollinstance.poll.admin);
+			AuthBackend.requireUser(originalpollinstance.poll.admin);
 
 			//Takes the edited PollInstanceJSON and creates a new PollInstance object with this PollInstanceJSON.
 			UpdatePollInstanceRequest req = GsonHelper.fromJson(request.body, UpdatePollInstanceRequest.class);
@@ -211,7 +211,7 @@ public class PollInstanceController extends APIController  {
 				throw new NotFoundException();
 			}
 			
-			requireUser(pollinstance.poll.admin);
+			AuthBackend.requireUser(pollinstance.poll.admin);
 			
 			//Closes the PollInstance and save the changes in the DataBase.
 			pollinstance.closePollInstance();
@@ -237,7 +237,7 @@ public class PollInstanceController extends APIController  {
 				throw new NotFoundException();
 			}
 
-			requireUser(pollinstance.poll.admin);
+			AuthBackend.requireUser(pollinstance.poll.admin);
 			
 			//Deletes the PollInstance from the DataBase and creates an empty PollInstanceJSON for the response.
 			pollinstance.delete();

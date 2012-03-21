@@ -130,7 +130,7 @@ public class PollController extends APIController {
 				throw new NotFoundException();
 			}
 
-			requireUser(originalpoll.admin);
+			AuthBackend.requireUser(originalpoll.admin);
 
 			// Takes the edited PollJSON and creates a new Poll object with this PollJSON.
 			UpdatePollRequest req = GsonHelper.fromJson(request.body, UpdatePollRequest.class);
@@ -181,7 +181,7 @@ public class PollController extends APIController {
 			}
 
 
-			requireUser(oldpoll.admin);
+			AuthBackend.requireUser(oldpoll.admin);
 			
 			Poll newpoll = new Poll(null, oldpoll);
 	
@@ -216,7 +216,7 @@ public class PollController extends APIController {
 				throw new NotFoundException();
 			}
 			
-			requireUser(poll.admin);
+			AuthBackend.requireUser(poll.admin);
 			
 			//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 			poll.delete();

@@ -21,113 +21,96 @@ public class ChoiceController extends APIController {
 	/**
 	 * Method that saves a new Choice in the DataBase.
 	 */
-	public static void create() {
-        try {
-        	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-            CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
-            Choice choice = Choice.fromJson(req.choice);
-            
-            if (choice.poll == null) {
-            	throw new NotFoundException();
-            }
-            
-            // The current user should be the admin of the poll that the choice will belong to.
-			requireUser(choice.poll.admin);
-            
-            choice.save();
-            
-            //Creates the ChoiceJSON Response.
-            CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-	
-        } catch (Exception e) {
-			renderException(e);
-		}
+	public static void create() throws Exception {
+    	//Takes the ChoiceJSON and creates a new Choice object with this ChoiceJSON.
+        CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
+        Choice choice = Choice.fromJson(req.choice);
+        
+        if (choice.poll == null) {
+        	throw new NotFoundException();
+        }
+        
+		AuthBackend.requireUser(choice.poll.admin);
+        
+        choice.save();
+        
+        //Creates the ChoiceJSON Response.
+        CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
+    	String jsonresponse = GsonHelper.toJson(r);
+    	renderJSON(jsonresponse);
         
     }
 	/**
 	 * Method that gets a Choice from the DataBase.
+	 * @throws Exception 
 	 */
-	public static void retrieve() {
-		try {
-			String choiceid = params.get("id");
+	public static void retrieve() throws Exception {
+		String choiceid = params.get("id");
+
+		//Takes the Choice from the DataBase.
+		Choice choice = Choice.find("byID", choiceid).first();
 	
-			//Takes the Choice from the DataBase.
-			Choice choice = Choice.find("byID", choiceid).first();
-		
-			if (choice == null) {
-				throw new NotFoundException();
-			}
-			
-			//Creates the ChoiceJSON Response.
-			ReadChoiceResponse r = new ReadChoiceResponse(choice.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-	
-			renderJSON(jsonresponse);
-			
-		} catch (Exception e) {
-			renderException(e);
+		if (choice == null) {
+			throw new NotFoundException();
 		}
+		
+		//Creates the ChoiceJSON Response.
+		ReadChoiceResponse r = new ReadChoiceResponse(choice.toJson());
+		String jsonresponse = GsonHelper.toJson(r);
+
+		renderJSON(jsonresponse);
 	}
 
 	/**
 	 * Method that edits a Choice already existing in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void edit () {
-		try {
-			String choiceid = params.get("id");
-			
-			//Takes the Choice from the DataBase.
-			Choice originalchoice = Choice.find("byID", choiceid).first();
-			
-			if (originalchoice == null) {
-				throw new NotFoundException();
-			}
-			
-			requireUser(originalchoice.poll.admin);
-
-			//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
-			UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
-            Choice editedchoice = Choice.fromJson(req.choice);
-
-            //Changes the old text field for the new one.
-            originalchoice.text = editedchoice.text;
-            
-            originalchoice.save();
-
-            //Creates the ChoiceJSON Response.
-            UpdateChoiceResponse r = new UpdateChoiceResponse(originalchoice.toJson());
-        	String jsonresponse = GsonHelper.toJson(r);
-        	renderJSON(jsonresponse);
-            
-		} catch (Exception e) {
-			renderException(e);
+	public static void edit () throws Exception {
+		String choiceid = params.get("id");
+		
+		//Takes the Choice from the DataBase.
+		Choice originalchoice = Choice.find("byID", choiceid).first();
+		
+		if (originalchoice == null) {
+			throw new NotFoundException();
 		}
+		
+		AuthBackend.requireUser(originalchoice.poll.admin);
+
+		//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
+		UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
+        Choice editedchoice = Choice.fromJson(req.choice);
+
+        //Changes the old text field for the new one.
+        originalchoice.text = editedchoice.text;
+        
+        originalchoice.save();
+
+        //Creates the ChoiceJSON Response.
+        UpdateChoiceResponse r = new UpdateChoiceResponse(originalchoice.toJson());
+    	String jsonresponse = GsonHelper.toJson(r);
+    	renderJSON(jsonresponse);
 	}
 
 	/**
 	 * Method that deletes a Choice existing in the DataBase.
+	 * @throws Exception 
 	 */
-	public static void delete () {
-		try {
-			String choiceid = params.get("id");
-			
-			//Takes the Choice from the DataBase.
-			Choice choice = Choice.find("byID", choiceid).first();
-			
-			if (choice == null) {
-				throw new NotFoundException();
-			}
-
-			requireUser(choice.poll.admin);
-	
-			choice.delete();
-	
-			renderJSON(new EmptyResponse().toJson());
-		} catch (Exception e) {
-			renderException(e);
+	public static void delete () throws Exception {
+		String choiceid = params.get("id");
+		
+		//Takes the Choice from the DataBase.
+		Choice choice = Choice.find("byID", choiceid).first();
+		
+		if (choice == null) {
+			throw new NotFoundException();
 		}
+
+		AuthBackend.requireUser(choice.poll.admin);
+
+		choice.delete();
+
+		renderJSON(new EmptyResponse().toJson());
 	}
 
 }

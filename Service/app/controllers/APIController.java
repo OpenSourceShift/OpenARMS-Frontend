@@ -11,6 +11,7 @@ import models.Vote;
 
 import play.Logger;
 import play.Play;
+import play.mvc.Catch;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
@@ -48,11 +49,12 @@ public abstract class APIController extends Controller {
 		STATUS_CODES.put(UnauthorizedException.class, StatusCode.UNAUTHORIZED);
 	}
 	
-	protected static void renderException(Exception e) {
-		System.err.println("Exception thrown in an APIController: "+e.getMessage());
-		e.printStackTrace();
+	 @Catch
+	 public static void renderException(Throwable throwable) {
+		System.err.println("Exception thrown in an APIController: "+throwable.getMessage());
+		throwable.printStackTrace();
 		// Return this error to the user.
-		Integer statusCode = STATUS_CODES.get(e.getClass());
+		Integer statusCode = STATUS_CODES.get(throwable.getClass());
 		if(statusCode == null) {
 			response.status = StatusCode.INTERNAL_ERROR;
 		} else {
@@ -63,26 +65,13 @@ public abstract class APIController extends Controller {
         // TODO: Find out if this is the right way to get the encoding.
         response.encoding = Http.Response.current().encoding;
         
-        Response responseJson = new ExceptionResponse(e);
+        Response responseJson = new ExceptionResponse(throwable);
         String json = GsonHelper.toJson(responseJson);
 		renderJSON(json);
 	}
 	
 	protected static void renderJSON(Object o) {
 		renderText(GsonHelper.toJson(o));
-	}
-	
-	public static void requireUser(User user) throws UnauthorizedException {
-		User currentUser = AuthBackend.getCurrentUser();
-		if(user != null) {
-			if(currentUser == null) {
-				throw new UnauthorizedException("This action requires authentication. Please use the /user/authenticate to get your user secret.");
-			} else {
-				if(!user.equals(currentUser)) {
-					throw new UnauthorizedException("This action requires authentication.");
-				}
-			}
-		}
 	}
 	
 	public static void loadTestData(String yaml_file) {

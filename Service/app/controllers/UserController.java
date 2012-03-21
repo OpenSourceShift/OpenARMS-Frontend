@@ -141,7 +141,7 @@ public class UserController extends APIController {
 				throw new NotFoundException();
 			}
 
-			requireUser(originalUser);
+			AuthBackend.requireUser(originalUser);
 			
 			//Takes the edited UserJSON and creates a new User object with this UserJSON.
 			UpdateUserRequest req = GsonHelper.fromJson(request.body, UpdateUserRequest.class);
@@ -193,7 +193,7 @@ public class UserController extends APIController {
 				throw new NotFoundException();
 			}
 			
-			requireUser(user);
+			AuthBackend.requireUser(user);
 			
 			//Deletes the Authentication from the DataBase.
 			if (user.userAuth instanceof SimpleUserAuthBinding) {
@@ -225,7 +225,7 @@ public class UserController extends APIController {
 				throw new NotFoundException();
 			}
 
-			requireUser(user);
+			AuthBackend.requireUser(user);
 			
 			List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();
 			List<PollJSON> pollsJ = new LinkedList<PollJSON>();

@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.APIController.UnauthorizedException;
 import api.entities.UserJSON;
 import models.User;
 import play.*;
@@ -10,7 +11,7 @@ import play.mvc.Http.Header;
  * Abstract controller which specifies authentication method.
  * @author OpenARMS Service team
  */
-public abstract class AuthBackend extends Controller {
+public abstract class AuthBackend {
 	/**
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
@@ -42,5 +43,18 @@ public abstract class AuthBackend extends Controller {
 	    	Logger.debug("getCurrentUser() called but HTTP authorization header not set.");
 	    	return null;
 	    }
+	}
+	
+	public static void requireUser(User user) throws UnauthorizedException {
+		User currentUser = AuthBackend.getCurrentUser();
+		if(user != null) {
+			if(currentUser == null) {
+				throw new UnauthorizedException("This action requires authentication. Please use the /user/authenticate to get your user secret.");
+			} else {
+				if(!user.equals(currentUser)) {
+					throw new UnauthorizedException("This action requires authentication.");
+				}
+			}
+		}
 	}
 }
