@@ -31,7 +31,7 @@ public class User extends Model implements Jsonable {
 	/**
 	 * Identifier of the authentication method.
 	 */
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL, mappedBy="user")
 	public UserAuthBinding userAuth;
 
 	/**

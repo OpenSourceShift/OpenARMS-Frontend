@@ -1,7 +1,7 @@
 package controllers;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 import api.entities.ChoiceJSON;
@@ -14,6 +14,7 @@ import api.requests.UpdatePollRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.ReadPollResponse;
+import api.responses.Response;
 import api.responses.UpdatePollResponse;
 
 public class ManagePoll extends Controller {
@@ -63,84 +64,46 @@ public class ManagePoll extends Controller {
 			UpdatePollResponse response = (UpdatePollResponse) APIClient.send(new UpdatePollRequest(pollJson));
 		} catch (Exception e) {
 			// TODO: tell the user it failed
-		}	
-	}
-
-	public static void activate() {
-		/*
-		String token = session.get("token");
-		String adminkey = session.get("adminkey");
-
-		String duration = "";
-		String durationString = "00:00";
-		// Get the duration from the server
-		String res = null;
-		try {
-			GetPollResponse response = (GetPollResponse) APIClient.getInstance().send(new GetPollRequest(token));
-			duration = response.duration;
-			// Parse the duration and turn it into minutes and seconds
-			int dur = Integer.parseInt(duration);
-			int m = (int) Math.floor(dur / 60);
-			int s = dur - m * 60;
-			// Add leading zeros and make the string.
-			char[] zeros = new char[2];
-			Arrays.fill(zeros, '0');
-			DecimalFormat df = new DecimalFormat(String.valueOf(zeros));
-
-			durationString = df.format(m) + ":" + df.format(s);
-		} catch (Exception e) {
-			System.err.println("Error parsing the response from the service layer: '"+res+"'");
-			e.printStackTrace();
 		}
-
-		render(token, adminkey, duration, durationString);
-		*/
+	}
+	
+	public static void listfun() {
+		render();
 	}
 
-	public static void activateSubmit(String minutes, String seconds) {
-		/*
-		String token = session.get("token");
-		String adminkey = session.get("adminkey");
+	public static void activate(Date start, Date end) {
+		// TODO: this! (activate/instantiate pollinstance with start and end time
+		PollInstanceJSON pollInstance = new PollInstanceJSON();
+		pollInstance.endDateTime = end;
+		pollInstance.startDateTime = start;
 		
-		int s = 0;
-		int m = 0;
-
-		validation.required(minutes);
-		validation.required(seconds);
+		validation.required(end);
+		validation.required(start);
+		
 		if (!validation.hasErrors()) {
 			try {
-				s = Integer.parseInt(seconds);
-				if (s < 0) {
-					s = 0;
-				}
-				
-				m = Integer.parseInt(minutes);
-				if (m < 0) {
-					m = 0;
-				}
-
-				int duration = s + m * 60;
-				APIClient.getInstance().send(new ActivatePollRequest(token, adminkey, duration));
+				CreatePollInstanceResponse response = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pollInstance));
 			} catch (Exception e) {
+				// TODO Exception handling
 			}
+			render();
 		}
-
-		activate();
-		*/
+		else {
+			// TODO error handling
+		}
 	}
 
-	public static void edit() {
-		/*
-		String token = session.get("token");
-		String adminkey = session.get("adminkey");
-		render(token, adminkey);
-		*/
+	public static void clonepoll() {
+		// TODO: this! (clone existing poll)
 	}
 
 	public static void statistics() {
 		try {
 			// Load service data.
-			APIClient.loadServiceData("data.yml");
+			Response res0 = APIClient.loadServiceData("data.yml");
+			if(!StatusCode.success(res0.statusCode)) {
+				throw new Exception("Couldn't load test data.");
+			}
 			boolean authenticated = APIClient.authenticateSimple("spam@creen.dk", "openarms");
 			if(!authenticated) {
 				throw new Exception("Could not authenticate");

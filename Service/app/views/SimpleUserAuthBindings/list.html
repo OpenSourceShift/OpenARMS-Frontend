@@ -12,7 +12,7 @@
     <div id="crudListTable">
         #{crud.table fields:['user']}
 	#{crud.custom 'user'}
-        <a href="@{SimpleUserAuthBindings.show(object.user.id)}">${object.user.name}</a>
+        <a href="@{SimpleUserAuthBindings.show(object.id)}">${object.user.name}</a>
         #{/crud.custom}
         #{/crud.table}
     </div>

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import javax.persistence.*;
+
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 /**
@@ -11,11 +13,12 @@ import play.db.jpa.Model;
  * @author OpenARMS Service team
  */
 @Entity
-public abstract class UserAuthBinding extends Model{
+public abstract class UserAuthBinding extends Model {
 	/**
 	 * Identifier of the user.
 	 */
 	@OneToOne
+	@Required
 	public User user;
 	
 	/**

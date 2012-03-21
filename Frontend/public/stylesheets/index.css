@@ -70,4 +70,15 @@
 .description > #joinD, #createD, #manageD{
   display: none;
 }
-
+#initD{
+  font-size: 15pt;
+  text-align: center;
+}
+.initD-hovered{
+  text-decoration: underline;
+  color: #e8e8e8;
+  cursor: pointer;
+}
+#register{
+  display: none;
+}

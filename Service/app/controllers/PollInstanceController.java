@@ -65,27 +65,33 @@ public class PollInstanceController extends APIController  {
 			renderException(e);
 		}
 	}
+	
+	/**
+	 * Method that gets a PollInstance from the DataBase.
+	 */
+	private static void retrieve(PollInstance pi) throws Exception {
+		//Takes the PollInstance from the DataBase.
+		
+		//Creates the PollInstanceJSON Response.
+		ReadPollInstanceResponse r = new ReadPollInstanceResponse(pi.toJson());
+		String jsonresponse = GsonHelper.toJson(r);
+
+		renderJSON(jsonresponse);
+	}
 
 	/**
 	 * Method that gets a PollInstance from the DataBase.
 	 */
 	public static void retrieve () {
 		try {
-			String pollinstanceid = params.get("id");
-	
-			//Takes the PollInstance from the DataBase.
-			PollInstance pollinstance = PollInstance.find("byID", pollinstanceid).first();
-	
+
+			PollInstance pollinstance = PollInstance.find("byID", params.get("id")).first();
+
 			if (pollinstance == null) {
 				throw new NotFoundException();
+			} else {
+				retrieve(pollinstance);
 			}
-			
-			//Creates the PollInstanceJSON Response.
-			ReadPollInstanceResponse r = new ReadPollInstanceResponse(pollinstance.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-	
-			renderJSON(jsonresponse);
-			
 		} catch (Exception e) {
 			renderException(e);
 		}
@@ -95,11 +101,11 @@ public class PollInstanceController extends APIController  {
 	 */
 	public static void retrieveByToken () {
 		try {
-			String pollinstancetoken = params.get("token");
+			String token = params.get("token");
 	
 			PollInstance pollinstance = null;
 			//Takes the PollInstance from the DataBase.
-			List<PollInstance> pollinstances = PollInstance.find("byPoll.token", pollinstancetoken).fetch();
+			List<PollInstance> pollinstances = PollInstance.find("byPoll.token", token).fetch();
 			Date lastdate = new Date(0);
 			
 			// FIXME: This should be rewritten to do "orderby" in the database, instead of looping through stuff here
@@ -112,13 +118,9 @@ public class PollInstanceController extends APIController  {
 			
 			if (pollinstance == null) {
 				throw new NotFoundException();
+			} else {
+				retrieve(pollinstance);
 			}
-			
-			//Creates the PollInstanceJSON Response.
-			ReadPollInstanceResponse r = new ReadPollInstanceResponse(pollinstance.toJson());
-			String jsonresponse = GsonHelper.toJson(r);
-	
-			renderJSON(jsonresponse);
 			
 		} catch (Exception e) {
 			renderException(e);

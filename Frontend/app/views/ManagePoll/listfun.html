@@ -1,0 +1,26 @@
+#{extends 'main.html' /}
+#{set title:'Manage your polls' /}
+#{set moreStyles: 'managepoll' /}
+#{set moreStyles: 'managepollshowhide' /}
+<script src="@{'/public/javascripts/managepoll/showhide.js'}" type="text/javascript" charset="utf-8"></script>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.show_hide').showHide({
+			speed: 1000,
+			easing: '',
+			changeText: 1,
+			showText: 'Show',
+			hideText: 'Hide'
+    });
+});
+</script>
+
+<div id="main">
+	<!-- #{polls /} -->
+	<a class="show_hide" href="#" rel="#slidingDiv">View</a><br />
+	<div id="slidingDiv">test2</div>
+ 	<a class="show_hide" href="#" rel="#slidingDiv_2">View</a><br />
+	<div id="slidingDiv_2">test3</div>
+</div>
+

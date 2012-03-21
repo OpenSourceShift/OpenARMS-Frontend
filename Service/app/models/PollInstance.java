@@ -1,18 +1,21 @@
 package models;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import javax.persistence.*;
+import java.util.Map;
 
-import api.entities.BaseModelJSON;
-import api.entities.ChoiceJSON;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import play.data.validation.Required;
+import play.db.jpa.Model;
 import api.entities.Jsonable;
 import api.entities.PollInstanceJSON;
-import api.entities.PollJSON;
 import api.entities.VoteJSON;
-import play.data.validation.Required;
-import play.db.jpa.*;
+import api.entities.VoteSummaryJSON;
 
 /**
  * Voting round model. Having this enables us to have several voting rounds of a 
@@ -89,6 +92,21 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	result.poll_id = p.poll.id;
     	result.startDateTime = p.startDateTime;
     	result.endDateTime = p.endDateTime;
+    	// Create vote summaries for all votes.
+    	Map<Vote, VoteSummaryJSON> votes = new HashMap<Vote, VoteSummaryJSON>();
+    	for(Vote v: p.votes) {
+    		VoteSummaryJSON summary = votes.get(v);
+    		if(summary == null) {
+    			summary = new VoteSummaryJSON();
+    			summary.choice_id = v.choice.id;
+    			summary.choice_text = v.choice.text;
+    			summary.count = (long) 0;
+    			summary.id = v.id;
+    			// Add it to the result.
+    			result.votes.add(summary);
+    		}
+    		summary.count++;
+    	}
 		return result;
 	}
 	
@@ -99,11 +117,13 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		result.votes = new LinkedList<Vote>();
 
 		// Update the votes
+		/*
 		if(json.votes != null) {
-			for (VoteJSON c : json.votes) {
+			for (VoteSummaryJSON c : json.votes) {
 				result.votes.add(Vote.fromJson(c));	
 			}
 		}
+		*/
 		// Update the references.
 		for (Vote c : result.votes) {
 			c.pollInstance = result;

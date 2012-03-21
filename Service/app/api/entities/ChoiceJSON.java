@@ -7,7 +7,6 @@ public class ChoiceJSON extends BaseModelJSON {
 	public Long id;
 	public String text;
 	public Boolean correct;
-	
 	public List<VoteJSON> votes;
 	
 	/*
