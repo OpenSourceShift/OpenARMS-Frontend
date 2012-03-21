@@ -42,7 +42,7 @@ public class LoginUser extends Controller {
 		try {
 			if (APIClient.authenticateSimple(email, password)) {
 				if (forward.equals("createpoll"))
-					CreatePoll.index("", "", null);
+					CreatePoll.index("", null);
 				Application.index();
 			}
 			else {

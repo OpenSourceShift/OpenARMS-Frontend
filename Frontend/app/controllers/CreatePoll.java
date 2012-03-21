@@ -11,8 +11,8 @@ import api.responses.CreatePollResponse;
 
 public class CreatePoll extends Controller {
 
-	public static void index(String email, String question, String[] answer) {
-		if (LoginUser.isLoggedIn()) {
+	public static void index(String question, String[] answer) {
+		if (!LoginUser.isLoggedIn()) {
 			LoginUser.forward = "createpoll";
 			LoginUser.index("");
 		}
@@ -27,7 +27,7 @@ public class CreatePoll extends Controller {
 			choices_json.add(cJSON);
 		}
 		choices = GsonHelper.toJson(choices_json);
-		render(email, question, answer, choices);
+		render(question, answer, choices);
 
 	}
 
@@ -35,11 +35,16 @@ public class CreatePoll extends Controller {
 		render(token);
 	}
 
-	public static void submit(String email, String question, String[] choices, String type) {
+	public static void submit(String question, String[] answer, String type) {
+		if (!LoginUser.isLoggedIn()) {
+			LoginUser.forward = "createpoll";
+			LoginUser.index("");
+		}
+				
 		// Remove empty lines from the answers
 		List<ChoiceJSON> choicesJson = new LinkedList<ChoiceJSON>();
-		if (choices != null) {
-			for (String s: choices) {
+		if (answer != null) {
+			for (String s: answer) {
 				if (s != null && !s.isEmpty()) {
 					ChoiceJSON choice = new ChoiceJSON();
 					choice.text = s;
@@ -49,21 +54,19 @@ public class CreatePoll extends Controller {
 		}
 
 		// Validate that the question and answers are there.
-		validation.required(email);
-		validation.email(email);
 		validation.required(question);
 		validation.required(type);
 
 		// Validate that we have at least 2 answer options.
 		if (choicesJson.size() < 2) {
-			validation.addError("choices", "validation.required.atLeastTwo", choices);
+			validation.addError("choices", "validation.required.atLeastTwo", answer);
 		}
 
 		// If we have an error, go to newpollform.
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			index(email, question, choices);
+			index(question, answer);
 			return;
 		}
 		
@@ -96,7 +99,7 @@ public class CreatePoll extends Controller {
 			params.flash();
 			validation.addError(null, e.getMessage());
 			validation.keep();
-			index(email, question, choices);
+			index(question, answer);
 		}
 	}
 }
