@@ -9,14 +9,14 @@ import api.responses.Response;
  * A request for the service: Do a clone of a poll, i.e. clone all properties of the poll, except the votes.
  */
 public class ClonePollRequest extends Request {
-	public PollJSON poll;
-	public ClonePollRequest (PollJSON p) {
-		this.poll = p;
+	public String pollId;
+	public ClonePollRequest (String s) {
+		this.pollId = s;
 	}
 		
 	@Override
 	public String getURL() {
-		return "/poll/" + poll.id + "/clone";
+		return "/poll/" + pollId + "/clone";
 	}
 
 	@Override
