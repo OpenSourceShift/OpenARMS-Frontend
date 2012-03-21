@@ -21,10 +21,6 @@ public class LoginUser extends Controller {
 		render(email);
 	}
 	
-	public static void success(String email) {
-		render(email);
-	}
-	
 	public static void submit(String email, String password) {
 		// Validate that the question and answers are there.
 		validation.required(email);
@@ -44,9 +40,13 @@ public class LoginUser extends Controller {
 
 		try {
 			if (APIClient.authenticateSimple(email, password))
-				success(email);
-			else
+				Application.index();
+			else {
+				params.flash();
+				validation.addError("invalid", "Invalid email or password.");
+				validation.keep();
 				index(email);
+			}
 		} catch (Exception e) {
 			// It failed!
 			// TODO: Tell the user!
