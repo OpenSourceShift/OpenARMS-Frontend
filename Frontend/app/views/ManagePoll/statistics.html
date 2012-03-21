@@ -82,7 +82,8 @@ $(document).ready(function() {
 				
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
-	$.getJSON('@{ManagePoll.testStatistics()}', function(data) {
+	//$.getJSON('@{ManagePoll.testStatistics()}', function(data) {
+	$.getJSON('/api/pollinstance/${pollinstance_id}', function(data) {
 		console.log("Returns: ", data);
 		$('.loading').hide();
 		var chart = new Highcharts.Chart({
@@ -95,7 +96,8 @@ $(document).ready(function() {
 		                // set up the updating of the chart each second
 		                var series = this.series[0];
 		                setInterval(function() {
-		                    $.getJSON('@{ManagePoll.testStatistics()}', function(data) {
+		                    //$.getJSON('@{ManagePoll.testStatistics()}', function(data) {
+		                    $.getJSON('/api/pollinstance/${pollinstance_id}', function(data) {
 		                        series.setData(data.votes);
 		                    });
 		            	}, 5000);
