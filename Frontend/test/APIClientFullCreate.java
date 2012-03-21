@@ -28,6 +28,8 @@ public class APIClientFullCreate extends UnitTest {
 	
 	@Test
 	public void testCreateFullConfig() throws Exception {
+
+    	Random r = new Random();
 		// Create user
 		UserJSON u = new UserJSON();
 		u.name = "openarms";
@@ -48,8 +50,12 @@ public class APIClientFullCreate extends UnitTest {
 		assertTrue(authenticated);
     
     	PollJSON pj1 = new PollJSON();
+
     	pj1.question = "This is the first question.";
     	pj1.admin = userresponse.user.id;
+    	pj1.multipleAllowed = r.nextBoolean();
+    	pj1.reference = "myreference";
+
     	CreatePollResponse pollresponse = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
     	failIfNotSuccessful(pollresponse);
     	assertEquals(pj1.question, pollresponse.poll.question);
@@ -76,7 +82,6 @@ public class APIClientFullCreate extends UnitTest {
     	assertNotNull(piresponse.pollinstance.id);
     	assertEquals(piresponse.pollinstance.poll_id, p.poll_id);
     	
-    	Random r = new Random();
     	for(int i=0;i<20;i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);
