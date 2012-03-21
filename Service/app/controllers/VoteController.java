@@ -1,24 +1,14 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Random;
-
-import controllers.APIController.NotFoundException;
-import controllers.APIController.UnauthorizedException;
-
-import models.Poll;
 import models.User;
 import models.Vote;
+import api.entities.VoteJSON;
+import api.helpers.GsonHelper;
 import api.requests.CreateVoteRequest;
-import api.responses.CreatePollResponse;
 import api.responses.CreateVoteResponse;
 import api.responses.EmptyResponse;
 import api.responses.ReadVoteResponse;
 import api.responses.UpdateVoteResponse;
-import api.entities.PollJSON;
-import api.entities.VoteJSON;
-import api.helpers.GsonHelper;
 
 /**
  * Class that manages the responses in the API for Votes.
@@ -34,25 +24,31 @@ public class VoteController extends APIController {
         try {
 	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
 	        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-	        Vote vote = Vote.fromJson(req.vote);
-          
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
 			User u = AuthBackend.getCurrentUser();
-			if (u == null || vote.user.id != u.id) {
-		        throw new UnauthorizedException();
-		    }
-			
-	        vote.save();
-	        
-	        //Creates the VoteJSON Response.
-	        CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
-	    	String jsonresponse = GsonHelper.toJson(r);
+	        req.vote.userid = u.id;
+	        CreateVoteResponse res = create(req.vote);
+	    	String jsonresponse = GsonHelper.toJson(res);
 	    	renderJSON(jsonresponse);
-        	
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderException(e);
 		}
+	}
+
+	/**
+	 * Method that saves a new Vote in the DataBase.
+	 * (Helper function to be called by other controllers)
+	 */
+	public static CreateVoteResponse create(VoteJSON voteJson) throws Exception {
+        Vote vote = Vote.fromJson(voteJson);
+      
+        //If current user is not the same as the poll creator or there is no current user, throws an exception
+		User u = AuthBackend.getCurrentUser();
+		// TODO: Check if the user has already voted and reject if this is not supported ...
+        vote.save();
+        
+        //Creates the VoteJSON Response.
+        return new CreateVoteResponse(vote.toJson());
 	}
 
 	/**

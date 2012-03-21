@@ -40,7 +40,11 @@ public class UserController extends APIController {
 			// Takes the UserJSON from the http body
 			AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
 			User user = User.find("byEmail", req.user.email).first();
-			if (user != null && user.userAuth instanceof SimpleUserAuthBinding) {
+			if (user == null) {
+				throw new NotFoundException("No user with this email, found on the system.");
+			} else if (!(user.userAuth instanceof SimpleUserAuthBinding)) {
+				throw new NotFoundException("This user has no support for the choosen backend.");
+			} else {
 				user = SimpleAuthBackend.authenticate(user);
 				if (user != null) {
 				    //Creates the UserJSON Response.
@@ -49,8 +53,6 @@ public class UserController extends APIController {
 				} else {
 					throw new UnauthorizedException();
 				}
-			} else {
-				throw new NotFoundException();
 			}
 		} catch (Exception e) {
 			//renderText(e.getMessage());
