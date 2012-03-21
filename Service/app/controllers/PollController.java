@@ -9,12 +9,14 @@ import controllers.AuthBackend;
 import models.Choice;
 import models.Poll;
 import models.User;
+import models.Vote;
 import api.helpers.GsonHelper;
 import notifiers.MailNotifier;
 import api.requests.CreatePollRequest;
 import api.requests.UpdatePollRequest;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
+import api.responses.ReadPollByTokenResponse;
 import api.responses.ReadPollResponse;
 import api.responses.UpdatePollResponse;
 import play.Logger;
@@ -24,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import api.entities.PollJSON;
+import api.entities.VoteJSON;
 
 /**
  * Class that manages the responses in the API for Polls.
@@ -45,12 +48,12 @@ public class PollController extends APIController {
 	        Poll poll = Poll.fromJson(req.poll);
 	        
 	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
+			/*User u = AuthBackend.getCurrentUser();
 			if (u == null) {
 		        throw new UnauthorizedException();
 		    }
 			
-			poll.admin = u;
+			poll.admin = u;*/
 	        
 	        // Generates a Unique ID and saves the Poll.
 	        // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
@@ -108,7 +111,7 @@ public class PollController extends APIController {
 			}
 			
 			//Creates the PollJSON Response
-			ReadPollResponse r = new ReadPollResponse(poll.toJson());
+			ReadPollByTokenResponse r = new ReadPollByTokenResponse(poll.toJson());
 			String jsonresponse = GsonHelper.toJson(r);
 	
 			renderJSON(jsonresponse);
@@ -133,17 +136,17 @@ public class PollController extends APIController {
 			}
 			
 	        // If current user is not the same as the poll creator or there is no current user, throws an exception
-			User u = AuthBackend.getCurrentUser();
+			/*User u = AuthBackend.getCurrentUser();
 			if(originalpoll.admin == null) {
 		    	throw new Exception("Inconsistant datastructure, the poll has no admin!");
 		    } else if (u == null || !originalpoll.admin.id.equals(u.id)) {
 		        throw new UnauthorizedException();
-		    }
+		    }*/
 
 			// Takes the edited PollJSON and creates a new Poll object with this PollJSON.
 			UpdatePollRequest req = GsonHelper.fromJson(request.body, UpdatePollRequest.class);
             Poll editedpoll = Poll.fromJson(req.poll);
-            
+
             // Changes the old fields for the new ones.
             if (editedpoll.question != null) {
             	originalpoll.question = editedpoll.question;
@@ -152,7 +155,15 @@ public class PollController extends APIController {
             	originalpoll.reference = editedpoll.reference;
             }
             if (editedpoll.choices != null) {
-            	originalpoll.choices = editedpoll.choices;
+            	for (Choice c : editedpoll.choices) {
+            		if (c.votes != null) {
+	            		for (Vote v : c.votes) {
+	            			v.choice = c;
+	            		}
+            		}
+            		originalpoll.choices.add(c);
+            		c.poll = originalpoll;
+    	    	}
             }
             
             originalpoll.save();

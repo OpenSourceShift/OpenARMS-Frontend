@@ -65,7 +65,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * All the possible choices associated with the poll.
      */
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll", fetch = FetchType.EAGER)
     public List<Choice> choices;
     /**
      * All the concrete instances of the poll.

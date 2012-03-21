@@ -25,7 +25,7 @@ public class JoinPoll extends Controller {
 			Long poll_id = instanceResponse.pollinstance.poll_id;
 			// Long instanceId = instanceResponse.pollinstance.id;
 			// Date startDateTime = instanceResponse.pollinstance.startDateTime;
-			Date endDateTime = instanceResponse.pollinstance.endDateTime;
+			Date endDateTime = instanceResponse.pollinstance.end;
 			
 			/** get the Poll Data */
 			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));

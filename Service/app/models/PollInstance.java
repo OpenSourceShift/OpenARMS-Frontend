@@ -91,14 +91,14 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	PollInstanceJSON result = new PollInstanceJSON();
     	result.id = p.id;
     	result.poll_id = p.poll.id;
-    	result.startDateTime = p.startDateTime;
-    	result.endDateTime = p.endDateTime;
+    	result.start = p.startDateTime;
+    	result.end = p.endDateTime;
 		return result;
 	}
 	
 	public static PollInstance fromJson (PollInstanceJSON json) {
 		Poll poll = Poll.find("byID", json.poll_id).first();
-		PollInstance result = new PollInstance(json.startDateTime, json.endDateTime, poll);
+		PollInstance result = new PollInstance(json.start, json.end, poll);
 		
 		result.votes = new LinkedList<Vote>();
 
