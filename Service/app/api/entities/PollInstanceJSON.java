@@ -8,10 +8,5 @@ public class PollInstanceJSON extends BaseModelJSON {
 	public Long id;
 	public Date startDateTime;
     public Date endDateTime;
-    public List<VoteJSON> votes;
-	
-    /*
-	public PollInstanceJSON(Vote v) {
-		// TODO: Fill this in
-	}*/
+    public List<VoteSummaryJSON> votes;
 }
