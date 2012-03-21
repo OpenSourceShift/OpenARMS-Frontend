@@ -78,8 +78,8 @@ public class ManagePoll extends Controller {
 	public static void activate(Date start, Date end) {
 		// TODO: this! (activate/instantiate pollinstance with start and end time
 		PollInstanceJSON pollInstance = new PollInstanceJSON();
-		pollInstance.endDateTime = end;
-		pollInstance.startDateTime = start;
+		pollInstance.end = end;
+		pollInstance.start = start;
 		
 		validation.required(end);
 		validation.required(start);
@@ -120,10 +120,10 @@ public class ManagePoll extends Controller {
 			
 			PollInstanceJSON pi = new PollInstanceJSON();
 			pi.poll_id = res1.poll.id;
-			pi.startDateTime = Calendar.getInstance().getTime();
+			pi.start = Calendar.getInstance().getTime();
 			Calendar endDateTimeCalendar = Calendar.getInstance();
 			endDateTimeCalendar.set(Calendar.YEAR, 2020);
-			pi.endDateTime = endDateTimeCalendar.getTime();
+			pi.end = endDateTimeCalendar.getTime();
 			CreatePollInstanceResponse res2 = (CreatePollInstanceResponse)APIClient.send(new CreatePollInstanceRequest(pi));
 			if(!StatusCode.success(res2.statusCode)) {
 				throw new Exception("Couldn't create poll instance with token time now.");
