@@ -112,4 +112,9 @@ public class ManagePoll extends Controller {
 		String token = "asdasd";
 		render(token);
 	}
+
+	public static void testStatistics() {
+		renderText("{\"pollID\":518196,\"questionID\":127,\"question\":\"Question?\",\"answers\":[\"Answer 1\",\"Answer 2\", \"Answer 3\"],\"votes\":[50, 10, 40]}");
+	}
+	
 }
