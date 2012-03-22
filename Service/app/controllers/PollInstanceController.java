@@ -11,6 +11,7 @@ import java.util.Random;
 
 import play.Logger;
 import play.db.helper.SqlQuery;
+import play.mvc.Http;
 
 import controllers.APIController.NotFoundException;
 import controllers.APIController.UnauthorizedException;
@@ -64,6 +65,7 @@ public class PollInstanceController extends APIController  {
         //Creates the PollInstanceJSON Response.
         CreatePollInstanceResponse r = new CreatePollInstanceResponse(pollinstance.toJson());
     	String jsonresponse = GsonHelper.toJson(r);
+		response.status = Http.StatusCode.CREATED;
     	renderJSON(jsonresponse);
 	}
 	

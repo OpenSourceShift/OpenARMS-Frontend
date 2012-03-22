@@ -1,5 +1,6 @@
 package controllers;
 
+import play.mvc.Http;
 import models.Choice;
 import models.User;
 import api.helpers.GsonHelper;
@@ -37,6 +38,7 @@ public class ChoiceController extends APIController {
         //Creates the ChoiceJSON Response.
         CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
     	String jsonresponse = GsonHelper.toJson(r);
+		response.status = Http.StatusCode.CREATED;
     	renderJSON(jsonresponse);
         
     }

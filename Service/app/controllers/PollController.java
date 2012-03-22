@@ -21,6 +21,7 @@ import api.responses.ReadPollResponse;
 import api.responses.UpdatePollResponse;
 import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Http;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,7 +71,7 @@ public class PollController extends APIController {
         // Creates the PollJSON Response.
         CreatePollResponse r = new CreatePollResponse(poll.toJson());
     	String jsonresponse = GsonHelper.toJson(r);
-    	response.status = 201;
+		response.status = Http.StatusCode.CREATED;
     	renderJSON(jsonresponse);
 	}
 

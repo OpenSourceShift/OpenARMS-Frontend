@@ -2,6 +2,8 @@ package controllers;
 
 import java.util.List;
 
+import play.mvc.Http;
+
 import models.User;
 import models.Vote;
 import api.entities.VoteJSON;
@@ -31,6 +33,7 @@ public class VoteController extends APIController {
 				CreateVoteRequest.class);
 		CreateVoteResponse res = create(req.vote);
 		String jsonresponse = GsonHelper.toJson(res);
+		response.status = Http.StatusCode.CREATED;
 		renderJSON(jsonresponse);
 	}
 
