@@ -85,7 +85,7 @@ input[type=password] {
 	min-width: 100px;
 	min-height: 25px;
 	padding: 0.5em;
-	margin-top: 3%;
+	margin: 0.2em;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
@@ -93,6 +93,9 @@ input[type=password] {
 
 .button:hover {
 	background-color: #bf7e00;
+}
+
+.button:active {
 }
 
 .labeledinput {
