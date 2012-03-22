@@ -20,14 +20,16 @@
       <input type="button" value="&{'cancel'}" class="button" />
     </a>
   </form>
-  #{ifError 'email'}
-    <p class="formError registrationError">&{'wrong.email'}</p>
-  #{/ifError}
-  #{ifError 'passwDontMatch'}
-    <p class="formError registrationError">&{'passw.doesnt.match'}</p>
-  #{/ifError}
-  #{ifError 'validatePass'}
-    <p class="formError registrationError">&{'wrong.passw'}</p>
-  #{/ifError}
- </div>
+  <div id="errors">
+     #{ifError 'email'}
+      <p class="formError registrationError">&{'wrong.email'}</p>
+    #{/ifError}
+    #{ifError 'passwDontMatch'}
+      <p class="formError registrationError">&{'passw.doesnt.match'}</p>
+    #{/ifError}
+    #{ifError 'validatePass'}
+      <p class="formError registrationError">&{'wrong.passw'}</p>
+    #{/ifError}
+  </div>
+</div>
 
