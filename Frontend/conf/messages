@@ -73,3 +73,5 @@ loginuser.submit=Login
 loginuser.cancel=Cancel
 loginuser.success.header=Login Successful
 loginuser.success.message=You are now logged in as:
+interested_1=If you are interested in following the project
+interested_2=please sign up on our mailing list
