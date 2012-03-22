@@ -1,4 +1,4 @@
-#pollid {
+#token {
 	background-color: #fff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -13,10 +13,10 @@
 	position: relative;
 	white-space: nowrap;
 }
-#pollid span {
+#token span {
 	color: #666;
 }
-#pollid input {
+#token input {
 	font-size: 18px;
 	border: 0;
 	outline-width:0;
@@ -50,35 +50,40 @@
 #managepoll .labeledinput input {
 	width: 45%;
 }
-.tools{
+.tools {
   width: 35%;
   float: left;
 }
-.setopt{
+.setopt {
   width: 100%;
   height: 50px;
   font-size: 14pt;
   padding-top: 10px;
 }
-.description{
+.description {
   width: 57%;
   float: left;
   margin: 1% 2% 0 2%;
   border-radius: 5px;
   float: right;
 }
-.description > #joinD, #createD, #manageD{
+.description > #joinD, #createD, #manageD {
   display: none;
 }
-#initD{
+#initD {
   font-size: 15pt;
   text-align: center;
 }
-.initD-hovered{
+.initD-hovered {
   text-decoration: underline;
   color: #e8e8e8;
   cursor: pointer;
 }
-#register{
+#register {
   display: none;
+}
+
+/* This makes stuff look nice when the #token shakes */
+#joinD {
+	overflow: hidden;
 }
