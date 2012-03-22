@@ -2,28 +2,50 @@
 #{set title:'Manage your polls' /}
 #{set moreStyles: ["managepoll"] /}
 
-<script src="@{'/public/javascripts/managepoll/showhide.js'}" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+	$('div.instances').hide();
+	$('.question').click(function() {
+		// jQuery noob at work
+		$(this).parent().find("div.instances").slideToggle('slow');
+	});
+	
+	$("button").button();
+});
+</script>
 
 <div id="main">
-	<div class="managepollforuser">
-		#{list pollsJson, as:'poll'}
-			#{if poll.pollinstances.size() < 1}
-				<div class="questionwithout">${poll.question}</div>
-				<a href="/activate/${poll.id}"><input type="button" id="activate${poll.id}" value="activate" class="button" /></a>
-				<a href="@{ ManagePoll.index}/${poll.id}"><input type="button" id="edit${poll.id}" value="edit" class="button" /></a>
-			#{/if}
-			
-			#{else}
-				<div class="questionwith">${poll.question}</div>
-				<a href="/activate/${poll.id}"><input type="button" id="activate${poll.id}" value="activate" class="button" /></a>
-				<a href=""><input type="button" id="clone${poll.id}" value="clone" class="button" /></a>
-				<div class="instances" id="poll${poll.id}_instances">
-					#{list poll.pollinstances, as:'pollInstance'}
-						<div class="instance" id="instance_${pollInstance.id}">${pollInstance.id}</div>
-						<a href=""><input type="button" id="close${pollInstance.id}" value="close" class="button" /></a>
-					#{/list}
+#{list pollsJson, as:'poll'}
+	<div class="pollContainer">
+	#{if poll.pollinstances.size() < 1}
+		<div class="question">
+			<span>${poll.question}</span>
+			<div class="controls">
+				<input type="button" id="activate${poll.id}" value="activate" class="button" onClick="location.replace('/activate/${poll.id}')" />
+				<input type="button" id="edit${poll.id}" value="edit" class="button" onClick="location.replace('@{ManagePoll.index}/${poll.id}')" />
+			</div>
+		</div>
+	#{/if}
+	#{else}
+		<div class="question withinstances">
+			<span>${poll.question}</span>
+			<div class="controls">
+				<input type="button" id="activate${poll.id}" value="activate" class="button" onClick="location.replace('/activate/${poll.id}')" />
+				<input type="button" id="clone${poll.id}" value="clone" class="button" onClick="location.replace('')" />
+			</div>
+		</div>
+		<div class="instances" id="poll${poll.id}_instances">
+			#{list poll.pollinstances, as:'pollInstance'}
+				<div class="instance" id="instance_${pollInstance.id}">
+					<span>${pollInstance.start} - ${pollInstance.end}</span>
+					<div class="controls">
+						<input type="button" id="close${poll.id}" value="close" class="button" onClick="location.replace('')" />
+						<input type="button" id="close${poll.id}" value="View stats" class="button" onClick="location.replace('@{ManagePoll.statistics}/${pollInstance.id}')" />
+					</div>
 				</div>
-			#{/else}
-		#{/list}
+			#{/list}
+		</div>
+	#{/else}
 	</div>
+#{/list}
 </div>

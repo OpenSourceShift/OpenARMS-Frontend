@@ -37,21 +37,50 @@
 #voteCountLabel {
 	text-align: center;
 }
-
-
-.managepollforuser {
-  width: 350px;
-  margin: 1em .5em;
+#main .pollContainer {
+	border-bottom: 1px solid #996500;
 }
-.managepollforuser .questionwith, .questionwithout {
-  margin: 0;
-  padding: .50em;
-  background: #bfcd93;
-  border-top: 1px solid #386785;
-  border-bottom: 1px solid #386785;
+#main .question > input,
+#main .instance > input {
+}
+#main .question {
+	position: relative;
+	padding: 0.2em;
+	height: 3.5em;
+	line-height: 3.5em;
+}
+#main .question.withinstances {
+	cursor: pointer;
+}
+#main .question > span {
+	font-size: 2em;
+}
+#main .question .controls {
+	position: absolute;
+	right: 0.2em;
+	top: 0.2em;
+}
+#main .instance {
+	position: relative;
+	font-size: 1.0em;
+	height: 3.5em;
+	line-height: 3.5em;
+}
+
+#main .instance .controls {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 3.5em;
+	line-height: 3.5em;
+}
+#main .question {
+	margin: 0;
+	padding: .5em;
+	background: rgba(255,255,255,0.1);
 }
 .managepollforuser div {
-  padding: .5em .25em;
+	padding: .5em .25em;
 }
 
 .managepollforuser button {
