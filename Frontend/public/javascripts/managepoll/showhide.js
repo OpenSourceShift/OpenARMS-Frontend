@@ -1,6 +1,9 @@
 $(document).ready(function() {
-  $('div.demo-show:eq(0)> div').hide();  
-  $('div.demo-show:eq(0)> h3').click(function() {
-    $(this).next().slideToggle('fast');
+  $('div.instances').hide();  
+  $('.questionwith').click(function() {
+	  // jQuery noob at work
+    $(this).next().next().next("div.instances").slideToggle('fast');
   });
+  
+  $("button").button();
 });

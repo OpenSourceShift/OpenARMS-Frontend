@@ -19,6 +19,8 @@ public class JoinPoll extends Controller {
 			notFound("No poll without a token.");
 		}
 		
+		
+		
 		/** get the Poll Instance Data */
 		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
 		if(res.statusCode.equals(StatusCode.NOT_FOUND)) {
@@ -28,7 +30,7 @@ public class JoinPoll extends Controller {
 		}
 		
 		PollInstanceJSON pollInstance = res.pollinstance;
-
+		
 		// TODO: Consider if this is even nessesary to get the poll, as choices are allready defined in the instance response (as VoteSummaryJSONs).
 		ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(pollInstance.poll_id));
 		if(pollResponse.statusCode.equals(StatusCode.NOT_FOUND)) {
@@ -38,6 +40,16 @@ public class JoinPoll extends Controller {
 		}
 		
 		PollJSON poll = pollResponse.poll;
+		
+		// Check if login is required for the poll
+		if (poll.loginRequired) {
+			if (!LoginUser.isLoggedIn()) {
+				LoginUser.forward = "joinpoll";
+				LoginUser.pollToken = token;
+				LoginUser.index("");
+			}
+		}
+		
 		render(poll, pollInstance);
 	}
 
