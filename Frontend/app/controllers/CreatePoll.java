@@ -78,6 +78,8 @@ public class CreatePoll extends Controller {
 		PollJSON p = new PollJSON();
 		p.question = question;
 		p.choices = choicesJson;
+		if (loginRequired == null)
+			loginRequired = false;
 		p.loginRequired = loginRequired;
 		if (type.equals("multiple")) {
 			p.multipleAllowed = true;

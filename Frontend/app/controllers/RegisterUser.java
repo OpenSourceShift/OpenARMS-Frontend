@@ -16,7 +16,7 @@ public class RegisterUser extends Controller {
             validation.keep();
             showform();
         } else if(!validatePass(passw)){
-            validation.addError("validatePass", "Password is short or wrong");
+            validation.addError("validatePass", "Password is short");
             validation.keep();
             showform();
         } else {
@@ -36,7 +36,8 @@ public class RegisterUser extends Controller {
     }
     //check wrong symbols and length
     public static boolean validatePass(String passw){
-        return true;
+        int length = passw.length();
+        return (length > 4);
     }
     public static boolean checkemail(String email) {
         Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
