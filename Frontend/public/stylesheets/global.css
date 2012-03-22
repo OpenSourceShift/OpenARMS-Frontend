@@ -10,11 +10,8 @@ body{
 }
 #content {
 	margin: 1% auto;
-	/*padding: 10px;*/
 	max-width: 960px;
-	/*background-color: #404040;*/
 	border-radius: 5px;
-	/*overflow: auto;*/
 }
 #main {
 	margin: 1% auto;
@@ -145,4 +142,7 @@ input[type=password] {
 #footer{
 	font-size: 0.9em;
 	text-align: center;
+}
+#registerButton{
+  float: right;
 }

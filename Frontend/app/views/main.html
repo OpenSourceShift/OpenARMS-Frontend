@@ -19,9 +19,13 @@
         #{/if}
     </head>
 <body>
-	<div id="content">
-		<div id="header">
-			<!-- <a href="/"><img src="/public/images/logo_transparent_hd2.png" /></a> -->
+  <div id="content">
+    #{form @RegisterUser.showform(), id:'registerButton' }
+       <input type="submit" value="&{'register.new.user'}" class="button" />
+     #{/form}
+    <div id="header">
+
+
 			<div id="logo"></div>
 		</div>
       <hr />
