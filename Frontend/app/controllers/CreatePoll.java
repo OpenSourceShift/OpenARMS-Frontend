@@ -35,7 +35,7 @@ public class CreatePoll extends Controller {
 		render(token);
 	}
 
-	public static void submit(String question, String[] answer, String type) {
+	public static void submit(String question, String[] answer, String type, Boolean loginRequired) {
 		if (!LoginUser.isLoggedIn()) {
 			LoginUser.forward = "createpoll";
 			LoginUser.index("");
@@ -78,6 +78,7 @@ public class CreatePoll extends Controller {
 		PollJSON p = new PollJSON();
 		p.question = question;
 		p.choices = choicesJson;
+		p.loginRequired = loginRequired;
 		if (type.equals("multiple")) {
 			p.multipleAllowed = true;
 		}
