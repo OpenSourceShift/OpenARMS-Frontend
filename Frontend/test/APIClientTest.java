@@ -50,6 +50,7 @@ public class APIClientTest extends UnitTest {
     	PollJSON pj1 = new PollJSON();
     	pj1.question = "This is the first question.";
     	pj1.admin = userresponse.user.id;
+    	pj1.loginRequired = false;
     	CreatePollResponse pollresponse = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
     	failIfNotSuccessful(pollresponse);
     	assertEquals(pj1.question, pollresponse.poll.question);
@@ -75,17 +76,23 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(piresponse);
     	assertNotNull(piresponse.pollinstance.id);
     	assertEquals(piresponse.pollinstance.poll_id, p.poll_id);
-    	
-    	Random r = new Random();
-    	for(int i=0;i<20;i++) {
+	}
+	
+	@Test
+	public void TestVoting() throws Exception {
+		APIClient apiClient = new APIClient();
+		//apiClient.deauthenticate();
+		//boolean authenticated = apiClient.authenticateSimple("test@test.com", "1234");
+		
+    	for(int i=0;i<5;i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);
-        	v.pollInstanceid = piresponse.pollinstance.id;
+        	v.pollInstanceid = (long) 1;
         	CreateVoteResponse vresponse = (CreateVoteResponse) APIClient.send(new CreateVoteRequest(v));
         	failIfNotSuccessful(vresponse);
         	assertNotNull(vresponse.vote.id);
         	assertEquals(vresponse.vote.choiceid, v.choiceid);
-    	}	
+    	}
 	}
 	
 	@Test
@@ -233,5 +240,5 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.vote.id);
     	assertEquals(response.vote.choiceid, v.choiceid);
-    }
+    }*/
 }

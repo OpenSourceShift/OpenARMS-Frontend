@@ -59,10 +59,12 @@ public class Vote extends Model implements Jsonable {
 
 	public VoteJSON toJson(Vote v) {
 		VoteJSON result = new VoteJSON();
-    	result.id = v.id;
-    	result.choiceid = v.choice.id;
-    	result.pollInstanceid = v.pollInstance.id;
-    	result.userid = v.user.id;
+		result.id = v.id;
+		result.choiceid = v.choice.id;
+		result.pollInstanceid = v.pollInstance.id;
+		if (v.user != null) {
+			result.userid = v.user.id;
+		}
 		return result;
 	}
 
