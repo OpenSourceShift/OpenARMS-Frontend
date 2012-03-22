@@ -25,7 +25,6 @@ import play.mvc.Http.StatusCode;
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
-import api.requests.DeauthenticateUserRequest;
 import api.requests.LoadTestDataRequest;
 import api.requests.Request;
 import api.responses.AuthenticateUserResponse;
@@ -109,10 +108,10 @@ public class APIClient extends Controller {
 			String decryptedUserSecretBase64Encoded = Codec.encodeBASE64(authenticationString.getBytes());
 			httpRequest.addHeader("Authorization", "Basic "+decryptedUserSecretBase64Encoded);
 		}
-
+		
 		// TODO: Remember to set the encoding of the request.
 		Logger.debug("APIClient sends: %s to %s%s as %s", json, host.toString(), httpRequest.getURI(), httpRequest.getMethod());
-
+		
 		HttpResponse httpResponse = client.execute(host, httpRequest);
 		HttpEntity httpResponseEntity = httpResponse.getEntity();
 		// Check the response content-type.
@@ -138,7 +137,7 @@ public class APIClient extends Controller {
 			throw new Exception("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
 		}
 	}
-
+	
 	public static Response send(Request request) throws Exception {
 		return getInstance().sendRequest(request);
 	}
@@ -146,9 +145,9 @@ public class APIClient extends Controller {
 	public static void tunnel(String url) {
 		try {
 			url = "/"+url; // As the initial slash is removed in routes.
-
+			
 			DefaultHttpClient client = new DefaultHttpClient();
-
+			
 			HttpRequestBase httpRequest;
 			if(request.method.equals("GET")) {
 				httpRequest = new HttpGet();
@@ -220,10 +219,14 @@ public class APIClient extends Controller {
 			session.put("user_secret", Crypto.encryptAES(res.user.secret));
 			return true;
 		} else {
-			EmptyResponse response = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
-			session.put("user_id", null);
-			session.put("user_secret", null);
+			deauthenticate();
 			return false;
 		}
+	}
+	
+	public static void deauthenticate() {
+		// TODO: Maybe tell the service to remove the users secret.
+		session.put("user_id", null);
+		session.put("user_secret", null);
 	}
 }

@@ -9,7 +9,7 @@
             createGutter: function() {
                 YAHOO.log('Creating gutter (#gutter1)', 'info', 'example');
                 this.gutter = new YAHOO.widget.Overlay('gutter1', {
-                    height: '225px',
+                    height: '425px',
                     width: '300px',
                     context: [myEditor.get('element_cont').get('element'), 'tl', 'tr'],
                     position: 'absolute',
@@ -17,7 +17,7 @@
                 });
                 this.gutter.hideEvent.subscribe(function() {
                     myEditor.toolbar.deselectButton('flickr');
-                    Dom.setStyle('gutter1', 'visibility', 'visible');
+                    Dom.setStyle('gutter1', 'visibility', 'visible');                
                     var anim = new YAHOO.util.Anim('gutter1', {
                         width: {
                             from: 300,
@@ -28,7 +28,7 @@
                             to: 0
                         }
                     }, 1);
-                    anim.onComplete.subscribe(function() {
+                    anim.onComplete.subscribe(function() {  
                         Dom.setStyle('gutter1', 'visibility', 'hidden');
                     });
                     anim.animate();
@@ -76,6 +76,7 @@
             }
         }
     }
+    
 })();
 
 
@@ -107,7 +108,7 @@ YAHOO.util.Event.onAvailable('flickr_search', function() {
     // Instantiate AutoComplete
     oAutoComp = new YAHOO.widget.AutoComplete('flickr_search','flickr_results', oACDS);
     oAutoComp.autoHighlight = false;
-    oAutoComp.alwaysShowContainer = true;
+    oAutoComp.alwaysShowContainer = true; 
     oAutoComp.suppressInputUpdate = true;
     oAutoComp.generateRequest = function(sQuery) {
         return "%20where%20tags%3D%22"+sQuery+"%22";
@@ -131,116 +132,17 @@ YAHOO.util.Event.onAvailable('flickr_search', function() {
 var gutter = null;
 
 var myConfig = {
-    height: '150px',
-    width: '550px',
-    animate: false,
-    dompath: false,
-    focusAtStart: true,
-	  toolbar: {
-        //titlebar: 'My Editor',
-        buttons: [
-            { group: 'textstyle', label: 'Font Style',
-                buttons: [
-                    { type: 'push', label: 'Bold', value: 'bold' },
-                    { type: 'push', label: 'Italic', value: 'italic' },
-                    { type: 'push', label: 'Underline', value: 'underline' },
-                    { type: 'separator' },
-                    { type: 'select', label: 'Arial', value: 'fontname', disabled: true,
-                        menu: [
-                            { text: 'Arial', checked: true },
-                            { text: 'Arial Black' },
-                            { text: 'Comic Sans MS' },
-                            { text: 'Courier New' },
-                            { text: 'Lucida Console' },
-                            { text: 'Tahoma' },
-                            { text: 'Times New Roman' },
-                            { text: 'Trebuchet MS' },
-                            { text: 'Verdana' }
-                        ]
-                    },
-                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
-                    { type: 'separator' },
-                    { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
-                    { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
-                ]
-            },
-	    { type: 'separator' },
-	    { group: 'indentlist', label: 'Lists',
-	        buttons: [
-	            { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' },
-	            { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' }
-	        ]
-	    },
-	    { type: 'separator' },
-	    { group: 'insertitem', label: 'Insert Item',
-	        buttons: [
-	            { type: 'push', label: 'HTML Link CTRL + SHIFT + L', value: 'createlink', disabled: true }, 
-	            { type: 'push', label: 'Insert Image', value: 'insertimage' }
-	        ]
-	    }
-
-        ]
-    }
-};
-
-var answerConfig = {
-    height: '85px',
-    width: '520px',
-    animate: false,
-    dompath: false,
-    focusAtStart: true,
-	  toolbar: {
-        //titlebar: 'My Editor',
-        buttons: [
-            { group: 'textstyle', label: 'Font Style',
-                buttons: [
-                    { type: 'push', label: 'Bold', value: 'bold' },
-                    { type: 'push', label: 'Italic', value: 'italic' },
-                    { type: 'push', label: 'Underline', value: 'underline' },
-                    { type: 'separator' },
-                    { type: 'select', label: 'Arial', value: 'fontname', disabled: true,
-                        menu: [
-                            { text: 'Arial', checked: true },
-                            { text: 'Arial Black' },
-                            { text: 'Comic Sans MS' },
-                            { text: 'Courier New' },
-                            { text: 'Lucida Console' },
-                            { text: 'Tahoma' },
-                            { text: 'Times New Roman' },
-                            { text: 'Trebuchet MS' },
-                            { text: 'Verdana' }
-                        ]
-                    },
-                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
-                    { type: 'separator' },
-                    { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
-                    { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
-                ]
-            },
-	    { type: 'separator' },
-	    { group: 'indentlist', label: 'Lists',
-	        buttons: [
-	            { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' },
-	            { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' }
-	        ]
-	    },
-	    { type: 'separator' },
-	    { group: 'insertitem', label: 'Insert Item',
-	        buttons: [
-	            { type: 'push', label: 'HTML Link CTRL + SHIFT + L', value: 'createlink', disabled: true }, 
-	            { type: 'push', label: 'Insert Image', value: 'insertimage' }
-	        ]
-	    }
-
-        ]
-    }
+    height: '300px',
+    width: '600px',
+    animate: true,
+    dompath: true,
+    focusAtStart: true
 };
 
 YAHOO.log('Editor loaded..', 'info', 'example');
-var myEditor = new YAHOO.widget.Editor('editor', myConfig);;
+var myEditor = new YAHOO.widget.Editor('editor', myConfig);
 
-/* Flicker Button
-  myEditor.on('toolbarLoaded', function() {
+myEditor.on('toolbarLoaded', function() { 
     YAHOO.log('Toolbar loaded, add button and create gutter', 'info', 'example');
     gutter = new YAHOO.gutter();
 
@@ -249,7 +151,7 @@ var myEditor = new YAHOO.widget.Editor('editor', myConfig);;
             label: 'Insert Flickr Image',
             value: 'flickr'
     }
-
+   
     myEditor.toolbar.addButtonToGroup(flickrConfig, 'insertitem');
 
     myEditor.toolbar.on('flickrClick', function(ev) {
@@ -263,8 +165,6 @@ var myEditor = new YAHOO.widget.Editor('editor', myConfig);;
         }
         gutter.toggle();
     }, myEditor, true);
-
     gutter.createGutter();
-});*/
-
+});
 myEditor.render();

@@ -54,7 +54,6 @@ public class APIClientFullCreate extends UnitTest {
     	pj1.question = "This is the first question.";
     	pj1.admin = userresponse.user.id;
     	pj1.multipleAllowed = r.nextBoolean();
-    	pj1.loginRequired = false;
     	pj1.reference = "myreference";
 
     	CreatePollResponse pollresponse = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
@@ -82,18 +81,6 @@ public class APIClientFullCreate extends UnitTest {
     	failIfNotSuccessful(piresponse);
     	assertNotNull(piresponse.pollinstance.id);
     	assertEquals(piresponse.pollinstance.poll_id, p.poll_id);
-    	
-    	VoteJSON v1 = new VoteJSON();
-    	v1.choiceid =  1+(long)(Math.random()*3);
-    	v1.pollInstanceid = piresponse.pollinstance.id;
-    	CreateVoteResponse vresponse1 = (CreateVoteResponse) APIClient.send(new CreateVoteRequest(v1));
-    	failIfNotSuccessful(vresponse1);
-    	assertNotNull(vresponse1.vote.id);
-    	assertEquals(vresponse1.vote.choiceid, v1.choiceid);
-    	
-    	apiClient.authenticateSimple(u.email, "fail");
-    	
-    	
     	for(int i=0;i<20;i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);

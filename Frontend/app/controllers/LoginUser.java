@@ -9,10 +9,8 @@ import api.entities.UserJSON;
 import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
 import api.requests.CreatePollRequest;
-import api.requests.DeauthenticateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollResponse;
-import api.responses.EmptyResponse;
 import play.libs.Crypto;
 import play.mvc.Controller;
 
@@ -27,18 +25,8 @@ public class LoginUser extends BaseController {
 	}
 	
 	public static void logout() {
-		try {
-			EmptyResponse response = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
-			session.put("user_id", null);
-			session.put("user_secret", null);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			params.flash();
-			validation.addError(null, e.getMessage());
-			validation.keep();
-			Application.index();
-		}
+		session.put("user_id", null);
+		session.put("user_secret", null);
 		Application.index();
 	}
 	

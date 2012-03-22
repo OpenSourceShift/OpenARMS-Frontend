@@ -1,5 +1,5 @@
 #{extends 'main.html' /} #{ set title:'Create new poll' /}
-#{set moreStyles: ["createpoll"] /}
+#{set moreStyles:'createpoll' /}
 <div id="main">
 	#{form @CreatePoll.submit(), id:'createpoll', class:'greybg wrapper' }
 		<h1>&{'create_poll'}</h1>
@@ -18,14 +18,12 @@
 				<p class="formError">#{error 'question' /}</p>
 			#{/ifError}
 			<!--input size="30" type="text" name="question" value="${question}" /-->
-    	#{rte text: "asd"/}
+    #{rte /}
 		</div>
 		
 		<div class="labeledinput">
-			<label for="loginRequired">
-				&{'createpoll.form.loginRequired'}
-				<input id="loginRequired" type="checkbox" name="loginRequired" value="true" />
-			</label>
+			&{'createpoll.form.loginRequired'}
+			<input type="checkbox" name="loginRequired" value="true" />
 		</div>
 		</br>
 
