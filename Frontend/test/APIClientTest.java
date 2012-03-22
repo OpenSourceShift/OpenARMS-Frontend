@@ -156,10 +156,10 @@ public class APIClientTest extends UnitTest {
     	PollJSON p = new PollJSON();
     	ChoiceJSON c = new ChoiceJSON();
     	ChoiceJSON c2 = new ChoiceJSON();
-    	c2.text = "TestChoice2";
-    	c.text = "TestChoice";
-    	p.question = "poll question";
-    	p.reference = "Test";
+    	c2.text = "Todelete";
+    	c.text = "Todelete2";
+    	p.question = "Delete";
+    	p.reference = "Delete";
     	p.choices = new LinkedList<ChoiceJSON>();
     	p.choices.add(c);
     	p.choices.add(c2);
@@ -215,6 +215,13 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.poll.token);
     	assertNotSame(response.poll.id,id);
+    }
+    
+    @Test
+    public void testDeletePoll() throws Exception {
+    	Long id = (long) 9;
+    	EmptyResponse response =  (EmptyResponse) APIClient.send(new DeletePollRequest(id));
+    	failIfNotSuccessful(response);
     }
 
     @Test
