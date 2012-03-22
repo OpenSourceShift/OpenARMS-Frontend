@@ -69,3 +69,5 @@ want.sign.up=I want to sign up
 add.email=Your Email
 add.passw=Password
 add.confirm.passw=Confirm Password
+cancel=Cancel
+register=Register

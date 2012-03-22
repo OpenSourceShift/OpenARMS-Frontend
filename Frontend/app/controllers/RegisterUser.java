@@ -7,16 +7,21 @@ import com.google.gson.JsonParseException;
 
 public class RegisterUser extends BaseController {
 	public static void getdata(String email, String passw, String confpassw){
+        boolean changed = false;
         if(!checkpassw(passw, confpassw)){
             validation.addError("passwDontMatch", "Passwords doesn't match");
-            validation.keep();
-            showform();
-        } else if(!checkemail(email)){
+            changed = true;
+        }
+        if(!checkemail(email)){
             validation.addError("email", "Wrong email");
-            validation.keep();
-            showform();
-        } else if(!validatePass(passw)){
+            changed = true;
+        }
+        if(!validatePass(passw)){
             validation.addError("validatePass", "Password is short");
+            changed = true;
+        }
+
+        if(changed){
             validation.keep();
             showform();
         } else {
