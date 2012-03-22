@@ -240,5 +240,5 @@ public class APIClientTest extends UnitTest {
     	failIfNotSuccessful(response);
     	assertNotNull(response.vote.id);
     	assertEquals(response.vote.choiceid, v.choiceid);
-    }*/
+    }
 }
