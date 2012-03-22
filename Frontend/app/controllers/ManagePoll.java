@@ -30,29 +30,16 @@ import api.responses.UpdatePollResponse;
 import api.responses.VoteOnPollInstanceResponse;
 
 public class ManagePoll extends BaseController {
-	public static void index(Long id) {
-		try {
-			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
-			String pollToken = response.poll.token;
-			String pollReference = response.poll.reference;
-			Boolean pollMultipleAllowed = response.poll.multipleAllowed;
-			String pollQuestion = response.poll.question;
-			List<ChoiceJSON> pollChoices = response.poll.choices;
-			
-			validation.required(pollToken);
-			validation.required(pollReference);
-			validation.required(pollMultipleAllowed);
-			validation.required(pollQuestion);
-			validation.required(pollChoices);
-			
-			if (!validation.hasErrors()) {
-				render(pollToken, pollReference, pollMultipleAllowed, pollQuestion, pollChoices);
-			}
-			else {
-				// TODO: error handling
-			}
-		} catch (Exception e) {
-			// TODO: tell the user it failed
+	public static void index() {
+    	
+		APIClient apiClient = new APIClient();
+		/** get all polls + instances for the current user */
+    	try {
+			ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(controllers.LoginUser.getCurrentUserId()));
+			renderArgs.put("pollsJson", responseUser.polls);
+			render();
+    	} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -79,55 +66,7 @@ public class ManagePoll extends BaseController {
 		}
 	}
 	
-	public static void listfun() {
-		
-		// test! data
-		try {
-			APIClient.loadServiceData("data.yml");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		APIClient apiClient = new APIClient();
-		try {
-			boolean authenticated = apiClient.authenticateSimple("spam@creen.dk", "openarms");
-		} catch (Exception e) {}
-		
-    	PollJSON pj1 = new PollJSON();
-    	pj1.question = "This is the first question.";
-		try {
-			CreatePollResponse cpr1 = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
-			PollInstanceJSON pij1 = new PollInstanceJSON();
-			pij1.poll_id = cpr1.poll.id;
-			CreatePollInstanceResponse cpir1 = (CreatePollInstanceResponse) apiClient.sendRequest(new CreatePollInstanceRequest(pij1));
-			
-			PollInstanceJSON pij2 = new PollInstanceJSON();
-			pij2.poll_id = cpr1.poll.id;
-			CreatePollInstanceResponse cpir2 = (CreatePollInstanceResponse) apiClient.sendRequest(new CreatePollInstanceRequest(pij2));
-		} catch (Exception e) {}
-		
-    	PollJSON pj2 = new PollJSON();
-    	pj2.question = "This is a new question: 2";
-		try {
-			apiClient.sendRequest(new CreatePollRequest(pj2));
-		} catch (Exception e) {}
-    	
-    	PollJSON pj3 = new PollJSON();
-    	pj3.question = "This is a new question: 3";
-		try {
-			apiClient.sendRequest(new CreatePollRequest(pj3));
-		} catch (Exception e) {}
-    	
-		/** get all polls + instances for the current user */
-    	try {
-			ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(controllers.LoginUser.getCurrentUserId()));
-			// TODO: fix this, doesn't work, too tired
-			renderArgs.put("pollsJson", responseUser.polls);
-			render();
-    	} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	public static void activate(Date start, Date end) {
 		// TODO: this! (activate/instantiate pollinstance with start and end time

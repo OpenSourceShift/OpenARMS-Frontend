@@ -1,51 +1,32 @@
-#{extends 'main.html' /} #{ set title:'Manage poll #' + pollID /} 
-#{set moreStyles:'managepoll' /}
+#{extends 'main.html' /}
+#{set title:'Manage your polls' /}
+#{set moreStyles: 'managepoll' /}
+
+<script src="@{'/public/javascripts/managepoll/showhide.js'}" type="text/javascript" charset="utf-8"></script>
 
 <div id="main">
-	<div id="pollcontainer">
-		<ul>
-			#{list items:pollsJson, as:'poll'}
-				<li><ul>
-					#{list items:${poll}, as:'instance'}
-						<li>${instance}</li>
+	<div class="managepollforuser">
+		#{list pollsJson, as:'poll'}
+			#{if poll.pollinstances.size() < 1}
+				<div class="questionwithout">${poll.question}</div>
+				<input type="button" id="activate${poll.id}" value="activate" class="button" />
+				<input type="button" id="edit${poll.id}" value="edit" class="button" />
+			#{/if}
+			
+			#{else}
+				<div class="questionwith">${poll.question}</div>
+				
+				<input type="button" id="activate${poll.id}" value="activate" class="button" />
+				<input type="button" id="clone${poll.id}" value="clone" class="button" />
+
+				
+				<div class="instances" id="poll${poll.id}_instances">
+					#{list poll.pollinstances, as:'pollInstance'}
+						<div class="instance" id="instance_${pollInstance.id}">${pollInstance.id}</div>
+						<input type="button" id="close${pollInstance.id}" value="close" class="button" />
 					#{/list}
-				</ul></li>
-			#{/list}
-		</ul>
+				</div>
+			#{/else}
+		#{/list}
 	</div>
 </div>
-
-
-<!-- <div id="main">
-	<div id="activatepoll" class="greybg">
-		#{form @ManagePoll.activateSubmit(), id:'activatepoll', class:'wrapper' }
-			<h2>&{'managepoll.activatepoll.header'}</h2>
-			<p>&{'managepoll.activatepoll.text'}</p>
-			<div class="labeledinput">
-		   		<label>&{'managepoll.activatepoll.form.minutes'}</label>
-		   		<input type="text" name="minutes" value="5" onclick="this.value=''"/>
-			</div>
-			<div class="labeledinput">
-		   		<label>&{'managepoll.activatepoll.form.seconds'}</label>
-				<input type="text" name="seconds" value="00" onclick="this.value=''"/>
-			</div>
-			<input type="submit" value="&{'activate'}" class="button" />
-		#{/form}
-	</div>
-	<div id="bottomoptions">
-		<div id="editpoll" class="greybg">
-			<div class="wrapper">
-				<h2>&{'managepoll.editpoll.header'}</h2>
-				<p>&{'managepoll.editpoll.text'}</p>
-				#{a @ManagePoll.edit(), class:'button'}&{'managepoll.editpoll'}#{/a}
-			</div>
-		</div>
-		<div id="pollstatistics" class="greybg">
-			<div class="wrapper">
-				<h2>&{'managepoll.pollstatistics.header'}</h2>
-				<p>&{'managepoll.pollstatistics.text'}</p>
-				#{a @ManagePoll.statistics(), class:'button'}&{'managepoll.pollstatistics'}#{/a}
-			</div>
-		</div>
-	</div>
-</div> -->
