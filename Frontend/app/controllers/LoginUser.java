@@ -35,8 +35,8 @@ public class LoginUser extends BaseController {
 	    	params.flash();
 	    	validation.addError(null, e.getMessage());
 	    	validation.keep();
-	    	Application.index();
 	    }
+    	Application.index();
 	}
 	
 	public static void submit(String email, String password) {
