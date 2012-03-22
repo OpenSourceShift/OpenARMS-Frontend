@@ -52,8 +52,8 @@ public class QuestionJSON {
      * Makes Question object (model) from JSON object
      * @return
      */
-    public Poll makeModelFromJSON() {
-        Poll q = new Poll(token, question, multipleAllowed);
-        return q;
-    }
+   // public Poll makeModelFromJSON() {
+        //Poll q = new Poll(token, question, multipleAllowed);
+     //   return q;
+   // }
 }

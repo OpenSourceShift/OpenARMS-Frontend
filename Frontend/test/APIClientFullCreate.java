@@ -81,7 +81,7 @@ public class APIClientFullCreate extends UnitTest {
     	failIfNotSuccessful(piresponse);
     	assertNotNull(piresponse.pollinstance.id);
     	assertEquals(piresponse.pollinstance.poll_id, p.poll_id);
-    	
+    	/*
     	for(int i=0;i<20;i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);
@@ -90,6 +90,15 @@ public class APIClientFullCreate extends UnitTest {
         	failIfNotSuccessful(vresponse);
         	assertNotNull(vresponse.vote.id);
         	assertEquals(vresponse.vote.choiceid, v.choiceid);
-    	}	
+    	}*/
+    	for(int i=0;i<20;i++) {
+        	VoteJSON v = new VoteJSON();
+        	v.choiceid =  1+(long)(Math.random()*3);
+        	v.pollInstanceid = piresponse.pollinstance.id;
+        	VoteOnPollInstanceResponse vresponse = (VoteOnPollInstanceResponse) APIClient.send(new VoteOnPollInstanceRequest(v));
+        	failIfNotSuccessful(vresponse);
+        	assertNotNull(vresponse.vote.id);
+        	assertEquals(vresponse.vote.choiceid, v.choiceid);
+    	}
 	}
 }
