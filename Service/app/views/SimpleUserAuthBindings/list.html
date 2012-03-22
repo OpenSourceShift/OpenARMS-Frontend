@@ -10,9 +10,9 @@
     </div>
 
     <div id="crudListTable">
-        #{crud.table fields:['user']}
-	#{crud.custom 'user'}
-        <a href="@{SimpleUserAuthBindings.show(object.id)}">${object.user.name}</a>
+        #{crud.table fields:['id','user']}
+		#{crud.custom 'user'}
+        ${object.user.name}
         #{/crud.custom}
         #{/crud.table}
     </div>

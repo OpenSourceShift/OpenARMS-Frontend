@@ -11,7 +11,7 @@ token=Token
 adminKey=Administration Key
 email=E-Mail
 question=Question
-multipleAllowed=Allow multiple choices
+loginRequired=Secured
 
 # PollInstance.java
 startDateTime=Starting Date & Time
