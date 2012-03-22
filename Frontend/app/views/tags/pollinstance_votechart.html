@@ -3,6 +3,7 @@
 		<div class="wrapper">
 			<div id="stats"></div>
 			<img class="loading" src="@{'/public/images/loading-big.gif'}" alt="&{'loading'}"/>
+			<div id="voteCountLabel">&{'managepoll.pollstatistics.totalVoteCount', '<span>?</span>'}</div>
 		</div>
 	</div>
 </div>
@@ -10,11 +11,11 @@
 <script type="text/javascript">
 $(function() {
 	Highcharts.theme = {
-		colors: ["#A4C765"],
+		colors: ["#FFA900"],
 		chart: {
 			backgroundColor: {
 				linearGradient: [0, 0, 0, 400],
-				stops: [[0, 'rgb(67, 67, 67)']]
+				stops: [[0, 'rgb(67, 67, 67)'], [1, 'rgb(80, 80, 80)']]
 	     	},
 			borderWidth: 0,
 			borderRadius: 15,
@@ -25,7 +26,7 @@ $(function() {
 		title: {
 			style: { 
 				color: '#FFF',
-			    font: '16px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+				font: '16px "Ubuntu", sans-serif'
 			}
 		},
 		xAxis: {
@@ -41,7 +42,7 @@ $(function() {
 			title: {
 				style: {
 					color: '#fff',
-					font: '12px "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif'
+					font: '12px "Ubuntu", sans-serif'
 				}            
 			}
 		},
@@ -60,7 +61,7 @@ $(function() {
 			title: {
 				style: {
 					color: '#fff',
-					font: '12px "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif'
+					font: '12px "Ubuntu", sans-serif'
 				}            
 			}
 		},
@@ -79,22 +80,33 @@ $(function() {
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 	
 	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"${voteSummary.choice_text}"${voteSummary_isLast ? '' : ','}#{/list}];
+
+	function loadData() {
+		$.getJSON('/api/pollinstance/${_pollInstance.id}', function(data) {
+			vote_count = data.pollinstance.vote_count;
+			var votes = [];
+			for(var v in data.pollinstance.votes) {
+			votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
+			}
+			chart.series[0].setData(votes);
+			$(".loading").hide();
+			// Update the vote count label
+			$("#voteCountLabel span").text(vote_count);
+		});
+	}
 	
+	var vote_count;
 	var chart = new Highcharts.Chart({
 		chart: {
 			renderTo: 'stats',
 			defaultSeriesType: 'column',
 			marginRight: 10,
 			events: {
-				load: function(event) {
-				    $.getJSON('/api/pollinstance/${_pollInstance.id}', function(data) {
-				    	var vote_count = data.pollinstance.vote_count;
-				    	var votes = [];
-				    	for(var v in data.pollinstance.votes) {
-				    		votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
-				    	}
-				    	series = votes;
-				    });
+				load: function() {
+					loadData();
+					setInterval(function() {
+						loadData();
+					}, 5000);
 				}
 			}
 	    },
