@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<testsuite failures="1" time="43.302" errors="0" skipped="0" tests="0" name="APIClientFullCreate">
+  <testcase classname="APIClientFullCreate" name="testCreateFullConfig" time="43.302">
+                  <failure type="" message="Failure, did not get the HTTP-OK status-code from the service, got 403: controllers.APIController$ForbiddenException: You can&apos;t vote twice in the same Poll.">
+        <![CDATA[
+          In /test/APIClientFullCreate.java, line 89
+          
+                      	failIfNotSuccessful(vresponse); :
+          
+        ]]>
+        </failure>
+        }
+                  </testcase>
+</testsuite>
