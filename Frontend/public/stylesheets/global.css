@@ -13,11 +13,14 @@ body{
 	max-width: 960px;
 }
 #content {
-	margin: 1% auto;
+	margin: 0.5em 180px;
 	max-width: 600px;
-	/*background-color: #404040;*/
-	border-radius: 5px;
+	background-color: rgba(0,0,0,0.1);
+	/*border-radius: 5px;*/
+	border-top: 0.15em solid #996500;
+	border-bottom: 0.15em solid #996500;
 	/*overflow: auto;*/
+	padding: 0.5em;
 }
 #main {
 	margin: 0 auto;
@@ -27,9 +30,9 @@ a {
 	color: #fff;
 }
 hr{
-  background-color: #FFF;
-  height: 1px;
-  border: none;
+	background-color: #FFF;
+	height: 1px;
+	border: none;
 }
 h1, h2 {
 	font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
