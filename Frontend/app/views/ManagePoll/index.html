@@ -9,21 +9,18 @@
 		#{list pollsJson, as:'poll'}
 			#{if poll.pollinstances.size() < 1}
 				<div class="questionwithout">${poll.question}</div>
-				<input type="button" id="activate${poll.id}" value="activate" class="button" />
-				<input type="button" id="edit${poll.id}" value="edit" class="button" />
+				<a href="/activate/${poll.id}"><input type="button" id="activate${poll.id}" value="activate" class="button" /></a>
+				<a href="@{ ManagePoll.index}/${poll.id}"><input type="button" id="edit${poll.id}" value="edit" class="button" /></a>
 			#{/if}
 			
 			#{else}
 				<div class="questionwith">${poll.question}</div>
-				
-				<input type="button" id="activate${poll.id}" value="activate" class="button" />
-				<input type="button" id="clone${poll.id}" value="clone" class="button" />
-
-				
+				<a href="/activate/${poll.id}"><input type="button" id="activate${poll.id}" value="activate" class="button" /></a>
+				<a href=""><input type="button" id="clone${poll.id}" value="clone" class="button" /></a>
 				<div class="instances" id="poll${poll.id}_instances">
 					#{list poll.pollinstances, as:'pollInstance'}
 						<div class="instance" id="instance_${pollInstance.id}">${pollInstance.id}</div>
-						<input type="button" id="close${pollInstance.id}" value="close" class="button" />
+						<a href=""><input type="button" id="close${pollInstance.id}" value="close" class="button" /></a>
 					#{/list}
 				</div>
 			#{/else}
