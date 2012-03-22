@@ -1,12 +1,17 @@
 package controllers;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 import play.mvc.Controller;
+import play.mvc.Http;
 import api.entities.ChoiceJSON;
+import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
+import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
+import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 
 public class CreatePoll extends BaseController {
@@ -113,9 +118,19 @@ public class CreatePoll extends BaseController {
 			CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(p));
 			PollJSON poll = response.poll;
 			if(poll != null) {
-				success(poll.token);
+				PollInstanceJSON pi = new PollInstanceJSON();
+				pi.poll_id = response.poll.id;
+				pi.start = new Date();
+				pi.end = new Date();
+				pi.end.setMinutes(pi.start.getMinutes() + 30);
+				
+				CreatePollInstanceResponse piresp = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pi));
+				if (piresp.statusCode == Http.StatusCode.CREATED)
+					success(poll.token);
+				else
+					notFound("Something went wrong during Poll creation! :-(");
 			} else {
-				throw new Exception("Something went wrong, creating the poll.");
+				notFound("Something went wrong during Poll creation! :-(");
 			}
 	
 			// Redirect to success
