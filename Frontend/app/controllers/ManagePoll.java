@@ -14,12 +14,14 @@ import api.entities.VoteJSON;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
+import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
 import api.requests.ReadUserDetailsRequest;
 import api.requests.UpdatePollRequest;
 import api.requests.VoteOnPollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
+import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
 import api.responses.ReadPollByTokenResponse;
 import api.responses.ReadUserDetailsResponse;
@@ -194,9 +196,9 @@ public class ManagePoll extends BaseController {
 //		        	}
 //		        }
 //        	}
-			
-			Long pollinstance_id = (long)1; // res2.pollinstance.id;
-			render(pollinstance_id);
+			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest((long) 1));
+			PollInstanceJSON pollInstance = res.pollinstance;
+			render(pollInstance);
 		} catch(Exception e) {
 			e.printStackTrace();
 			// TODO: Use an error template.

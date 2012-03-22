@@ -78,9 +78,8 @@ public class JoinPoll extends BaseController {
 			notFound("Error finding the poll.");
 		}
 
-		PollJSON poll = res1.poll;
 		PollInstanceJSON pollInstance = res2.pollinstance;
 		
-		render(poll, pollInstance);
+		render(pollInstance);
 	}
 }
