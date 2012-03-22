@@ -12,7 +12,7 @@
 	cursor: pointer;
 	width: 100%;
 	display: block;
-	padding: 0.5em;
+	padding: 0.5em 0;
 }
 
 #main input[type=radio],
@@ -22,8 +22,27 @@
 
 #main {
 	margin-top: 1em;
+	padding: 0;
 }
 
 #main .button {
 	float: right;
+}
+
+#great_success {
+	width: 600px;
+	height: 439px;
+	background-image: url("/public/images/great_success.png");
+	margin-bottom: -0.5em;
+	line-height: 97px;
+	text-align: center;
+}
+
+#great_success span {
+	position: relative;
+	top: 6px;
+	line-height: normal;
+	font-size: 2.5em;
+	color: #000;
+	height: 97px;
 }
