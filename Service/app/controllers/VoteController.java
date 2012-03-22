@@ -26,8 +26,6 @@ public class VoteController extends APIController {
 	public static void create() throws Exception {
     	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
         CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-		User u = AuthBackend.getCurrentUser();
-        req.vote.userid = u.id;
         CreateVoteResponse res = create(req.vote);
     	String jsonresponse = GsonHelper.toJson(res);
     	renderJSON(jsonresponse);
@@ -42,14 +40,20 @@ public class VoteController extends APIController {
       
         //If current user is not the same as the poll creator or there is no current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
-		
-		Vote vote2= Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
-		
-        if (vote2 == null) {
-        	vote.save();
-        } else {
-        	throw new ForbiddenException("You can't vote twice in the same Poll.");
-        }
+		if (u != null) {
+			vote.user = u;
+			Vote vote2= Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
+			
+	        if (vote2 == null) {
+	        	vote.save();
+	        } else {
+	        	throw new ForbiddenException("You can't vote twice in the same Poll.");
+	        }
+		} else if (!vote.pollInstance.poll.loginRequired){
+			vote.save();
+		} else {
+			throw new UnauthorizedException("This action requires authentication.");
+		}
         
         //Creates the VoteJSON Response.
         return new CreateVoteResponse(vote.toJson());
@@ -64,7 +68,7 @@ public class VoteController extends APIController {
 
 		//Takes the Vote from the DataBase.
 		Vote vote= Vote.find("byID", voteid).first();
-		
+
 		if (vote == null) {
 			throw new NotFoundException();
 		}
@@ -85,12 +89,12 @@ public class VoteController extends APIController {
 
 		//Takes the Vote from the DataBase.
 		Vote originalvote = Vote.find("byID", voteid).first();
-		
+
 		if (originalvote == null) {
 			throw new NotFoundException();
 		}
-		
-        //If current user is not the same as the poll creator or there is no current user, throws an exception
+
+		//If current user is not the same as the poll creator or there is no current user, throws an exception
 		/*User u = AuthBackend.getCurrentUser();
 		if (u == null || originalvote.user.id != u.id) {
 	        throw new UnauthorizedException();
@@ -99,22 +103,22 @@ public class VoteController extends APIController {
 
 		//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.
 		CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-        Vote editedvote = Vote.fromJson(req.vote);
-        
-        //Changes the old fields for the new ones.
-            if (editedvote.choice != null) {
-				originalvote.choice = editedvote.choice;
-			}
-            if (editedvote.pollInstance != null) {
-				originalvote.pollInstance = editedvote.pollInstance;
-			}
- 
-            originalvote.save();
-            
-            //Creates the VoteJSON Response.
-        UpdateVoteResponse r = new UpdateVoteResponse(originalvote.toJson());
-    	String jsonresponse = GsonHelper.toJson(r);
-    	renderJSON(jsonresponse);
+		Vote editedvote = Vote.fromJson(req.vote);
+
+		//Changes the old fields for the new ones.
+		if (editedvote.choice != null) {
+			originalvote.choice = editedvote.choice;
+		}
+		if (editedvote.pollInstance != null) {
+			originalvote.pollInstance = editedvote.pollInstance;
+		}
+
+		originalvote.save();
+
+		//Creates the VoteJSON Response.
+		UpdateVoteResponse r = new UpdateVoteResponse(originalvote.toJson());
+		String jsonresponse = GsonHelper.toJson(r);
+		renderJSON(jsonresponse);
 	}
 
 	/**
@@ -126,13 +130,13 @@ public class VoteController extends APIController {
 
 		//Takes the Vote from the DataBase.
 		Vote vote = Vote.find("byID", voteid).first();
-		
+
 		if (vote == null) {
 			throw new NotFoundException();
 		}
 
 		AuthBackend.requireUser(vote.user);
-		
+
 		//Deletes the Vote from the DataBase and creates an empty VoteJSON for the response.
 		vote.delete();
 
