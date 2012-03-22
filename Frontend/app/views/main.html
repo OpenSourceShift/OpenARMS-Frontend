@@ -21,6 +21,12 @@
 <body>
 	<div id="container">
 		<div id="header">
+			#{if loggedIn}
+				Logged in.
+			#{/if}
+			#{else}
+				Not logged in.
+			#{/else}
 			<!-- <a href="/"><img src="/public/images/logo_transparent_hd2.png" /></a> -->
 			<div id="logo"></div>
 		</div>

@@ -1,7 +1,8 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
 body{
 	background-color: #404040;
 	color: #fff;
-	font-family: Verdana;
+	font-family: 'Ubuntu', sans-serif;
 	font-size: 12px;
 	margin: 0;
 	-moz-user-select: none;
@@ -35,8 +36,8 @@ hr{
 	border: none;
 }
 h1, h2 {
-	font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
-	font-size: 18px;
+	/*font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;*/
+	font-size: 2em;
 	font-weight: normal;
 	margin: 0;
 }
@@ -111,6 +112,7 @@ input[type=password] {
 	width: 685px;
 	height: 564px;
 	background-repeat: no-repeat;
+	padding-bottom: 1em;
 }
 .greybg {
 	-webkit-border-radius: 5px;
