@@ -13,23 +13,12 @@
 </div>
 <div class="description">
 	<div id="initD">
-	&{'want.sign.up'}
-	</div>
-	<div id="register">
-	<div class="labeledinput">
-		<label>&{'add.email'}</label>
-		<input type="text" name="email" value="" autocomplete="off" autofocus="autofocus" />
-	</div>
-	<div class="labeledinput">
-		<label>&{'add.passw'}</label>
-		<input type="text" name="passw" value="" autocomplete="off"/>
-	</div>
-	<div class="labeledinput">
-		<label>&{'add.confirm.passw'}</label>
-		<input type="text" name="passw" value="" autocomplete="off"/>
+
+  #{form @RegisterUser.showform()}
+    <input type="submit" value="&{'register.new.user'}" class="button" />
+  #{/form}
 	</div>
 
-	</div>
 	<div id="joinD">
 		#{form @JoinPoll.index(), id:'joinpoll'}
 		<div class="wrapper">
@@ -75,11 +64,9 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#token input").focus();
-		
 		$('#token input').bind('keypress', function(e) {
 			//return (e.which != 13 && e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) ? false : true ;
 		})
-		
 		function shakeJoinPoll() {
 			$('#token').parent().effect("shake", { times:3 }, 50, function() {$('#token input').focus()});
 		}

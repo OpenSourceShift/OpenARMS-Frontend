@@ -7,7 +7,7 @@ jQuery(function($){
   $.each(buttons, function(n){
     $(this).click(function(){
       $(descriptions[current]).css('display', 'none');
-      current = n+2;
+      current = n+1;
       $(descriptions[current]).css('display', 'block');
     });
   });
