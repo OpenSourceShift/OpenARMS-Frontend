@@ -12,16 +12,14 @@ import api.requests.ReadPollRequest;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
 
-public class JoinPoll extends Controller {
+public class JoinPoll extends BaseController {
 	public static void index(String token) throws Exception {
 		Logger.debug("Initial token is %s", token);
 		if(token == null) {
 			notFound("No poll without a token.");
 		}
 		
-		
-		
-		/** get the Poll Instance Data */
+		// get the Poll Instance Data
 		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
 		if(res.statusCode.equals(StatusCode.NOT_FOUND)) {
 			notFound("Poll not found.");
@@ -40,9 +38,8 @@ public class JoinPoll extends Controller {
 		}
 		
 		PollJSON poll = pollResponse.poll;
-		
 		// Check if login is required for the poll
-		if (poll.loginRequired) {
+		if (poll.loginRequired != null && poll.loginRequired) {
 			if (!LoginUser.isLoggedIn()) {
 				LoginUser.forward = "joinpoll";
 				LoginUser.pollToken = token;
@@ -81,9 +78,8 @@ public class JoinPoll extends Controller {
 			notFound("Error finding the poll.");
 		}
 
-		PollJSON poll = res1.poll;
 		PollInstanceJSON pollInstance = res2.pollinstance;
 		
-		render(poll, pollInstance);
+		render(pollInstance);
 	}
 }

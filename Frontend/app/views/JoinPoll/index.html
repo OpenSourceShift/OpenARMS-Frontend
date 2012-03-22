@@ -15,7 +15,9 @@
 					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c_index}"/>${c.text}</label></li>
 				#{/list}
 			</ul>
-			<input type="submit" value="&{'vote'}" class="button" />
+			<div>
+				<input type="submit" value="&{'vote'}" class="button" />
+			</div>
 		#{/form}
 	</div>
 </div>

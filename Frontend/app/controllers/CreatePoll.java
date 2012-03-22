@@ -9,7 +9,7 @@ import api.helpers.GsonHelper;
 import api.requests.CreatePollRequest;
 import api.responses.CreatePollResponse;
 
-public class CreatePoll extends Controller {
+public class CreatePoll extends BaseController {
 
 	public static void index(String question, String[] answer) {
 		if (!LoginUser.isLoggedIn()) {

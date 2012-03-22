@@ -1,5 +1,4 @@
 #{extends 'main.html' /} #{ set title:'Statistics for poll #' + pollinstance_id /} 
 #{set moreStyles:'managepoll' /}
-
-#{pollinstance_votechart pollinstance_id:"${pollinstance_id}" /}
- 	  	
+#{set moreScripts:'highcharts-2.2.0' /}
+#{pollinstance_votechart pollInstance:pollInstance /}

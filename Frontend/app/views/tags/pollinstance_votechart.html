@@ -1,4 +1,6 @@
 #{set moreScripts:'highcharts' /}
+<!-- Add this script via a moreScripts ... -->
+<script type="text/javascript" src="/public/javascripts/exporting.js"></script>
 
 <div id="main">
 	<div class="greybg">
@@ -87,13 +89,11 @@ $(function() {
 	    	for(var v in data.pollinstance.votes) {
 	    		votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
 	    	}
-	    	// Redraw!
-	    	console.log(chart);
-	    	chart.series = votes;
+	    	return votes;
 	    });
 	}
 	
-	var choices = [#{list items:_poll.choices, as:'choice'}"${choice.text}"${choice_isLast ? '' : ','}#{/list}];
+	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"${voteSummary.choice_text}"${voteSummary_isLast ? '' : ','}#{/list}];
 	
 	var chart = new Highcharts.Chart({
 		chart: {
@@ -102,12 +102,12 @@ $(function() {
 			marginRight: 10,
 			events: {
 				load: function(event) {
-					loadData(event.target);
+					series = loadData(event.target);
 				}
 			}
 	    },
 	    title: {
-	    	text: "${_poll.question}"
+	    	text: "${_pollInstance.question}"
 	    },
 	  	xAxis: {
 			categories: choices,

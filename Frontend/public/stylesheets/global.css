@@ -1,7 +1,8 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
 body{
 	background-color: #404040;
 	color: #fff;
-	font-family: Verdana;
+	font-family: 'Ubuntu', sans-serif;
 	font-size: 12px;
 	margin: 0;
 	-moz-user-select: none;
@@ -10,10 +11,10 @@ body{
 }
 #container {
 	margin: 1% auto;
-	max-width: 960px;
+	max-width: 800px;
 }
 #content {
-	margin: 0.5em 180px;
+	margin: 0.5em 100px;
 	max-width: 600px;
 	background-color: rgba(0,0,0,0.1);
 	/*border-radius: 5px;*/
@@ -26,6 +27,19 @@ body{
 	margin: 0 auto;
 	overflow: auto;
 }
+#header {
+	position: relative;
+	height: 110px;
+	z-index: -1;
+}
+#header #logo {
+	position: relative;
+	background-image: url("/public/images/logo_new1.png");
+	width: 380px;
+	height: 328px;
+	background-repeat: no-repeat;
+	padding-bottom: 1em;
+}
 a {
 	color: #fff;
 }
@@ -35,8 +49,8 @@ hr{
 	border: none;
 }
 h1, h2 {
-	font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
-	font-size: 18px;
+	/*font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;*/
+	font-size: 2em;
 	font-weight: normal;
 	margin: 0;
 }
@@ -56,7 +70,7 @@ input[type=password] {
 
 .wrapper {
 	padding: 10px;
-  display: block;
+	display: block;
 }
 
 .button {
@@ -100,18 +114,6 @@ input[type=password] {
 	background-color: #fff1c6;
 	border: 1px solid #b07327;
 }
-#header {
-	position: relative;
-	height: 160px;
-	z-index: -1;
-}
-#header #logo {
-	position: relative;
-	background-image: url("/public/images/logo_new1.png");
-	width: 685px;
-	height: 564px;
-	background-repeat: no-repeat;
-}
 .greybg {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -146,7 +148,10 @@ input[type=password] {
 #countdowndiv {
 	text-align: center;
 }
-#footer{
+#footer {
 	font-size: 0.9em;
 	text-align: center;
+}
+.usermanageButton{
+  float: right;
 }

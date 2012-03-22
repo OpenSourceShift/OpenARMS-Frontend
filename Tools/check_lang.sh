@@ -28,6 +28,9 @@ for f in `ls $LANGDIR/messages.*`; do
 			echo $p is not in $f;
 		fi;
 	done;
+	echo "";
+	echo "=====================================";
+	echo "";
 done;
 
 

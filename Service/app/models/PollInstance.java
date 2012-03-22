@@ -91,6 +91,7 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	PollInstanceJSON result = new PollInstanceJSON();
     	result.id = p.id;
     	result.poll_id = p.poll.id;
+		result.question = p.poll.question;
     	result.start = p.startDateTime;
     	result.end = p.endDateTime;
 		return result;
