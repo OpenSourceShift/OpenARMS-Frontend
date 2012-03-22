@@ -25,7 +25,8 @@ public class LoginUser extends BaseController {
 	}
 	
 	public static void logout() {
-		APIClient.deauthenticate();
+		session.put("user_id", null);
+		session.put("user_secret", null);
 		Application.index();
 	}
 	

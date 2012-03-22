@@ -10,6 +10,7 @@ import play.mvc.Controller;
 public class Application extends BaseController {
 
 	public static void index() {
+		LoginUser.forward = "";
 		render();
 	}
 

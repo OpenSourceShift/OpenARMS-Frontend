@@ -56,6 +56,24 @@ public class UserController extends APIController {
 	}
 	
 	/**
+	 * Method that deauthenticates the user.
+	 * It deletes the secret for the user.
+	 * Used only when user is logged in.
+	 * @throws Exception 
+	 */
+	public static void deauthenticate() throws Exception {
+		User user = AuthBackend.getCurrentUser();
+		if (user != null) {
+			user.secret = "";
+			user.save();
+			EmptyResponse response = new EmptyResponse();
+			renderJSON(response.toJson());
+		} else {
+			throw new NotFoundException("Tried to deauthenticate a bad user");
+		}
+	}
+	
+	/**
 	 * Method that authorizes the user.
 	 * It keeps user logged in the system.
 	 * Used every time user sends any request.
