@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.List;
+
 import models.User;
 import models.Vote;
 import api.entities.VoteJSON;
@@ -40,9 +42,14 @@ public class VoteController extends APIController {
       
         //If current user is not the same as the poll creator or there is no current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
-		// TODO: Check if the user has already voted and reject if this is not supported ...
-		// TODO: Check that this is infact a vote for a choice that actually belongs to the poll!
-        vote.save();
+		
+		Vote vote2= Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
+		
+        if (vote2 == null) {
+        	vote.save();
+        } else {
+        	throw new ForbiddenException("You can't vote twice in the same Poll.");
+        }
         
         //Creates the VoteJSON Response.
         return new CreateVoteResponse(vote.toJson());
@@ -84,10 +91,10 @@ public class VoteController extends APIController {
 		}
 		
         //If current user is not the same as the poll creator or there is no current user, throws an exception
-		User u = AuthBackend.getCurrentUser();
+		/*User u = AuthBackend.getCurrentUser();
 		if (u == null || originalvote.user.id != u.id) {
 	        throw new UnauthorizedException();
-	    }
+	    }*/
 		AuthBackend.requireUser(originalvote.user);
 
 		//Takes the edited VoteJSON and creates a new Vote object with this VoteJSON.

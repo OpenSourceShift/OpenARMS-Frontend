@@ -41,12 +41,22 @@ public abstract class APIController extends Controller {
 		}
 	}
 	
+	public static class ForbiddenException extends Exception {
+		public ForbiddenException() {
+			this(null);
+		}
+		public ForbiddenException(String message) {
+			super(message);
+		}
+	}
+	
 	public static Map<Class<? extends Exception>, Integer> STATUS_CODES = new HashMap<Class<? extends Exception>, Integer>();
 	
 	static {
 		STATUS_CODES.put(Exception.class, StatusCode.INTERNAL_ERROR);
 		STATUS_CODES.put(NotFoundException.class, StatusCode.NOT_FOUND);
 		STATUS_CODES.put(UnauthorizedException.class, StatusCode.UNAUTHORIZED);
+		STATUS_CODES.put(ForbiddenException.class, StatusCode.FORBIDDEN);
 	}
 	
 	 @Catch

@@ -87,6 +87,11 @@ public class Choice extends Model implements Jsonable {
 		return latestVotes;
 	}
 	
+	/**
+	 * Method to Copy a choice from an existing one, used with copy poll to copy also the choices.
+	 * @param c -- Existing choice.
+	 * @return -- New choice.
+	 */
 	public static Choice copy (Choice c) {
 		Choice c2 = new Choice(null, c.text);
 		c2.votes = new LinkedList<Vote>();

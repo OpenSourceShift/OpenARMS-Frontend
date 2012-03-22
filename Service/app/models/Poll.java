@@ -27,7 +27,7 @@ public class Poll extends Model implements Jsonable {
 	private static final long serialVersionUID = 5276961463864101032L;
 	
 	/**
-	 * The set of charecters to use when generating admin keys.
+	 * The set of characters to use when generating admin keys.
 	 */
 	private static final String ADMINKEY_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyz";
 	/**
@@ -48,7 +48,7 @@ public class Poll extends Model implements Jsonable {
      */
     public String question;
     /**
-     * A human understanable reference that the teacher will use to
+     * A human understandable reference that the teacher will use to
      * remember the relation of the poll, i.e. a course number, subject or alike.
      */
     public String reference;
@@ -57,6 +57,11 @@ public class Poll extends Model implements Jsonable {
      */
     @Required
     public Boolean multipleAllowed;
+    /**
+     * Login required to vote?
+     */
+    @Required
+    public Boolean loginRequired;
     /**
      * All the possible choices associated with the poll.
      */
@@ -67,7 +72,7 @@ public class Poll extends Model implements Jsonable {
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "poll")
     public List<PollInstance> instances;
-
+    
     /**
      * Constructs a new Poll object.
      * This does not save it to the database, use the save method to do this.
@@ -78,10 +83,11 @@ public class Poll extends Model implements Jsonable {
                             v.count++;
      * @param email e-mail address of the poll creator
      */
-    public Poll(String token, String question, Boolean multipleAllowed) {
+    public Poll(String token, String question, Boolean multipleAllowed, Boolean loginRequired) {
         this.token = token;
         this.question = question;
         this.multipleAllowed = multipleAllowed;
+        this.loginRequired = loginRequired;
     }
     
     /**
@@ -93,6 +99,7 @@ public class Poll extends Model implements Jsonable {
     public Poll (String token, Poll toCopy) {
     	this.token = token;
     	this.multipleAllowed = toCopy.multipleAllowed;
+        this.loginRequired = toCopy.loginRequired;
     	this.question = toCopy.question;
     	this.reference = toCopy.reference;
     	
@@ -248,6 +255,7 @@ public class Poll extends Model implements Jsonable {
     	result.reference = p.reference;
     	result.question = p.question;
     	result.multipleAllowed = p.multipleAllowed;
+    	result.loginRequired = p.loginRequired;
     	if (p.admin != null) {
     	result.admin = p.admin.id;
     	}
@@ -263,7 +271,7 @@ public class Poll extends Model implements Jsonable {
      * @return PollJSON A PollJSON object that represents this poll.
      */
     public static Poll fromJson(PollJSON json) {
-    	Poll result = new Poll(json.token, json.question, json.multipleAllowed);
+    	Poll result = new Poll(json.token, json.question, json.multipleAllowed, json.loginRequired);
     	result.id = json.id;
     	result.token = json.token;
     	result.reference = json.reference;

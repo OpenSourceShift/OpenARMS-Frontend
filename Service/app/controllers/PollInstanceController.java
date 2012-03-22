@@ -243,27 +243,4 @@ public class PollInstanceController extends APIController  {
 			renderException(e);
 		}
 	}
-	public static void vote() {
-        try {
-	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-	        VoteOnPollInstanceRequest req = GsonHelper.fromJson(request.body, VoteOnPollInstanceRequest.class);
-			User u = AuthBackend.getCurrentUser();
-	        req.vote.userid = u.id;
-	        VoteController.create(req.vote);
-	        Vote vote = Vote.fromJson(req.vote);
-          
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			//User u = AuthBackend.getCurrentUser();
-			// TODO: Check if the user has already voted.
-	        vote.save();
-	        
-	        //Creates the VoteJSON Response.
-	        CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
-	    	String jsonresponse = GsonHelper.toJson(r);
-	    	renderJSON(jsonresponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-			renderException(e);
-		}
-	}
 }

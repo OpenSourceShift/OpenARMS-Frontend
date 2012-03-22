@@ -10,7 +10,18 @@
 	<div class="button"><span>&{'manage_poll'}</span></div>
 </div>
 <div class="description">
+<<<<<<< HEAD
 	<div id="join">
+=======
+	<div id="initD">
+
+  #{form @RegisterUser.showform()}
+    <input type="submit" value="&{'register.new.user'}" class="button" />
+  #{/form}
+	</div>
+
+	<div id="joinD">
+>>>>>>> 15973418ca0353157680d7f04c4da9bf843475bc
 		#{form @JoinPoll.index(), id:'joinpoll'}
 		<div class="wrapper">
 			<span id="token">
@@ -81,11 +92,9 @@
 		});
 		
 		$("#token input").focus();
-		
 		$('#token input').bind('keypress', function(e) {
 			//return (e.which != 13 && e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) ? false : true ;
 		})
-		
 		function shakeJoinPoll() {
 			$('#token').parent().effect("shake", { times:3 }, 50, function() {$('#token input').focus()});
 		}
