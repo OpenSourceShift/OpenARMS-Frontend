@@ -29,16 +29,27 @@ import api.responses.UpdatePollResponse;
 import api.responses.VoteOnPollInstanceResponse;
 
 public class ManagePoll extends BaseController {
-	public static void index() {
-    	
-		APIClient apiClient = new APIClient();
-		/** get all polls + instances for the current user */
-    	try {
-			ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(controllers.LoginUser.getCurrentUserId()));
-			renderArgs.put("pollsJson", responseUser.polls);
-			render();
-    	} catch (Exception e) {
-			e.printStackTrace();
+	public static void index(Long id) {
+		try {
+			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+			String pollToken = response.poll.token;
+			String pollReference = response.poll.reference;
+			Boolean pollMultipleAllowed = response.poll.multipleAllowed;
+			String pollQuestion = response.poll.question;
+			List<ChoiceJSON> pollChoices = response.poll.choices;
+
+			validation.required(pollToken);
+			validation.required(pollReference);
+			validation.required(pollMultipleAllowed);
+			validation.required(pollQuestion);
+			validation.required(pollChoices);
+			if (!validation.hasErrors()) {
+				render(pollToken, pollReference, pollMultipleAllowed, pollQuestion, pollChoices);
+			} else {
+				// TODO: error handling
+			}
+		} catch (Exception e) {
+			// TODO: tell the user it failed
 		}
 	}
 	
