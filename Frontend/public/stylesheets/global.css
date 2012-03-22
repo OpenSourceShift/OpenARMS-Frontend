@@ -8,18 +8,20 @@ body{
 	-khtml-user-select: none;
 	user-select: none;
 }
+#container {
+	margin: 1% auto;
+	max-width: 960px;
+}
 #content {
 	margin: 1% auto;
-	/*padding: 10px;*/
-	max-width: 960px;
+	max-width: 600px;
 	/*background-color: #404040;*/
 	border-radius: 5px;
 	/*overflow: auto;*/
 }
 #main {
-	margin: 1% auto;
+	margin: 0 auto;
 	overflow: auto;
-	max-width: 600px;
 }
 a {
 	color: #fff;
@@ -102,7 +104,6 @@ input[type=password] {
 }
 #header #logo {
 	position: relative;
-	/*left: -180px;*/
 	background-image: url("/public/images/logo_new1.png");
 	width: 685px;
 	height: 564px;
@@ -120,7 +121,7 @@ input[type=password] {
 
 #language {
 	color: #333;
-	margin: 2% 28% 1%;
+	text-align: center;
 }
 
 #language img {
