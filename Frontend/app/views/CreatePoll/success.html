@@ -6,6 +6,6 @@
 		<h1>&{'createpoll.success.header'}</h1>
 		<p>&{'createpoll.success.text'}</p>
 		<p><b>&{'manage_poll_polltoken'}</b> ${token}<br />
-		<a href="@{ManagePoll.index()}?pollID=${token}" class="button">&{'createpoll.manage_poll_now'}</a>
+		<input type="button" class="button" onClick="location.replace('@{ManagePoll.index()}?pollID=${token}')" value="&{'createpoll.manage_poll_now'}">
 	</div>
 </div>
