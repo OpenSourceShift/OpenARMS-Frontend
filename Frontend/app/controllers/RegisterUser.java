@@ -1,7 +1,11 @@
 package controllers;
 import play.mvc.Controller;
 import java.util.regex.*;
-
+import api.entities.UserJSON;
+import java.util.HashMap;
+import java.util.List;
+import api.responses.CreateUserResponse;
+import api.requests.CreateUserRequest;
 
 import com.google.gson.JsonParseException;
 
@@ -21,11 +25,25 @@ public class RegisterUser extends BaseController {
             changed = true;
         }
 
-        if(changed){
+        if(!changed){
+            UserJSON uj = new UserJSON();
+            uj.name = "Name";
+            uj.email = email;
+            uj.backend = "class models.SimpleUserAuthBinding";
+            uj.attributes = new HashMap<String, String>();
+            uj.attributes.put("password", confpassw);
+            try {
+                CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj));
+                if  (response.statusCode == 200)
+                    success();
+                else
+                    validation.addError("serverError", "Try Again");
+            } catch (Exception e) {
+                    validation.addError("serverError", "Try Again");
+            }
+        } else {
             validation.keep();
             showform();
-        } else {
-            success();
         }
 	}
     public static void showform(){
