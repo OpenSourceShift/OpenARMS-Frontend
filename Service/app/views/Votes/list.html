@@ -10,9 +10,12 @@
     </div>
 
     <div id="crudListTable">
-        #{crud.table fields:['choice','pollInstance']}
+        #{crud.table fields:['choice','poll']}
         #{crud.custom 'choice'}
-        <a href="@{Votes.show(object.pollInstance.id)}">${object.choice.text}</a>
+        <a href="@{Votes.show(object.id)}">${object.choice.text}</a>
+        #{/crud.custom}
+        #{crud.custom 'poll'}
+        ${object.pollInstance.poll.token}
         #{/crud.custom}
         #{/crud.table}
     </div>

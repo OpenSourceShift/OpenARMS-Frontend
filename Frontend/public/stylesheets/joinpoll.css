@@ -1,25 +1,29 @@
-ul{
+#main ul {
 	list-style: none;
 	padding-left: 10px;
 }
 
-li {
+#main li {
 	margin-bottom: 5px;
+	font-size: 1.2em;
 }
 
-label {
+#main label {
 	cursor: pointer;
+	width: 100%;
+	display: block;
+	padding: 0.5em;
 }
 
-input[type=radio],
-input[type=checkbox] {
+#main input[type=radio],
+#main input[type=checkbox] {
 	margin-right: 10px;
 }
 
 #main {
-	margin: 5% 0 0;
+	margin-top: 1em;
 }
 
-.button {
+#main .button {
 	float: right;
 }

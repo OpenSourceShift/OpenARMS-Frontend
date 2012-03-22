@@ -12,7 +12,7 @@
     <div id="crudListTable">
         #{crud.table fields:['poll','text']}
 	#{crud.custom 'poll'}
-	<a href="@{Choices.show(object.poll.id)}">${object.poll.token}</a>
+	<a href="@{Choices.show(object.id)}">${object.poll.token}</a>
 	#{/crud.custom}
 	#{/crud.table}
     </div>

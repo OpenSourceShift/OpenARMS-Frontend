@@ -99,5 +99,6 @@ public class APIClientFullCreate extends UnitTest {
         	failIfNotSuccessful(vresponse);
         	assertNotNull(vresponse.vote.id);
         	assertEquals(vresponse.vote.choiceid, v.choiceid);
-    	}	
+    	}
+	}
 }

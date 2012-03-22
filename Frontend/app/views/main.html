@@ -19,12 +19,17 @@
         #{/if}
     </head>
 <body>
-
-<div id="container">
-  #{form @RegisterUser.showform(), id:'registerButton' }
+	<div id="container">
+		<div id="header">
+			#{if loggedIn}
+				Logged in.
+			#{/if}
+			#{else}
+      #{form @RegisterUser.showform(), id:'registerButton' }
        <input type="submit" value="&{'register.new.user'}" class="button" />
-     #{/form}
-    <div id="header">
+       #{/form}
+			#{/else}
+			<!-- <a href="/"><img src="/public/images/logo_transparent_hd2.png" /></a> -->
 			<div id="logo"></div>
 		</div>
 		<div id="content">
