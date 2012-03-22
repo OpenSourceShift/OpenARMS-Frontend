@@ -1,7 +1,13 @@
 package controllers;
 import play.mvc.Controller;
+
+import java.util.HashMap;
 import java.util.regex.*;
 
+
+import api.entities.UserJSON;
+import api.requests.CreateUserRequest;
+import api.responses.CreateUserResponse;
 
 import com.google.gson.JsonParseException;
 
