@@ -9,6 +9,9 @@ body{
 	-khtml-user-select: none;
 	user-select: none;
 }
+input,select,textarea {
+	font-family: 'Ubuntu', sans-serif;
+}
 #container {
 	margin: 1% auto;
 	max-width: 800px;
@@ -85,7 +88,7 @@ input[type=password] {
 	min-width: 100px;
 	min-height: 25px;
 	padding: 0.5em;
-	margin: 0.2em;
+	margin: 0.3em;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;

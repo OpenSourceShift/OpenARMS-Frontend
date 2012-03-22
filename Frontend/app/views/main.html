@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=960, user-scalable=yes" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/global.css'}" />
         #{list items:moreStyles, as:'style'}
-        <link href="@{'/public/stylesheets/'}/${style}.css" rel="stylesheet" type="text/css" media="screen" />
+        <!-- Added by moreStyles: --><link href="@{'/public/stylesheets/'}/${style}.css" rel="stylesheet" type="text/css" media="screen" />
         #{/list}
 
         <link rel="shortcut icon" type="image/png" href="@{'/public/images/favicon.png'}">
