@@ -27,7 +27,7 @@ import api.responses.Response;
 import api.responses.UpdatePollResponse;
 import api.responses.VoteOnPollInstanceResponse;
 
-public class ManagePoll extends Controller {
+public class ManagePoll extends BaseController {
 	public static void index(Long id) {
 		try {
 			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));

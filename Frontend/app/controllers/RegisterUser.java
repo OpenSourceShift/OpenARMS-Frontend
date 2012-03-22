@@ -5,7 +5,7 @@ import java.util.regex.*;
 
 import com.google.gson.JsonParseException;
 
-public class RegisterUser extends Controller {
+public class RegisterUser extends BaseController {
 	public static void getdata(String email, String passw, String confpassw){
         if(!checkpassw(passw, confpassw)){
             validation.addError("passwDontMatch", "Passwords doesn't match");

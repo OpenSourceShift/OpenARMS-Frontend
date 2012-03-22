@@ -7,7 +7,7 @@ import play.Play;
 import play.i18n.Lang;
 import play.mvc.Controller;
 
-public class Application extends Controller {
+public class Application extends BaseController {
 
 	public static void index() {
 		render();

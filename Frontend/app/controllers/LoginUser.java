@@ -11,9 +11,10 @@ import api.requests.AuthenticateUserRequest;
 import api.requests.CreatePollRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollResponse;
+import play.libs.Crypto;
 import play.mvc.Controller;
 
-public class LoginUser extends Controller {
+public class LoginUser extends BaseController {
 	public static String forward = "";
 	public static String pollToken = "";
 	
@@ -21,6 +22,13 @@ public class LoginUser extends Controller {
 		if (email == null)
 			email = "";
 		render(email);
+	}
+	
+	public static void logout() {
+		// TODO: Maybe tell the service to remove the users secret.
+		session.put("user_id", null);
+		session.put("user_secret", null);
+		Application.index();
 	}
 	
 	public static void submit(String email, String password) {
