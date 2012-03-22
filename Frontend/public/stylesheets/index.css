@@ -55,10 +55,17 @@
   float: left;
 }
 .setopt {
-  width: 100%;
-  height: 50px;
-  font-size: 14pt;
-  padding-top: 10px;
+	width: 100%;
+	height: 3.5em;
+	line-height: 3.5em;
+	font-size: 14pt;
+	padding: 0.1em;
+}
+.setopt span {
+    display: -moz-inline-box;  /* FF2 or lower */
+    display: inline-block;     /* FF3, Opera, Safari */
+    line-height: normal;
+    vertical-align: middle;  
 }
 .description {
   width: 57%;
