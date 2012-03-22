@@ -65,7 +65,7 @@ public class JoinPoll extends BaseController {
 				CreateVoteResponse response = (CreateVoteResponse) APIClient.getInstance().send(new CreateVoteRequest(vote));
 				if (response.statusCode != Http.StatusCode.CREATED) {
 					// FIXME: Proper error page here?
-					renderText("You already voted!");
+					forbidden("You have already voted once for this poll!");
 					break;
 				}
 			}

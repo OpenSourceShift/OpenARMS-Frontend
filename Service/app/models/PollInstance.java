@@ -94,6 +94,7 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		result.question = p.poll.question;
     	result.start = p.startDateTime;
     	result.end = p.endDateTime;
+    	result.votes = new LinkedList();
 		return result;
 	}
 	

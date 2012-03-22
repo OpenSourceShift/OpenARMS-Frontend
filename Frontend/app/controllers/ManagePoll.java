@@ -30,53 +30,42 @@ import api.responses.UpdatePollResponse;
 import api.responses.VoteOnPollInstanceResponse;
 
 public class ManagePoll extends BaseController {
-	public static void index(Long id) {
-		try {
-			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
-			String pollToken = response.poll.token;
-			String pollReference = response.poll.reference;
-			Boolean pollMultipleAllowed = response.poll.multipleAllowed;
-			String pollQuestion = response.poll.question;
-			List<ChoiceJSON> pollChoices = response.poll.choices;
-
-			validation.required(pollToken);
-			validation.required(pollReference);
-			validation.required(pollMultipleAllowed);
-			validation.required(pollQuestion);
-			validation.required(pollChoices);
-			if (!validation.hasErrors()) {
-				render(pollToken, pollReference, pollMultipleAllowed, pollQuestion, pollChoices);
-			} else {
-				// TODO: error handling
-			}
-		} catch (Exception e) {
-			// TODO: tell the user it failed
+	public static void index() {
+    	
+		APIClient apiClient = new APIClient();
+		/** get all polls + instances for the current user */
+    	try {
+			ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(controllers.LoginUser.getCurrentUserId()));
+			renderArgs.put("pollsJson", responseUser.polls);
+			render();
+    	} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
-	
+
 	public static void update(String token, String reference, Boolean multipleAllowed, String question, List<ChoiceJSON> choices) {
 		validation.required(reference);
 		validation.required(multipleAllowed);
 		validation.required(question);
 		validation.required(choices);
-		
+
 		if (!validation.hasErrors()) {
 			// TODO: error handling
 			}
-		
+
 		PollJSON pollJson = new PollJSON();
 		pollJson.choices = choices;
 		pollJson.multipleAllowed = multipleAllowed;
 		pollJson.question = question;
 		pollJson.reference = reference;
-		
+
 		try {
 			UpdatePollResponse response = (UpdatePollResponse) APIClient.send(new UpdatePollRequest(pollJson));
 		} catch (Exception e) {
 			// TODO: tell the user it failed
 		}
 	}
-	
+
 
 
 	public static void activate(Date start, Date end) {
@@ -84,10 +73,10 @@ public class ManagePoll extends BaseController {
 		PollInstanceJSON pollInstance = new PollInstanceJSON();
 		pollInstance.end = end;
 		pollInstance.start = start;
-		
+
 		validation.required(end);
 		validation.required(start);
-		
+
 		if (!validation.hasErrors()) {
 			try {
 				CreatePollInstanceResponse response = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pollInstance));
