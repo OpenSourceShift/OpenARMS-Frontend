@@ -12,7 +12,7 @@
 		#{/ifError}
 		<!--input size="30" type="text" name="question" value="${question}" /-->
 		<div class="yui-skin-sam">
-			<textarea class="editor" id="question" name="question">${question}</textarea>
+			<textarea class="editor" id="question" name="question">${poll.question}</textarea>
 		</div>
 	</div>
 
@@ -21,7 +21,7 @@
 		#{ifError 'reference'}
 			<p class="formError">#{error 'reference' /}</p>
 		#{/ifError}
-		<input size="30" type="text" name="reference" value="${reference}" />
+		<input size="30" type="text" name="reference" value="${poll.reference}" />
 	</div> 
 	
 	<div class="labeledinput">
@@ -129,7 +129,7 @@ $(document).ready(function() {
 	questionEditor.render();
 	editors.push(questionEditor);
 	
-	var choices = ${choices.raw()};
+	var choices = ${choicesJson.raw()};
 	for(c in choices) {
 		addChoice(choices[c].text);
 	}
