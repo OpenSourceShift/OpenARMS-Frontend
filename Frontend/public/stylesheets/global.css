@@ -8,26 +8,31 @@ body{
 	-khtml-user-select: none;
 	user-select: none;
 }
-#content {
+#container {
 	margin: 1% auto;
-	/*padding: 10px;*/
 	max-width: 960px;
-	/*background-color: #404040;*/
-	border-radius: 5px;
+}
+#content {
+	margin: 0.5em 180px;
+	max-width: 600px;
+	background-color: rgba(0,0,0,0.1);
+	/*border-radius: 5px;*/
+	border-top: 0.15em solid #996500;
+	border-bottom: 0.15em solid #996500;
 	/*overflow: auto;*/
+	padding: 0.5em;
 }
 #main {
-	margin: 1% auto;
+	margin: 0 auto;
 	overflow: auto;
-	max-width: 600px;
 }
 a {
 	color: #fff;
 }
 hr{
-  background-color: #FFF;
-  height: 1px;
-  border: none;
+	background-color: #FFF;
+	height: 1px;
+	border: none;
 }
 h1, h2 {
 	font-family: "Lucida Grande",Tahoma,"Bitstream Vera Sans",Arial,sans-serif;
@@ -102,7 +107,6 @@ input[type=password] {
 }
 #header #logo {
 	position: relative;
-	/*left: -180px;*/
 	background-image: url("/public/images/logo_new1.png");
 	width: 685px;
 	height: 564px;
@@ -120,7 +124,7 @@ input[type=password] {
 
 #language {
 	color: #333;
-	margin: 2% 28% 1%;
+	text-align: center;
 }
 
 #language img {
