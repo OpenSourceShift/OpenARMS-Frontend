@@ -1,0 +1,19 @@
+h1 {
+	margin-bottom: 10px;
+}
+li {
+	margin-bottom: 5px;
+}
+
+.button {
+	display: inline;
+}
+
+li.answerContainer {
+margin-bottom:12px;
+	
+}
+
+#answers {
+	padding: 0em 0em 0em 0em;
+}
