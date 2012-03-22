@@ -1,4 +1,4 @@
-#pollid {
+#token {
 	background-color: #fff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -13,10 +13,10 @@
 	position: relative;
 	white-space: nowrap;
 }
-#pollid span {
+#token span {
 	color: #666;
 }
-#pollid input {
+#token input {
 	font-size: 18px;
 	border: 0;
 	outline-width:0;
@@ -35,7 +35,7 @@
 	overflow: hidden;
 	position: relative;
 	margin-top: 5%;
-  padding: 5px;
+	padding: 5px;
 }
 #bottomoptions .button {
 	position: absolute;
@@ -50,35 +50,35 @@
 #managepoll .labeledinput input {
 	width: 45%;
 }
-.tools{
+.tools {
   width: 35%;
   float: left;
 }
-.setopt{
-  width: 100%;
-  height: 50px;
-  font-size: 14pt;
-  padding-top: 10px;
+.tools .button {
+	width: 100%;
+	height: 3.5em;
+	line-height: 3.5em;
+	font-size: 14pt;
+	padding: 0.1em;
 }
-.description{
+.tools .button span {
+    display: -moz-inline-box; /* FF2 or lower */
+    display: inline-block; /* FF3, Opera, Safari */
+    line-height: normal;
+    vertical-align: middle;
+}
+.description {
   width: 57%;
   float: left;
   margin: 1% 2% 0 2%;
   border-radius: 5px;
   float: right;
 }
-.description > #joinD, #createD, #manageD{
+.description > #join, #create, #manage, #register {
   display: none;
 }
-#initD{
-  font-size: 15pt;
-  text-align: center;
-}
-.initD-hovered{
-  text-decoration: underline;
-  color: #e8e8e8;
-  cursor: pointer;
-}
-#register{
-  display: none;
+
+/* This makes stuff look nice when the #token shakes */
+#join {
+	overflow: hidden;
 }
