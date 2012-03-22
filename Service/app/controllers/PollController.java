@@ -136,6 +136,9 @@ public class PollController extends APIController {
         Poll editedpoll = Poll.fromJson(req.poll);
 
         // Changes the old fields for the new ones.
+        if (editedpoll.loginRequired != null) {
+        	originalpoll.loginRequired = editedpoll.loginRequired;
+        }
         if (editedpoll.question != null) {
         	originalpoll.question = editedpoll.question;
         }
