@@ -54,18 +54,18 @@
   width: 35%;
   float: left;
 }
-.setopt {
+.tools .button {
 	width: 100%;
 	height: 3.5em;
 	line-height: 3.5em;
 	font-size: 14pt;
 	padding: 0.1em;
 }
-.setopt span {
-    display: -moz-inline-box;  /* FF2 or lower */
-    display: inline-block;     /* FF3, Opera, Safari */
+.tools .button span {
+    display: -moz-inline-box; /* FF2 or lower */
+    display: inline-block; /* FF3, Opera, Safari */
     line-height: normal;
-    vertical-align: middle;  
+    vertical-align: middle;
 }
 .description {
   width: 57%;
@@ -74,23 +74,11 @@
   border-radius: 5px;
   float: right;
 }
-.description > #joinD, #createD, #manageD {
-  display: none;
-}
-#initD {
-  font-size: 15pt;
-  text-align: center;
-}
-.initD-hovered {
-  text-decoration: underline;
-  color: #e8e8e8;
-  cursor: pointer;
-}
-#register {
+.description > #join, #create, #manage, #register {
   display: none;
 }
 
 /* This makes stuff look nice when the #token shakes */
-#joinD {
+#join {
 	overflow: hidden;
 }
