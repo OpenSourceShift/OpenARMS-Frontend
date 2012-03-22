@@ -78,6 +78,7 @@ interested_2=please sign up on our mailing list
 cancel=Cancel
 register=Register
 user.login=Login
+user.logout=Logout
 register.new.user=Register
 registration.success=Your registration was successful!
 go.back=Back
