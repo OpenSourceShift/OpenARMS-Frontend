@@ -64,7 +64,7 @@ public class VoteController extends APIController {
 					throw new ForbiddenException("You can't vote twice for the same Choice.");
 				}
 			}
-		} else if (!vote.pollInstance.poll.loginRequired) {
+		} else if (vote.pollInstance.poll.loginRequired == null || !vote.pollInstance.poll.loginRequired) {
 			vote.save();
 		} else {
 			throw new UnauthorizedException("This action requires authentication.");

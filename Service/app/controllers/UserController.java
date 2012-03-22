@@ -90,6 +90,13 @@ public class UserController extends APIController {
 	public static void create() throws Exception {
     	// Takes the UserJSON and creates a new User object with this UserJSON.
         CreateUserRequest req = GsonHelper.fromJson(request.body, CreateUserRequest.class);
+        
+        // Check if the email already exists in the system
+        Long exists = User.count("byEmail", req.user.email);
+        if (exists > 0) {
+        	throw new ForbiddenException("User already exists in the system");
+        }
+        
         User user = User.fromJson(req.user);
      	user.userAuth.save();
         user.save();

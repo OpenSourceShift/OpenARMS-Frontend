@@ -14,9 +14,9 @@
         <script src="@{'/public/javascripts/jquery-1.4.2.min.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/jquery-ui-1.8.11.min.js'}" type="text/javascript" charset="utf-8"></script>
         <script src="@{'/public/javascripts/countdown.js'}" type="text/javascript" charset="utf-8"></script>
-        #{list items:moreScripts, as:'script'}
-        <script src="@{'/public/javascripts'}/${script}.js" type="text/javascript" charset="utf-8"></script>
-        #{/list}
+        #{if moreScripts}
+        	<script src="@{'/public/javascripts/'}/#{get 'moreScripts' /}.js" type="text/javascript" charset="utf-8"></script>
+        #{/if}
     </head>
 <body>
   <div id="container">
@@ -27,7 +27,7 @@
 
 			#{/if} #{else}
         #{form @RegisterUser.showform(), class:'usermanageButton' }
-          <input type="submit" value="&{'register.new.user'}" class="button" />
+          <input type="submit" value="&{'user.register'}" class="button" />
         #{/form}
 
         #{form @LoginUser.index(), class:'usermanageButton' }
