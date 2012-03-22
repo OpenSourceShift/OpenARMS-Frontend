@@ -1,6 +1,7 @@
 package controllers;
 import play.Logger;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Http.StatusCode;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
@@ -9,6 +10,7 @@ import api.requests.CreateVoteRequest;
 import api.requests.ReadPollInstanceByTokenRequest;
 import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
+import api.responses.CreateVoteResponse;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
 
@@ -62,7 +64,12 @@ public class JoinPoll extends BaseController {
 				VoteJSON vote = new VoteJSON();
 				vote.choiceid = l;
 				vote.pollInstanceid = pollinstance_id;
-				APIClient.getInstance().send(new CreateVoteRequest(vote));
+				CreateVoteResponse response = (CreateVoteResponse) APIClient.getInstance().send(new CreateVoteRequest(vote));
+				if (response.statusCode != Http.StatusCode.CREATED) {
+					// FIXME: Proper error page here?
+					renderText("You already voted!");
+					break;
+				}
 			}
 			success(pollinstance_id, poll_id);
 		}

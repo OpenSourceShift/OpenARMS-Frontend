@@ -1,5 +1,6 @@
 package controllers;
 import play.mvc.Controller;
+import play.mvc.Http;
 
 import java.util.HashMap;
 import java.util.regex.*;
@@ -14,6 +15,10 @@ import com.google.gson.JsonParseException;
 public class RegisterUser extends BaseController {
 	public static void getdata(String name, String email, String passw, String confpassw) throws Exception {
 		boolean changed = false;
+		if (!checkname(name)) {
+			validation.addError("nameError", "Invalid user name");
+		}
+		
 		if(!checkpassw(passw, confpassw)){
 			validation.addError("passwDontMatch", "Passwords doesn't match");
 			changed = true;
@@ -29,13 +34,13 @@ public class RegisterUser extends BaseController {
 
 		if(!changed){
 			UserJSON uj = new UserJSON();
-			uj.name = "Name";
+			uj.name = name;
 			uj.email = email;
 			uj.backend = "class models.SimpleUserAuthBinding";
 			uj.attributes = new HashMap<String, String>();
 			uj.attributes.put("password", confpassw);
 			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj));
-			if  (response.statusCode == 200)
+			if  (response.statusCode == Http.StatusCode.CREATED)
 				success();
 			else {
 				validation.addError("emailTaken", "This email is already taken");
@@ -47,6 +52,12 @@ public class RegisterUser extends BaseController {
 			showform();
 		}
 	}
+	// TODO: proper name check, maybe against service?
+	private static boolean checkname(String name) {
+		if (name.length() < 3)
+			return false;
+		return true;
+	}
 	public static void showform(){
 		render();
 	}
@@ -55,6 +66,7 @@ public class RegisterUser extends BaseController {
 	}
 
 	//does passwords match?
+	// TODO: proper password checks
 	public static boolean checkpassw(String passw, String confpassw){
 		return passw.equals(confpassw);
 	}
@@ -63,6 +75,7 @@ public class RegisterUser extends BaseController {
 		int length = passw.length();
 		return (length > 4);
 	}
+	// TODO: proper email validation check, against the service also?
 	public static boolean checkemail(String email) {
 		Pattern p = Pattern.compile(".+@.+\\.[a-z]+");
 		Matcher m = p.matcher(email);
