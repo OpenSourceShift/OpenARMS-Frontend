@@ -81,7 +81,7 @@ $(function() {
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 	
 	function loadData(chart) {
-	    $.getJSON('/api/pollinstance/${_pollInstance.id}', function(data) {
+	    $.getJSON('/api/pollinstance/${pollinstance_id}', function(data) {
 	    	var vote_count = data.pollinstance.vote_count;
 	    	var votes = [];
 	    	for(var v in data.pollinstance.votes) {
@@ -124,7 +124,7 @@ $(function() {
 			}
 		},
 		tooltip: {
-			formatter: function() {
+			formatter: functio	n() {
 				yInVotes = Math.round(this.y*vote_count/100);
 				return yInVotes +' &{'joinpoll.success.votes'}';
 			}
