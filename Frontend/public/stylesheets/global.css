@@ -11,10 +11,10 @@ body{
 }
 #container {
 	margin: 1% auto;
-	max-width: 960px;
+	max-width: 800px;
 }
 #content {
-	margin: 0.5em 180px;
+	margin: 0.5em 100px;
 	max-width: 600px;
 	background-color: rgba(0,0,0,0.1);
 	/*border-radius: 5px;*/
@@ -26,6 +26,19 @@ body{
 #main {
 	margin: 0 auto;
 	overflow: auto;
+}
+#header {
+	position: relative;
+	height: 110px;
+	z-index: -1;
+}
+#header #logo {
+	position: relative;
+	background-image: url("/public/images/logo_new1.png");
+	width: 380px;
+	height: 328px;
+	background-repeat: no-repeat;
+	padding-bottom: 1em;
 }
 a {
 	color: #fff;
@@ -100,19 +113,6 @@ input[type=password] {
 	color: #b07327;
 	background-color: #fff1c6;
 	border: 1px solid #b07327;
-}
-#header {
-	position: relative;
-	height: 160px;
-	z-index: -1;
-}
-#header #logo {
-	position: relative;
-	background-image: url("/public/images/logo_new1.png");
-	width: 685px;
-	height: 564px;
-	background-repeat: no-repeat;
-	padding-bottom: 1em;
 }
 .greybg {
 	-webkit-border-radius: 5px;
