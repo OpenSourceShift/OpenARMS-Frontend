@@ -71,4 +71,6 @@ add.email=Your Email
 add.passw=Password
 add.confirm.passw=Confirm Password
 cancel=Cancel
-register=Register
+user.login=Login
+user.logout=Logout
+user.register=Register
