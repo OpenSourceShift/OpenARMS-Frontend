@@ -21,10 +21,17 @@
 <body>
   <div id="container">
     #{if loggedIn}
-    <!--somecode-->
+            #{form @LoginUser.logout(), class:'usermanageButton' }
+            <input type="submit" value="&{'user.logout'}" class="button" />
+        #{/form}
+
 			#{/if} #{else}
-        #{form @RegisterUser.showform(), id:'registerButton' }
+        #{form @RegisterUser.showform(), class:'usermanageButton' }
           <input type="submit" value="&{'register.new.user'}" class="button" />
+        #{/form}
+
+        #{form @LoginUser.index(), class:'usermanageButton' }
+          <input type="submit" value="&{'user.login'}" class="button" />
         #{/form}
 			#{/else}
 		<div id="header">
