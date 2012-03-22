@@ -4,25 +4,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
-import javax.persistence.*;
 
-import org.hibernate.cfg.AnnotatedClassType;
-
-import api.responses.CreatePollResponse;
-import api.entities.ChoiceJSON;
-import api.entities.Jsonable;
-import api.entities.PollJSON;
-import api.helpers.GsonSkip;
-
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import play.data.validation.Required;
 import play.data.validation.Unique;
-import play.db.jpa.*;
+import play.db.jpa.Model;
+import api.entities.ChoiceJSON;
+import api.entities.Jsonable;
+import api.entities.PollJSON;
 
 /**
  * Model class for a poll question. This is related to answer one-to-many
@@ -253,6 +247,7 @@ public class Poll extends Model implements Jsonable {
     	result.token = p.token;
     	result.reference = p.reference;
     	result.question = p.question;
+    	result.multipleAllowed = p.multipleAllowed;
     	if (p.admin != null) {
     	result.admin = p.admin.id;
     	}

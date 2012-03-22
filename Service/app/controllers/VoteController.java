@@ -41,6 +41,7 @@ public class VoteController extends APIController {
         //If current user is not the same as the poll creator or there is no current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
 		// TODO: Check if the user has already voted and reject if this is not supported ...
+		// TODO: Check that this is infact a vote for a choice that actually belongs to the poll!
         vote.save();
         
         //Creates the VoteJSON Response.
