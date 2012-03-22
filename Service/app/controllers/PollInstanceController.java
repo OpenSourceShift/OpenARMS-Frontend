@@ -85,7 +85,7 @@ public class PollInstanceController extends APIController  {
     		VoteSummaryJSON summary = new VoteSummaryJSON();
 			summary.choice_id = c.id;
 			summary.choice_text = c.text;
-			summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
+			summary.count = Vote.count("pollInstance.id = ? and choice.id = ?", pi.id, c.id);
 			vote_count += summary.count;
 			// Add it to the result.
     		r.pollinstance.votes.add(summary);

@@ -19,10 +19,11 @@
         #{/if}
     </head>
 <body>
-  	<div id="content">
-      <div id="header">
-      	<a href="/"><img src="/public/images/logo_transparent_hd2.png" /></a>
-      </div>
+	<div id="content">
+		<div id="header">
+			<!-- <a href="/"><img src="/public/images/logo_transparent_hd2.png" /></a> -->
+			<div id="logo"></div>
+		</div>
       <hr />
       #{doLayout /}
 
@@ -39,7 +40,7 @@
 				<img src="@{'/public/images/flags/es.png'}" title="Español"/>
 				<img src="@{'/public/images/flags/tr.png'}" title="Türkçe"/>
       </div>
-      <span id="footer">this is footer with copyright ©</span>
+      <div id="footer">If you feel interested in the project, please <a href="https://docs.google.com/spreadsheet/viewform?formkey=dHZicWcwdFl3WEhJR0gtR2szTzlzbnc6MQ#gid=0" target="_blank">sign up on your mailinglist</a>!</div>
     </div>
     <script type="text/javascript">
 		$(document).ready(function(){
