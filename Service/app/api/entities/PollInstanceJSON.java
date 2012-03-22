@@ -5,6 +5,7 @@ import java.util.List;
 
 public class PollInstanceJSON extends BaseModelJSON {
 	public Long poll_id;
+	public String question;
 	public Long id;
 	public Date start;
     public Date end;
