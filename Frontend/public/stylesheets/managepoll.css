@@ -34,6 +34,10 @@
 	clear: both;
 }
 
+#voteCountLabel {
+	text-align: center;
+}
+
 
 .managepollforuser {
   width: 350px;
