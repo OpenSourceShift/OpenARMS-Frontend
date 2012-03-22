@@ -2,7 +2,6 @@ package controllers;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
@@ -43,6 +42,17 @@ public class ManagePoll extends BaseController {
 		}
 	}
 	
+	public static void poll(Long id) throws Exception {
+		APIClient apiClient = new APIClient();
+		ReadPollResponse responsePoll = (ReadPollResponse) apiClient.sendRequest(new ReadPollRequest(id));
+		List<ChoiceJSON> choices = responsePoll.poll.choices;
+		boolean loginRequired = responsePoll.poll.loginRequired;
+		boolean multipleAllowed = responsePoll.poll.multipleAllowed;
+		String question = responsePoll.poll.question;
+		String reference = responsePoll.poll.reference;
+		render(choices, loginRequired, multipleAllowed, question, reference);
+	}
+	
 	public static void update(String token, String reference, Boolean multipleAllowed, String question, List<ChoiceJSON> choices) {
 		validation.required(reference);
 		validation.required(multipleAllowed);
@@ -66,8 +76,6 @@ public class ManagePoll extends BaseController {
 		}
 	}
 	
-
-
 	public static void activate(Date start, Date end) {
 		// TODO: this! (activate/instantiate pollinstance with start and end time
 		PollInstanceJSON pollInstance = new PollInstanceJSON();
