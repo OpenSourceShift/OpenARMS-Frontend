@@ -25,9 +25,7 @@ public class LoginUser extends BaseController {
 	}
 	
 	public static void logout() {
-		// TODO: Maybe tell the service to remove the users secret.
-		session.put("user_id", null);
-		session.put("user_secret", null);
+		APIClient.deauthenticate();
 		Application.index();
 	}
 	

@@ -219,7 +219,14 @@ public class APIClient extends Controller {
 			session.put("user_secret", Crypto.encryptAES(res.user.secret));
 			return true;
 		} else {
+			deauthenticate();
 			return false;
 		}
+	}
+	
+	public static void deauthenticate() {
+		// TODO: Maybe tell the service to remove the users secret.
+		session.put("user_id", null);
+		session.put("user_secret", null);
 	}
 }
