@@ -42,6 +42,7 @@ public class VoteController extends APIController {
       
         //If current user is not the same as the poll creator or there is no current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
+		
 		Vote vote2= Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
 		
         if (vote2 == null) {
