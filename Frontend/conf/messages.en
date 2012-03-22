@@ -66,6 +66,7 @@ managepoll.pollstatistics.text=If you wish to see the statistics for your poll, 
 managepoll.activate.pollStarted.header=Poll %s started!
 managepoll.activate.pollStarted.text=Go to <b>openarms.dk/%s</b> to vote, or enter <b>%s</b> into the android client.
 want.sign.up=I want to sign up
+add.name=User Name
 add.email=Your Email
 add.passw=Password
 add.confirm.passw=Confirm Password

@@ -4,6 +4,10 @@
 <div id="main">
   <form action="getdata" method="post" id="registrationForm">
     <div class="labeledinput">
+		  <label>&{'add.name'}</label>
+		  <input type="text" name="name" value="" autocomplete="off" autofocus="autofocus" />
+	</div>
+    <div class="labeledinput">
 		  <label>&{'add.email'}</label>
 		  <input type="text" name="email" value="" autocomplete="off" autofocus="autofocus" />
 	  </div>
@@ -30,6 +34,9 @@
     #{ifError 'validatePass'}
       <p class="formError registrationError">&{'wrong.passw'}</p>
     #{/ifError}
+    #{ifError 'emailTaken'}
+      <p class="formError registrationError">&{'email.taken'}</p>
+    #{/ifError}    
   </div>
 </div>
 
