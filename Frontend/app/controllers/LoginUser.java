@@ -15,6 +15,7 @@ import play.mvc.Controller;
 
 public class LoginUser extends Controller {
 	public static String forward = "";
+	public static String pollToken = "";
 	
 	public static void index(String email) {
 		if (email == null)
@@ -43,6 +44,8 @@ public class LoginUser extends Controller {
 			if (APIClient.authenticateSimple(email, password)) {
 				if (forward.equals("createpoll"))
 					CreatePoll.index("", null);
+				if (forward.equals("joinpoll"))
+					JoinPoll.index(pollToken);
 				Application.index();
 			}
 			else {
