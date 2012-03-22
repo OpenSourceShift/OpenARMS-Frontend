@@ -24,16 +24,11 @@ public class VoteController extends APIController {
 	 * @throws Exception 
 	 */
 	public static void create() throws Exception {
-		//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-		CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
-		User u = AuthBackend.getCurrentUser();
-		if (u==null)
-			req.vote.userid = (long) 0;
-		else
-			req.vote.userid = u.id;
-		CreateVoteResponse res = create(req.vote);
-		String jsonresponse = GsonHelper.toJson(res);
-		renderJSON(jsonresponse);
+    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
+        CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
+        CreateVoteResponse res = create(req.vote);
+    	String jsonresponse = GsonHelper.toJson(res);
+    	renderJSON(jsonresponse);
 	}
 
 	/**
@@ -41,22 +36,27 @@ public class VoteController extends APIController {
 	 * (Helper function to be called by other controllers)
 	 */
 	public static CreateVoteResponse create(VoteJSON voteJson) throws Exception {
-		Vote vote = Vote.fromJson(voteJson);
-
-		//If current user is not the same as the poll creator or there is no current user, throws an exception
+        Vote vote = Vote.fromJson(voteJson);
+      
+        //If current user is not the same as the poll creator or there is no current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
 		if (u != null) {
+			vote.user = u;
 			Vote vote2= Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
-
-			if (vote2 == null) {
-				vote.save();
-			} else {
-				throw new ForbiddenException("You can't vote twice in the same Poll.");
-			}
+			
+	        if (vote2 == null) {
+	        	vote.save();
+	        } else {
+	        	throw new ForbiddenException("You can't vote twice in the same Poll.");
+	        }
+		} else if (!vote.pollInstance.poll.loginRequired){
+			vote.save();
+		} else {
+			throw new UnauthorizedException("This action requires authentication.");
 		}
-
-		//Creates the VoteJSON Response.
-		return new CreateVoteResponse(vote.toJson());
+        
+        //Creates the VoteJSON Response.
+        return new CreateVoteResponse(vote.toJson());
 	}
 
 	/**
