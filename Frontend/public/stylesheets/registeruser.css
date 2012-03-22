@@ -1,8 +1,13 @@
 #registrationForm{
   float: left;
-  margin-right: 3%;
+  margin-right: 1%;
+}
+#errors{
+  padding-top: 7px;
+  float: left;
 }
 .registrationError{
-  float: left;
+  clear: both;
+  margin-bottom: 10px;
 }
 
