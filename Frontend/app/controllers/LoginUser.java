@@ -17,7 +17,7 @@ import play.libs.Crypto;
 import play.mvc.Controller;
 
 public class LoginUser extends BaseController {
-	public static String forward = "";
+	//public static String forward = "";
 	public static String pollToken = "";
 	
 	public static void index(String email) {
@@ -49,35 +49,38 @@ public class LoginUser extends BaseController {
 			params.flash();
 			validation.keep();
 			index(email);
-			return;
-		}
-		
-		// TODO: Check if the email provided belongs to an existing user
-		// If yes: Redirect the user to the login page - save the poll somewhere temporarily.
-		// If no: Create a new user and create the poll, and bind these two together.
-
-		try {
-			if (APIClient.authenticateSimple(email, password)) {
-				if (forward.equals("createpoll"))
-					CreatePoll.index("", null);
-				if (forward.equals("joinpoll"))
-					JoinPoll.index(pollToken);
-				Application.index();
-			}
-			else {
+		} else {
+			try {
+				if (APIClient.authenticateSimple(email, password)) {
+					// Go to the page.
+					String redirectTo = session.get("page_prior_to_login");
+					if(redirectTo == null) {
+						Application.index();
+					} else {
+						redirect(redirectTo);
+					}
+					/*
+					if (forward.equals("createpoll"))
+						CreatePoll.index("", null);
+					if (forward.equals("joinpoll"))
+						JoinPoll.index(pollToken);
+					Application.index();
+					*/
+				} else {
+					params.flash();
+					validation.addError("invalid", "Invalid email or password.");
+					validation.keep();
+					index(email);
+				}
+			} catch (Exception e) {
+				// It failed!
+				// TODO: Tell the user!
+				//e.printStackTrace();
 				params.flash();
-				validation.addError("invalid", "Invalid email or password.");
+				validation.addError(null, e.getMessage());
 				validation.keep();
 				index(email);
 			}
-		} catch (Exception e) {
-			// It failed!
-			// TODO: Tell the user!
-			//e.printStackTrace();
-			params.flash();
-			validation.addError(null, e.getMessage());
-			validation.keep();
-			index(email);
 		}
 	}
 	
