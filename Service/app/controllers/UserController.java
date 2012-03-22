@@ -3,6 +3,8 @@ package controllers;
 import java.util.LinkedList;
 import java.util.List;
 
+import play.mvc.Http;
+
 import models.Choice;
 import models.Poll;
 import models.PollInstance;
@@ -110,7 +112,7 @@ public class UserController extends APIController {
         //Creates the UserJSON Response.
         CreateUserResponse response2 = new CreateUserResponse(user.toJson());
     	String jsonResponse = GsonHelper.toJson(response2);
-    	System.out.println(jsonResponse);
+		response.status = Http.StatusCode.CREATED;
     	renderJSON(jsonResponse);
 	}
 	
