@@ -145,21 +145,6 @@ var myConfig = {
                     { type: 'push', label: 'Italic', value: 'italic' },
                     { type: 'push', label: 'Underline', value: 'underline' },
                     { type: 'separator' },
-                    { type: 'select', label: 'Arial', value: 'fontname', disabled: true,
-                        menu: [
-                            { text: 'Arial', checked: true },
-                            { text: 'Arial Black' },
-                            { text: 'Comic Sans MS' },
-                            { text: 'Courier New' },
-                            { text: 'Lucida Console' },
-                            { text: 'Tahoma' },
-                            { text: 'Times New Roman' },
-                            { text: 'Trebuchet MS' },
-                            { text: 'Verdana' }
-                        ]
-                    },
-                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
-                    { type: 'separator' },
                     { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
                     { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
                 ]
@@ -198,21 +183,6 @@ var answerConfig = {
                     { type: 'push', label: 'Italic', value: 'italic' },
                     { type: 'push', label: 'Underline', value: 'underline' },
                     { type: 'separator' },
-                    { type: 'select', label: 'Arial', value: 'fontname', disabled: true,
-                        menu: [
-                            { text: 'Arial', checked: true },
-                            { text: 'Arial Black' },
-                            { text: 'Comic Sans MS' },
-                            { text: 'Courier New' },
-                            { text: 'Lucida Console' },
-                            { text: 'Tahoma' },
-                            { text: 'Times New Roman' },
-                            { text: 'Trebuchet MS' },
-                            { text: 'Verdana' }
-                        ]
-                    },
-                    { type: 'spin', label: '13', value: 'fontsize', range: [ 9, 16 ], disabled: true },
-                    { type: 'separator' },
                     { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
                     { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
                 ]
@@ -237,7 +207,7 @@ var answerConfig = {
 };
 
 YAHOO.log('Editor loaded..', 'info', 'example');
-var myEditor = new YAHOO.widget.Editor('editor', myConfig);;
+var myEditor = new YAHOO.widget.Editor('editor', myConfig);
 
 /* Flicker Button
   myEditor.on('toolbarLoaded', function() {

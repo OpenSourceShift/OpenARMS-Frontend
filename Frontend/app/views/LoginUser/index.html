@@ -1,5 +1,5 @@
 #{extends 'main.html' /} #{ set title:'Login' /}
-#{set moreStyles:'login' /}
+#{set moreStyles: ["login"] /}
 <div id="main">
 	#{form @LoginUser.submit(), id:'login', class:'greybg wrapper', enctype:'multipart/form-data' }	
 		#{ifError 'invalid'}

@@ -33,3 +33,7 @@
 	display: block;
 	clear: both;
 }
+
+#voteCountLabel {
+	text-align: center;
+}
