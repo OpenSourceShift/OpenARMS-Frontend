@@ -55,12 +55,12 @@ public class PollController extends APIController {
 	    
         // Generates a Unique ID and saves the Poll.
         // TODO: Make this more robust, what will happen if all 1.000.000 tokens are taken?
-	    String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	    String SECRET_CHARSET = "0123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
 		Random random = new Random();
 
 		do {
 			strBuild.delete(0,strBuild.length());
-			for (int i=0; i<10; i++)
+			for (int i=0; i<6; i++)
 				strBuild.append(SECRET_CHARSET.charAt(random.nextInt(SECRET_CHARSET.length()-1)));
 			poll.token = strBuild.toString();
 		} while (!Poll.find("byToken", poll.token).fetch().isEmpty());
@@ -70,6 +70,7 @@ public class PollController extends APIController {
         // Creates the PollJSON Response.
         CreatePollResponse r = new CreatePollResponse(poll.toJson());
     	String jsonresponse = GsonHelper.toJson(r);
+    	response.status = 201;
     	renderJSON(jsonresponse);
 	}
 
