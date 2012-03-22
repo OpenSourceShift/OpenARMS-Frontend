@@ -1,0 +1,30 @@
+#{extends 'main.html' /}
+#{set title:'New User' /}
+#{set moreStyles:'registeruser' /}
+<div id="main">
+  <form action="getdata" method="post" id="registrationForm">
+    <div class="labeledinput">
+		  <label>&{'add.email'}</label>
+		  <input type="text" name="email" value="" autocomplete="off" autofocus="autofocus" />
+	  </div>
+  	<div class="labeledinput">
+  		<label>&{'add.passw'}</label>
+  		<input type="password" name="passw" value="" autocomplete="off" maxlength="30"/>
+  	</div>
+  	<div class="labeledinput">
+  		<label>&{'add.confirm.passw'}</label>
+  		<input type="password" name="confpassw" value="" autocomplete="off" maxlength="30"/>
+    </div>
+    <input type="submit" value="&{'register'}" class="button" />
+  </form>
+  #{ifError 'email'}
+    <p class="formError registrationError">&{'wrong.email'}</p>
+  #{/ifError}
+  #{ifError 'passwDontMatch'}
+    <p class="formError registrationError">&{'passw.doesnt.match'}</p>
+  #{/ifError}
+  #{ifError 'validatePass'}
+    <p class="formError registrationError">&{'wrong.passw'}</p>
+  #{/ifError}
+ </div>
+

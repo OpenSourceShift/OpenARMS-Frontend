@@ -85,7 +85,7 @@ public class PollInstanceController extends APIController  {
     		VoteSummaryJSON summary = new VoteSummaryJSON();
 			summary.choice_id = c.id;
 			summary.choice_text = c.text;
-			summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
+			summary.count = Vote.count("pollInstance.id = ? and choice.id = ?", pi.id, c.id);
 			vote_count += summary.count;
 			// Add it to the result.
     		r.pollinstance.votes.add(summary);
@@ -240,29 +240,6 @@ public class PollInstanceController extends APIController  {
 
 			renderJSON(new EmptyResponse().toJson());
 		} catch (Exception e) {
-			renderException(e);
-		}
-	}
-	public static void vote() {
-        try {
-	    	//Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-	        VoteOnPollInstanceRequest req = GsonHelper.fromJson(request.body, VoteOnPollInstanceRequest.class);
-			User u = AuthBackend.getCurrentUser();
-	        req.vote.userid = u.id;
-	        VoteController.create(req.vote);
-	        Vote vote = Vote.fromJson(req.vote);
-          
-	        //If current user is not the same as the poll creator or there is no current user, throws an exception
-			//User u = AuthBackend.getCurrentUser();
-			// TODO: Check if the user has already voted.
-	        vote.save();
-	        
-	        //Creates the VoteJSON Response.
-	        CreateVoteResponse r = new CreateVoteResponse(vote.toJson());
-	    	String jsonresponse = GsonHelper.toJson(r);
-	    	renderJSON(jsonresponse);
-		} catch (Exception e) {
-			e.printStackTrace();
 			renderException(e);
 		}
 	}
