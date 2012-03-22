@@ -95,7 +95,7 @@ public class APIClientTest extends UnitTest {
         	assertEquals(vresponse.vote.choiceid, v.choiceid);
     	}
 	}
-/*
+
 	@Test
     public void testLogin() throws Exception {
 		APIClient.loadServiceData("data.yml");
