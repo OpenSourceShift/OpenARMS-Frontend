@@ -43,6 +43,7 @@ public class JoinPoll extends BaseController {
 		// Check if login is required for the poll
 		if (poll.loginRequired != null && poll.loginRequired) {
 			if (!LoginUser.isLoggedIn()) {
+				session.put("page_prior_to_login", request.url);
 				LoginUser.index("");
 			}
 		}

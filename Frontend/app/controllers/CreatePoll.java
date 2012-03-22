@@ -13,8 +13,8 @@ public class CreatePoll extends BaseController {
 
 	public static void index(String question, String[] answer) {
 		if (!LoginUser.isLoggedIn()) {
-			LoginUser.forward = "createpoll";
-			LoginUser.index("");
+			session.put("page_prior_to_login", request.url);
+			LoginUser.index(null);
 		}
 		String choices;
 		if (answer == null) {
@@ -37,8 +37,8 @@ public class CreatePoll extends BaseController {
 
 	public static void submit(String question, String[] answer, String type, Boolean loginRequired) {
 		if (!LoginUser.isLoggedIn()) {
-			LoginUser.forward = "createpoll";
-			LoginUser.index("");
+			session.put("page_prior_to_login", request.url);
+			LoginUser.index(null);
 		}
 				
 		// Remove empty lines from the answers
