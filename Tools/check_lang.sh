@@ -12,7 +12,7 @@ function parsemsgs() {
 echo "Checking language translations"
 DIR=`dirname $0`
 LANGDIR=`readlink -f $DIR/../Frontend/conf`
-PARAMS=$(parsemsgs $LANGDIR/messages)
+PARAMS=$(parsemsgs $LANGDIR/messages.en)
 
 for f in `ls $LANGDIR/messages.*`; do
 	for p in $PARAMS; do
