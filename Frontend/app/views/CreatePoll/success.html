@@ -3,9 +3,11 @@
 
 <div id="main" class="greybg success">
 	<div class="wrapper">
-		<h1>&{'createpoll.success.header'}</h1>
+		<h1>&{'createpoll.success.header'}: <a href="/${token}">http://www.openarms.dk/${token}</a></h1>
 		<p>&{'createpoll.success.text'}</p>
-		<p><b>&{'manage_poll_polltoken'}</b> ${token}<br />
+		<center>
+		<img src="/api/qr/&{token}/300" /><br />
 		<input type="button" class="button" onClick="location.replace('@{ManagePoll.index()}?pollID=${token}')" value="&{'createpoll.manage_poll_now'}">
+		</center>
 	</div>
 </div>

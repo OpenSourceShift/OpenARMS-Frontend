@@ -49,7 +49,7 @@ public class VoteController extends APIController {
 		User u = AuthBackend.getCurrentUser();
 		if (u != null) {
 			vote.user = u;
-			if (!vote.pollInstance.poll.multipleAllowed) {
+			if (vote.pollInstance.poll.multipleAllowed != null && !vote.pollInstance.poll.multipleAllowed) {
 				Vote vote2 = Vote.find("byPollInstanceAndUser", vote.pollInstance, u).first();
 
 				if (vote2 == null) {

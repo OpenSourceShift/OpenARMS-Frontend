@@ -37,8 +37,10 @@ public class QRController extends Controller {
 
 	private static BufferedImage generateImage (String polltoken, int size) throws Exception {
 		String httpheader = Http.Request.current().headers.get("host").value();
-		String URL = ("http://" + httpheader + "/" + polltoken);
-
+		// FIXME: do this well
+		//String URL = ("http://" + httpheader + "/" + polltoken);
+		String URL = "http://www.openarms.dk/"+polltoken;
+		
 		BitMatrix bm;
 		Writer writer = new QRCodeWriter();
 		try {

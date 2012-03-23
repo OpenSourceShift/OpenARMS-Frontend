@@ -94,7 +94,7 @@ public class ManagePoll extends BaseController {
 		// TODO: this! (clone existing poll)
 	}
 
-	public static void statistics() {
+	public static void statistics(Long id) {
 		try {
 //			// Load service data.
 //			Response res0 = APIClient.loadServiceData("data.yml");
@@ -135,7 +135,7 @@ public class ManagePoll extends BaseController {
 //		        	}
 //		        }
 //        	}
-			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest((long) 1));
+			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
 			PollInstanceJSON pollInstance = res.pollinstance;
 			render(pollInstance);
 		} catch(Exception e) {
