@@ -8,7 +8,9 @@
 <div class="tools">
 	<div class="button"><span>&{'join_poll'}</span></div>
 	<div class="button"><span>&{'create_poll'}</span></div>
-	<div class="button"><span>&{'manage_poll'}</span></div>
+	#{if loggedIn}
+	<div class="button" onClick="location.replace('@{ManagePoll.index()}')"><span>&{'manage_poll'}</span></div>
+	#{/if}
 </div>
 <div class="description">
 	<div id="join">
@@ -35,7 +37,7 @@
 	</div>
 	
 	<div id="manage">
-		#{form @ManagePoll.index(), id:'managepoll'}
+	<!--	#{form @ManagePoll.index(), id:'managepoll'}
 		<div class="wrapper">
 			<h2>&{'manage_poll'}</h2>
 			<p>&{'manage_poll_teaser'}</p>
@@ -48,6 +50,7 @@
 			<input type="submit" value="&{'manage_poll_submit'}" class="button" />
 		</div>
 		#{/form}
+	-->
 	</div>
 	
 	<div id="register">
