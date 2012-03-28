@@ -12,7 +12,8 @@ GET     /createpoll                            	CreatePoll.index
 GET     /joinpoll                            	JoinPoll.index
 GET 	/login									LoginUser.index
 GET 	/logout									LoginUser.logout
-GET		/managepoll								ManagePoll.index
+GET	/managepoll				ManagePoll.index
+GET	/managepoll/statistics/{<[0-9]+>id}	ManagePoll.statistics
 GET     /{<[A-Za-z0-9]+>token}                  JoinPoll.index
 GET     /{<[0-9]+>pollID}/{adminkey}            ManagePoll.index
 

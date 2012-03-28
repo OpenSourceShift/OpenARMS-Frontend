@@ -82,12 +82,14 @@ $(function() {
 	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"${voteSummary.choice_text}"${voteSummary_isLast ? '' : ','}#{/list}];
 
 	function loadData() {
+		console.log("loading data");
 		$.getJSON('/api/pollinstance/${_pollInstance.id}', function(data) {
 			vote_count = data.pollinstance.vote_count;
 			var votes = [];
 			for(var v in data.pollinstance.votes) {
 			votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
 			}
+			console.log(data, votes);
 			chart.series[0].setData(votes);
 			$(".loading").hide();
 			// Update the vote count label
