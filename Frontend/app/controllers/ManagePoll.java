@@ -94,7 +94,7 @@ public class ManagePoll extends BaseController {
 		// TODO: this! (clone existing poll)
 	}
 
-	public static void statistics() {
+	public static void statistics(Long pollinstanceId) {
 		try {
 //			// Load service data.
 //			Response res0 = APIClient.loadServiceData("data.yml");
@@ -135,9 +135,13 @@ public class ManagePoll extends BaseController {
 //		        	}
 //		        }
 //        	}
-			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest((long) 1));
-			PollInstanceJSON pollInstance = res.pollinstance;
-			render(pollInstance);
+			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollinstanceId));
+			if(StatusCode.error(res.statusCode)) {
+				throw new Exception("Invalid poll instance.");
+			} else {
+				PollInstanceJSON pollInstance = res.pollinstance;
+				render(pollInstance);
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 			// TODO: Use an error template.
