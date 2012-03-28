@@ -12,7 +12,7 @@
 			<input type="hidden" name="poll_id" value="${poll.id}" />
 			<ul>
 				#{list items:poll.choices, as:'c'}
-					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c_index}"/>${c.text}</label></li>
+					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c.id}"/>${c.text}</label></li>
 				#{/list}
 			</ul>
 			<div>
