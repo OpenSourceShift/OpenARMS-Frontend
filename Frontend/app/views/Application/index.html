@@ -16,9 +16,10 @@
 	<div id="join">
 		#{form @JoinPoll.index(), id:'joinpoll'}
 		<div class="wrapper">
-			<span id="token">
-				<span>&{'join_poll_pollid'}</span>
-				<input type="text" value="" autocomplete="off" autofocus="autofocus" />
+			<span id="token-container">
+				<label for="token">&{'join_poll_pollid'}
+					<input id="token" type="text" value="" autocomplete="off" autofocus="autofocus" />
+				</label>
 			</span>
 			<div class="centered">
 				<p>&{'join_poll_teaser'}</p>
@@ -32,12 +33,14 @@
 		<div class="wrapper">
  			<h2>&{'create_poll'}</h2>
 			<p>&{'create_poll_teaser'}</p>
+			<div class="centered">
 			#{a @CreatePoll.index(), class:'button'}&{'create_poll_link'}#{/a}
+			</div>
 		</div>
 	</div>
-	
+	<!--
 	<div id="manage">
-	<!--	#{form @ManagePoll.index(), id:'managepoll'}
+		#{form @ManagePoll.index(), id:'managepoll'}
 		<div class="wrapper">
 			<h2>&{'manage_poll'}</h2>
 			<p>&{'manage_poll_teaser'}</p>
@@ -50,7 +53,6 @@
 			<input type="submit" value="&{'manage_poll_submit'}" class="button" />
 		</div>
 		#{/form}
-	-->
 	</div>
 	
 	<div id="register">
@@ -67,6 +69,7 @@
 			<input type="text" name="passw" value="" autocomplete="off" />
 		</div>
 	</div>
+	-->
 </div>
 </div>
 	<script type="text/javascript">
@@ -89,11 +92,11 @@
 			//return (e.which != 13 && e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) ? false : true ;
 		})
 		function shakeJoinPoll() {
-			$('#token').parent().effect("shake", { times:3 }, 50, function() {$('#token input').focus()});
+			$('#token-container').parent().effect("shake", { times:3 }, 50, function() {$('#token').focus()});
 		}
 		$('#joinpoll').bind('submit', function(event) {
 			event.preventDefault();
-			var token = $("#token input").val();
+			var token = $("#token").val();
 			if(token == "") {
 				shakeJoinPoll();
 			} else {

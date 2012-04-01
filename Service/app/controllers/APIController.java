@@ -81,6 +81,8 @@ public abstract class APIController extends Controller {
 	}
 	
 	protected static void renderJSON(Object o) {
+        String encoding = Http.Response.current().encoding;
+        response.contentType= "application/json; charset="+encoding;
 		renderText(GsonHelper.toJson(o));
 	}
 	

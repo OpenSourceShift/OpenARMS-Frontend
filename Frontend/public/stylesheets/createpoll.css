@@ -1,7 +1,14 @@
+textarea.tinymce {
+	width: 100%;
+}
+td.mceToolbar {
+	text-align: left;
+}
+
 ol#choices > li {
 	margin: 0.5em;
 	padding: 1.5em;
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 ol#choices {
@@ -13,20 +20,21 @@ ol#choices li label {
 	display: block;
 	clear: both;
 }
-ol#choices li label img {
+ol#choices li label img.removeChoice {
 	position: absolute;
 	right: 0;
 	vertical-align: middle;
+	cursor: pointer;
 }
 
 #main label {
 	font-size: 1.2em;
 }
 
-#createpoll > div {
+#main form > div {
 	margin-bottom: 1em;
 	padding-bottom: 1em;
-	border-bottom: 1px solid #996500;
+	border-bottom: 1px solid #CFDC2A;
 }
 
 .managepollforuser {

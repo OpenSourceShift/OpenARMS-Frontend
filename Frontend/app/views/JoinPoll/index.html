@@ -3,21 +3,24 @@
 #{set moreStyles:["joinpoll"] /}
 
 <div id="main" class="greybg">
-	<div class="wrapper">
-		<h1>${poll.question}</h1>
-		<hr />
-		#{form @JoinPoll.submit()}
-			<input type="hidden" name="token" value="${poll.token}" />
-			<input type="hidden" name="pollinstance_id" value="${pollInstance.id}" />
-			<input type="hidden" name="poll_id" value="${poll.id}" />
-			<ul>
-				#{list items:poll.choices, as:'c'}
-					<li><label><input type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c.id}"/>${c.text}</label></li>
-				#{/list}
-			</ul>
-			<div>
-				<input type="submit" value="&{'vote'}" class="button" />
-			</div>
-		#{/form}
-	</div>
+	<h1>${poll.question.raw()}</h1>
+	<hr />
+	#{form @JoinPoll.submit()}
+		<input type="hidden" name="token" value="${poll.token}" />
+		<input type="hidden" name="pollinstance_id" value="${pollInstance.id}" />
+		<input type="hidden" name="poll_id" value="${poll.id}" />
+		<ul>
+			#{list items:poll.choices, as:'c'}
+				<li>
+					<label for="choice${c_index}">
+						<input id="choice${c_index}" type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c.id}"/>
+						<div class="choice">${c.text.raw()}</div>
+					</label>
+				</li>
+			#{/list}
+		</ul>
+		<div>
+			<input type="submit" value="&{'vote'}" class="button" />
+		</div>
+	#{/form}
 </div>

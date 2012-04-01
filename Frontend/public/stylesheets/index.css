@@ -1,45 +1,30 @@
-#token {
+#token-container {
+	position: relative;
 	background-color: #fff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	margin: 0 15%;
+	margin: 1em auto;
 	padding: 5px 10px;
-	width: 70%;
-	overflow-y: hidden;
+	width: 66%;
 	overflow-x: hidden;
 	display: block;
-	font-size: 18px;
+	font-size: 1.5em;
 	position: relative;
 	white-space: nowrap;
 }
-#token span {
+#token-container label {
 	color: #666;
 }
-#token input {
-	font-size: 18px;
+#token-container label input {
+	font-size: 1.0em;
+	width: 100%;
 	border: 0;
 	outline-width:0;
 	padding: 0;
 }
-#joinpoll p {
-	width: 70%;
-	margin: 0 15%;
-	padding: 5px 10px 0;
-	text-align: center;
-}
-#joinpoll .button {
-	margin: 10px auto 0;
-}
-#bottomoptions {
-	overflow: hidden;
-	position: relative;
-	margin-top: 5%;
-	padding: 5px;
-}
-#bottomoptions .button {
-	position: absolute;
-	bottom: 10px;
+#description .button {
+	margin: 10px auto;
 }
 #createpoll {
 	float: left;
@@ -56,21 +41,21 @@
 }
 .tools .button {
 	width: 100%;
-	height: 3.5em;
-	line-height: 3.5em;
+	height: 4.5em;
+	line-height: 4.5em;
 	font-size: 14pt;
-	padding: 0.1em;
+	padding: 0.2em;
+	margin: 0.2em 0;
 }
 .tools .button span {
     display: -moz-inline-box; /* FF2 or lower */
     display: inline-block; /* FF3, Opera, Safari */
     line-height: normal;
-    vertical-align: middle;
+    vertical-align: baseline;
 }
 .description {
-  width: 57%;
+  width: 65%;
   float: left;
-  margin: 1% 2% 0 2%;
   border-radius: 5px;
   float: right;
 }
@@ -80,5 +65,5 @@
 
 /* This makes stuff look nice when the #token shakes */
 #join {
-	overflow: hidden;
+  overflow: hidden;
 }

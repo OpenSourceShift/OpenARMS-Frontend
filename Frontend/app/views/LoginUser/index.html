@@ -3,7 +3,7 @@
 <div id="main">
 	#{form @LoginUser.submit(), id:'login', class:'greybg wrapper', enctype:'multipart/form-data' }	
 		#{ifError 'invalid'}
-			<p class="formError">#{error 'invalid' /}</p>
+			<p class="error">#{error 'invalid' /}</p>
 		#{/ifError}
 		
 		<h1>&{'loginuser'}</h1>	
@@ -11,7 +11,7 @@
 		<div class="labeledinput">
 			<label>&{'loginuser.email'}</label>
 			#{ifError 'email'}
-				<p class="formError">#{error 'email' /}</p>
+				<p class="error">#{error 'email' /}</p>
 			#{/ifError}
 			<input size="30" type="text" name="email" value="${email}" />
 		</div>
@@ -19,7 +19,7 @@
 		<div class="labeledinput">
 			<label>&{'loginuser.password'}</label>
 			#{ifError 'password'}
-				<p class="formError">#{error 'password' /}</p>
+				<p class="error">#{error 'password' /}</p>
 			#{/ifError}
 			<input size="30" type="password" name="password" value="${password}" />
 		</div>

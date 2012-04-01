@@ -1,51 +1,49 @@
 #{extends 'main.html' /} #{ set title:'Create new poll' /}
-#{set moreStyles: ["createpoll","menu","button","container","autocomplete","editor"] /}
-#{set moreScripts: ["editor/yuiloader-min","editor/event-min","editor/dom-min","editor/animation-min","editor/connection-min","editor/element-min","editor/container-min","editor/menu-min","editor/button-min","editor/datasource-min","editor/autocomplete-min","editor/editor-min"] /}
+#{set moreStyles: ["createpoll"] /}
+#{set moreScripts: ["tiny_mce/jquery.tinymce"] /}
 <div id="main">
-	#{form @CreatePoll.submit(), id:'createpoll', class:'greybg wrapper' }
+	#{form @CreatePoll.submit(), class:'greybg wrapper', method:'post' }
 	<h1>&{'create_poll'}</h1>
 
    	<div class="labeledinput">
 		<label>&{'createpoll.form.question'}</label>
 		#{ifError 'question'}
-			<p class="formError">#{error 'question' /}</p>
+			<p class="error">#{error 'question' /}</p>
 		#{/ifError}
 		<!--input size="30" type="text" name="question" value="${question}" /-->
-		<div class="yui-skin-sam">
-			<textarea class="editor" id="question" name="question">${poll.question}</textarea>
-		</div>
+		<textarea class="tinymce" id="question" name="question">${flash.question}</textarea>
 	</div>
 
 	<div class="labeledinput">
 		<label>&{'createpoll.form.reference'}</label>
 		#{ifError 'reference'}
-			<p class="formError">#{error 'reference' /}</p>
+			<p class="error">#{error 'reference' /}</p>
 		#{/ifError}
-		<input size="30" type="text" name="reference" value="${poll.reference}" />
+		<input size="30" type="text" name="reference" value="${flash.reference}" />
 	</div> 
 	
 	<div class="labeledinput">
 		<label for="loginRequired">
+			<input id="loginRequired" type="checkbox" name="loginRequired" #{if flash.loginRequired}checked#{/if}/>
 			&{'createpoll.form.loginRequired'}
-			<input id="loginRequired" type="checkbox" name="loginRequired" value="true" />
 		</label>
 	</div>
 
 	<div class="labeledinput">
 		<label>&{'createpoll.form.pollType'}</label>
 		#{ifError 'type'}
-			<p class="formError">#{error 'type' /}</p>
+			<p class="error">#{error 'type' /}</p>
 		#{/ifError}
-		<select name="type" >
-			<option value="single">&{'createpoll.form.pollType.single'}</option>
-			<option value="multiple">&{'createpoll.form.pollType.multiple'}</option>
-		</select>
+		#{select 'type', value: "${flash.type}"}
+			#{option 'single'}&{'createpoll.form.pollType.single'}#{/option}
+			#{option 'multiple'}&{'createpoll.form.pollType.multiple'}#{/option}
+		#{/select}
 	</div>
 
 	<div class="labeledinput">
 		<label>&{'createpoll.form.choices'}</label>
-		#{ifError 'answer'}
-			<p class="formError">#{error 'answer' /}</p>
+		#{ifError 'choices[]'}
+			<p class="error">#{error 'choices[]' /}</p>
 		#{/ifError}
 		<ol id='choices'></ol>
 		<button id="addChoiceBtn" class="button">&{'createpoll.form.addChoice'}</button>
@@ -56,46 +54,6 @@
 </div>
 
 <script type="text/javascript">
-var questionRTEConfig = {
-    height: '150px',
-    width: '100%',
-    animate: false,
-    dompath: false,
-    focusAtStart: true,
-	  toolbar: {
-        //titlebar: 'My Editor',
-        buttons: [
-            { group: 'textstyle', label: 'Font Style',
-                buttons: [
-                    { type: 'push', label: 'Bold', value: 'bold' },
-                    { type: 'push', label: 'Italic', value: 'italic' },
-                    { type: 'push', label: 'Underline', value: 'underline' },
-                    { type: 'separator' },
-                    { type: 'color', label: 'Font Color', value: 'forecolor', disabled: true },
-                    { type: 'color', label: 'Background Color', value: 'backcolor', disabled: true }
-                ]
-            },
-	    { type: 'separator' },
-	    { group: 'indentlist', label: 'Lists',
-	        buttons: [
-	            { type: 'push', label: 'Create an Unordered List', value: 'insertunorderedlist' },
-	            { type: 'push', label: 'Create an Ordered List', value: 'insertorderedlist' }
-	        ]
-	    },
-	    { type: 'separator' },
-	    { group: 'insertitem', label: 'Insert Item',
-	        buttons: [
-	            { type: 'push', label: 'HTML Link CTRL + SHIFT + L', value: 'createlink', disabled: true }, 
-	            { type: 'push', label: 'Insert Image', value: 'insertimage' }
-	        ]
-	    }
-
-        ]
-    }
-};
-choiceRTEConfig = questionRTEConfig;
-
-var editors = [];
 
 function updateChoiceNumbers() {
 	$("#choices .choice").each(function(n, v) {
@@ -109,29 +67,30 @@ function addChoice(value) {
 	var index = choiceIndex;
 	var id = "choice-"+index;
 	var label = "&{'createpoll.form.choiceLabel', '<span>?</span>'}";
-	var choiceField = $('<li class="yui-skin-sam choice"><label>'+label+'<img src="public/images/i/delete.png" class="removeAnswer"></label><textarea name="choices[]" id="'+id+'">'+value+'</textarea></li>').appendTo("#choices");
-	
-	var editor = new YAHOO.widget.Editor(id, choiceRTEConfig);
-	editor.render();
-	editors.push(editor);
+	var choiceField = $('<li class="choice"><label>'+label+'<img src="public/images/i/delete.png" class="removeChoice"></label><textarea name="choices[]" id="'+id+'" class="tinymce">'+value+'</textarea></li>').appendTo("#choices");
+	$("#"+id).tinymce({
+		script_url : '/public/javascripts/tiny_mce/tiny_mce.js',
+		theme : "simple",
+		content_css : "/public/stylesheets/global.css",
+	});
 	
 	updateChoiceNumbers();
 }
 
-$(".removeAnswer").live('click', function() {
+$(".removeChoice").live('click', function() {
 	$(this).parent().parent().remove();
 	updateChoiceNumbers();
 });
 
 $(document).ready(function() {
-	// Initialize the question RTE
-	var questionEditor = new YAHOO.widget.Editor("question", questionRTEConfig);
-	questionEditor.render();
-	editors.push(questionEditor);
-	
-	var choices = ${choicesJson.raw()};
+	var questionEditor = $('textarea.tinymce').tinymce({
+		script_url : '/public/javascripts/tiny_mce/tiny_mce.js',
+		theme : "simple",
+		content_css : "/public/stylesheets/global.css",
+	});
+	var choices = #{if flash['choices[]']}${flash['choices[]'].raw()}#{/if}#{else}["",""]#{/else};
 	for(c in choices) {
-		addChoice(choices[c].text);
+		addChoice(choices[c]);
 	}
 	
 	$("#addChoiceBtn").bind('click', function(event) {
@@ -140,15 +99,9 @@ $(document).ready(function() {
 	});
 	
 	$("#createpoll").submit(function(event) {
-		for(var e in editors) {
+		/*for(var e in editors) {
 			editors[e].saveHTML();
-		}
+		}*/
 	});
-
-	function bindRemove() {
-		$(".removeAnswer").bind('click', function() {
-			$(this).parent().remove();
-		});
-	};
 });
 </script>

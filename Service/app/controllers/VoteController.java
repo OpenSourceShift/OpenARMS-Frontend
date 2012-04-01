@@ -29,8 +29,7 @@ public class VoteController extends APIController {
 	 */
 	public static void create() throws Exception {
 		// Takes the VoteJSON and creates a new Vote object with this VoteJSON.
-		CreateVoteRequest req = GsonHelper.fromJson(request.body,
-				CreateVoteRequest.class);
+		CreateVoteRequest req = GsonHelper.fromJson(request.body, CreateVoteRequest.class);
 		CreateVoteResponse res = create(req.vote);
 		String jsonresponse = GsonHelper.toJson(res);
 		response.status = Http.StatusCode.CREATED;

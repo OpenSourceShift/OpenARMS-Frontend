@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Random;
 
 import controllers.AuthBackend;
+import controllers.APIController.UnauthorizedException;
 import models.Choice;
 import models.Poll;
 import models.User;
@@ -47,10 +48,14 @@ public class PollController extends APIController {
     	//TODO: try fromJson with null
     	CreatePollRequest req = GsonHelper.fromJson(request.body, CreatePollRequest.class);
         Poll poll = Poll.fromJson(req.poll);
+        
+		User user = AuthBackend.getCurrentUser();
+		if(user == null) {
+			throw new UnauthorizedException("You have to be authorized to create a poll.");
+		}
 
         // Set the admin to this user.
-        poll.admin = AuthBackend.getCurrentUser();
-        
+        poll.admin = user;
         
  		StringBuilder strBuild = new StringBuilder();
 	    

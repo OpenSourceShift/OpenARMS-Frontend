@@ -1,23 +1,21 @@
-#main ul {
+#main > form > ul {
 	list-style: none;
-	padding-left: 10px;
 }
 
-#main li {
-	margin-bottom: 5px;
+#main > form > ul > li {
+	margin-left: 0.5em;
 	font-size: 1.2em;
 }
 
-#main label {
+#main > form > ul > li > label {
 	cursor: pointer;
 	width: 100%;
 	display: block;
 	padding: 0.5em 0;
 }
 
-#main input[type=radio],
-#main input[type=checkbox] {
-	margin-right: 10px;
+#main > form > ul > li > label > input {
+	vertical-align: baseline;
 }
 
 #main {
@@ -45,4 +43,12 @@
 	font-size: 2.5em;
 	color: #000;
 	height: 97px;
+}
+
+.choice {
+	display: inline-block;
+	margin-left: 0.5em;
+}
+.choice li {
+	margin-left: 1.5em;
 }
