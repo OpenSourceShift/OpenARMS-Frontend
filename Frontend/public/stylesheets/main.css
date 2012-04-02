@@ -92,17 +92,19 @@ input[type=password] {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	border: 0.10em solid #333333;
+	border: 0.15em solid #333333;
 	font-size: 1.0em;
 	background-color: #cfdc2a;
-	color: #333333;
 	/*min-width: 100px;
 	min-height: 25px;*/
 	padding: 0.5em 1em;
-	margin: 0.3em;
+	margin: 0.2em;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
+	color: #4f5410;
+    /*color: #788018;*/
+    text-shadow: 0.0em 0.1em rgba(255,255,255,0.66), 0.0em -0.1em rgba(0,0,0,0.66);
 }
 
 .button:hover {
@@ -110,6 +112,7 @@ input[type=password] {
 }
 
 .button:active {
+	margin: 0.3em 0.2em 0.1em 0.2em;
 }
 
 .labeledinput {
@@ -172,4 +175,8 @@ input[type=password] {
 #footer {
 	font-size: 0.9em;
 	text-align: center;
+	color: #333;
+}
+#footer a {
+	color: #333;
 }
