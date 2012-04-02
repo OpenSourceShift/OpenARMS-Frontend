@@ -21,6 +21,7 @@ import play.Play;
 import play.libs.Codec;
 import play.libs.Crypto;
 import play.mvc.Controller;
+import play.mvc.Http;
 import play.mvc.Http.StatusCode;
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
@@ -214,15 +215,21 @@ public class APIClient extends Controller {
 		u.email = email;
 		AuthenticateSimpleUserRequest req = new AuthenticateSimpleUserRequest(u, "controllers.SimpleAuthBackend");
 		req.password = password;
-		AuthenticateUserResponse res = (AuthenticateUserResponse) APIClient.send(req);
-		if(StatusCode.success(res.statusCode) && res.user != null && res.user.id != null && res.user.secret != null) {
-			session.put("user_id", res.user.id);
-			session.put("user_secret", Crypto.encryptAES(res.user.secret));
+		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
+		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
+			session.put("user_id", authenticateResponse.user.id);
+			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
 			return true;
 		} else {
-			EmptyResponse response = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
+			EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
+			if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
+				System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
+			}
 			session.put("user_id", null);
 			session.put("user_secret", null);
+			if(StatusCode.error(authenticateResponse.statusCode)) {
+				throw new Exception(authenticateResponse.error_message);
+			}
 			return false;
 		}
 	}

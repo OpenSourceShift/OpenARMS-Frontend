@@ -116,15 +116,16 @@ public class UserController extends APIController {
 	 * @throws Exception 
 	 */
 	public static void deauthenticate() throws Exception {
+		EmptyResponse response = new EmptyResponse();
 		User user = AuthBackend.getCurrentUser();
 		if (user != null) {
 			user.secret = "";
 			user.save();
-			EmptyResponse response = new EmptyResponse();
-			renderJSON(response.toJson());
 		} else {
-			throw new NotFoundException("Tried to deauthenticate a bad user");
+			// Already deauthenticated ...
+			//throw new NotFoundException("Tried to deauthenticate a bad user");
 		}
+		renderJSON(response.toJson());
 	}
 	
 	/**

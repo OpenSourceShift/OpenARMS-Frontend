@@ -81,7 +81,14 @@ public class APIClientFullCreate extends UnitTest {
     	assertNotNull(piresponse.pollinstance.id);
     	assertEquals(piresponse.pollinstance.poll_id, p.poll_id);
     	
-    	apiClient.authenticateSimple(u.email, "fail");
+    	boolean failed = false;
+    	try {
+    		apiClient.authenticateSimple(u.email, "fail");
+    	} catch(Exception e) {
+    		assertEquals("Password didn't match.", e.getMessage());
+    		failed = true;
+    	}
+    	assertTrue(failed);
 	
     	for(int i=0;i<20;i++) {
         	VoteJSON v = new VoteJSON();

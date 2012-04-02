@@ -60,17 +60,16 @@ public class LoginUser extends BaseController {
 						redirect(redirectTo);
 					}
 				} else {
+					// It failed!
+					flash.error("Something unexpected happend when logging in.");
 					params.flash();
-					validation.addError("invalid", "Invalid email or password.");
 					validation.keep();
 					showform(email);
 				}
 			} catch (Exception e) {
 				// It failed!
-				// TODO: Tell the user!
-				//e.printStackTrace();
+				flash.error(e.getMessage());
 				params.flash();
-				validation.addError(null, e.getMessage());
 				validation.keep();
 				showform(email);
 			}
