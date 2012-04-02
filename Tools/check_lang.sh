@@ -1,4 +1,5 @@
 #!/bin/bash
+# Created by Attila
 
 function parsemsgs() {
 	# skip comments
