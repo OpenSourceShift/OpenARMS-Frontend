@@ -37,17 +37,9 @@
 #voteCountLabel {
 	text-align: center;
 }
-#main .pollContainer {
-	border-bottom: 1px solid #996500;
-}
-#main .question > input,
-#main .instance > input {
-}
+
 #main .question {
 	position: relative;
-	padding: 0.2em;
-	height: 3.5em;
-	line-height: 3.5em;
 }
 #main .question.withinstances {
 	cursor: pointer;
@@ -65,14 +57,31 @@
 	font-size: 1.0em;
 	height: 3.5em;
 	line-height: 3.5em;
+	padding: 0em 1em;
+	margin: 0em 0.5em;
+	background: rgba(255,255,255,0.2);
+	list-style: none;
+}
+#main .instance.last {
+	-webkit-border-bottom-left-radius: 0.5em;
+	-moz-border-bottom-left-radius: 0.5em;
+	border-bottom-left-radius: 0.5em;
+	-webkit-border-bottom-right-radius: 0.5em;
+	-moz-border-bottom-right-radius: 0.5em;
+	border-bottom-right-radius: 0.5em;
+}
+
+#main .instances {
+	margin-bottom: 0.5em;
+}
+
+#main .poll.last .instances {
+	margin-bottom: 0em;
 }
 
 #main .instance .controls {
-	position: absolute;
-	right: 0;
-	top: 0;
-	height: 3.5em;
-	line-height: 3.5em;
+	font-size: 0.8em;
+	float: right;
 }
 #main .question {
 	margin: 0;

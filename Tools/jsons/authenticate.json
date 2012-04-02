@@ -1,1 +1,1 @@
-{"user":{"email":"test@test.com", "backend":"class models.SimpleUserAuthBinding", "attributes":{"password":"1234"}}}
+{"backend":"controllers.SimpleAuthBackend","user":{"email":"test@test.com", "attributes":{"password":"1234"}}}

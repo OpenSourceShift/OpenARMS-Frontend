@@ -1,7 +1,7 @@
 #{extends 'main.html' /} #{ set title:'Login' /}
 #{set moreStyles:["login"] /}
 <div id="main">
-	#{form @LoginUser.submit(), id:'login', class:'greybg wrapper', enctype:'multipart/form-data' }	
+	#{form @LoginUser.submit(), id:'login' }	
 		#{ifError 'invalid'}
 			<p class="error">#{error 'invalid' /}</p>
 		#{/ifError}
@@ -26,5 +26,6 @@
 		
 		<input type='submit' value="&{'loginuser.submit'}" class='button' />
 		<input type='button' value="&{'loginuser.cancel'}" class='button' onClick="location.href='@{Application.index()}'">
+		<input type='button' value="&{'loginuser.register'}" class='button' onClick="history.back()">
 	#{/form}
 </div>

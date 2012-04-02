@@ -11,10 +11,10 @@
 		<input type="hidden" name="poll_id" value="${poll.id}" />
 		<ul>
 			#{list items:poll.choices, as:'c'}
-				<li>
+				<li class="choice">
 					<label for="choice${c_index}">
 						<input id="choice${c_index}" type="${ poll.multipleAllowed ? 'checkbox' : 'radio' }" name="answers" value="${c.id}"/>
-						<div class="choice">${c.text.raw()}</div>
+						<div class="choice-content">${c.text.raw()}</div>
 					</label>
 				</li>
 			#{/list}
@@ -24,3 +24,12 @@
 		</div>
 	#{/form}
 </div>
+
+<script>
+$(function(){
+	$("li.choice input").change(function(){
+		$("li.choice").removeClass("selected");
+		$(this).parent().parent().addClass("selected");
+	});
+});
+</script>

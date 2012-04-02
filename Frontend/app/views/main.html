@@ -2,9 +2,9 @@
 
 <html>
     <head>
-        <title>#{get 'title' /}</title>
+        <title>OpenARMS | #{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=960, user-scalable=yes" />
+        <meta name="viewport" content="width=700, user-scalable=yes" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/global.css'}" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}" />
         #{list items:moreStyles, as:'style'}
@@ -28,15 +28,16 @@
 		        #{/form}
 			#{/if}
 			#{else}
+				<!-- 
 		        #{form @RegisterUser.showform() }
 		          <input type="submit" value="&{'user.register'}" class="button" />
-		        #{/form}
+		        #{/form} -->
 		
 		        #{form @LoginUser.showform() }
 		          <input type="submit" value="&{'user.login'}" class="button" />
 		        #{/form}
 			#{/else}
-			<div id="logo"></div>
+			<a id="logo" href="/"></a>
 		</div>
 		<div id="content">
 			#{if flash.error}

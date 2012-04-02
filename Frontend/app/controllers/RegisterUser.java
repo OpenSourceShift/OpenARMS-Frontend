@@ -13,7 +13,7 @@ import api.responses.CreateUserResponse;
 import com.google.gson.JsonParseException;
 
 public class RegisterUser extends BaseController {
-	public static void getdata(String name, String email, String passw, String confpassw) throws Exception {
+	public static void submit(String name, String email, String passw, String confpassw) throws Exception {
 		boolean changed = false;
 		if (!checkname(name)) {
 			validation.addError("nameError", "Invalid user name");

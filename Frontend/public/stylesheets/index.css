@@ -58,6 +58,7 @@
   float: left;
   border-radius: 5px;
   float: right;
+  padding: 1em;
 }
 .description > #join, #create, #manage, #register {
   display: none;

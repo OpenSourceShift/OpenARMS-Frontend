@@ -2,20 +2,25 @@
 	list-style: none;
 }
 
-#main > form > ul > li {
+li.choice {
 	margin-left: 0.5em;
 	font-size: 1.2em;
 }
 
-#main > form > ul > li > label {
+li.choice.selected {
+	background-color: rgba(255,255,255,0.2);
+}
+
+li.choice > label {
 	cursor: pointer;
 	width: 100%;
 	display: block;
 	padding: 0.5em 0;
 }
 
-#main > form > ul > li > label > input {
-	vertical-align: baseline;
+li.choice > label > input {
+	margin-top: 0.3em;
+	vertical-align: top;
 }
 
 #main {
@@ -45,10 +50,11 @@
 	height: 97px;
 }
 
-.choice {
+.choice-content {
+	vertical-align: top;
 	display: inline-block;
 	margin-left: 0.5em;
 }
-.choice li {
+.choice-content li {
 	margin-left: 1.5em;
 }

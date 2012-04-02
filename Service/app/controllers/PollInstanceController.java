@@ -68,14 +68,14 @@ public class PollInstanceController extends APIController  {
 	 * Method that gets a PollInstance from the DataBase.
 	 */
 	private static void retrieve(PollInstance pi) throws Exception {
-		//Takes the PollInstance from the DataBase.
-		
 		//Creates the PollInstanceJSON Response.
 		ReadPollInstanceResponse r = new ReadPollInstanceResponse(pi.toJson());
 		
+		// Check that this is infact the admin of the poll that this is an instance of.
+		Poll poll = Poll.findById(r.pollinstance.poll_id);
+		AuthBackend.requireUser(poll.admin);
+		
 		r.pollinstance.votes = new LinkedList<VoteSummaryJSON>();
-		Logger.debug("We have in total %d votes in the db.", Vote.count());
-		Logger.debug("This poll instance (#%d) has %d votes.", pi.id, Vote.find("byPollInstance.id", pi.id).fetch().size());
     	// Create vote summaries for all votes.
 		long vote_count = 0;
     	for(Choice c: pi.poll.choices) {

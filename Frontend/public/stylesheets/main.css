@@ -20,10 +20,10 @@ body {
 	max-width: 600px;
 	background-color: rgba(0,0,0,0.66);
 	/*border-radius: 5px;*/
-	border-top: 0.15em solid #333333;
-	border-bottom: 0.15em solid #333333;
+	border-top: 0.5em solid #333333;
+	border-bottom: 0.5em solid #333333;
 	/*overflow: auto;*/
-	padding: 1.0em;
+	padding: 1.0em 2.5em;
 }
 
 #main {
@@ -37,7 +37,9 @@ body {
 }
 
 #header form {
-	clear: both;
+	position: absolute;
+	bottom: 0.2em;
+	right: 0.2em;
 }
 
 #header input {
@@ -91,13 +93,13 @@ input[type=password] {
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	border: 0.10em solid #333333;
-	font-family: Verdana;
+	font-size: 1.0em;
 	background-color: #cfdc2a;
 	color: #333333;
-	min-width: 100px;
-	min-height: 25px;
-	padding: 0.5em;
-	margin: 0.5em;
+	/*min-width: 100px;
+	min-height: 25px;*/
+	padding: 0.5em 1em;
+	margin: 0.3em;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
