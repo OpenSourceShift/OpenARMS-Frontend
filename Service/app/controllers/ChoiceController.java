@@ -1,5 +1,6 @@
 package controllers;
 
+import play.Logger;
 import play.mvc.Http;
 import models.Choice;
 import models.User;
@@ -27,20 +28,15 @@ public class ChoiceController extends APIController {
         CreateChoiceRequest req = GsonHelper.fromJson(request.body, CreateChoiceRequest.class);
         Choice choice = Choice.fromJson(req.choice);
         
-        if (choice.poll == null) {
-        	throw new NotFoundException();
-        }
+        Logger.debug("ChoiceController.create() called ...");
+        notFoundIfNull(choice.poll);
         
-		AuthBackend.requireUser(choice.poll.admin);
+		requireUser(choice.poll.admin);
         
         choice.save();
         
-        //Creates the ChoiceJSON Response.
-        CreateChoiceResponse r = new CreateChoiceResponse(choice.toJson());
-    	String jsonresponse = GsonHelper.toJson(r);
 		response.status = Http.StatusCode.CREATED;
-    	renderJSON(jsonresponse);
-        
+    	renderJSON(new CreateChoiceResponse(choice.toJson()));
     }
 	/**
 	 * Method that gets a Choice from the DataBase.
@@ -52,9 +48,7 @@ public class ChoiceController extends APIController {
 		//Takes the Choice from the DataBase.
 		Choice choice = Choice.find("byID", choiceid).first();
 	
-		if (choice == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(choice);
 		
 		//Creates the ChoiceJSON Response.
 		ReadChoiceResponse r = new ReadChoiceResponse(choice.toJson());
@@ -73,11 +67,9 @@ public class ChoiceController extends APIController {
 		//Takes the Choice from the DataBase.
 		Choice originalchoice = Choice.find("byID", choiceid).first();
 		
-		if (originalchoice == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(originalchoice);
 		
-		AuthBackend.requireUser(originalchoice.poll.admin);
+		requireUser(originalchoice.poll.admin);
 
 		//Takes the edited ChoiceJSON and creates a new Choice object with this ChoiceJSON.
 		UpdateChoiceRequest req = GsonHelper.fromJson(request.body, UpdateChoiceRequest.class);
@@ -104,11 +96,9 @@ public class ChoiceController extends APIController {
 		//Takes the Choice from the DataBase.
 		Choice choice = Choice.find("byID", choiceid).first();
 		
-		if (choice == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(choice);
 
-		AuthBackend.requireUser(choice.poll.admin);
+		requireUser(choice.poll.admin);
 
 		choice.delete();
 

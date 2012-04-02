@@ -54,7 +54,7 @@ public class VoteController extends APIController {
 				if (vote2 == null) {
 					vote.save();
 				} else {
-					throw new ForbiddenException("You can't vote twice in the same Poll.");
+					forbidden("You can't vote twice in the same Poll.");
 				}
 			} else {
 				Vote vote2 = Vote.find("byPollInstanceAndUserAndChoice", 
@@ -63,13 +63,13 @@ public class VoteController extends APIController {
 				if (vote2 == null) {
 					vote.save();
 				} else {
-					throw new ForbiddenException("You can't vote twice for the same Choice.");
+					forbidden("You can't vote twice for the same Choice.");
 				}
 			}
 		} else if (vote.pollInstance.poll.loginRequired == null || !vote.pollInstance.poll.loginRequired) {
 			vote.save();
 		} else {
-			throw new UnauthorizedException("This action requires authentication.");
+			unauthorized("This action requires authentication.");
 		}
 
 		// Creates the VoteJSON Response.
@@ -86,10 +86,7 @@ public class VoteController extends APIController {
 
 		// Takes the Vote from the DataBase.
 		Vote vote = Vote.find("byID", voteid).first();
-
-		if (vote == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(vote);
 
 		// Creates the VoteJSON Response.
 		ReadVoteResponse r = new ReadVoteResponse(vote.toJson());
@@ -108,10 +105,7 @@ public class VoteController extends APIController {
 
 		// Takes the Vote from the DataBase.
 		Vote originalvote = Vote.find("byID", voteid).first();
-
-		if (originalvote == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(originalvote);
 
 		// If current user is not the same as the poll creator or there is no
 		// current user, throws an exception
@@ -119,7 +113,7 @@ public class VoteController extends APIController {
 		 * User u = AuthBackend.getCurrentUser(); if (u == null ||
 		 * originalvote.user.id != u.id) { throw new UnauthorizedException(); }
 		 */
-		AuthBackend.requireUser(originalvote.user);
+		requireUser(originalvote.user);
 
 		// Takes the edited VoteJSON and creates a new Vote object with this
 		// VoteJSON.
@@ -153,12 +147,9 @@ public class VoteController extends APIController {
 
 		// Takes the Vote from the DataBase.
 		Vote vote = Vote.find("byID", voteid).first();
+		notFoundIfNull(vote);
 
-		if (vote == null) {
-			throw new NotFoundException();
-		}
-
-		AuthBackend.requireUser(vote.user);
+		requireUser(vote.user);
 
 		// Deletes the Vote from the DataBase and creates an empty VoteJSON for
 		// the response.

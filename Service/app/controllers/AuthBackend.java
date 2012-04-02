@@ -4,20 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-import javax.security.auth.login.Configuration;
-
-import controllers.APIController.UnauthorizedException;
-import api.entities.UserJSON;
-import api.requests.AuthenticateUserRequest;
-import api.requests.GenerateAuthChallengeRequest;
-import api.requests.GenerateSimpleAuthChallengeRequest;
-import api.responses.GenerateAuthChallengeResponse;
-import api.responses.GenerateSimpleAuthChallengeResponse;
 import models.User;
 import models.UserAuthBinding;
-import play.*;
-import play.mvc.*;
+import play.Logger;
+import play.Play;
+import play.mvc.Http;
 import play.mvc.Http.Header;
+import api.requests.AuthenticateUserRequest;
+import api.requests.GenerateAuthChallengeRequest;
+import api.responses.GenerateAuthChallengeResponse;
 
 /**
  * Abstract controller which specifies authentication method.
@@ -129,19 +124,6 @@ public abstract class AuthBackend {
 	    	Logger.debug("getCurrentUser() called but HTTP authorization header not set.");
 	    	return null;
 	    }
-	}
-	
-	public static void requireUser(User user) throws UnauthorizedException {
-		User currentUser = AuthBackend.getCurrentUser();
-		if(user != null) {
-			if(currentUser == null) {
-				throw new UnauthorizedException("This action requires authentication. Please use the /user/authenticate to get your user secret.");
-			} else {
-				if(!user.equals(currentUser)) {
-					throw new UnauthorizedException("This action requires authentication from a specific user, and you are not this user.");
-				}
-			}
-		}
 	}
 	
 	/**

@@ -1,18 +1,14 @@
 package controllers;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
 
-import controllers.AuthBackend;
-import controllers.APIController.UnauthorizedException;
 import models.Choice;
 import models.Poll;
 import models.User;
 import models.Vote;
+import play.Logger;
+import play.mvc.Http;
 import api.helpers.GsonHelper;
-import notifiers.MailNotifier;
 import api.requests.CreatePollRequest;
 import api.requests.UpdatePollRequest;
 import api.responses.CreatePollResponse;
@@ -20,15 +16,6 @@ import api.responses.EmptyResponse;
 import api.responses.ReadPollByTokenResponse;
 import api.responses.ReadPollResponse;
 import api.responses.UpdatePollResponse;
-import play.Logger;
-import play.mvc.Controller;
-import play.mvc.Http;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import api.entities.PollJSON;
-import api.entities.VoteJSON;
 
 /**
  * Class that manages the responses in the API for Polls.
@@ -51,7 +38,7 @@ public class PollController extends APIController {
         
 		User user = AuthBackend.getCurrentUser();
 		if(user == null) {
-			throw new UnauthorizedException("You have to be authorized to create a poll.");
+			unauthorized("You have to be authorized to create a poll.");
 		}
 
         // Set the admin to this user.
@@ -89,10 +76,7 @@ public class PollController extends APIController {
 
 		//Takes the Poll from the DataBase.
 		Poll poll = Poll.find("byID", pollid).first();
-		
-		if (poll == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(poll);
 		
 		//Creates the PollJSON Response
 		ReadPollResponse r = new ReadPollResponse(poll.toJson());
@@ -109,10 +93,7 @@ public class PollController extends APIController {
 	
 			//Takes the Poll from the DataBase.
 			Poll poll = Poll.find("byToken", polltoken).first();
-			
-			if (poll == null) {
-				throw new NotFoundException();
-			}
+			notFoundIfNull(poll);
 			
 			//Creates the PollJSON Response
 			ReadPollByTokenResponse r = new ReadPollByTokenResponse(poll.toJson());
@@ -130,12 +111,9 @@ public class PollController extends APIController {
 
 		// Takes the Poll from the DataBase.
 		Poll originalpoll = Poll.find("byID", pollid).first();
-		
-		if (originalpoll == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(originalpoll);
 
-		AuthBackend.requireUser(originalpoll.admin);
+		requireUser(originalpoll.admin);
 
 		// Takes the edited PollJSON and creates a new Poll object with this PollJSON.
 		UpdatePollRequest req = GsonHelper.fromJson(request.body, UpdatePollRequest.class);
@@ -180,10 +158,7 @@ public class PollController extends APIController {
 
 		//Takes the Poll from the DataBase.
 		Poll oldpoll = Poll.find("byID", oldpollid).first();
-		
-		if (oldpoll == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(oldpoll);
 		
         //If current user is not the same as the poll creator or there is no current user, throws an exception
 		/*User u = AuthBackend.getCurrentUser();
@@ -191,7 +166,8 @@ public class PollController extends APIController {
 	        throw new UnauthorizedException();
 	    }*/
 
-		AuthBackend.requireUser(oldpoll.admin);
+		requireUser(oldpoll.admin);
+		
 		Poll newpoll = new Poll(null, oldpoll);
 
         // Generates a new Unique ID and saves the Poll.
@@ -217,12 +193,9 @@ public class PollController extends APIController {
 
 		//Takes the Poll from the DataBase.
 		Poll poll = Poll.find("byID", pollid).first();
+		notFoundIfNull(poll);
 		
-		if (poll == null) {
-			throw new NotFoundException();
-		}
-		
-		AuthBackend.requireUser(poll.admin);
+		requireUser(poll.admin);
 		
 		//Deletes the Poll from the DataBase and creates an empty PollJSON for the response.
 		poll.delete();

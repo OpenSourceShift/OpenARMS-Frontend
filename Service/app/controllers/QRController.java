@@ -37,7 +37,7 @@ public class QRController extends Controller {
 
 	private static BufferedImage generateImage (String polltoken, int size) throws Exception {
 		String httpheader = Http.Request.current().headers.get("host").value();
-		// FIXME: do this well
+		// FIXME: Get this hostname/port from the request
 		//String URL = ("http://" + httpheader + "/" + polltoken);
 		String URL = "http://www.openarms.dk/"+polltoken;
 		

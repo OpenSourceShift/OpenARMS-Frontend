@@ -1,5 +1,6 @@
 package controllers;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,29 +84,39 @@ public class UserController extends APIController {
 		// Takes the UserJSON from the http body
 		AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
 		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		
 		if(backend != null) {
+			Method getAuthenticateUserRequestClass = backend.getMethod("getAuthenticateUserRequestClass");
+			Method authenticate = backend.getMethod("authenticate", AuthenticateUserRequest.class);
+			
+			/*// This is not needed, it will be tackled by tge aythenticate method call.
 			// Lookup the user by email
 			User user = User.find("byEmail", req.user.email).first();
-			if (user == null) {
-				throw new NotFoundException("No user with this email, found on the system.");
-			} else if (!(user.userAuth instanceof SimpleUserAuthBinding)) {
-				throw new NotFoundException("This user has no support for the choosen backend.");
-			} else {
-				Method getAuthenticateUserRequestClass = backend.getMethod("getAuthenticateUserRequestClass");
-				Class<? extends AuthenticateUserRequest> requestClass = (Class<? extends AuthenticateUserRequest>) getAuthenticateUserRequestClass.invoke(null);
-				request.body.reset();
-				AuthenticateUserRequest authenticationRequest = GsonHelper.fromJson(request.body, requestClass);
-				user = SimpleAuthBackend.authenticate(authenticationRequest);
+			notFoundIfNull(user);
+			*/
+
+			Class<? extends AuthenticateUserRequest> requestClass = (Class<? extends AuthenticateUserRequest>) getAuthenticateUserRequestClass.invoke(null);
+			request.body.reset();
+			AuthenticateUserRequest authenticationRequest = GsonHelper.fromJson(request.body, requestClass);
+			
+			try {
+				User user = (User) authenticate.invoke(null, authenticationRequest);
 				if (user != null) {
 				    //Creates the UserJSON Response.
 					renderJSON(new AuthenticateUserResponse(user.toJson()));
 				} else {
-					throw new UnauthorizedException();
+					unauthorized();
+				}
+			} catch (InvocationTargetException e) {
+				if(e.getCause() != null) {
+					unauthorized(e.getCause().getMessage());
+				} else {
+					unauthorized(e.getMessage());
 				}
 			}
 		} else {
 			// TODO: Consider to read this url from the routes.
-			throw new Exception("Backend not choosen, pick one from the 'GET /user/authenticate' list.");
+			error("Backend not choosen, pick one from the 'GET /user/authenticate' list.");
 		}
 	}
 	
@@ -149,7 +160,7 @@ public class UserController extends APIController {
         // Check if the email already exists in the system
         Long exists = User.count("byEmail", req.user.email);
         if (exists > 0) {
-        	throw new ForbiddenException("User already exists in the system");
+        	forbidden("User already exists in the system");
         }
         
         User user = User.fromJson(req.user);
@@ -179,21 +190,15 @@ public class UserController extends APIController {
 	 * Method that gets a User from the DataBase.
 	 * @throws Exception 
 	 */
-	public static void retrieve () throws Exception {
+	public static void retrieve() throws Exception {
 		String userid = params.get("id");
 
-		//Takes the User from the DataBase.
+		// Takes the User from the DataBase.
 		User user = User.find("byID", userid).first();
-
-		if (user == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(user);
 		
-        //If current user is not the same as the poll creator or there is no current user, throws an exception
-		User u = AuthBackend.getCurrentUser();
-		if (u == null || user.id != u.id) {
-	        throw new UnauthorizedException();
-	    }
+        // If current user is not the same as the poll creator or there is no current user, throws an exception
+		requireUser(user);
 		
 		//Creates the UserJSON Response.
 		ReadUserResponse response = new ReadUserResponse(user.toJson());
@@ -210,12 +215,9 @@ public class UserController extends APIController {
 
 		//Takes the User from the DataBase.
 		User originalUser = User.find("byID", userid).first();
-		
-		if (originalUser == null) {
-			throw new NotFoundException();
-		}
+		notFoundIfNull(originalUser);
 
-		AuthBackend.requireUser(originalUser);
+		requireUser(originalUser);
 		
 		//Takes the edited UserJSON and creates a new User object with this UserJSON.
 		UpdateUserRequest req = GsonHelper.fromJson(request.body, UpdateUserRequest.class);
@@ -258,12 +260,9 @@ public class UserController extends APIController {
 
 		//Takes the User from the DataBase.
 		User user = User.find("byID", userid).first();
+		notFoundIfNull(user);
 		
-		if (user == null) {
-			throw new NotFoundException();
-		}
-		
-		AuthBackend.requireUser(user);
+		requireUser(user);
 		
 		//Deletes the Authentication from the DataBase.
 		if (user.userAuth instanceof SimpleUserAuthBinding) {
@@ -286,12 +285,9 @@ public class UserController extends APIController {
 
 		//Takes the User from the DataBase.
 		User user = User.find("byID", userid).first();
+		notFoundIfNull(user);
 
-		if (user == null) {
-			throw new NotFoundException();
-		}
-
-		AuthBackend.requireUser(user);
+		requireUser(user);
 		
 		List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();
 		List<PollJSON> pollsJ = new LinkedList<PollJSON>();
