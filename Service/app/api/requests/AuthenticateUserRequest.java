@@ -15,7 +15,7 @@ public class AuthenticateUserRequest extends Request {
 		this.user = u;
 		this.backend = backend;
 	}
-		
+	
 	@Override
 	public String getURL() {
 		return "/user/authenticate";

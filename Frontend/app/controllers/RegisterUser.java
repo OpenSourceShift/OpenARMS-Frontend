@@ -36,10 +36,9 @@ public class RegisterUser extends BaseController {
 			UserJSON uj = new UserJSON();
 			uj.name = name;
 			uj.email = email;
-			uj.backend = "class models.SimpleUserAuthBinding";
 			uj.attributes = new HashMap<String, String>();
 			uj.attributes.put("password", confpassw);
-			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj));
+			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthBackend"));
 			if  (response.statusCode == Http.StatusCode.CREATED)
 				success();
 			else {

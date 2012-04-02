@@ -1,15 +1,15 @@
 package api.requests;
 
-import api.responses.GenerateAuthChallangeResponse;
+import api.responses.GenerateAuthChallengeResponse;
 import api.responses.Response;
 
 /**
  * A request for the service: 
  */
-public class GenerateAuthChallangeRequest extends Request {
+public class GenerateAuthChallengeRequest extends Request {
 	public String backend;
 	
-	public GenerateAuthChallangeRequest() {
+	public GenerateAuthChallengeRequest() {
 	}
 	@Override
 	public String getURL() {
@@ -17,7 +17,7 @@ public class GenerateAuthChallangeRequest extends Request {
 	}
 	@Override
 	public Class<? extends Response> getExpectedResponseClass() {
-		return GenerateAuthChallangeResponse.class;
+		return GenerateAuthChallengeResponse.class;
 	}
 	@Override
 	public Method getHttpMethod() {

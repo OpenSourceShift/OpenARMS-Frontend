@@ -24,6 +24,7 @@ import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
+import api.requests.AuthenticateSimpleUserRequest;
 import api.requests.AuthenticateUserRequest;
 import api.requests.DeauthenticateUserRequest;
 import api.requests.LoadTestDataRequest;
@@ -211,9 +212,8 @@ public class APIClient extends Controller {
 	public static boolean authenticateSimple(String email, String password) throws Exception {
 		UserJSON u = new UserJSON();
 		u.email = email;
-		u.attributes = new HashMap<String,String>();
-		u.attributes.put("password", password);
-		AuthenticateUserRequest req = new AuthenticateUserRequest(u, "class models.SimpleUserAuthBinding");
+		AuthenticateSimpleUserRequest req = new AuthenticateSimpleUserRequest(u, "controllers.SimpleAuthBackend");
+		req.password = password;
 		AuthenticateUserResponse res = (AuthenticateUserResponse) APIClient.send(req);
 		if(StatusCode.success(res.statusCode) && res.user != null && res.user.id != null && res.user.secret != null) {
 			session.put("user_id", res.user.id);

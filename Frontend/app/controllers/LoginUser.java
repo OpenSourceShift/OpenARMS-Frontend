@@ -20,7 +20,7 @@ public class LoginUser extends BaseController {
 	//public static String forward = "";
 	public static String pollToken = "";
 	
-	public static void index(String email) {
+	public static void showform(String email) {
 		if (email == null)
 			email = "";
 		render(email);
@@ -48,7 +48,7 @@ public class LoginUser extends BaseController {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			index(email);
+			showform(email);
 		} else {
 			try {
 				if (APIClient.authenticateSimple(email, password)) {
@@ -59,18 +59,11 @@ public class LoginUser extends BaseController {
 					} else {
 						redirect(redirectTo);
 					}
-					/*
-					if (forward.equals("createpoll"))
-						CreatePoll.index("", null);
-					if (forward.equals("joinpoll"))
-						JoinPoll.index(pollToken);
-					Application.index();
-					*/
 				} else {
 					params.flash();
 					validation.addError("invalid", "Invalid email or password.");
 					validation.keep();
-					index(email);
+					showform(email);
 				}
 			} catch (Exception e) {
 				// It failed!
@@ -79,7 +72,7 @@ public class LoginUser extends BaseController {
 				params.flash();
 				validation.addError(null, e.getMessage());
 				validation.keep();
-				index(email);
+				showform(email);
 			}
 		}
 	}

@@ -23,16 +23,16 @@
   <div id="container">
 		<div id="header">
 		    #{if loggedIn}
-		        #{form @LoginUser.logout(), class:'usermanageButton' }
+		        #{form @LoginUser.logout() }
 		            <input type="submit" value="&{'user.logout'}" class="button" />
 		        #{/form}
 			#{/if}
 			#{else}
-		        #{form @RegisterUser.showform(), class:'usermanageButton' }
+		        #{form @RegisterUser.showform() }
 		          <input type="submit" value="&{'user.register'}" class="button" />
 		        #{/form}
 		
-		        #{form @LoginUser.index(), class:'usermanageButton' }
+		        #{form @LoginUser.showform() }
 		          <input type="submit" value="&{'user.login'}" class="button" />
 		        #{/form}
 			#{/else}

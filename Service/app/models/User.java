@@ -2,6 +2,9 @@ package models;
 
 import javax.persistence.*;
 
+import controllers.AuthBackend;
+import controllers.SimpleAuthBackend;
+
 import play.data.validation.Password;
 import play.db.jpa.*;
 import play.*;
@@ -53,14 +56,6 @@ public class User extends Model implements Jsonable {
 		result.name = user.name;
 		result.email = user.email;
 		result.secret = user.secret;
-		if (user.userAuth != null) {
-			result.backend = user.userAuth.getClass().toString();
-			if (user.userAuth instanceof SimpleUserAuthBinding) {
-				SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
-				result.attributes = new HashMap<String, String>();
-				result.attributes.put("password",auth.password);
-			}
-		}
 		return result;
 	}
 
@@ -75,13 +70,6 @@ public class User extends Model implements Jsonable {
 		result.name = json.name;
 		result.email = json.email;
 		result.secret = json.secret;
-		if (json.backend != null && json.backend.equals(Play.configuration.getProperty("simple_backend"))) {
-			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
-			auth.password = json.attributes.get("password");
-			result.userAuth = auth;
-		}
-		else
-			result.userAuth = null;
 		return result;
 	}
 }

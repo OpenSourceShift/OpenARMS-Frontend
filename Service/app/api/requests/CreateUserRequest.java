@@ -10,8 +10,10 @@ import api.responses.Response;
  */
 public class CreateUserRequest extends Request {
 	public UserJSON user;
-	public CreateUserRequest (UserJSON u) {
+    public String backend;
+	public CreateUserRequest (UserJSON u, String backend) {
 		this.user = u;
+		this.backend = backend;
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import models.User;
 
 import org.junit.Test;
 
+import controllers.SimpleAuthBackend;
 import controllers.UserController;
 
 import play.test.Fixtures;
@@ -17,9 +18,10 @@ import play.test.UnitTest;
 public class UserAuthTest extends UnitTest {
 	/**
 	 * Authentication test.
+	 * @throws Exception 
 	 */
 	@Test
-    public void authenticationTest() {
+    public void authenticationTest() throws Exception {
 		//Fixtures.deleteAllModels();
 		//Fixtures.loadModels("data.yml");
 		
@@ -44,8 +46,7 @@ public class UserAuthTest extends UnitTest {
     	assertEquals(users.size(), 1);
     	User user = users.get(0);
     	// Try to authenticate
-    	SimpleUserAuthBinding auth = (SimpleUserAuthBinding)user.userAuth;
-    	String secret = auth.authenticate("secret");
+    	User secret = SimpleAuthBackend.authenticate(user, "secret");
     	// Check if authenticated
     	assertNotNull(secret);
     }

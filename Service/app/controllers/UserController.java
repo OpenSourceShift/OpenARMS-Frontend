@@ -1,8 +1,10 @@
 package controllers;
 
+import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 
+import play.Play;
 import play.mvc.Http;
 
 import models.Choice;
@@ -17,10 +19,15 @@ import api.entities.VoteSummaryJSON;
 import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
 import api.requests.CreateUserRequest;
+import api.requests.GenerateAuthChallengeRequest;
+import api.requests.ListAuthBackendsRequest;
 import api.requests.UpdateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
+import api.responses.GenerateAuthChallengeResponse;
+import api.responses.GenerateSimpleAuthChallengeResponse;
+import api.responses.ListAuthBackendsResponse;
 import api.responses.ReadUserDetailsResponse;
 import api.responses.ReadUserResponse;
 import api.responses.UpdateUserResponse;
@@ -32,6 +39,41 @@ import api.responses.UpdateUserResponse;
  */
 public class UserController extends APIController {
 	/**
+	 * Method that either generates a challange for the user or sends back a list of advailable backends.
+	 * @throws Exception 
+	 */
+	public static void challenge() throws Exception {
+		// Takes the UserJSON from the http body
+		GenerateAuthChallengeRequest req = GsonHelper.fromJson(request.body, GenerateAuthChallengeRequest.class);
+		
+		if(req == null || req.backend == null) {
+			// It was a ListAuthBackendsRequest ... but we dont need it for anything ...
+			// ListAuthBackendsRequest listRequest = GsonHelper.fromJson(request.body, ListAuthBackendsRequest.class);
+			List<Class<? extends AuthBackend>> backends = AuthBackend.advailableBackends();
+			ListAuthBackendsResponse res = new ListAuthBackendsResponse();
+			res.backends = new LinkedList<String>();
+			for(Class clazz: backends) {
+				res.backends.add(clazz.getCanonicalName());
+			}
+			renderJSON(res);
+		} else {
+			Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+			if(backend != null) {
+				// Find a challenge for this backend.
+				Method getChallengeRequestClass = backend.getMethod("getChallengeRequestClass");
+				Method generateChallenge = backend.getMethod("generateChallenge", GenerateAuthChallengeRequest.class);
+				Class<? extends GenerateAuthChallengeRequest> requestClass = (Class<? extends GenerateAuthChallengeRequest>) getChallengeRequestClass.invoke(null);
+				request.body.reset();
+				GenerateAuthChallengeRequest challengeRequest = GsonHelper.fromJson(request.body, requestClass);
+				GenerateAuthChallengeResponse response = (GenerateAuthChallengeResponse) generateChallenge.invoke(null, challengeRequest);
+				renderJSON(response);
+			} else {
+				throw new Exception("This authentication backend is not supported.");
+			}
+		}
+	}
+	
+	/**
 	 * Method that authenticates the user.
 	 * It generates new secret for the user.
 	 * Used only when user is logging in.
@@ -40,20 +82,30 @@ public class UserController extends APIController {
 	public static void authenticate() throws Exception {
 		// Takes the UserJSON from the http body
 		AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
-		User user = User.find("byEmail", req.user.email).first();
-		if (user == null) {
-			throw new NotFoundException("No user with this email, found on the system.");
-		} else if (!(user.userAuth instanceof SimpleUserAuthBinding)) {
-			throw new NotFoundException("This user has no support for the choosen backend.");
-		} else {
-			user = SimpleAuthBackend.authenticate(req);
-			if (user != null) {
-			    //Creates the UserJSON Response.
-				AuthenticateUserResponse response = new AuthenticateUserResponse(user.toJson());
-				renderJSON(response.toJson());
+		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		if(backend != null) {
+			// Lookup the user by email
+			User user = User.find("byEmail", req.user.email).first();
+			if (user == null) {
+				throw new NotFoundException("No user with this email, found on the system.");
+			} else if (!(user.userAuth instanceof SimpleUserAuthBinding)) {
+				throw new NotFoundException("This user has no support for the choosen backend.");
 			} else {
-				throw new UnauthorizedException();
+				Method getAuthenticateUserRequestClass = backend.getMethod("getAuthenticateUserRequestClass");
+				Class<? extends AuthenticateUserRequest> requestClass = (Class<? extends AuthenticateUserRequest>) getAuthenticateUserRequestClass.invoke(null);
+				request.body.reset();
+				AuthenticateUserRequest authenticationRequest = GsonHelper.fromJson(request.body, requestClass);
+				user = SimpleAuthBackend.authenticate(authenticationRequest);
+				if (user != null) {
+				    //Creates the UserJSON Response.
+					renderJSON(new AuthenticateUserResponse(user.toJson()));
+				} else {
+					throw new UnauthorizedException();
+				}
 			}
+		} else {
+			// TODO: Consider to read this url from the routes.
+			throw new Exception("Backend not choosen, pick one from the 'GET /user/authenticate' list.");
 		}
 	}
 	
@@ -100,6 +152,12 @@ public class UserController extends APIController {
         }
         
         User user = User.fromJson(req.user);
+		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		if (backend != null && backend.equals(SimpleAuthBackend.class)) {
+			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
+			auth.password = req.user.attributes.get("password");
+			user.userAuth = auth;
+		}
      	user.userAuth.save();
         user.save();
         user.userAuth.user = user;

@@ -1,5 +1,5 @@
 package api.responses;
 
-public abstract class GenerateAuthChallangeResponse extends Response {
+public abstract class GenerateAuthChallengeResponse extends Response {
 	// TODO: Create one for each concrete authentication backend.
 }

@@ -37,9 +37,8 @@ public class APIClientFullCreate extends UnitTest {
 		u.secret = null;
 		u.attributes = new HashMap<String, String>();
 		u.attributes.put("password", "1234");
-		u.backend = "class models.SimpleUserAuthBinding";
 
-		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u));
+		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthBackend"));
 
     	failIfNotSuccessful(userresponse);
     	assertNotNull(userresponse.user.id);

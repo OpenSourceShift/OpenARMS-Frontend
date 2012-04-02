@@ -21,7 +21,7 @@ public class CreatePoll extends BaseController {
 	public static void index() {
 		if (!LoginUser.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
-			LoginUser.index(null);
+			LoginUser.showform(null);
 		}
 		render();
 	}

@@ -44,6 +44,7 @@ GET		/user/{<[0-9]+>id}/details				UserController.details
 POST	/user									UserController.create
 PUT		/user/{<[0-9]+>id}						UserController.edit
 DELETE	/user/{<[0-9]+>id}						UserController.delete
+GET		/user/authenticate						UserController.challenge
 POST	/user/authenticate						UserController.authenticate
 GET		/user/deauthenticate					UserController.deauthenticate
 GET		/loadtestdata/{<.+>yaml_file}			APIController.loadTestData

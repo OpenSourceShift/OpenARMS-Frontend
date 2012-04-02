@@ -11,7 +11,7 @@ GET		/										Application.index
 GET		/createpoll								CreatePoll.index
 POST	/createpoll								CreatePoll.submit
 GET		/joinpoll								JoinPoll.index
-GET		/login									LoginUser.index
+GET		/login									LoginUser.showform
 GET		/logout									LoginUser.logout
 GET		/managepoll								ManagePoll.index
 GET		/managepoll/statistics/{<[0-9]+>id}		ManagePoll.statistics
