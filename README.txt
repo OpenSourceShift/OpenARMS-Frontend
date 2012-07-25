@@ -9,4 +9,3 @@ Everything is GPL'ed, but alas, the files need to be tagged with appropriate hea
 To use the service, visit:
 
 www.openarms.dk
-
