@@ -6,8 +6,7 @@ OpenARMS is a complete Audience Response Management System consisting of the fol
 
 Everything is GPL'ed, but alas, the files need to be tagged with appropriate headers.
 
-To use the service:
+To use the service, visit:
 
 www.openarms.dk
-
 
