@@ -49,8 +49,8 @@ body {
 #header #logo {
 	position: absolute;
 	background-image: url("/public/images/logo.png");
-	width: 250px;
-	height: 50px;
+	width: 251px;
+	height: 61px;
 	background-repeat: no-repeat;
 	padding-bottom: 1em;
 	background-position: 50% 50%;
