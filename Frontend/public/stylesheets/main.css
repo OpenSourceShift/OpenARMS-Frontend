@@ -190,10 +190,26 @@ input[type=password] {
 	text-align: center;
 }
 #footer {
+	position: relative;
 	font-size: 0.9em;
 	text-align: center;
 	color: #333;
 }
 #footer a {
 	color: #333;
+}
+#footer #badge {
+	position: absolute;
+	right: -75px;
+	top: -75px;
+	-moz-transform:rotate(10deg);
+	-webkit-transform:rotate(10deg);
+	-o-transform:rotate(10deg);
+	-ms-transform:rotate(10deg);
+}
+#footer #badge:hover {
+	-moz-transform:rotate(5deg);
+	-webkit-transform:rotate(5deg);
+	-o-transform:rotate(5deg);
+	-ms-transform:rotate(5deg);
 }
