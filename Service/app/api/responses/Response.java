@@ -1,5 +1,6 @@
 package api.responses;
 
+import play.mvc.Http.StatusCode;
 import api.helpers.GsonHelper;
 import api.helpers.GsonSkip;
 
@@ -15,5 +16,9 @@ public class Response {
 	}
 	public String toJson() {
 		return GsonHelper.toJson(this);
+	}
+	
+	public boolean success() {
+		return StatusCode.success(statusCode);
 	}
 }

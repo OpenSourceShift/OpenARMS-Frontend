@@ -1,5 +1,7 @@
 package api.requests;
 
+import java.util.Map;
+
 import api.entities.UserJSON;
 import api.requests.Request.Method;
 import api.responses.CreateUserResponse;
@@ -11,9 +13,11 @@ import api.responses.Response;
 public class CreateUserRequest extends Request {
 	public UserJSON user;
     public String backend;
-	public CreateUserRequest (UserJSON u, String backend) {
+    public Map<String, String> attributes;
+	public CreateUserRequest (UserJSON u, String backend, Map<String, String> attributes) {
 		this.user = u;
 		this.backend = backend;
+		this.attributes = attributes;
 	}
 	
 	@Override

@@ -30,15 +30,15 @@ public class UserAuthTest extends UnitTest {
 		u.name = "test";
 		u.email = "avas@dfsdf.com";
 		u.secret = null;
-		u.userAuth = null;
+		u.authenticationBinding = null;
 		u.save();
 		// Insert simple authentication to DB
 		SimpleAuthenticationBinding s = new SimpleAuthenticationBinding();
 		s.user = u;
-		s.password = "secret";
+		s.setPassword("");
 		s.save();
 		// Bind authentication method with user in DB
-		u.userAuth = s;
+		u.authenticationBinding = s;
 		u.save();
 		
 		// Request user from DB

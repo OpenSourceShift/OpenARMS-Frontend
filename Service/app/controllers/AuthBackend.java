@@ -7,7 +7,7 @@ import java.util.Random;
 import com.google.gson.GsonBuilder;
 
 import models.User;
-import models.UserAuthBinding;
+import models.AuthenticationBinding;
 import play.Logger;
 import play.Play;
 import play.mvc.Http;
@@ -39,7 +39,7 @@ public abstract class AuthBackend {
 		throw new Exception("This AuthBackend does not support resetting the password");
 	}
 	
-	public static Class<? extends UserAuthBinding> getBindingClass() throws Exception {
+	public static Class<? extends AuthenticationBinding> getBindingClass() throws Exception {
 		throw new Exception("This AuthBackend does not support resetting the password");
 	}
 	

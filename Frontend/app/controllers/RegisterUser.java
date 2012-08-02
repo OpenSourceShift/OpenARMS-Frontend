@@ -3,6 +3,7 @@ import play.mvc.Controller;
 import play.mvc.Http;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.*;
 
 
@@ -36,9 +37,9 @@ public class RegisterUser extends BaseController {
 			UserJSON uj = new UserJSON();
 			uj.name = name;
 			uj.email = email;
-			uj.attributes = new HashMap<String, String>();
-			uj.attributes.put("password", confpassw);
-			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthBackend"));
+			Map<String, String> attributes = new HashMap<String, String>();
+			attributes.put("password", passw);
+			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthenticationBackend", attributes));
 			if  (response.statusCode == Http.StatusCode.CREATED)
 				success();
 			else {

@@ -4,7 +4,7 @@
 
 # Home page
 
-# OpenARS 1.0
+# OpenARS 1.0 / OpenARMS 0.1
 POST    /newPoll                                Management.createQuestion
 POST    /activation/{<[0-9]+>id}/{adminKey}     Management.activation
 GET     /checkAdminKey/{<[0-9]+>id}/{adminKey}  Management.checkAdminLink
@@ -13,7 +13,7 @@ GET     /{<[0-9]+>id}                           Voting.getQuestion
 GET     /getResults/{<[0-9]+>id}                Voting.getResults
 GET     /getResults/{<[0-9]+>id}/{adminKey}     Voting.getResults
 
-# OpenARMS 2.0
+# OpenARMS 0.3
 *       /admin									module:crud
 *       /admin		                            module:secure
 GET     /qr/{<[A-Za-z0-9]+>token}/{<[0-9]+>size}      QRController.returnImage(format:'jpg')

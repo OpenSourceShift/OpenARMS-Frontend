@@ -58,16 +58,20 @@ public class APIClient extends Controller {
 		host = new HttpHost(hostname, port);
 	}
 	
-	public void setAuthentication(Long userId, String userSecret) {
+	public static void setAuthentication(Long userId, String userSecret) {
 		session.put("user_id", userId);
-		session.put("user_secret", Crypto.decryptAES(userSecret));
+		if(userSecret == null) {
+			session.put("user_secret", null);
+		} else {
+			session.put("user_secret", Crypto.decryptAES(userSecret));
+		}
 	}
 	
 	public static APIClient getInstance() {
 		return new APIClient();
 	}
 	
-	private HttpRequestBase getBaseRequest(api.requests.Request request) throws Exception {
+	private HttpRequestBase getBaseRequest(api.requests.Request request) {
 		HttpRequestBase httpRequest;
 		if(request.getHttpMethod().equals(Request.Method.GET)) {
 			httpRequest = new HttpGet();
@@ -78,12 +82,12 @@ public class APIClient extends Controller {
 		} else if(request.getHttpMethod().equals(Request.Method.DELETE)) {
 			httpRequest = new HttpDelete();
 		} else {
-			throw new Exception("Unknown HTTP-method of the API-request.");
+			throw new RuntimeException("Unknown HTTP-method of the API-request.");
 		}
 		return httpRequest;
 	}
 	
-	public Response sendRequest(Request request) throws Exception {
+	public Response sendRequest(Request request) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		
 		String json = GsonHelper.toJson(request);
@@ -112,33 +116,37 @@ public class APIClient extends Controller {
 		// TODO: Remember to set the encoding of the request.
 		Logger.debug("APIClient sends: %s to %s%s as %s", json, host.toString(), httpRequest.getURI(), httpRequest.getMethod());
 		
-		HttpResponse httpResponse = client.execute(host, httpRequest);
-		HttpEntity httpResponseEntity = httpResponse.getEntity();
-		// Check the response content-type.
-		if(httpResponseEntity.getContentType().getValue().startsWith("application/json")) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
-			String responseJson = "";
-			String line;
-			while ((line = br.readLine()) != null) {
-				responseJson += line;
-				Logger.debug("APIClient receives: %s", line);
+		try {
+			HttpResponse httpResponse = client.execute(host, httpRequest);
+			HttpEntity httpResponseEntity = httpResponse.getEntity();
+			// Check the response content-type.
+			if(httpResponseEntity.getContentType().getValue().startsWith("application/json")) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
+				String responseJson = "";
+				String line;
+				while ((line = br.readLine()) != null) {
+					responseJson += line;
+					Logger.debug("APIClient receives: %s", line);
+				}
+				Response response = GsonHelper.fromJson(responseJson, request.getExpectedResponseClass());
+				response.statusCode = httpResponse.getStatusLine().getStatusCode();
+				return response;
+			} else {
+				Logger.debug("APIClient receives something with the wrong content-type.");
+				//Logger.debug(httpResponseEntity.getContent());
+				BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
+				String line;
+				while ((line = br.readLine()) != null) {
+					Logger.debug("APIClient receives: %s", line);
+				}
+				throw new RuntimeException("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
 			}
-			Response response = GsonHelper.fromJson(responseJson, request.getExpectedResponseClass());
-			response.statusCode = httpResponse.getStatusLine().getStatusCode();
-			return response;
-		} else {
-			Logger.debug("APIClient receives something with the wrong content-type.");
-			//Logger.debug(httpResponseEntity.getContent());
-			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
-			String line;
-			while ((line = br.readLine()) != null) {
-				Logger.debug("APIClient receives: %s", line);
-			}
-			throw new Exception("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't send the request to the service.", e);
 		}
 	}
 	
-	public static Response send(Request request) throws Exception {
+	public static Response send(Request request) {
 		return getInstance().sendRequest(request);
 	}
 
@@ -207,23 +215,21 @@ public class APIClient extends Controller {
 		return (EmptyResponse) APIClient.send(req);
 	}
 
-	public static boolean authenticateSimple(String email, String password) throws Exception {
-		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email, "controllers.SimpleAuthBackend");
+	public static boolean authenticateSimple(String email, String password) {
+		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email);
 		req.password = password;
 		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
-			session.put("user_id", authenticateResponse.user.id);
-			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
+			setAuthentication(authenticateResponse.user.id, authenticateResponse.user.secret);
 			return true;
 		} else {
 			EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
 			if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
 				System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
 			}
-			session.put("user_id", null);
-			session.put("user_secret", null);
+			setAuthentication(null, null);
 			if(StatusCode.error(authenticateResponse.statusCode)) {
-				throw new Exception(authenticateResponse.error_message);
+				throw new RuntimeException(authenticateResponse.error_message);
 			}
 			return false;
 		}

@@ -1,6 +1,7 @@
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.Test;
@@ -34,18 +35,17 @@ public class APIClientFullCreate extends UnitTest {
 		UserJSON u = new UserJSON();
 		u.name = "openarms";
 		u.email = "test@test.com";
-		u.secret = null;
-		u.attributes = new HashMap<String, String>();
-		u.attributes.put("password", "1234");
+		Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("password", "1234");
 
-		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthBackend"));
+		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthenticationBackend", attributes));
 
     	failIfNotSuccessful(userresponse);
     	assertNotNull(userresponse.user.id);
     	assertEquals(userresponse.user.name, u.name);
     	// Authenticate
 		APIClient apiClient = new APIClient();
-		boolean authenticated = apiClient.authenticateSimple(u.email, u.attributes.get("password"));
+		boolean authenticated = apiClient.authenticateSimple(u.email, attributes.get("password"));
 		assertTrue(authenticated);
     
     	PollJSON pj1 = new PollJSON();

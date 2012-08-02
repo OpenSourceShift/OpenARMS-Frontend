@@ -17,7 +17,7 @@ import notifiers.MailNotifier;
 
 import models.SimpleAuthenticationBinding;
 import models.User;
-import models.UserAuthBinding;
+import models.AuthenticationBinding;
 import play.*;
 import play.mvc.*;
 import play.mvc.Http.*;
@@ -61,17 +61,17 @@ public class SimpleAuthenticationBackend extends AuthBackend {
 			throw new Exception("No user with this email.");
 	    } else {
 	    	Logger.debug("authenticate() found user: %s", user.toString());
-	    	if(!(user.userAuth instanceof SimpleAuthenticationBinding)) {
+	    	if(!(user.authenticationBinding instanceof SimpleAuthenticationBinding)) {
 	    		throw new Exception("This user cannot authenticate using the SimpleAuthBackend.");
 	    	} else {
-		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.userAuth;
-		    	if(password == null || !password.equals(authBinding.password)) {
-		    		throw new Exception("Password didn't match.");
-		    	} else {
+		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.authenticationBinding;
+		    	if(authBinding.checkPassword(password)) {
 		    		user.secret = AuthBackend.generateSecret();
 			    	Logger.debug("Generated a new authentication secret: %s", user.secret);
 			    	user.save();
 			    	return user;
+		    	} else {
+		    		throw new Exception("Password didn't match.");
 		    	}
 	    	}
 		}
@@ -86,8 +86,8 @@ public class SimpleAuthenticationBackend extends AuthBackend {
 		if (header != null) {
 			user = (User)User.find("name", Http.Request.current().user).fetch().get(0);
 			if (user != null) {
-				((SimpleAuthenticationBinding)user.userAuth).generatePassword();
-				MailNotifier.sendPassword(user);
+				String password = ((SimpleAuthenticationBinding)user.authenticationBinding).generatePassword();
+				MailNotifier.sendPassword(user, password);
 			}
 		}
 	}

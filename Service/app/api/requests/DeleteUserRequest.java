@@ -1,4 +1,5 @@
 package api.requests;
+import api.helpers.GsonSkip;
 import api.responses.EmptyResponse;
 import api.responses.Response;
 
@@ -6,6 +7,8 @@ import api.responses.Response;
  * A request for the service: Deletes a user
  */
 public class DeleteUserRequest extends Request {
+
+	@GsonSkip
 	public Long user_id;
 	public DeleteUserRequest (Long l) {
 		this.user_id = l;

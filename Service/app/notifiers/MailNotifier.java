@@ -39,11 +39,10 @@ public class MailNotifier extends Mailer {
      * Method that sends a new password to the user
      * @param user the user that requested password reset     
      */
-    public static void sendPassword(User user) {
+    public static void sendPassword(User user, String password) {
         setSubject("Your new password");
         addRecipient(user.email);
         setFrom("OpenARMS.dk <no-reply@openarms.dk>");
-        send("Your new password: " + ((SimpleAuthenticationBinding)user.userAuth).password);
+        send("Your new password: " + password);
     }
-
 }

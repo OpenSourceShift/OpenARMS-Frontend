@@ -13,7 +13,7 @@ import play.db.jpa.Model;
  * @author OpenARMS Service team
  */
 @Entity
-public abstract class UserAuthBinding extends Model {
+public abstract class AuthenticationBinding extends Model {
 	/**
 	 * Identifier of the user.
 	 */

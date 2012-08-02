@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.Test;
@@ -31,16 +32,16 @@ public class TestDuplicateUser extends UnitTest {
 		u.name = "openarms";
 		u.email = "test@test.com";
 		u.secret = null;
-		u.attributes = new HashMap<String, String>();
-		u.attributes.put("password", "1234");
+		Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("password", "1234");
 
-		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthBackend"));
+		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthtenticationBackend", attributes));
 
     	failIfNotSuccessful(userresponse);
     	assertNotNull(userresponse.user.id);
     	assertEquals(userresponse.user.name, u.name);
     	
-    	CreateUserResponse userresponse2 = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthBackend"));
+    	CreateUserResponse userresponse2 = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthenticationBackend", attributes));
 
     	failIfNotSuccessful(userresponse2);
     	assertNotNull(userresponse2.user.id);
