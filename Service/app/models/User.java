@@ -3,7 +3,7 @@ package models;
 import javax.persistence.*;
 
 import controllers.AuthBackend;
-import controllers.SimpleAuthBackend;
+import controllers.SimpleAuthenticationBackend;
 
 import play.data.validation.Password;
 import play.db.jpa.*;

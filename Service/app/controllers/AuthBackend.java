@@ -4,12 +4,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import com.google.gson.GsonBuilder;
+
 import models.User;
 import models.UserAuthBinding;
 import play.Logger;
 import play.Play;
 import play.mvc.Http;
 import play.mvc.Http.Header;
+import api.helpers.GsonHelper;
 import api.requests.AuthenticateUserRequest;
 import api.requests.GenerateAuthChallengeRequest;
 import api.responses.GenerateAuthChallengeResponse;

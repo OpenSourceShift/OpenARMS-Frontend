@@ -7,7 +7,7 @@ import org.hibernate.annotations.AccessType;
 
 import models.Choice;
 import models.PollInstance;
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 import models.Vote;
 
@@ -112,7 +112,7 @@ public abstract class APIController extends Controller {
 				
 				// Create the binding
 		        User user = User.find("byEmail", "spam@creen.dk").first();
-		        SimpleUserAuthBinding authBinding = new SimpleUserAuthBinding();
+		        SimpleAuthenticationBinding authBinding = new SimpleAuthenticationBinding();
 		        authBinding.user = user;
 		        authBinding.password = "openarms";
 		        authBinding.save();

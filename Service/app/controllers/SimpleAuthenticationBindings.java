@@ -8,6 +8,6 @@ import play.mvc.*;
  * @author OpenARMS Service team
  */
 @With(Secure.class)
-public class SimpleUserAuthBindings extends CRUD {
+public class SimpleAuthenticationBindings extends CRUD {
 
 }

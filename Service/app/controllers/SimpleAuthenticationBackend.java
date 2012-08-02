@@ -4,7 +4,7 @@ import java.util.List;
 
 import api.entities.UserJSON;
 import api.helpers.GsonHelper;
-import api.requests.AuthenticateSimpleUserRequest;
+import api.requests.SimpleAuthenticateUserRequest;
 import api.requests.AuthenticateUserRequest;
 import api.requests.GenerateAuthChallengeRequest;
 import api.requests.GenerateSimpleAuthChallengeRequest;
@@ -15,7 +15,7 @@ import api.responses.GenerateSimpleAuthChallengeResponse;
 
 import notifiers.MailNotifier;
 
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 import models.UserAuthBinding;
 import play.*;
@@ -26,7 +26,7 @@ import play.mvc.Http.*;
  * Controller which specifies simple authentication method.
  * @author OpenARMS Service team
  */
-public class SimpleAuthBackend extends AuthBackend {
+public class SimpleAuthenticationBackend extends AuthBackend {
 	
 	public static Class<? extends GenerateAuthChallengeRequest> getChallengeRequestClass() throws Exception {
 		return GenerateSimpleAuthChallengeRequest.class;
@@ -37,7 +37,7 @@ public class SimpleAuthBackend extends AuthBackend {
 	}
 	
 	public static Class<? extends AuthenticateUserRequest> getAuthenticateUserRequestClass() throws Exception {
-		return AuthenticateSimpleUserRequest.class;
+		return SimpleAuthenticateUserRequest.class;
 	}
 	
 	/**
@@ -46,12 +46,12 @@ public class SimpleAuthBackend extends AuthBackend {
 	 * @throws Exception 
 	 */
 	public static User authenticate(AuthenticateUserRequest req) throws Exception {
-		if(!(req instanceof AuthenticateSimpleUserRequest)) {
+		if(!(req instanceof SimpleAuthenticateUserRequest)) {
 			throw new Exception("This authenticate user request is not supported by this backend.");
 		} else {
-			AuthenticateSimpleUserRequest request = (AuthenticateSimpleUserRequest) req;
+			SimpleAuthenticateUserRequest request = (SimpleAuthenticateUserRequest) req;
 		    // Find correct user in the DB
-		    User user = (User)User.find("email", request.user.email).first();
+		    User user = (User)User.find("email", request.email).first();
 		    return authenticate(user, request.password);
 		}
 	}
@@ -61,10 +61,10 @@ public class SimpleAuthBackend extends AuthBackend {
 			throw new Exception("No user with this email.");
 	    } else {
 	    	Logger.debug("authenticate() found user: %s", user.toString());
-	    	if(!(user.userAuth instanceof SimpleUserAuthBinding)) {
+	    	if(!(user.userAuth instanceof SimpleAuthenticationBinding)) {
 	    		throw new Exception("This user cannot authenticate using the SimpleAuthBackend.");
 	    	} else {
-		    	SimpleUserAuthBinding authBinding = (SimpleUserAuthBinding)user.userAuth;
+		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.userAuth;
 		    	if(password == null || !password.equals(authBinding.password)) {
 		    		throw new Exception("Password didn't match.");
 		    	} else {
@@ -86,7 +86,7 @@ public class SimpleAuthBackend extends AuthBackend {
 		if (header != null) {
 			user = (User)User.find("name", Http.Request.current().user).fetch().get(0);
 			if (user != null) {
-				((SimpleUserAuthBinding)user.userAuth).generatePassword();
+				((SimpleAuthenticationBinding)user.userAuth).generatePassword();
 				MailNotifier.sendPassword(user);
 			}
 		}

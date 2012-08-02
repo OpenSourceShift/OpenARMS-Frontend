@@ -3,7 +3,6 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -23,13 +22,11 @@ import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
-import api.entities.UserJSON;
 import api.helpers.GsonHelper;
-import api.requests.AuthenticateSimpleUserRequest;
-import api.requests.AuthenticateUserRequest;
 import api.requests.DeauthenticateUserRequest;
 import api.requests.LoadTestDataRequest;
 import api.requests.Request;
+import api.requests.SimpleAuthenticateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
@@ -211,9 +208,7 @@ public class APIClient extends Controller {
 	}
 
 	public static boolean authenticateSimple(String email, String password) throws Exception {
-		UserJSON u = new UserJSON();
-		u.email = email;
-		AuthenticateSimpleUserRequest req = new AuthenticateSimpleUserRequest(u, "controllers.SimpleAuthBackend");
+		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email, "controllers.SimpleAuthBackend");
 		req.password = password;
 		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {

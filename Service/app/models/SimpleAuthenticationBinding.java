@@ -16,7 +16,7 @@ import java.util.Random;
  * @author OpenARMS Service team
  */
 @Entity
-public class SimpleUserAuthBinding extends UserAuthBinding {
+public class SimpleAuthenticationBinding extends UserAuthBinding {
 	/**
 	 * User's password.
 	 */

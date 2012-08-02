@@ -43,7 +43,7 @@ public class MailNotifier extends Mailer {
         setSubject("Your new password");
         addRecipient(user.email);
         setFrom("OpenARMS.dk <no-reply@openarms.dk>");
-        send("Your new password: " + ((SimpleUserAuthBinding)user.userAuth).password);
+        send("Your new password: " + ((SimpleAuthenticationBinding)user.userAuth).password);
     }
 
 }

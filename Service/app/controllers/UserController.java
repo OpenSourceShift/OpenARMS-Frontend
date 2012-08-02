@@ -11,7 +11,7 @@ import play.mvc.Http;
 import models.Choice;
 import models.Poll;
 import models.PollInstance;
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 import models.Vote;
 import api.entities.PollInstanceJSON;
@@ -165,8 +165,8 @@ public class UserController extends APIController {
         
         User user = User.fromJson(req.user);
 		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
-		if (backend != null && backend.equals(SimpleAuthBackend.class)) {
-			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
+		if (backend != null && backend.equals(SimpleAuthenticationBackend.class)) {
+			SimpleAuthenticationBinding auth = new SimpleAuthenticationBinding();
 			auth.password = req.user.attributes.get("password");
 			user.userAuth = auth;
 		}
@@ -234,10 +234,10 @@ public class UserController extends APIController {
         	// Compares originalAuth with editedAuth
         	if (editedUser.userAuth.getClass().toString().equals(originalUser.userAuth.getClass().toString())) {
         		// Check authentication method
-        		if (originalUser.userAuth instanceof SimpleUserAuthBinding) {
-        			Long idAuth = ((SimpleUserAuthBinding)originalUser.userAuth).id;
-        			SimpleUserAuthBinding originalAuth = (SimpleUserAuthBinding)SimpleUserAuthBinding.find("byID", idAuth).fetch().get(0);
-        			originalAuth.password = ((SimpleUserAuthBinding)editedUser.userAuth).password;
+        		if (originalUser.userAuth instanceof SimpleAuthenticationBinding) {
+        			Long idAuth = ((SimpleAuthenticationBinding)originalUser.userAuth).id;
+        			SimpleAuthenticationBinding originalAuth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).fetch().get(0);
+        			originalAuth.password = ((SimpleAuthenticationBinding)editedUser.userAuth).password;
         			originalAuth.save();
         		}
         	}
@@ -265,9 +265,9 @@ public class UserController extends APIController {
 		requireUser(user);
 		
 		//Deletes the Authentication from the DataBase.
-		if (user.userAuth instanceof SimpleUserAuthBinding) {
-			Long idAuth = ((SimpleUserAuthBinding)user.userAuth).id;
-			SimpleUserAuthBinding auth = (SimpleUserAuthBinding)SimpleUserAuthBinding.find("byID", idAuth).fetch().get(0);
+		if (user.userAuth instanceof SimpleAuthenticationBinding) {
+			Long idAuth = ((SimpleAuthenticationBinding)user.userAuth).id;
+			SimpleAuthenticationBinding auth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).fetch().get(0);
 			auth.delete();
 		}
 		//Deletes the User from the DataBase and creates an empty UserJSON for the response.

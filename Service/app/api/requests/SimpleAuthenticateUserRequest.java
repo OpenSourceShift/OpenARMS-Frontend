@@ -8,9 +8,9 @@ import api.responses.Response;
 /**
  * A request for the service: Authenticate against an authentication backend.
  */
-public class AuthenticateSimpleUserRequest extends AuthenticateUserRequest {
+public class SimpleAuthenticateUserRequest extends AuthenticateUserRequest {
 	public String password;
-	public AuthenticateSimpleUserRequest(UserJSON user, String backend) {
-		super(user, backend);
+	public SimpleAuthenticateUserRequest(String email, String backend) {
+		super(email, backend);
 	}
 }
