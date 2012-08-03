@@ -20,6 +20,7 @@ import java.util.Random;
  */
 @Entity
 public class SimpleAuthenticationBinding extends AuthenticationBinding {
+	
 	/**
 	 * User's password.
 	 */

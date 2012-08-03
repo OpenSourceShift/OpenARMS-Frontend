@@ -21,9 +21,9 @@ public class PollTests extends BaseTest {
 		CreateUserResponse response1 = createUser();
 		assertTrue(response1.error_message, response1.success());
 		assertNotNull(response1.user);
+
+		super.authenticateUser();
 		
-		authenticateUser();
-    	
     	PollJSON p1 = new PollJSON();
     	p1.question = "This is the first question.";
     	p1.admin = response1.user.id;
@@ -37,7 +37,7 @@ public class PollTests extends BaseTest {
     	assertNotNull(response2.poll.id);
 		
 		// Delete the user if its there.
-		//deleteUserIfCreated();
+		deleteUserIfCreated();
 	}
 
 	@Test
@@ -62,6 +62,6 @@ public class PollTests extends BaseTest {
     	assertNotNull(response2.poll.id);
 		
 		// Delete the user if its there.
-		//deleteUserIfCreated();
+		deleteUserIfCreated();
 	}
 }

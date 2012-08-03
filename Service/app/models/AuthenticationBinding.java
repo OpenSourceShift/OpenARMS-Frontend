@@ -17,7 +17,6 @@ public abstract class AuthenticationBinding extends Model {
 	/**
 	 * Identifier of the user.
 	 */
-	@OneToOne
-	@Required
+	@OneToOne(fetch=FetchType.LAZY)
 	public User user;
 }

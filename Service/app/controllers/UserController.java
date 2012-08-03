@@ -284,6 +284,8 @@ public class UserController extends APIController {
 	 */
 	public static void delete () throws Exception {
 		String userid = params.get("id");
+		
+		User.em().getTransaction().begin();
 
 		//Takes the User from the DataBase.
 		User user = User.find("byID", userid).first();
@@ -292,11 +294,12 @@ public class UserController extends APIController {
 		requireUser(user);
 		
 		//Deletes the Authentication from the DataBase.
-		/*if (user.authenticationBinding instanceof SimpleAuthenticationBinding) {
-			Long idAuth = ((SimpleAuthenticationBinding)user.authenticationBinding).id;
-			SimpleAuthenticationBinding auth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).fetch().get(0);
-			auth.delete();
-		}*/
+		if (user.authenticationBinding instanceof SimpleAuthenticationBinding) {
+			//Long idAuth = ((SimpleAuthenticationBinding)user.authenticationBinding).id;
+			//SimpleAuthenticationBinding auth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).first();
+			//auth.delete();
+			user.authenticationBinding.delete();
+		}
 		//Deletes the User from the DataBase and creates an empty UserJSON for the response.
 		user.delete();
 

@@ -63,7 +63,7 @@ public class APIClient extends Controller {
 		if(userSecret == null) {
 			session.put("user_secret", null);
 		} else {
-			session.put("user_secret", Crypto.decryptAES(userSecret));
+			session.put("user_secret", Crypto.encryptAES(userSecret));
 		}
 	}
 	
@@ -220,14 +220,17 @@ public class APIClient extends Controller {
 		req.password = password;
 		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
-			setAuthentication(authenticateResponse.user.id, authenticateResponse.user.secret);
+
+			session.put("user_id", authenticateResponse.user.id);
+			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
 			return true;
 		} else {
 			EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
 			if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
 				System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
 			}
-			setAuthentication(null, null);
+			session.put("user_id", null);
+			session.put("user_secret", null);
 			if(StatusCode.error(authenticateResponse.statusCode)) {
 				throw new RuntimeException(authenticateResponse.error_message);
 			}

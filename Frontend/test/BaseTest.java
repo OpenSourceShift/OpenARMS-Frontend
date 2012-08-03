@@ -12,11 +12,15 @@ import api.requests.DeleteUserRequest;
 import api.responses.CreateUserResponse;
 import api.responses.EmptyResponse;
 import api.responses.Response;
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
+import play.mvc.With;
 import play.test.UnitTest;
 
 public abstract class BaseTest extends UnitTest {
+	
+	public static final APIClient client = new APIClient();
 
 	public static final String NAME = "John Doe";
 	public static final String EMAIL = "test@openarms.dk";
@@ -36,7 +40,7 @@ public abstract class BaseTest extends UnitTest {
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("password", password);
 		CreateUserRequest request = new CreateUserRequest(user, BACKEND, attributes);
-		CreateUserResponse response = (CreateUserResponse) APIClient.send(request);
+		CreateUserResponse response = (CreateUserResponse) client.send(request);
 		if(response.success()) {
 			latestCreatedUserID = response.user.id;
 		}
@@ -45,7 +49,7 @@ public abstract class BaseTest extends UnitTest {
 	
 	public static void deleteUserIfCreated() {
 		if(latestCreatedUserID != null) {
-			APIClient.authenticateSimple(EMAIL, PASSWORD);
+			client.authenticateSimple(EMAIL, PASSWORD);
 			EmptyResponse response1 = deleteUser();
 			assertTrue(response1.error_message, response1.success());
 		}
@@ -53,7 +57,7 @@ public abstract class BaseTest extends UnitTest {
 	
 	public static EmptyResponse deleteUser(Long id) {
 		DeleteUserRequest request = new DeleteUserRequest(id);
-		EmptyResponse response = (EmptyResponse) APIClient.send(request);
+		EmptyResponse response = (EmptyResponse) client.send(request);
 		return response;
 	}
 	
@@ -68,7 +72,7 @@ public abstract class BaseTest extends UnitTest {
 	}
 	
 	public static void authenticateUser() {
-		boolean success = APIClient.authenticateSimple(EMAIL, PASSWORD);
+		boolean success = client.authenticateSimple(EMAIL, PASSWORD);
 		assertTrue("Couldn't authenticate the user.", success);
 	}
 
