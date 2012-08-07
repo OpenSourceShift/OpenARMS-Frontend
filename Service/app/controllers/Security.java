@@ -12,12 +12,9 @@ public class Security extends Secure.Security {
 	 * @return boolean true when authenticated or false otherwise
 	 */
     static boolean authenticate(String username, String password) {
-        Boolean ret = false;
     	String admin_user = Play.configuration.getProperty("admin_user");
         String admin_pass = Play.configuration.getProperty("admin_pass");
-        if (username.equals(admin_user) && (password.equals(admin_pass)))
-        	ret = true;
-        return ret;
+        return username.equals(admin_user) && password.equals(admin_pass);
     }
     /**
 	 * Used when disconnected/logged out from the administration interface.

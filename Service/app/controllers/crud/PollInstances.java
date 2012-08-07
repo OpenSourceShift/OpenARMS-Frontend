@@ -1,5 +1,8 @@
-package controllers; 
+package controllers.crud; 
 
+import controllers.CRUD;
+import controllers.Secure;
+import controllers.CRUD.For;
 import play.*;
 import play.mvc.*;
 
@@ -8,6 +11,7 @@ import play.mvc.*;
  * @author OpenARMS Service team
  */
 @With(Secure.class)
+@CRUD.For(models.PollInstance.class)
 public class PollInstances extends CRUD {
 
 }

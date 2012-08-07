@@ -1,5 +1,7 @@
-package controllers;
+package controllers.crud;
 
+import controllers.CRUD;
+import controllers.Secure;
 import play.*;
 import play.mvc.*;
 
@@ -8,6 +10,7 @@ import play.mvc.*;
  * @author OpenARMS Service team
  */
 @With(Secure.class)
+@CRUD.For(models.SimpleAuthenticationBinding.class)
 public class SimpleAuthenticationBindings extends CRUD {
 
 }

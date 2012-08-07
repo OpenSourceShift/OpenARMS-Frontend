@@ -1,5 +1,7 @@
-package controllers;
+package controllers.crud;
 
+import controllers.CRUD;
+import controllers.Secure;
 import play.mvc.With;
 
 /**
@@ -7,6 +9,7 @@ import play.mvc.With;
  * @author OpenARMS Service team
  */
 @With(Secure.class)
+@CRUD.For(models.User.class)
 public class Users extends CRUD {
 
 }
