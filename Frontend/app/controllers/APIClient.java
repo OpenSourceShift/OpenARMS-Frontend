@@ -136,10 +136,17 @@ public class APIClient extends Controller {
 				//Logger.debug(httpResponseEntity.getContent());
 				BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
 				String line;
+				String html = "";
 				while ((line = br.readLine()) != null) {
-					Logger.debug("APIClient receives: %s", line);
+					//Logger.debug("APIClient receives: %s", line);
+					html += line;
 				}
-				throw new RuntimeException("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
+				renderHtml(html);
+				Response response = new EmptyResponse();
+				response.statusCode = httpResponse.getStatusLine().getStatusCode();
+				response.error_message = "Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue();
+				return response;
+				//throw new RuntimeException("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't send the request to the service.", e);
