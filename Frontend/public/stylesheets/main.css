@@ -5,11 +5,8 @@
 body {
 	background-color: #F0F0F0;
 	color: #fff;
-	font-size: 12px;
+	font-size: 13px;
 	margin: 0;
-	-moz-user-select: none;
-	-khtml-user-select: none;
-	user-select: none;
 }
 #container {
 	margin: 1% auto;
@@ -23,7 +20,7 @@ body {
 	border-top: 0.5em solid #333333;
 	border-bottom: 0.5em solid #333333;
 	/*overflow: auto;*/
-	padding: 1.0em 2.5em;
+	padding: 1.0em 2.0em;
 }
 
 #main {
@@ -75,6 +72,7 @@ h1, h2 {
 input[type=text],
 input[type=password] {
 	background-color: #fff;
+	font-size: 1.1em;
 }
 
 .centered {
@@ -94,7 +92,6 @@ input[type=password] {
 	border-radius: 5px;
 	border: 0.15em solid #333333;
 	font-size: 1.0em;
-	background-color: #cfdc2a;
 	/*min-width: 100px;
 	min-height: 25px;*/
 	padding: 0.5em 1em;
@@ -107,16 +104,14 @@ input[type=password] {
     /*color: #788018;*/
     text-shadow: 0.0em 0.1em rgba(255,255,255,0.66), 0.0em -0.1em rgba(0,0,0,0.66);
     box-shadow: inset 0 0.2em 0.1em rgba(255,255,255,.6);
-
-    background-image: -moz-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -ms-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -o-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#cfdc2a),color-stop(100%,#9ea820));
-	background-image: -webkit-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: linear-gradient(to bottom,#cfdc2a 0,#9ea820 100%);
-}
-
-.button:hover {
+	
+    -webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	
 	background-color: #b6c225;
 	background-image: -moz-linear-gradient(top,#b6c225 0,#868f1b 100%);
 	background-image: -ms-linear-gradient(top,#b6c225 0,#868f1b 100%);
@@ -126,10 +121,20 @@ input[type=password] {
 	background-image: linear-gradient(to bottom,#b6c225 0,#868f1b 100%);
 }
 
+.button:hover {
+	background-color: #cfdc2a;
+    background-image: -moz-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -ms-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -o-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#cfdc2a),color-stop(100%,#9ea820));
+	background-image: -webkit-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: linear-gradient(to bottom,#cfdc2a 0,#9ea820 100%);
+}
+
 .button:active {
 	margin: 0.25em 0.2em 0.15em 0.2em;
 	/*padding: 1em 1em 0 1em;*/
-	box-shadow: inset 0 0.2em 0.5em rgba(0,0,0,.4);
+	box-shadow: inset 0 0.2em 0.5em rgba(0, 0, 0, .5);
 }
 
 .labeledinput {
@@ -139,11 +144,18 @@ input[type=password] {
 	display: block;
 }
 .labeledinput input {
-	border: 0;
-	padding: 2px 5px;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	border: 1px solid #333;
+	padding: 0.3em 0.5em;
+	-webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	border-radius: 7px;
+	outline: none;
+	margin: 5px;
+}
+.labeledinput input:focus {
+	box-shadow: 0 0 5px #CFDC2A;
+	-webkit-box-shadow: 0 0 5px #CFDC2A;
+	-moz-box-shadow: 0 0 5px #CFDC2A;
 }
 .error {
 	padding: 0.5em;
@@ -197,3 +209,4 @@ input[type=password] {
 #footer a {
 	color: #333;
 }
+/*@import url("specifics.css");*/
