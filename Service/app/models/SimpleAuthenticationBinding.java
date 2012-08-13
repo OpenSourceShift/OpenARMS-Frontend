@@ -42,8 +42,9 @@ public class SimpleAuthenticationBinding extends AuthenticationBinding {
 		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		Random random = new Random();
 		StringBuilder strBuild = new StringBuilder();
-		for (int i=0; i<8; i++)
+		for (int i=0; i<8; i++) {
 			strBuild.append(SECRET_CHARSET.charAt(random.nextInt(SECRET_CHARSET.length()-1)));
+		}
 		
 		String password = strBuild.toString();
 		setPassword(password);
