@@ -3,49 +3,78 @@
 #{set moreStyles: ["managepoll"] /}
 
 <script type="text/javascript" charset="utf-8">
+
+function showQR(url) {
+	$("#qrcode-container").fadeIn();
+	$("#qrcode-container #qrcode").attr('src', url);
+}
+
 $(document).ready(function() {
+	/*
 	$('.instance').hide();
 	$('.question').click(function() {
 		// jQuery noob at work
 		$(this).parent().find(".instance").stop(true, true).slideToggle('slow');
 	});
+	*/
 	
-	$("button").button();
+	function expandControls($controls) {
+		$controls.stop(true, false).animate({
+			right: 0,
+			opacity: 1
+		});
+	}
+	
+	function contractControls($controls) {
+		$controls.stop(true, false).animate({
+			right: -$controls.outerWidth(),
+			opacity: 0
+		});
+	}
+	
+	$(".poll").mouseenter(function(event) {
+		expandControls($(".question .controls", this));
+	}).mouseleave(function(event) {
+		contractControls($(".question .controls", this));
+	});
+	contractControls($(".poll .question .controls"));
+	
+	$("#qrcode-container").click(function() {
+		$(this).hide();
+	});
+	/*$("button").button();*/
 });
 </script>
 
 <div id="main">
 #{list pollsJson, as:'poll'}
-	<div class="poll ${poll_isLast ? 'last' : ''}">
-	#{if poll.pollinstances.size() < 1}
+	<div class="poll ${poll_isLast ? 'last' : ''}" data-id="${poll.id}" data-token="${poll.token}">
 		<div class="question">
 			<span>${api.helpers.PresentationHelper.stripHTML(poll.question)}</span>
 			<div class="controls">
-				<input type="button" id="activate${poll.id}" value="activate" class="button" onClick="location.replace('/activate/${poll.id}')" />
-				<input type="button" id="edit${poll.id}" value="edit" class="button" onClick="location.replace('@{ManagePoll.index}/${poll.id}')" />
+				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:500,format:'jpg')}')">&{'managepoll.index.showQRcode'}</button>
+				<button class="button" onClick="location.replace('/activate/${poll.id}')">&{'managepoll.index.activate'}</button>
+				<button class="button" onClick="location.replace('')">&{'managepoll.index.clone'}</button>
 			</div>
 		</div>
-	#{/if}
-	#{else}
-		<div class="question withinstances">
-			<span>${api.helpers.PresentationHelper.stripHTML(poll.question)}</span>
-			<div class="controls">
-				<input type="button" id="activate${poll.id}" value="activate" class="button" onClick="location.replace('/activate/${poll.id}')" />
-				<input type="button" id="clone${poll.id}" value="clone" class="button" onClick="location.replace('')" />
-			</div>
-		</div>
-		<ol class="instances" id="poll${poll.id}_instances">
-			#{list poll.pollinstances, as:'pollInstance'}
-				<li class="instance ${pollInstance_isLast ? 'last' : ''}" id="instance_${pollInstance.id}">
-					<span>${pollInstance.start} - ${pollInstance.end}</span>
-					<div class="controls">
-						<input type="button" id="close${poll.id}" value="close" class="button" onClick="location.replace('')" />
-						<input type="button" id="close${poll.id}" value="View stats" class="button" onClick="location.replace('@{ManagePoll.statistics()}?pollinstanceId=${pollInstance.id}')" />
-					</div>
-				</li>
-			#{/list}
-		</ol>
-	#{/else}
+		#{if poll.pollinstances.size() >= 1}
+			<ol class="instances" id="poll${poll.id}_instances">
+				#{list poll.pollinstances, as:'pollInstance'}
+					<li class="instance ${pollInstance_isLast ? 'last' : ''}" id="instance_${pollInstance.id}">
+						<span>${pollInstance.start} - ${pollInstance.end}</span>
+						<div class="controls">
+							<input type="button" id="close${poll.id}" value="close" class="button" onClick="location.replace('')" />
+							<input type="button" id="close${poll.id}" value="View stats" class="button" onClick="location.replace('@{ManagePoll.statistics()}?pollinstanceId=${pollInstance.id}')" />
+						</div>
+					</li>
+				#{/list}
+			</ol>
+		#{/if}
 	</div>
 #{/list}
+</div>
+
+<div id="qrcode-container">
+	<img id="qrcode" />
+	<p>&{'managepoll.index.qrcode.click'}</p>
 </div>

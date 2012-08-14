@@ -5,6 +5,13 @@ from Crypto.Cipher import AES
 BLOCK_SIZE = 16
 PADDING = ' '
 
+def printBanner():
+	print "  ____                ___   ___  __  _______"
+	print " / __ \___  ___ ___  / _ | / _ \/  |/  / __/"
+	print "/ /_/ / _ \/ -_) _ \/ __ |/ , _/ /|_/ /\ \  "
+	print "\____/ .__/\__/_//_/_/ |_/_/|_/_/  /_/___/  "
+	print "    /_/                                     "
+
 def replaceAll(file, searchExp, replaceExp, regexp=False):
 	if not regexp:
 		replaceExp = replaceExp.replace('\\', '\\\\')
@@ -18,13 +25,6 @@ def replaceAll(file, searchExp, replaceExp, regexp=False):
 
 def secretKey():
 	return ''.join([random.choice('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') for i in range(64)])
-
-def printBanner():
-	print "  ____                ___   ___  __  _______"
-	print " / __ \___  ___ ___  / _ | / _ \/  |/  / __/"
-	print "/ /_/ / _ \/ -_) _ \/ __ |/ , _/ /|_/ /\ \  "
-	print "\____/ .__/\__/_//_/_/ |_/_/|_/_/  /_/___/  "
-	print "    /_/                                     "
 
 def getOrCopyConfigurationFile(app):
 	scriptDirectory = os.path.dirname(__file__)
@@ -55,7 +55,13 @@ if __name__ == '__main__':
 	adminUser = raw_input('Administrative username (leave blank for admin): ');
 	if not adminUser:
 		adminUser = 'admin'
+
+	adminPassword = None
 	adminPassword = getpass.getpass('Administrative password: ');
+
+	if len(adminPassword) < 6:
+		print "It is strongly disencouraged to use passwords of length lesser than 8 characters."
+	print "Using username: %s and password: %s" % (adminUser, '*' * len(adminPassword))
 
 	frontendSecretKey = secretKey()
 	replaceAll(frontendConfigurationFile, r'application.secret=.*', 'application.secret=%s' % frontendSecretKey, True)
@@ -65,14 +71,14 @@ if __name__ == '__main__':
 
 	pad = lambda s: s + (BLOCK_SIZE - len(s) % BLOCK_SIZE) * PADDING
 	# create a cipher object using the random secret
-	print "AES Encrypting using: %s" % serviceSecretKey[0:16]
+	#print "AES Encrypting using: %s" % serviceSecretKey[0:16]
 	cipher = AES.new(serviceSecretKey[0:16])
 	paddedAdminPassword = pad(adminPassword)
 	encryptedAdminPassword = cipher.encrypt(paddedAdminPassword).encode('hex')
 	hashedEncryptedAdminPassword = base64.b64encode(md5.new(encryptedAdminPassword).digest())
 
-	print "paddedAdminPassword: %s" % paddedAdminPassword
-	print "encryptedAdminPassword: %s" % encryptedAdminPassword
-	print "hashedEncryptedAdminPassword: %s" % hashedEncryptedAdminPassword
+	#print "paddedAdminPassword: %s" % paddedAdminPassword
+	#print "encryptedAdminPassword: %s" % encryptedAdminPassword
+	#print "hashedEncryptedAdminPassword: %s" % hashedEncryptedAdminPassword
 	replaceAll(serviceConfigurationFile, r'crud.admin_username=.*', 'crud.admin_username=%s' % adminUser, True)
 	replaceAll(serviceConfigurationFile, r'crud.admin_password=.*', 'crud.admin_password=%s' % hashedEncryptedAdminPassword, True)

@@ -31,12 +31,18 @@ public class SimpleAuthenticationBinding extends AuthenticationBinding {
 		passwordHash = Crypto.passwordHash(password, HashType.SHA256);
 	}
 	
+	/**
+	 * Checks if the password matches the current user.
+	 * @param password This can either be the paintext password or the SHA256 hash of the password.
+	 * @return True if the password matches that of the binding, false otherwise.
+	 */
 	public boolean checkPassword(String password) {
-		return Crypto.passwordHash(password, HashType.SHA256).equals(passwordHash);
+		return password.equals(passwordHash) || Crypto.passwordHash(password, HashType.SHA256).equals(passwordHash);
 	}
 	
 	/**
 	 * Method to generate and to change password for the user.
+	 * @return The new password.
 	 */
 	public String generatePassword() {
 		String SECRET_CHARSET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
