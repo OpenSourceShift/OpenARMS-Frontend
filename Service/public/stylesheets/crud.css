@@ -105,7 +105,13 @@
 }
 
 #crud #crudContent table thead tr {
-	background: #868f1b;
+	background-color: #cfdc2a;
+    background-image: -moz-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -ms-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -o-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#cfdc2a),color-stop(100%,#9ea820));
+	background-image: -webkit-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
+	background-image: linear-gradient(to bottom,#cfdc2a 0,#9ea820 100%);
 	border: 1px solid #333333;
 }
 
