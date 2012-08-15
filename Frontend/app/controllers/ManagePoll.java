@@ -31,13 +31,17 @@ import api.responses.VoteOnPollInstanceResponse;
 
 public class ManagePoll extends BaseController {
 	public static void index() {
-    	
 		APIClient apiClient = new APIClient();
 		/** get all polls + instances for the current user */
     	try {
-			ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(controllers.LoginUser.getCurrentUserId()));
-			renderArgs.put("pollsJson", responseUser.polls);
-			render();
+    		Long userId = controllers.LoginUser.getCurrentUserId();
+    		if(userId == null) {
+        		LoginUser.showform(null);
+    		} else {
+				ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(userId));
+				List<PollJSON> pollsJson = responseUser.polls;
+				render(pollsJson);
+    		}
     	} catch (Exception e) {
 			e.printStackTrace();
 		}

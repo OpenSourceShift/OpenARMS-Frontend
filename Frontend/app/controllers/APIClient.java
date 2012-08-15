@@ -19,6 +19,7 @@ import play.Logger;
 import play.Play;
 import play.libs.Codec;
 import play.libs.Crypto;
+import play.libs.Crypto.HashType;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
@@ -224,7 +225,7 @@ public class APIClient extends Controller {
 
 	public static boolean authenticateSimple(String email, String password) {
 		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email);
-		req.password = password;
+		req.password = Crypto.passwordHash(password, HashType.SHA256);
 		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
 

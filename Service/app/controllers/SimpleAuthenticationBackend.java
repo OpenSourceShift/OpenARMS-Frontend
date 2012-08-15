@@ -56,7 +56,7 @@ public class SimpleAuthenticationBackend extends AuthBackend {
 		}
 	}
 	
-	public static User authenticate(User user, String password) throws Exception {
+	public static User authenticate(User user, String passwordHash) throws Exception {
 	    if (user == null) {
 			throw new Exception("No user with this email.");
 	    } else {
@@ -65,7 +65,7 @@ public class SimpleAuthenticationBackend extends AuthBackend {
 	    		throw new Exception("This user cannot authenticate using the SimpleAuthBackend.");
 	    	} else {
 		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.authenticationBinding;
-		    	if(authBinding.checkPassword(password)) {
+		    	if(authBinding.checkPassword(passwordHash)) {
 		    		user.secret = AuthBackend.generateSecret();
 			    	Logger.debug("Generated a new authentication secret: %s", user.secret);
 			    	user.save();
