@@ -46,12 +46,14 @@ def getOrCopyFile(src, dst):
 			raise "Couldn't copy the file."
 
 if __name__ == '__main__':
+	print system.argv
+
 	printBanner()
 	frontendConfigurationFile = getOrCopyConfigurationFile('Frontend')
 	serviceConfigurationFile = getOrCopyConfigurationFile('Service')
 
 	print 'You will have to select the username and password for the administrative user, to gain access to the administrative CRUD interface.';
-	print 'Please notice that this will be stored '
+	print 'Please notice that this will be stored encrypted and hashed in the configuration file of the Service.'
 	adminUser = raw_input('Administrative username (leave blank for admin): ');
 	if not adminUser:
 		adminUser = 'admin'
