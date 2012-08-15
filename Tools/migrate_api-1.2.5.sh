@@ -5,7 +5,7 @@ DIR=`dirname $0`
 CLASSDIR="/tmp/classes/"
 JAVASRCDIR=`readlink -f $DIR/../Service/app/api` 
 JAVADSTDIR="/tmp/javasrc"
-JARTARGET=`readlink -f $DIR/../Frontend/lib/openarms-api.jar`
+JARTARGET=`readlink -f $DIR/../Frontend/jar/openarms-api-0.3.jar`
 echo "Tool dir is located at $DIR"
 echo "Class dir is at $CLASSDIR"
 echo "Java source dir at $JAVASRCDIR"
