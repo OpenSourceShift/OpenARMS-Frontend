@@ -1,4 +1,4 @@
-#!/usr/bin//python
+#!/usr/bin/env python
 import os.path, shutil, random, fileinput, re, sys, getpass, md5, base64
 from Crypto.Cipher import AES
 
@@ -46,8 +46,6 @@ def getOrCopyFile(src, dst):
 			raise "Couldn't copy the file."
 
 if __name__ == '__main__':
-	print system.argv
-
 	printBanner()
 	frontendConfigurationFile = getOrCopyConfigurationFile('Frontend')
 	serviceConfigurationFile = getOrCopyConfigurationFile('Service')
