@@ -2,6 +2,7 @@ package controllers.crud;
  
 import controllers.CRUD;
 import controllers.Secure;
+import play.Logger;
 import play.Play;
 import play.libs.Crypto;
 
@@ -20,11 +21,13 @@ public class Security extends Secure.Security {
 	 */
     static boolean authenticate(String username, String password) {
     	String adminUsername = Play.configuration.getProperty("crud.admin_username");
-        String adminPassword = Play.configuration.getProperty("crud.admin_username");
+        String adminPassword = Play.configuration.getProperty("crud.admin_password");
 
         String paddedPassword = pad(password);
         String passwordEncrypted = Crypto.encryptAES(paddedPassword).substring(0, 32);
         String passwordHashed = Crypto.passwordHash(passwordEncrypted);
+        
+        Logger.debug("Authenticating towards the CRUD interface given password '%s', which hashes to '%s', which should match '%s'.", password, passwordHashed, adminPassword);
 
         return username.equals(adminUsername) && passwordHashed.equals(adminPassword);
     }

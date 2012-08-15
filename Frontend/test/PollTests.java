@@ -18,7 +18,7 @@ public class PollTests extends BaseTest {
     	Random r = new Random();
     	
 		// Create it.
-		CreateUserResponse response1 = createUser();
+		CreateUserResponse response1 = createUser(BaseTest.EMAIL, BaseTest.PASSWORD);
 		assertTrue(response1.error_message, response1.success());
 		assertNotNull(response1.user);
 
@@ -45,7 +45,7 @@ public class PollTests extends BaseTest {
     	Random r = new Random();
     	
 		// Create it.
-		CreateUserResponse response1 = createUser();
+		CreateUserResponse response1 = createUser(BaseTest.EMAIL, BaseTest.PASSWORD);
 		assertTrue(response1.error_message, response1.success());
 		assertNotNull(response1.user);
     	

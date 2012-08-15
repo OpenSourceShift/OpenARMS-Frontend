@@ -15,6 +15,8 @@ import api.requests.*;
 import api.responses.*;
 import api.entities.*;
 import controllers.APIClient;
+import controllers.BaseController;
+import controllers.LoginUser;
 
 public class APIClientFullCreate extends UnitTest {
 	
@@ -38,11 +40,16 @@ public class APIClientFullCreate extends UnitTest {
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("password", "1234");
 
-		CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthenticationBackend", attributes));
-
-    	failIfNotSuccessful(userresponse);
-    	assertNotNull(userresponse.user.id);
-    	assertEquals(userresponse.user.name, u.name);
+		try {
+			CreateUserResponse userresponse = (CreateUserResponse) APIClient.send(new CreateUserRequest(u, "controllers.SimpleAuthenticationBackend", attributes));
+	    	assertNotNull(userresponse.user.id);
+	    	assertEquals(userresponse.user.name, u.name);
+		} catch(Exception e) {
+			if(e.getCause().getMessage().equals("User already exists in the system")) {
+				// This is not a problem.
+			}
+		}
+		
     	// Authenticate
 		APIClient apiClient = new APIClient();
 		boolean authenticated = apiClient.authenticateSimple(u.email, attributes.get("password"));
@@ -51,8 +58,10 @@ public class APIClientFullCreate extends UnitTest {
     	PollJSON pj1 = new PollJSON();
 
     	pj1.question = "This is the first question.";
-    	pj1.admin = userresponse.user.id;
+    	//pj1.admin = userresponse.user.id;
+    	pj1.admin = LoginUser.getCurrentUserId();
     	pj1.multipleAllowed = r.nextBoolean();
+    	pj1.loginRequired = false;
     	pj1.reference = "myreference";
 
     	CreatePollResponse pollresponse = (CreatePollResponse) apiClient.sendRequest(new CreatePollRequest(pj1));
@@ -85,25 +94,30 @@ public class APIClientFullCreate extends UnitTest {
     	try {
     		apiClient.authenticateSimple(u.email, "fail");
     	} catch(Exception e) {
-    		assertEquals("Password didn't match.", e.getMessage());
+    		assertEquals("Password didn't match.", e.getCause().getMessage());
     		failed = true;
     	}
     	assertTrue(failed);
-	
-    	for(int i=0;i<20;i++) {
+    	
+    	// We have to deauthenticate to not trigger the "You can't vote twice for the same Choice." exception.
+    	APIClient.deauthenticate();
+    	
+    	for(int i=0; i<20; i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);
         	v.pollInstanceid = piresponse.pollinstance.id;
+        	
         	CreateVoteResponse vresponse = (CreateVoteResponse) APIClient.send(new CreateVoteRequest(v));
         	failIfNotSuccessful(vresponse);
         	assertNotNull(vresponse.vote.id);
         	assertEquals(vresponse.vote.choiceid, v.choiceid);
     	}	
     	
-    	for(int i=0;i<20;i++) {
+    	for(int i=0; i<20; i++) {
         	VoteJSON v = new VoteJSON();
         	v.choiceid =  1+(long)(Math.random()*3);
         	v.pollInstanceid = piresponse.pollinstance.id;
+        	
         	VoteOnPollInstanceResponse vresponse = (VoteOnPollInstanceResponse) APIClient.send(new VoteOnPollInstanceRequest(v));
         	failIfNotSuccessful(vresponse);
         	assertNotNull(vresponse.vote.id);

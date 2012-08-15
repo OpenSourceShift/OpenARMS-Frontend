@@ -15,6 +15,7 @@ import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
 import play.libs.Crypto;
 import play.mvc.Controller;
+import play.mvc.Util;
 
 public class LoginUser extends BaseController {
 	//public static String forward = "";
@@ -76,15 +77,13 @@ public class LoginUser extends BaseController {
 		}
 	}
 	
+	@Util
 	public static Long getCurrentUserId() {
-		if(session.get("user_id") == null) {
-			return null;
-		} else {
-			return Long.valueOf(session.get("user_id"));
-		}
+		return APIClient.getCurrentUserId();
 	}
-	
+
+	@Util
 	public static boolean isLoggedIn() {
-		return (session.get("user_id") != null && session.get("user_secret") != null);
+		return APIClient.isLoggedIn();
 	}
 }
