@@ -44,7 +44,10 @@ public class QRController extends Controller {
 		// Generate the url to be displayed.
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("token", token);
-		String url = Router.reverse("JoinPoll.index", args).url;
+		ActionDefinition ad = Router.reverse("JoinPoll.index", args);
+		ad.absolute();
+		System.out.println(ad.url);
+		String url = ad.url;
 		
 		// Crop at 1000.
 		if(size > 1000) {

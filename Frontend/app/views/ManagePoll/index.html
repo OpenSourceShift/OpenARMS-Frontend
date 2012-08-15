@@ -4,9 +4,10 @@
 
 <script type="text/javascript" charset="utf-8">
 
-function showQR(url) {
+function showQR(imageUrl, joinUrl) {
 	$("#qrcode-container").fadeIn();
-	$("#qrcode-container #qrcode").attr('src', url);
+	$("#qrcode-container #qrcode").attr('src', imageUrl);
+	$("#qrcode-container #qrcode-link").text(joinUrl);
 }
 
 $(document).ready(function() {
@@ -52,7 +53,7 @@ $(document).ready(function() {
 		<div class="question">
 			<span>${api.helpers.PresentationHelper.stripHTML(poll.question)}</span>
 			<div class="controls">
-				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:500,format:'jpg')}')">&{'managepoll.index.showQRcode'}</button>
+				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:200,format:'png')}', '@@{JoinPoll.index(token:poll.token)}')">&{'managepoll.index.showQRcode'}</button>
 				<button class="button" onClick="location.replace('/activate/${poll.id}')">&{'managepoll.index.activate'}</button>
 				<button class="button" onClick="location.replace('')">&{'managepoll.index.clone'}</button>
 			</div>
@@ -76,5 +77,6 @@ $(document).ready(function() {
 
 <div id="qrcode-container">
 	<img id="qrcode" />
-	<p>&{'managepoll.index.qrcode.click'}</p>
+	<p id="qrcode-link"></p>
+	<p id="qrcode-hint">&{'managepoll.index.qrcode.click'}</p>
 </div>

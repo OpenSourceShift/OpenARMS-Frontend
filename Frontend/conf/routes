@@ -9,12 +9,12 @@
 GET		/																Application.index
 GET		/create															CreatePoll.index
 POST	/create															CreatePoll.submit
-GET		/join															JoinPoll.index
 GET		/login															LoginUser.showform
 GET		/logout															LoginUser.logout
 GET		/manage															ManagePoll.index
 GET		/manage/statistics/{<[0-9]+>id}									ManagePoll.statistics
 GET     /{<[A-Za-z0-9]+>token}											JoinPoll.index
+GET		/join															JoinPoll.index
 GET     /{<[0-9]+>pollID}/{adminkey}									ManagePoll.index
 GET     /qr/{<[A-Za-z0-9]+>token}/{<[0-9]+>size}.{<[A-Za-z]+>format}	QRController.renderImage
 

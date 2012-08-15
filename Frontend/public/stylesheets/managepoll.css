@@ -109,24 +109,26 @@
 	cursor: pointer;
 	display: none;
 	z-index: 2;
+	text-align: center;
 }
 
 #qrcode-container #qrcode {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	margin-left: -250px;
-	margin-top: -250px;
-	width: 500px;
-	height: 500px;
+	margin: auto 0px;
+	height: 100%;
 }
 
 #qrcode-container p {
 	position: absolute;
-	bottom: 20px;
 	left: 0px;
 	right: 0px;
 	color: black;
-	text-align: center;
 	font-size: 1.3em;
+}
+
+#qrcode-container p#qrcode-link {
+	top: 20px;
+}
+
+#qrcode-container p#qrcode-hint {
+	bottom: 20px;
 }
