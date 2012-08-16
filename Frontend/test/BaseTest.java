@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.mail.Session;
 
@@ -21,6 +22,7 @@ import play.test.UnitTest;
 public abstract class BaseTest extends UnitTest {
 	
 	public static final APIClient client = new APIClient();
+	public static final Random random = new Random();
 
 	public static final String NAME = "John Doe";
 	public static final String EMAIL = "test@openarms.dk";
@@ -29,11 +31,16 @@ public abstract class BaseTest extends UnitTest {
 	
 	public static Long latestCreatedUserID;
 	
-	public static CreateUserResponse createUser() throws Exception {
-		return createUser(EMAIL, PASSWORD);
+	public static Long createUser() {
+		CreateUserResponse response = createUser(EMAIL, PASSWORD);
+		if(response.success()) {
+			return response.user.id;
+		} else {
+			return null;
+		}
 	}
 	
-	public static CreateUserResponse createUser(String email, String password) throws Exception {
+	public static CreateUserResponse createUser(String email, String password) {
 		UserJSON user = new UserJSON();
 		user.name = NAME;
 		user.email = email;
@@ -74,6 +81,22 @@ public abstract class BaseTest extends UnitTest {
 	public static void authenticateUser() {
 		boolean success = client.authenticateSimple(EMAIL, PASSWORD);
 		assertTrue("Couldn't authenticate the user.", success);
+	}
+	
+	public static Long ensureAuthenticatedUser() {
+		try {
+			createUser();
+		} catch(RuntimeException e) {
+			boolean alreadyCreated = e.getCause().getMessage().equals("User already exists in the system");
+
+			// Ignore if the error was that the user existed.
+			if(!alreadyCreated) {
+				throw e;
+			}
+		}
+		authenticateUser();
+		
+		return client.getCurrentUserId();
 	}
 
 	public static void ensureSuccessful(Response response) {

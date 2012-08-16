@@ -1,3 +1,5 @@
+import java.util.Random;
+
 import org.junit.Test;
 
 import api.responses.CreateUserResponse;
@@ -7,37 +9,48 @@ import api.responses.EmptyResponse;
 public class UserTests extends BaseTest {
 
 	@Test
+	public void ensureUser() throws Exception {
+		Long userId = ensureAuthenticatedUser();
+		assertNotNull("Could not ensure a user.", userId);
+	}
+
+	@Test
 	public void create() throws Exception {
+		String email = "random"+Integer.toHexString(random.nextInt())+"@openarms.dk";
 		// Create it.
-		CreateUserResponse response2 = createUser();
-		assertTrue(response2.error_message, response2.success());
-		assertNotNull(response2.user);
-		
-		// Delete the user if its there.
-		deleteUserIfCreated();
+		CreateUserResponse response = createUser(email, BaseTest.PASSWORD);
+		assertTrue(response.error_message, response.success());
+		assertNotNull(response.user);
 	}
 	
 	@Test
 	public void createEmptyEmail() throws Exception {
-		CreateUserResponse response = createUser("", "");
-		assertFalse("The response was successful, but it should have failed.", response.success());
-		assertNull(response.user);
-		
-		// Delete the user if its there.
-		deleteUserIfCreated();
+		try {
+			CreateUserResponse response = createUser("", BaseTest.PASSWORD);
+			assertFalse("The response was successful, but it should have failed.", response.success());
+			assertNull(response.user);
+		} catch(RuntimeException e) {
+			// We excepted some errors.
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	public void createDuplicate() throws Exception {
-		CreateUserResponse response1 = createUser();
+		String email = "random"+Integer.toHexString(random.nextInt())+"@openarms.dk";
+		
+		// Create it.
+		CreateUserResponse response1 = createUser(email, BaseTest.PASSWORD);
 		assertTrue(response1.error_message, response1.success());
 		assertNotNull(response1.user);
-		
-		CreateUserResponse response2 = createUser();
-		assertFalse("The response was successful, but it should have failed.", response2.success());
-		assertNull(response2.user);
-		
-		// Delete the user if its there.
-		deleteUserIfCreated();
+
+		try {
+			CreateUserResponse response2 = createUser(email, BaseTest.PASSWORD);
+			assertFalse("The response was successful, but it should have failed.", response2.success());
+			assertNull(response2.user);
+		} catch(RuntimeException e) {
+			// We excepted some errors.
+			e.printStackTrace();
+		}
 	}
 }
