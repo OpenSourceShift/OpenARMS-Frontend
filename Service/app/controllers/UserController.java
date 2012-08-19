@@ -313,7 +313,9 @@ public class UserController extends APIController {
 	public static void details(Integer id) throws Exception {
 		//Takes the User from the DataBase.
 		User user = User.find("byID", id).first();
-		notFoundIfNull(user, "The user ID requested (#"+id+") is not present in the service.");
+		if(user == null) {
+			unauthorized("The user ID requested (#"+id+") is not present in the service.");
+		}
 		requireUser(user);
 		
 		List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();

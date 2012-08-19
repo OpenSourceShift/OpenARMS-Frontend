@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.APIClient.APIException;
 import play.Logger;
 import play.mvc.Before;
 import play.mvc.Catch;
@@ -11,8 +12,9 @@ public abstract class BaseController extends Controller {
 		renderArgs.put("loggedIn", LoginUser.isLoggedIn());
 	}
 	
-	@Catch
-	public static void renderException(Exception e) {
-		Logger.debug("Catched an exception: ", e);
+	@Catch(APIException.class)
+	public static void renderAPIException(Exception e) {
+		renderText("Catched an exception: "+e.getMessage());
+		//Logger.debug("Catched an exception: ", e);
 	}
 }

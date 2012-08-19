@@ -32,3 +32,12 @@ userAuth=User Authentication
 # SimpleUserAuthBinding.java
 password=Password
 user=User
+
+second=%s second
+seconds=%s seconds
+minute=%s minute
+minutes=%s minutes
+hour=%s hour
+hours=%s hours
+day=%s day
+day=%s days

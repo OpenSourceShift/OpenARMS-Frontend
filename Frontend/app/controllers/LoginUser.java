@@ -13,6 +13,7 @@ import api.requests.DeauthenticateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
+import play.Logger;
 import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -52,7 +53,8 @@ public class LoginUser extends BaseController {
 			showform(email);
 		} else {
 			try {
-				if (APIClient.authenticateSimple(email, password)) {
+				boolean success = APIClient.authenticateSimple(email, password);
+				if (success) {
 					// Go to the page.
 					String redirectTo = session.get("page_prior_to_login");
 					if(redirectTo == null) {
@@ -69,7 +71,7 @@ public class LoginUser extends BaseController {
 				}
 			} catch (Exception e) {
 				// It failed!
-				flash.error(e.getMessage());
+				flash.error(e.getCause().getMessage());
 				params.flash();
 				validation.keep();
 				showform(email);

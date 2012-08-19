@@ -3,7 +3,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.mysql.jdbc.Messages;
+import com.sun.imageio.plugins.common.I18N;
+
 import play.Logger;
+import play.i18n.Lang;
 import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
 import play.mvc.results.RenderJson;
@@ -70,76 +74,37 @@ public class ManagePoll extends BaseController {
 		}
 	}
 
-
-
-	public static void activate(Date start, Date end) {
+	public static void activate(Long id) {
+		ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+		PollJSON poll = pollResponse.poll;
+		
 		// TODO: this! (activate/instantiate pollinstance with start and end time
-		PollInstanceJSON pollInstance = new PollInstanceJSON();
-		pollInstance.end = end;
-		pollInstance.start = start;
+		PollInstanceJSON pi = new PollInstanceJSON();
+		pi.start = request.params.get("start", Date.class);
+		pi.end = request.params.get("end", Date.class);
 
-		validation.required(end);
-		validation.required(start);
+		validation.required(pi.start);
+		validation.required(pi.end);
+		validation.past(pi.start, pi.end);
+		validation.future(pi.end);
 
 		if (!validation.hasErrors()) {
-			try {
-				CreatePollInstanceResponse response = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pollInstance));
-			} catch (Exception e) {
-				// TODO Exception handling
-			}
-			render();
-		}
-		else {
-			// TODO error handling
+			CreatePollInstanceResponse pollInstanceResponse = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pi));
+			PollInstanceJSON pollInstance = pollInstanceResponse.pollinstance;
+			render(pollInstance);
+		} else {
+			renderTemplate("ManagePoll/activate-form.html", poll);
 		}
 	}
+	
 
 	public static void clonepoll() {
 		// TODO: this! (clone existing poll)
 	}
 
-	public static void statistics(Long pollinstanceId) {
+	public static void statistics(Long id) {
 		try {
-//			// Load service data.
-//			Response res0 = APIClient.loadServiceData("data.yml");
-//			if(!StatusCode.success(res0.statusCode)) {
-//				throw new Exception("Couldn't load test data.");
-//			}
-//			boolean authenticated = APIClient.authenticateSimple("spam@creen.dk", "openarms");
-//			if(!authenticated) {
-//				throw new Exception("Could not authenticate");
-//			}
-//
-//			ReadPollByTokenResponse res1 = (ReadPollByTokenResponse)APIClient.send(new ReadPollByTokenRequest("123456"));
-//			if(!StatusCode.success(res1.statusCode)) {
-//				throw new Exception("Couldn't read poll with token 123456.");
-//			}
-//			
-//			PollInstanceJSON pi = new PollInstanceJSON();
-//			pi.poll_id = res1.poll.id;
-//			pi.start = Calendar.getInstance().getTime();
-//			Calendar endDateTimeCalendar = Calendar.getInstance();
-//			endDateTimeCalendar.set(Calendar.YEAR, 2020);
-//			pi.end = endDateTimeCalendar.getTime();
-//			CreatePollInstanceResponse res2 = (CreatePollInstanceResponse)APIClient.send(new CreatePollInstanceRequest(pi));
-//			if(!StatusCode.success(res2.statusCode)) {
-//				throw new Exception("Couldn't create poll instance with token time now.");
-//			}
-//
-//        	for(ChoiceJSON c: res1.poll.choices) {
-//        		int voteCount = (int)(Math.round(Math.random()*100.0));
-//		        for(int vIndex = 0; vIndex < voteCount; vIndex++) {
-//		        	Logger.debug("Creating a new vote (%d/%d) for choice %s on pollinstance %s", vIndex, voteCount, c.id, res2.pollinstance.id);
-//		        	VoteJSON v = new VoteJSON();
-//		        	v.choiceid = c.id;
-//		        	v.pollInstanceid = res2.pollinstance.id;
-//		        	VoteOnPollInstanceResponse res = (VoteOnPollInstanceResponse)APIClient.send(new VoteOnPollInstanceRequest(v));
-//		        	if(!StatusCode.success(res.statusCode)) {
-//						throw new Exception("Couldn't create vote.");
-//		        	}
-//		        }
-//        	}
-			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollinstanceId));
+			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
 			if(StatusCode.error(res.statusCode)) {
 				throw new Exception("Invalid poll instance.");
 			} else {

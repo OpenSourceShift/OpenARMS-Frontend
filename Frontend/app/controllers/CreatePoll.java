@@ -13,8 +13,10 @@ import api.entities.PollJSON;
 import api.helpers.GsonHelper;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
+import api.requests.ReadPollByTokenRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
+import api.responses.ReadPollByTokenResponse;
 
 public class CreatePoll extends BaseController {
 
@@ -27,7 +29,9 @@ public class CreatePoll extends BaseController {
 	}
 
 	public static void success(String token) {
-		render(token);
+		ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
+		PollJSON poll = response.poll;
+		render(poll);
 	}
 
 	public static void submit(String question, String[] choices, String type, Boolean loginRequired) {

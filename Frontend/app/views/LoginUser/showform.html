@@ -1,12 +1,8 @@
 #{extends 'main.html' /} #{ set title:'Login' /}
 #{set moreStyles:["login"] /}
 <div id="main">
-	#{form @LoginUser.submit(), id:'login' }	
-		#{ifError 'invalid'}
-			<p class="error">#{error 'invalid' /}</p>
-		#{/ifError}
-		
-		<h1>&{'loginuser'}</h1>	
+	#{form @LoginUser.submit(), id:'login' }
+		<h1>&{'loginuser'}</h1>
 		
 		<div class="labeledinput">
 			<label>&{'loginuser.email'}</label>

@@ -4,7 +4,7 @@
     <head>
         <title>OpenARMS | #{get 'title' /}</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=700, user-scalable=yes" />
+        <meta name="viewport" content="width=650, user-scalable=yes" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/global.css'}" />
         <link rel="stylesheet" type="text/css" media="screen" href="@{'/public/stylesheets/main.css'}" />
         #{list items:moreStyles, as:'style'}
@@ -41,7 +41,7 @@
 		</div>
 		<div id="content">
 			#{if flash.error}
-			<p class="error">${flash.error}</p>
+				<p class="error">${flash.error}</p>
 			#{/if}
 			#{doLayout /}
 		</div>
@@ -57,7 +57,7 @@
 			<img src="@{'/public/images/flags/es.png'}" title="Español"/>
 			<img src="@{'/public/images/flags/tr.png'}" title="Türkçe"/>
 		</div>
-		<div id="footer">&{'interested_1'} <a href="https://docs.google.com/spreadsheet/viewform?formkey=dHZicWcwdFl3WEhJR0gtR2szTzlzbnc6MQ#gid=0" target="_blank">&{'interested_2'}</a>!</div>
+		<div id="footer">&{'interested_1', "https://docs.google.com/spreadsheet/viewform?formkey=dHZicWcwdFl3WEhJR0gtR2szTzlzbnc6MQ#gid=0"}</div>
 	</div>
     <script type="text/javascript">
 		$(document).ready(function(){

@@ -23,6 +23,9 @@
 	border: 0;
 	outline-width:0;
 	padding: 0;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
 }
 #description .button {
 	margin: 10px auto;

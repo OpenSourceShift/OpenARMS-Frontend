@@ -1,10 +1,18 @@
 package api.helpers;
 
+import java.util.LinkedList;
+
+import play.Logger;
+import play.i18n.Lang;
+import play.i18n.Messages;
+
 public class PresentationHelper {
+	
 	public static String stripHTML(String in) {
 		return stripHTML(in, false, null);
 	}
-	public static String stripHTML(String in, boolean andNewlines, Integer maxLength) {
+	
+	public static String stripHTML(String in, boolean stripNewlines, Integer maxLength) {
 		String result = "";
 		boolean htmlMode = false;
 		int length = in.length();
@@ -18,7 +26,7 @@ public class PresentationHelper {
 		    } else if(c == '>') {
 		    	htmlMode = false;
 		    	continue;
-		    } else if(andNewlines && (c == '\n' || c == '\r')) {
+		    } else if(stripNewlines && (c == '\n' || c == '\r')) {
 		    	continue;
 		    }
 		    if(!htmlMode) {
@@ -26,5 +34,74 @@ public class PresentationHelper {
 		    }
 		}
 		return result;
+	}
+
+	/**
+	 * 
+	 * @param t Difference in milliseconds.
+	 * @return
+	 */
+	public static String timeDifferenceToString(long t) {
+		String result = "";
+		LinkedList<String> terms = new LinkedList<String>();
+		
+		int ms = (int) (t % 1000);
+		t -= ms;
+		t /= 1000;
+
+		int s = (int) (t % 60);
+		t -= s;
+		t /= 60;
+
+		int m = (int) (t % 60);
+		t -= m;
+		t /= 60;
+
+		int h = (int) (t % 24);
+		t -= h;
+		t /= 24;
+
+		int d = (int) t;
+		
+		if(d == 1) {
+			terms.add(Messages.get("day", Integer.toString(d)));
+		} else if(d > 1) {
+			terms.add(Messages.get("days", Integer.toString(d)));
+		}
+		
+		if(h == 1) {
+			terms.add(Messages.get("hour", Integer.toString(h)));
+		} else if(h > 1) {
+			terms.add(Messages.get("hours", Integer.toString(h)));
+		}
+		
+		if(m == 1) {
+			terms.add(Messages.get("minute", Integer.toString(m)));
+		} else if(m > 1) {
+			terms.add(Messages.get("minutes", Integer.toString(m)));
+		}
+		
+		if(s == 1) {
+			terms.add(Messages.get("second", Integer.toString(s)));
+		} else if(s > 1) {
+			terms.add(Messages.get("seconds", Integer.toString(s)));
+		}
+		
+		return listing(terms.toArray());
+	}
+	
+	public static String listing(Object[] terms) {
+		if(terms.length < 2) {
+			if(terms.length == 1) {
+				return terms[0].toString();
+			} else {
+				return "";
+			}
+		} else { 
+			for(int i = 0; i < terms.length; i++) {
+				
+			}
+			return "...";
+		}
 	}
 }

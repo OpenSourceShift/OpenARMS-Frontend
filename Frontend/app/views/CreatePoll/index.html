@@ -5,7 +5,7 @@
 	#{form @CreatePoll.submit(), method:'post' }
 	<h1>&{'create_poll'}</h1>
 
-   	<div class="labeledinput">
+   	<div class="labeledinput block">
 		<label>&{'createpoll.form.question'}</label>
 		#{ifError 'question'}
 			<p class="error">#{error 'question' /}</p>
@@ -14,7 +14,7 @@
 		<textarea class="tinymce" id="question" name="question">${flash.question}</textarea>
 	</div>
 
-	<div class="labeledinput">
+	<div class="labeledinput block">
 		<label>&{'createpoll.form.reference'}</label>
 		#{ifError 'reference'}
 			<p class="error">#{error 'reference' /}</p>
@@ -22,14 +22,14 @@
 		<input size="30" type="text" name="reference" value="${flash.reference}" />
 	</div> 
 	
-	<div class="labeledinput">
+	<div class="labeledinput block">
 		<label for="loginRequired">
 			<input id="loginRequired" type="checkbox" name="loginRequired" #{if flash.loginRequired}checked#{/if}/>
 			&{'createpoll.form.loginRequired'}
 		</label>
 	</div>
 
-	<div class="labeledinput">
+	<div class="labeledinput block">
 		<label>&{'createpoll.form.pollType'}</label>
 		#{ifError 'type'}
 			<p class="error">#{error 'type' /}</p>
@@ -40,7 +40,7 @@
 		#{/select}
 	</div>
 
-	<div class="labeledinput">
+	<div class="labeledinput block">
 		<label>&{'createpoll.form.choices'}</label>
 		#{ifError 'choices[]'}
 			<p class="error">#{error 'choices[]' /}</p>
@@ -67,7 +67,7 @@ function addChoice(value) {
 	var index = choiceIndex;
 	var id = "choice-"+index;
 	var label = "&{'createpoll.form.choiceLabel', '<span>?</span>'}";
-	var choiceField = $('<li class="choice"><label>'+label+'<img src="public/images/i/delete.png" class="removeChoice"></label><textarea name="choices[]" id="'+id+'" class="tinymce">'+value+'</textarea></li>').appendTo("#choices");
+	var choiceField = $('<li class="choice block"><label>'+label+'<img src="public/images/i/delete.png" class="removeChoice"></label><textarea name="choices[]" id="'+id+'" class="tinymce">'+value+'</textarea></li>').appendTo("#choices");
 	$("#"+id).tinymce({
 		script_url : '/public/javascripts/tiny_mce/tiny_mce.js',
 		theme : "simple",

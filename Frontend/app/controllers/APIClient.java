@@ -97,9 +97,14 @@ public class APIClient extends Controller {
 		}
 		return httpRequest;
 	}
-	
+
 	@Util
 	public Response sendRequest(Request request) {
+		return sendRequest(request, true);
+	}
+	
+	@Util
+	public Response sendRequest(Request request, boolean redirectOnAuthenticationRequest) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		
 		String json = GsonHelper.toJson(request);
@@ -142,7 +147,17 @@ public class APIClient extends Controller {
 				}
 				Response response = GsonHelper.fromJson(responseJson, request.getExpectedResponseClass());
 				response.statusCode = httpResponse.getStatusLine().getStatusCode();
-				if(response.success()) {
+				
+				if(response.statusCode == StatusCode.UNAUTHORIZED && redirectOnAuthenticationRequest) {
+					if(isLoggedIn()) {
+						// Deauthenticate as the client and the service is in different believes.
+						Logger.debug("Deauthenticating as the client and the service is in different believes.");
+						deauthenticate();
+					}
+					LoginUser.showform(null);
+					 // This we will never get to.
+					return response;
+				} else if(response.success()) {
 					return response;
 				} else {
 					throw new APIException(response.error_message);
@@ -164,13 +179,18 @@ public class APIClient extends Controller {
 				return response;
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Error occured while communicating with the OpenARMS service.", e);
+			throw new RuntimeException("Error from the OpenARMS service: "+e.getMessage(), e);
 		}
 	}
 	
 	@Util
 	public static Response send(Request request) {
 		return getInstance().sendRequest(request);
+	}
+	
+	@Util
+	public static Response send(Request request, boolean redirectOnAuthenticationRequest) {
+		return getInstance().sendRequest(request, redirectOnAuthenticationRequest);
 	}
 
 	public static void tunnel(String url) {
@@ -243,7 +263,7 @@ public class APIClient extends Controller {
 	public static boolean authenticateSimple(String email, String password) {
 		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email);
 		req.password = Crypto.passwordHash(password, HashType.SHA256);
-		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
+		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req, false);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
 			session.put("user_id", authenticateResponse.user.id);
 			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));

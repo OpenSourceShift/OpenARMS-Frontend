@@ -1,4 +1,18 @@
 #{extends 'main.html' /} #{ set title:'Statistics for poll #' + pollInstance.poll_id /}
-#{set moreStyles:["managepoll"] /}
+#{set moreStyles:["ManagePoll/base", "ManagePoll/statistics"] /}
 #{set moreScripts:["highcharts-2.2.0", "exporting"] /}
+<div id="main">
 #{pollinstance_votechart pollInstance:pollInstance /}
+<script>
+// var serviceTime = ;
+</script>
+<hr />
+<p id="voteCountLabel">&{'managepoll.pollstatistics.totalVoteCount', '<span>?</span>'}</p>
+<div id="countdown" data-end="pollInstance.end">
+	<p>Time remaining to poll closes: <span>?</span></p>
+	<a href="#" class="button">&{'managepoll.statistics.close_now'}</a></div>
+</div>
+<div id="loadingHint">
+	<img class="spinner" src="@{'/public/images/loading-big.gif'}" alt="&{'loading'}"/>
+	<span class="status">&{'managepoll.statistics.loading'}</span>
+</div>
