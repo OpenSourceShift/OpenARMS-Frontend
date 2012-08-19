@@ -15,19 +15,13 @@ public class PollTests extends BaseTest {
 
 	@Test
 	public void create() throws Exception {
-    	Random r = new Random();
-    	
-		// Create it.
-		CreateUserResponse response1 = createUser(BaseTest.EMAIL, BaseTest.PASSWORD);
-		assertTrue(response1.error_message, response1.success());
-		assertNotNull(response1.user);
-
-		super.authenticateUser();
+		ensureAuthenticatedUser();
 		
     	PollJSON p1 = new PollJSON();
     	p1.question = "This is the first question.";
-    	p1.admin = response1.user.id;
-    	p1.multipleAllowed = r.nextBoolean();
+    	p1.admin = client.getCurrentUserId();
+    	p1.loginRequired = false;
+    	p1.multipleAllowed = random.nextBoolean();
     	p1.reference = "myreference";
 
     	CreatePollResponse response2 = (CreatePollResponse) APIClient.getInstance().sendRequest(new CreatePollRequest(p1));
@@ -35,33 +29,29 @@ public class PollTests extends BaseTest {
     	assertNotNull(response2.poll);
     	assertEquals(p1.question, response2.poll.question);
     	assertNotNull(response2.poll.id);
-		
-		// Delete the user if its there.
-		deleteUserIfCreated();
 	}
 
 	@Test
 	public void createWithoutAuthentication() throws Exception {
-    	Random r = new Random();
-    	
-		// Create it.
-		CreateUserResponse response1 = createUser(BaseTest.EMAIL, BaseTest.PASSWORD);
-		assertTrue(response1.error_message, response1.success());
-		assertNotNull(response1.user);
+		ensureAuthenticatedUser();
+		Long validUserId = client.getCurrentUserId();
+		client.deauthenticate();
     	
     	PollJSON p1 = new PollJSON();
     	p1.question = "This is the first question.";
-    	p1.admin = response1.user.id;
-    	p1.multipleAllowed = r.nextBoolean();
+    	p1.admin = validUserId;
+    	p1.loginRequired = false;
+    	p1.multipleAllowed = random.nextBoolean();
     	p1.reference = "myreference";
 
-    	CreatePollResponse response2 = (CreatePollResponse) APIClient.getInstance().sendRequest(new CreatePollRequest(p1));
-    	ensureSuccessful(response2);
-    	assertNotNull(response2.poll);
-    	assertEquals(p1.question, response2.poll.question);
-    	assertNotNull(response2.poll.id);
-		
-		// Delete the user if its there.
-		deleteUserIfCreated();
+    	try {
+    		CreatePollResponse response2 = (CreatePollResponse) APIClient.getInstance().sendRequest(new CreatePollRequest(p1));
+        	ensureSuccessful(response2);
+        	assertNotNull(response2.poll);
+        	assertEquals(p1.question, response2.poll.question);
+        	assertNotNull(response2.poll.id);
+    	} catch(RuntimeException e) {
+    		assertEquals(e.getCause().getMessage(), "You have to be authorized to create a poll.");
+    	}
 	}
 }

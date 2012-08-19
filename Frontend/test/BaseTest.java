@@ -26,7 +26,7 @@ public abstract class BaseTest extends UnitTest {
 
 	public static final String NAME = "John Doe";
 	public static final String EMAIL = "test@openarms.dk";
-	public static final String PASSWORD = "helloworld123";
+	public static final String PASSWORD = "1234";
 	public static final String BACKEND = "controllers.SimpleAuthenticationBackend";
 	
 	public static Long latestCreatedUserID;
@@ -78,25 +78,29 @@ public abstract class BaseTest extends UnitTest {
 		}
 	}
 	
-	public static void authenticateUser() {
-		boolean success = client.authenticateSimple(EMAIL, PASSWORD);
-		assertTrue("Couldn't authenticate the user.", success);
+	public static boolean authenticateUser() {
+		return client.authenticateSimple(EMAIL, PASSWORD);
 	}
 	
 	public static Long ensureAuthenticatedUser() {
 		try {
-			createUser();
+			if(authenticateUser()) {
+				return client.getCurrentUserId();
+			} else {
+				return null;
+			}
 		} catch(RuntimeException e) {
-			boolean alreadyCreated = e.getCause().getMessage().equals("User already exists in the system");
-
-			// Ignore if the error was that the user existed.
-			if(!alreadyCreated) {
+			if(e.getCause().getMessage().equals("No user with this email.")) {
+				createUser();
+				if(authenticateUser()) {
+					return client.getCurrentUserId();
+				} else {
+					return null;
+				}
+			} else {
 				throw e;
 			}
 		}
-		authenticateUser();
-		
-		return client.getCurrentUserId();
 	}
 
 	public static void ensureSuccessful(Response response) {
