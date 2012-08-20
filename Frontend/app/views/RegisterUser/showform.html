@@ -4,9 +4,6 @@
 <div id="main">
 	<h1>&{'registeruser.title'}</h1>
 	#{form @RegisterUser.submit()}
-    #{ifError ''}
-		<p class="error">#{error '' /}</p>
-    #{/ifError}
     <div class="labeledinput">
 		<label>&{'add.name'}</label>
 		<input type="text" name="name" value="${flash.name}" autocomplete="off" autofocus="autofocus" />
