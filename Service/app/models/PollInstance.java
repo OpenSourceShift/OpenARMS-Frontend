@@ -15,6 +15,7 @@ import org.joda.time.Interval;
 
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.i18n.Messages;
 import api.entities.Jsonable;
 import api.entities.PollInstanceJSON;
 import api.entities.VoteJSON;
@@ -99,7 +100,12 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	result.start = p.startDateTime;
     	result.end = p.endDateTime;
     	result.votes = new LinkedList();
-    	result.time_remaining = PresentationHelper.timeDifferenceToString(p.endDateTime.getTime() - Calendar.getInstance().getTime().getTime());
+    	long difference = p.endDateTime.getTime() - Calendar.getInstance().getTime().getTime();
+    	if(difference > 0) {
+        	result.time_remaining = PresentationHelper.timeDifferenceToString(difference);
+    	} else {
+        	result.time_remaining = Messages.get("pollinstance.closed");
+    	}
 		return result;
 	}
 	

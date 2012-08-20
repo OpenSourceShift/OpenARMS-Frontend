@@ -16,6 +16,7 @@ GET		/manage															ManagePoll.index
 GET		/manage/{<[0-9]+>id}/statistics									ManagePoll.statistics
 GET		/manage/{<[0-9]+>id}/activate									ManagePoll.activate
 POST	/manage/{<[0-9]+>id}/activate									ManagePoll.activate
+GET		/manage/{<[0-9]+>id}/close										ManagePoll.close
 GET     /{<[A-Za-z0-9]+>token}											JoinPoll.index
 GET		/join															JoinPoll.index
 GET		/success/{<[0-9]+>pollInstanceId}								JoinPoll.success

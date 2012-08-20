@@ -33,7 +33,7 @@ $(document).ready(function() {
 				<li class="instance ${pollInstance_isLast ? 'last' : ''}" id="instance_${pollInstance.id}">
 					<span>&{'managepoll.instance', pollInstance.start.format() + " " + pollInstance.start.format('HH:mm'), pollInstance.end.format() + " " + pollInstance.end.format('HH:mm')}</span>
 					<div class="controls">
-						<a class="button" href="#">&{'managepoll.index.close'}</a>
+						<a class="button" href="@{ManagePoll.close(pollInstance.id)}">&{'managepoll.index.close'}</a>
 						<a class="button" href="@{ManagePoll.statistics(pollInstance.id)}">&{'managepoll.index.view_stats'}</a>
 					</div>
 				</li>

@@ -21,6 +21,7 @@ import api.requests.ReadPollByTokenRequest;
 import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
 import api.requests.ReadUserDetailsRequest;
+import api.requests.UpdatePollInstanceRequest;
 import api.requests.UpdatePollRequest;
 import api.requests.VoteOnPollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
@@ -97,24 +98,24 @@ public class ManagePoll extends BaseController {
 		}
 	}
 	
-
 	public static void clonepoll() {
 		// TODO: this! (clone existing poll)
 	}
 
+	public static void close(Long id) {
+		ReadPollInstanceResponse response1 = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
+		response1.pollinstance.end = response1.currentDate;
+		APIClient.send(new UpdatePollInstanceRequest(response1.pollinstance));
+		
+		flash.success("managepoll.close.success");
+		flash.keep();
+		index();
+	}
+
 	public static void statistics(Long id) {
-		try {
-			ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
-			if(StatusCode.error(res.statusCode)) {
-				throw new Exception("Invalid poll instance.");
-			} else {
-				PollInstanceJSON pollInstance = res.pollinstance;
-				render(pollInstance);
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-			// TODO: Use an error template.
-		}
+		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
+		PollInstanceJSON pollInstance = res.pollinstance;
+		render(pollInstance);
 	}
 
 	public static void testStatistics() {
