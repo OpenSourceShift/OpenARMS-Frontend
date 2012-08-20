@@ -27,7 +27,9 @@ public class RegisterUser extends BaseController {
 			uj.email = email;
 			Map<String, String> attributes = new HashMap<String, String>();
 			attributes.put("password", passw);
-			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthenticationBackend", attributes));
+			try {
+				CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthenticationBackend", attributes));
+			} 
 			if (response.statusCode == Http.StatusCode.CREATED) {
 				APIClient.authenticateSimple(email, passw);
 				Application.index();

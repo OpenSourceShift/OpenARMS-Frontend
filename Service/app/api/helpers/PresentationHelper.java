@@ -64,27 +64,27 @@ public class PresentationHelper {
 		int d = (int) t;
 		
 		if(d == 1) {
-			terms.add(Messages.get("day", Integer.toString(d)));
+			terms.add(Messages.get("date.day", Integer.toString(d)));
 		} else if(d > 1) {
-			terms.add(Messages.get("days", Integer.toString(d)));
+			terms.add(Messages.get("date.days", Integer.toString(d)));
 		}
 		
 		if(h == 1) {
-			terms.add(Messages.get("hour", Integer.toString(h)));
+			terms.add(Messages.get("date.hour", Integer.toString(h)));
 		} else if(h > 1) {
-			terms.add(Messages.get("hours", Integer.toString(h)));
+			terms.add(Messages.get("date.hours", Integer.toString(h)));
 		}
 		
 		if(m == 1) {
-			terms.add(Messages.get("minute", Integer.toString(m)));
+			terms.add(Messages.get("date.minute", Integer.toString(m)));
 		} else if(m > 1) {
-			terms.add(Messages.get("minutes", Integer.toString(m)));
+			terms.add(Messages.get("date.minutes", Integer.toString(m)));
 		}
 		
 		if(s == 1) {
-			terms.add(Messages.get("second", Integer.toString(s)));
+			terms.add(Messages.get("date.second", Integer.toString(s)));
 		} else if(s > 1) {
-			terms.add(Messages.get("seconds", Integer.toString(s)));
+			terms.add(Messages.get("date.seconds", Integer.toString(s)));
 		}
 		
 		return listing(terms.toArray());
@@ -98,10 +98,16 @@ public class PresentationHelper {
 				return "";
 			}
 		} else { 
+			String result = "";
 			for(int i = 0; i < terms.length; i++) {
-				
+				if(i == terms.length - 1) {
+					result += " "+Messages.get("date.and")+" ";
+				} else if(i > 0) {
+					result += Messages.get("date.comma");
+				}
+				result += terms[i].toString();
 			}
-			return "...";
+			return result;
 		}
 	}
 }
