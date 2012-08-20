@@ -35,15 +35,24 @@ body {
 	background: none !important;
 }
 
-#main.error404 #header p {
+#main.error404 #header,
+#main.error500 #header {
+	height: auto;
+}
+#main.error404 #header p,
+#main.error500 #header p,
+#main.error404 #more,
+#main.error500 #more {
 	color: silver !important;
 }
 
-#main.error404 #routes h2 {
+#main.error404 #routes h2,
+#main.error500 #source h2 {
 	color: gray !important;
 }
 
-#main.error404 #routes li {
+#main.error404 #routes li,
+#main.error500 #routes li {
 	list-style: none;
 }
 
