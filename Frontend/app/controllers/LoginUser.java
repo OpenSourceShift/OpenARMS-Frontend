@@ -19,8 +19,6 @@ import play.mvc.Controller;
 import play.mvc.Util;
 
 public class LoginUser extends BaseController {
-	//public static String forward = "";
-	public static String pollToken = "";
 	
 	public static void showform(String email) {
 		if (email == null)
