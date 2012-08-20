@@ -72,10 +72,10 @@ $(function() {
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 	
 	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"<strong>${voteSummary_index}</strong> ${api.helpers.PresentationHelper.stripHTML(voteSummary.choice_text, true, 30)}"${voteSummary_isLast ? '' : ','}#{/list}];
+	var autoRefresh = ${_refresh?'true':'false'};
 
 	function loadData() {
 		$("#loadingHint").show();
-		//console.log("loading data");
 		$.ajax({
 			url: '@{APIClient.tunnel("pollinstance")}/${_pollInstance.id}',
 			dataType: 'json',
@@ -91,7 +91,6 @@ $(function() {
 				$("#loadingHint").fadeOut('fast');
 				// Update the vote count label
 				$("#voteCountLabel span").text(vote_count);
-				console.log(time_remaining);
 				$("#countdown span").text(time_remaining);
 				var vote_count = data.pollinstance.vote_count;
 				$("#loadingSpinner").hide();
@@ -111,9 +110,11 @@ $(function() {
 			events: {
 				load: function() {
 					loadData();
-					setInterval(function() {
-						loadData();
-					}, 1000);
+					if(autoRefresh) {
+						setInterval(function() {
+							loadData();
+						}, 1000);	
+					}
 				}
 			}
 	    },

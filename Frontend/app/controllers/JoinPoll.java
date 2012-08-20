@@ -70,22 +70,14 @@ public class JoinPoll extends BaseController {
 					break;
 				}
 			}
-			success(pollinstance_id, poll_id);
+			success(pollinstance_id);
 		}
 	}
 
-	public static void success(Long pollinstance_id, Long poll_id) throws Exception {
+	public static void success(Long pollInstanceId) throws Exception {
 		/** get the Poll Instance Data */
-		ReadPollResponse res1 = (ReadPollResponse) APIClient.send(new ReadPollRequest(poll_id));
-		ReadPollInstanceResponse res2 = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollinstance_id));
-		if(res1.statusCode.equals(StatusCode.NOT_FOUND) || res2.statusCode.equals(StatusCode.NOT_FOUND)) {
-			notFound("Poll not found.");
-		} else if (StatusCode.error(res1.statusCode) || StatusCode.error(res2.statusCode)) {
-			notFound("Error finding the poll.");
-		}
-
-		PollInstanceJSON pollInstance = res2.pollinstance;
-		
+		ReadPollInstanceResponse response1 = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollInstanceId));
+		PollInstanceJSON pollInstance = response1.pollinstance;
 		render(pollInstance);
 	}
 }
