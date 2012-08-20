@@ -37,16 +37,5 @@
       <input type="button" value="&{'cancel'}" class="button" />
     </a>
   #{/form}
-  <div id="errors">
-    #{ifError 'passwDontMatch'}
-      <p class="error registrationError">&{'passw.doesnt.match'}</p>
-    #{/ifError}
-    #{ifError 'validatePass'}
-      <p class="error registrationError">&{'wrong.passw'}</p>
-    #{/ifError}
-    #{ifError 'emailTaken'}
-      <p class="error registrationError">&{'email.taken'}</p>
-    #{/ifError}    
-  </div>
 </div>
 
