@@ -10,6 +10,11 @@ function showQR(imageUrl, joinUrl) {
 	$("#qrcode-container #qrcode-link").text(joinUrl);
 }
 
+function editPoll() {
+	alert("...");
+	// TODO: Change this text ...
+}
+
 $(document).ready(function() {
 	$("#qrcode-container").click(function() {
 		$(this).hide();
@@ -25,7 +30,8 @@ $(document).ready(function() {
 			<div class="controls">
 				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:200,format:'png')}', '@@{JoinPoll.index(token:poll.token)}')">&{'managepoll.index.showQRcode'}</button>
 				<a class="button" href="@{ManagePoll.activate(poll.id)}">&{'managepoll.index.activate'}</a>
-				<a class="button" href="#">&{'managepoll.index.clone'}</a>
+				<button class="button" onClick="editPoll()">&{'managepoll.index.edit'}</button>
+				<a class="button" href="@{ManagePoll.clone(poll.id)}">&{'managepoll.index.clone'}</a>
 			</div>
 		</div>
 		<ol class="instances" id="poll${poll.id}_instances">

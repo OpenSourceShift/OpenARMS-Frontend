@@ -61,6 +61,7 @@ joinpoll.success.votes=votes
 managepoll.index.showQRcode=Show QR code
 managepoll.index.activate=Activate
 managepoll.index.clone=Clone
+managepoll.index.edit=Edit
 managepoll.index.qrcode.click=Click to hide
 managepoll.instance=Instance started at %s ending at %s
 managepoll.index.close=Close
