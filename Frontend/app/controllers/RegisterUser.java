@@ -28,9 +28,10 @@ public class RegisterUser extends BaseController {
 			Map<String, String> attributes = new HashMap<String, String>();
 			attributes.put("password", passw);
 			CreateUserResponse response = (CreateUserResponse)APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthenticationBackend", attributes));
-			if  (response.statusCode == Http.StatusCode.CREATED)
-				success();
-			else {
+			if (response.statusCode == Http.StatusCode.CREATED) {
+				APIClient.authenticateSimple(email, passw);
+				Application.index();
+			} else {
 				validation.addError("emailTaken", "This email is already taken");
 				validation.keep();
 				showform();
@@ -41,10 +42,7 @@ public class RegisterUser extends BaseController {
 		}
 	}
 
-	public static void showform(){
-		render();
-	}
-	public static void success(){
+	public static void showform() {
 		render();
 	}
 }
