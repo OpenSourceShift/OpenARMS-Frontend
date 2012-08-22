@@ -3,6 +3,11 @@
 #{set moreStyles:["registeruser"] /}
 <div id="main">
 	<h1>&{'registeruser.title'}</h1>
+	
+	#{if flash.error}
+		<p class="error">${flash.error}</p>
+	#{/if}
+			
 	#{form @RegisterUser.submit()}
     <div class="labeledinput">
 		<label>&{'add.name'}</label>
