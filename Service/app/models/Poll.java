@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -47,6 +48,7 @@ public class Poll extends Model implements Jsonable {
     /**
      * The question that the poll states, ex. "What is 2+2?"
      */
+    @Column(columnDefinition="TEXT")
     public String question;
     /**
      * A human understandable reference that the teacher will use to
