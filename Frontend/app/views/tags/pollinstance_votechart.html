@@ -119,7 +119,7 @@ $(function() {
 			}
 	    },
 	    title: {
-	    	text: "${api.helpers.PresentationHelper.stripHTML(_pollInstance.poll_question, true, null).escapeJavaScript().raw()}"
+	    	text: "${api.helpers.PresentationHelper.stripHTML(_pollInstance.poll_question, true, 65).escapeJavaScript().raw()} ..."
 	    },
 	  	xAxis: {
 			categories: choices,
