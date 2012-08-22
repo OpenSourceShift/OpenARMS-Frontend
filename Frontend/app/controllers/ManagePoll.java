@@ -100,21 +100,7 @@ public class ManagePoll extends BaseController {
 	}
 	
 	public static void clone(Long id) {
-		ReadPollInstanceResponse response1 = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
-		/*
-		for(Field f: response1.pollinstance.getClass().getFields()) {
-			try {
-				Object value = f.get(response1.pollinstance);
-				Logger.debug(f.get(response1.pollinstance).toString());
-				flash.put(f.getName(), f.get(response1.pollinstance));
-			} catch (IllegalArgumentException e) {
-				error(e);
-			} catch (IllegalAccessException e) {
-				error(e);
-			}
-		}
-		*/
-		CreatePoll.index();
+		CreatePoll.index(id);
 	}
 
 	public static void close(Long id) {

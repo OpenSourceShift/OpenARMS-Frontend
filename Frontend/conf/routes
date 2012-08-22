@@ -7,7 +7,8 @@
 
 # Home page
 GET		/																Application.index
-GET		/create															CreatePoll.index
+GET		/create/{<[0-9]+>pollId}										CreatePoll.index
+GET		/create															CreatePoll.index(pollId:'null')
 POST	/create															CreatePoll.submit
 GET		/create/success/{<[A-Za-z0-9]+>token}							CreatePoll.success
 GET		/login/{<[A-Za-z0-9\.@]+>email}									LoginUser.showform

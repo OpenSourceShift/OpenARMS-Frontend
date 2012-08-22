@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.http.HttpStatus;
 
+import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
 import api.entities.ChoiceJSON;
@@ -14,16 +15,22 @@ import api.helpers.GsonHelper;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
+import api.requests.ReadPollRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.responses.ReadPollByTokenResponse;
+import api.responses.ReadPollResponse;
 
 public class CreatePoll extends BaseController {
-
-	public static void index() {
+	
+	public static void index(Long pollId) {
 		if (!LoginUser.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
 			LoginUser.showform(null);
+		}
+		if(pollId != null) {
+			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(pollId));
+			Logger.debug(response.poll.question);
 		}
 		render();
 	}
@@ -103,12 +110,12 @@ public class CreatePoll extends BaseController {
 				flash.error(e.getMessage());
 				params.flash();
 				validation.keep();
-				index();
+				index(null);
 			}
 		} else {
 			params.flash();
 			validation.keep();
-			index();
+			index(null);
 		}
 	}
 }
