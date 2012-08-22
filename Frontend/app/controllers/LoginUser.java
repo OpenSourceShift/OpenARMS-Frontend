@@ -14,6 +14,7 @@ import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
 import play.Logger;
+import play.i18n.Messages;
 import play.libs.Crypto;
 import play.mvc.Controller;
 import play.mvc.Util;
@@ -64,14 +65,14 @@ public class LoginUser extends BaseController {
 					}
 				} else {
 					// It failed!
-					flash.error("Something unexpected happend when logging in.");
+					flash.error(Messages.get("unexpected_behavior"));
 					params.flash();
 					validation.keep();
 					showform(email);
 				}
 			} catch (Exception e) {
 				// It failed!
-				flash.error(e.getCause().getMessage());
+				flash.error(e.getMessage().toString());
 				params.flash();
 				validation.keep();
 				showform(email);
