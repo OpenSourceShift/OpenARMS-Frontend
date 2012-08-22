@@ -91,6 +91,8 @@ public class CreatePoll extends BaseController {
 				CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(poll));
 				poll = response.poll;
 				if(response.statusCode == Http.StatusCode.CREATED) {
+					ManagePoll.activateForm(poll.id);
+					/*
 					PollInstanceJSON pi = new PollInstanceJSON();
 					pi.poll_id = response.poll.id;
 					pi.start = new Date();
@@ -103,6 +105,7 @@ public class CreatePoll extends BaseController {
 					} else {
 						throw new Exception(piresp.error_message);
 					}
+					*/
 				} else {
 					throw new RuntimeException("Something went wrong during the creation of the poll.");
 				}
