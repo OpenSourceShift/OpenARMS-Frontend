@@ -94,6 +94,7 @@ managepoll.pollstatistics.text=Hvis du ønsker at se statestikken for din afstem
 managepoll.activate.pollStarted.header=Afstemning %s er startet!
 managepoll.activate.pollStarted.text=Gå til <b>openarms.dk/%s</b> eller brug id'et <b>%s</b> på din Android telefon for at stemme!.
 managepoll.statistics.close_now=Luk afstemning
+managepoll.statistics.loading=Henter ...
 managepoll.qrcode.show_qr_code_button=Vis QR kode
 want.sign.up=Jeg vil gerne oprettes
 add.name=Brugernavn
