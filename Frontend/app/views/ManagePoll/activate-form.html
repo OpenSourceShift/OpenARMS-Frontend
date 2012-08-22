@@ -1,0 +1,36 @@
+#{extends 'main.html' /} #{ set title:'Activated poll #' + pollID /} 
+#{set moreStyles:["ManagePoll/activate"] /}
+#{set moreScripts:["date.format"] /}
+<script type="text/javascript">
+var dateformat = "&{play.libs.I18N.getDateFormat()}";
+function setValueToNow(event, $button) {
+	event.preventDefault();
+	$button.siblings("input").val(value);
+}
+$(function(){
+	$("input[name=start]").datepicker("enable").datepicker("show");
+	$("input[name=end]").datepicker("enable");
+});
+</script>
+<div id="main">
+	<h1>&{'managepoll.activate.form.title', api.helpers.PresentationHelper.stripHTML(poll.question, true, null)}</h1>
+	#{form @ManagePoll.activate(poll.id), method:'post' }
+		<div class="labeledinput">
+			<input name="start" placeholder="Start date" type="text" />
+			<button class="button" onClick="setValueToNow(event,$(this))">Now</button>
+			#{ifError 'start'}
+				<p class="error">#{error 'start' /}</p>
+			#{/ifError}
+		</div>
+		
+		<div class="labeledinput">
+			<input name="end" placeholder="End date" type="text" />
+			<button class="button" onClick="setValueToNow(event,$(this))">Now</button>
+			#{ifError 'end'}
+				<p class="error">#{error 'end' /}</p>
+			#{/ifError}
+		</div>
+		
+		<input type="submit" value="&{'managepoll.activate.form.submit'}" class="button" />
+	#{/form}
+</div>

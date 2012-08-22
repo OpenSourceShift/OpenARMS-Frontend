@@ -13,12 +13,12 @@ import api.requests.DeauthenticateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.CreatePollResponse;
 import api.responses.EmptyResponse;
+import play.Logger;
 import play.libs.Crypto;
 import play.mvc.Controller;
+import play.mvc.Util;
 
 public class LoginUser extends BaseController {
-	//public static String forward = "";
-	public static String pollToken = "";
 	
 	public static void showform(String email) {
 		if (email == null)
@@ -51,7 +51,8 @@ public class LoginUser extends BaseController {
 			showform(email);
 		} else {
 			try {
-				if (APIClient.authenticateSimple(email, password)) {
+				boolean success = APIClient.authenticateSimple(email, password);
+				if (success) {
 					// Go to the page.
 					String redirectTo = session.get("page_prior_to_login");
 					if(redirectTo == null) {
@@ -68,7 +69,7 @@ public class LoginUser extends BaseController {
 				}
 			} catch (Exception e) {
 				// It failed!
-				flash.error(e.getMessage());
+				flash.error(e.getCause().getMessage());
 				params.flash();
 				validation.keep();
 				showform(email);
@@ -76,15 +77,13 @@ public class LoginUser extends BaseController {
 		}
 	}
 	
+	@Util
 	public static Long getCurrentUserId() {
-		if(session.get("user_id") == null) {
-			return null;
-		} else {
-			return Long.valueOf(session.get("user_id"));
-		}
+		return APIClient.getCurrentUserId();
 	}
-	
+
+	@Util
 	public static boolean isLoggedIn() {
-		return (session.get("user_id") != null && session.get("user_secret") != null);
+		return APIClient.isLoggedIn();
 	}
 }

@@ -3,9 +3,11 @@ package models;
 import javax.persistence.*;
 
 import controllers.AuthBackend;
-import controllers.SimpleAuthBackend;
+import controllers.SimpleAuthenticationBackend;
 
+import play.data.validation.Email;
 import play.data.validation.Password;
+import play.data.validation.Required;
 import play.db.jpa.*;
 import play.*;
 import java.util.*;
@@ -22,10 +24,13 @@ public class User extends Model implements Jsonable {
 	/**
 	 * Name of the user.
 	 */
+	@Required
 	public String name;
 	/**
 	 * An email of the user .
 	 */
+	@Email
+	@Required
 	public String email;
 	/**
 	 * Unique code to keep user logged in the system.
@@ -35,7 +40,7 @@ public class User extends Model implements Jsonable {
 	 * Identifier of the authentication method.
 	 */
 	@OneToOne(cascade = CascadeType.ALL, mappedBy="user")
-	public UserAuthBinding userAuth;
+	public AuthenticationBinding authenticationBinding;
 
 	/**
 	 * Turn this User into a UserJSON.

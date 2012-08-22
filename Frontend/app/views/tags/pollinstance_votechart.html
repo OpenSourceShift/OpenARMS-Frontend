@@ -1,17 +1,9 @@
-<div id="main">
-	<div class="greybg">
-		<div class="wrapper">
-			<div id="stats"></div>
-			<img class="loading" src="@{'/public/images/loading-big.gif'}" alt="&{'loading'}"/>
-			<div id="voteCountLabel">&{'managepoll.pollstatistics.totalVoteCount', '<span>?</span>'}</div>
-		</div>
-	</div>
-</div>
+<div id="stats"></div>
 
 <script type="text/javascript">
 $(function() {
 	Highcharts.theme = {
-		colors: ["#FFA900"],
+		colors: ["#B6C225"],
 		chart: {
 			backgroundColor: {
 				linearGradient: [0, 0, 0, 400],
@@ -80,20 +72,32 @@ $(function() {
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 	
 	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"<strong>${voteSummary_index}</strong> ${api.helpers.PresentationHelper.stripHTML(voteSummary.choice_text, true, 30)}"${voteSummary_isLast ? '' : ','}#{/list}];
+	var autoRefresh = ${_refresh?'true':'false'};
 
 	function loadData() {
-		console.log("loading data");
-		$.getJSON('/api/pollinstance/${_pollInstance.id}', function(data) {
-			vote_count = data.pollinstance.vote_count;
-			var votes = [];
-			for(var v in data.pollinstance.votes) {
-			votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
+		$("#loadingHint").show();
+		$.ajax({
+			url: '@{APIClient.tunnel("pollinstance")}/${_pollInstance.id}',
+			dataType: 'json',
+			success: function(data) {
+				var vote_count = data.pollinstance.vote_count;
+				var time_remaining = data.pollinstance.time_remaining;
+				var votes = [];
+				for(var v in data.pollinstance.votes) {
+					votes[v] = data.pollinstance.votes[v].count / vote_count * 100;
+				}
+				//console.log(data, votes);
+				chart.series[0].setData(votes);
+				$("#loadingHint").fadeOut('fast');
+				// Update the vote count label
+				$("#voteCountLabel span").text(vote_count);
+				$("#countdown span").text(time_remaining);
+				var vote_count = data.pollinstance.vote_count;
+				$("#loadingSpinner").hide();
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				$("#loadingHint .status").text(textStatus+ ": " +errorThrown);
 			}
-			console.log(data, votes);
-			chart.series[0].setData(votes);
-			$(".loading").hide();
-			// Update the vote count label
-			$("#voteCountLabel span").text(vote_count);
 		});
 	}
 	
@@ -106,14 +110,16 @@ $(function() {
 			events: {
 				load: function() {
 					loadData();
-					setInterval(function() {
-						loadData();
-					}, 1000);
+					if(autoRefresh) {
+						setInterval(function() {
+							loadData();
+						}, 1000);	
+					}
 				}
 			}
 	    },
 	    title: {
-	    	text: "${api.helpers.PresentationHelper.stripHTML(_pollInstance.question)}"
+	    	text: "${api.helpers.PresentationHelper.stripHTML(_pollInstance.poll_question, true, null)}"
 	    },
 	  	xAxis: {
 			categories: choices,

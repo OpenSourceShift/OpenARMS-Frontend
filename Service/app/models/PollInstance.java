@@ -1,5 +1,6 @@
 package models;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,12 +11,16 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.joda.time.Interval;
+
 import play.data.validation.Required;
 import play.db.jpa.Model;
+import play.i18n.Messages;
 import api.entities.Jsonable;
 import api.entities.PollInstanceJSON;
 import api.entities.VoteJSON;
 import api.entities.VoteSummaryJSON;
+import api.helpers.PresentationHelper;
 
 /**
  * Voting round model. Having this enables us to have several voting rounds of a 
@@ -91,10 +96,17 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	PollInstanceJSON result = new PollInstanceJSON();
     	result.id = p.id;
     	result.poll_id = p.poll.id;
-		result.question = p.poll.question;
+		result.poll_question = p.poll.question;
     	result.start = p.startDateTime;
     	result.end = p.endDateTime;
     	result.votes = new LinkedList();
+    	long difference = p.endDateTime.getTime() - Calendar.getInstance().getTime().getTime();
+    	if(difference > 0) {
+        	result.time_remaining = PresentationHelper.timeDifferenceToString(difference);
+    	} else {
+        	result.time_remaining = Messages.get("pollinstance.closed");
+    	}
+    	result.closed = closed();
 		return result;
 	}
 	
@@ -118,4 +130,8 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		}
 		return result;
     }
+
+	public boolean closed() {
+		return endDateTime.before(Calendar.getInstance().getTime());
+	}
 }

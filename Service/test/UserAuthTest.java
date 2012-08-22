@@ -1,11 +1,11 @@
 import java.util.List;
 
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 
 import org.junit.Test;
 
-import controllers.SimpleAuthBackend;
+import controllers.SimpleAuthenticationBackend;
 import controllers.UserController;
 
 import play.test.Fixtures;
@@ -30,15 +30,15 @@ public class UserAuthTest extends UnitTest {
 		u.name = "test";
 		u.email = "avas@dfsdf.com";
 		u.secret = null;
-		u.userAuth = null;
+		u.authenticationBinding = null;
 		u.save();
 		// Insert simple authentication to DB
-		SimpleUserAuthBinding s = new SimpleUserAuthBinding();
+		SimpleAuthenticationBinding s = new SimpleAuthenticationBinding();
 		s.user = u;
-		s.password = "secret";
+		s.setPassword("");
 		s.save();
 		// Bind authentication method with user in DB
-		u.userAuth = s;
+		u.authenticationBinding = s;
 		u.save();
 		
 		// Request user from DB
@@ -46,7 +46,7 @@ public class UserAuthTest extends UnitTest {
     	assertEquals(users.size(), 1);
     	User user = users.get(0);
     	// Try to authenticate
-    	User secret = SimpleAuthBackend.authenticate(user, "secret");
+    	User secret = SimpleAuthenticationBackend.authenticate(user, "secret");
     	// Check if authenticated
     	assertNotNull(secret);
     }

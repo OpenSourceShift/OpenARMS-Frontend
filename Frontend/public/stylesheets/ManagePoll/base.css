@@ -1,0 +1,39 @@
+#bottomoptions {
+	overflow: hidden;
+	position: relative;
+	margin-top: 5%;
+}
+
+#editpoll, #pollstatistics {
+    margin-bottom: -1000px;
+    padding-bottom: 1030px;
+    width: 49%;
+}
+
+#bottomoptions .button {
+	position: absolute;
+	bottom: 10px;
+}
+
+#editpoll {
+	float: left;
+}
+
+#pollstatistics {
+	float: right;
+}
+
+#activatepoll .labeledinput {
+	display: inline;
+    float: left;
+    margin-right: 10px;
+}
+
+#activatepoll .button {
+	display: block;
+	clear: both;
+}
+
+#voteCountLabel {
+	text-align: center;
+}

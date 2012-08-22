@@ -1,5 +1,6 @@
 package api.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PollJSON extends BaseModelJSON {
@@ -10,7 +11,7 @@ public class PollJSON extends BaseModelJSON {
     public Boolean multipleAllowed;
     public Boolean loginRequired;
 	public String question;
-	public List<ChoiceJSON> choices;
+	public List<ChoiceJSON> choices = new ArrayList<ChoiceJSON>();
 	public List<PollInstanceJSON> pollinstances;
 	
 	/*

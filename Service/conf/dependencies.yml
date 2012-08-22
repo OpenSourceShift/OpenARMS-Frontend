@@ -1,6 +1,5 @@
 #application dependencies	    
 require:
-    - play 1.2.4
+    - play 1.2.5
     - play -> crud
     - play -> secure
-    - com.google.zxing -> core 2.0

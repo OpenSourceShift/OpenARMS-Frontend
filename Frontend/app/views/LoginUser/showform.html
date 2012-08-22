@@ -1,12 +1,8 @@
 #{extends 'main.html' /} #{ set title:'Login' /}
 #{set moreStyles:["login"] /}
 <div id="main">
-	#{form @LoginUser.submit(), id:'login' }	
-		#{ifError 'invalid'}
-			<p class="error">#{error 'invalid' /}</p>
-		#{/ifError}
-		
-		<h1>&{'loginuser'}</h1>	
+	#{form @LoginUser.submit(), id:'login' }
+		<h1>&{'loginuser'}</h1>
 		
 		<div class="labeledinput">
 			<label>&{'loginuser.email'}</label>
@@ -26,6 +22,6 @@
 		
 		<input type='submit' value="&{'loginuser.submit'}" class='button' />
 		<input type='button' value="&{'loginuser.cancel'}" class='button' onClick="location.href='@{Application.index()}'">
-		<input type='button' value="&{'loginuser.register'}" class='button' onClick="history.back()">
+		<input type='button' value="&{'loginuser.register'}" class='button' onClick="location.href='@{RegisterUser.showform()}'">
 	#{/form}
 </div>

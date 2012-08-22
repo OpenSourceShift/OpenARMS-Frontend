@@ -2,6 +2,8 @@
 # For example, for French create a messages.fr file
 #
 
+crud.logout=Logout
+
 # Choice.java
 poll=Poll
 text=Description
@@ -30,3 +32,15 @@ userAuth=User Authentication
 # SimpleUserAuthBinding.java
 password=Password
 user=User
+
+pollinstance.closed=Closed
+date.second=%s second
+date.seconds=%s seconds
+date.minute=%s minute
+date.minutes=%s minutes
+date.hour=%s hour
+date.hours=%s hours
+date.day=%s day
+date.days=%s days
+date.and=and
+date.comma=, 

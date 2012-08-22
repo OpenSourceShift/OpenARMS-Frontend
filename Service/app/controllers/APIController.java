@@ -7,7 +7,7 @@ import org.hibernate.annotations.AccessType;
 
 import models.Choice;
 import models.PollInstance;
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 import models.Vote;
 
@@ -84,7 +84,7 @@ public abstract class APIController extends Controller {
 	@Catch()
 	protected static void renderException(Throwable throwable) {
 		System.err.println("Exception thrown in an APIController: "+throwable.getMessage());
-		//throwable.printStackTrace();
+		throwable.printStackTrace();
 		// Return this error to the user.
 		Integer statusCode = STATUS_CODES.get(throwable.getClass());
 		if(statusCode == null) {
@@ -111,13 +111,15 @@ public abstract class APIController extends Controller {
 				Fixtures.loadModels(yaml_file);
 				
 				// Create the binding
+				/*
 		        User user = User.find("byEmail", "spam@creen.dk").first();
-		        SimpleUserAuthBinding authBinding = new SimpleUserAuthBinding();
+		        SimpleAuthenticationBinding authBinding = new SimpleAuthenticationBinding();
 		        authBinding.user = user;
 		        authBinding.password = "openarms";
 		        authBinding.save();
-		        user.userAuth = authBinding;
-		        user.userAuth.save();
+		        user.authenticationBinding = authBinding;
+		        user.authenticationBinding.save();
+		        */
 		        
 				renderJSON(new EmptyResponse().toJson());
 			} else {

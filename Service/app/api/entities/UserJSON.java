@@ -7,5 +7,4 @@ public class UserJSON extends BaseModelJSON {
 	public String name;
 	public String email;
 	public String secret;
-    public Map<String, String> attributes;
 }

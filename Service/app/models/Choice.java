@@ -30,7 +30,7 @@ public class Choice extends Model implements Jsonable {
 	 * The poll that this is a choice for.
 	 */
 	@ManyToOne
-    @GsonSkip(classes = {Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
+    // @GsonSkip(classes = {Poll.class, CreatePollResponse.class}, applications={"OpenARMS 1.1 Service"})
 	public Poll poll;
 	/**
 	 * The human understandable text describing the choice.

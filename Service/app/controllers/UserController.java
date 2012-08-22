@@ -2,16 +2,20 @@ package controllers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import play.Logger;
 import play.Play;
+import play.data.validation.Validation;
+import play.data.validation.Validation.ValidationResult;
 import play.mvc.Http;
 
 import models.Choice;
 import models.Poll;
 import models.PollInstance;
-import models.SimpleUserAuthBinding;
+import models.SimpleAuthenticationBinding;
 import models.User;
 import models.Vote;
 import api.entities.PollInstanceJSON;
@@ -164,24 +168,44 @@ public class UserController extends APIController {
         }
         
         User user = User.fromJson(req.user);
-		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
-		if (backend != null && backend.equals(SimpleAuthBackend.class)) {
-			SimpleUserAuthBinding auth = new SimpleUserAuthBinding();
-			auth.password = req.user.attributes.get("password");
-			user.userAuth = auth;
+
+		if(!user.validateAndCreate()) {
+			error("The user didn't validate correctly.");
 		}
-     	user.userAuth.save();
-        user.save();
-        user.userAuth.user = user;
-        user.userAuth.save();
+        
+		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		if (backend != null && backend.equals(SimpleAuthenticationBackend.class)) {
+			SimpleAuthenticationBinding authenticationBinding = new SimpleAuthenticationBinding();
+			//Logger.debug("Creating new user with password = %s", req.attributes.get("password"));
+			authenticationBinding.setPassword(req.attributes.get("password"));
+			user.authenticationBinding = authenticationBinding;
+		} else {
+			error("Cannot create a user, using "+String.valueOf(req.backend)+" as authentication backend.");
+		}
+		
+		user.authenticationBinding.user = user;
+		//Logger.debug("Creating new authenticationBinding for user = %s with passwordHash = %s", user.authenticationBinding.user.toString(), ((SimpleAuthenticationBinding)user.authenticationBinding).passwordHash);
+		if(user.authenticationBinding == null || !user.authenticationBinding.validateAndSave()) {
+			error("The authentication attributes didn't validate.");
+		}
+		
+		/*
+		
+		user.userAuth.save();
+		
+		user.save();
+        
+		user.userAuth.user = user;
+		user.userAuth.save();
+		*/
         
         // if (user.userAuth instanceof SimpleUserAuthBinding)
         // 	((SimpleUserAuthBinding)user.userAuth).save();
         //user.save();
            
         //Creates the UserJSON Response.
-        CreateUserResponse response2 = new CreateUserResponse(user.toJson());
-    	String jsonResponse = GsonHelper.toJson(response2);
+        CreateUserResponse res = new CreateUserResponse(user.toJson());
+    	String jsonResponse = GsonHelper.toJson(res);
 		response.status = Http.StatusCode.CREATED;
     	renderJSON(jsonResponse);
 	}
@@ -210,7 +234,7 @@ public class UserController extends APIController {
 	 * Method that edits a User already existing in the DB.
 	 * @throws Exception 
 	 */
-	public static void edit () throws Exception {
+	public static void edit() throws Exception {
 		String userid = params.get("id");
 
 		//Takes the User from the DataBase.
@@ -230,17 +254,20 @@ public class UserController extends APIController {
         	originalUser.email = editedUser.email;
         if (editedUser.secret != null)
         	originalUser.secret = editedUser.secret;
-        if (editedUser.userAuth != null) {
+        if (editedUser.authenticationBinding != null) {
+        	throw new Exception("Cannot edit the users authentication binding, as this has not been implemented yet.");
+        	/*
         	// Compares originalAuth with editedAuth
-        	if (editedUser.userAuth.getClass().toString().equals(originalUser.userAuth.getClass().toString())) {
+        	if (editedUser.authenticationBinding.getClass().toString().equals(originalUser.authenticationBinding.getClass().toString())) {
         		// Check authentication method
-        		if (originalUser.userAuth instanceof SimpleUserAuthBinding) {
-        			Long idAuth = ((SimpleUserAuthBinding)originalUser.userAuth).id;
-        			SimpleUserAuthBinding originalAuth = (SimpleUserAuthBinding)SimpleUserAuthBinding.find("byID", idAuth).fetch().get(0);
-        			originalAuth.password = ((SimpleUserAuthBinding)editedUser.userAuth).password;
+        		if (originalUser.authenticationBinding instanceof SimpleAuthenticationBinding) {
+        			Long idAuth = ((SimpleAuthenticationBinding)originalUser.authenticationBinding).id;
+        			SimpleAuthenticationBinding originalAuth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).fetch().get(0);
+        			originalAuth.setPassword(((SimpleAuthenticationBinding)editedUser.authenticationBinding).passwordHash);
         			originalAuth.save();
         		}
         	}
+        	*/
         }
         originalUser.save();
         
@@ -257,6 +284,8 @@ public class UserController extends APIController {
 	 */
 	public static void delete () throws Exception {
 		String userid = params.get("id");
+		
+		User.em().getTransaction().begin();
 
 		//Takes the User from the DataBase.
 		User user = User.find("byID", userid).first();
@@ -265,10 +294,11 @@ public class UserController extends APIController {
 		requireUser(user);
 		
 		//Deletes the Authentication from the DataBase.
-		if (user.userAuth instanceof SimpleUserAuthBinding) {
-			Long idAuth = ((SimpleUserAuthBinding)user.userAuth).id;
-			SimpleUserAuthBinding auth = (SimpleUserAuthBinding)SimpleUserAuthBinding.find("byID", idAuth).fetch().get(0);
-			auth.delete();
+		if (user.authenticationBinding instanceof SimpleAuthenticationBinding) {
+			//Long idAuth = ((SimpleAuthenticationBinding)user.authenticationBinding).id;
+			//SimpleAuthenticationBinding auth = (SimpleAuthenticationBinding)SimpleAuthenticationBinding.find("byID", idAuth).first();
+			//auth.delete();
+			user.authenticationBinding.delete();
 		}
 		//Deletes the User from the DataBase and creates an empty UserJSON for the response.
 		user.delete();
@@ -280,13 +310,12 @@ public class UserController extends APIController {
 	 * Method that gets a User from the DataBase.
 	 * @throws Exception 
 	 */
-	public static void details() throws Exception {
-		String userid = params.get("id");
-
+	public static void details(Integer id) throws Exception {
 		//Takes the User from the DataBase.
-		User user = User.find("byID", userid).first();
-		notFoundIfNull(user);
-
+		User user = User.find("byID", id).first();
+		if(user == null) {
+			unauthorized("The user ID requested (#"+id+") is not present in the service.");
+		}
 		requireUser(user);
 		
 		List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();

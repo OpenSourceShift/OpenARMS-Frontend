@@ -23,12 +23,20 @@ public class AnnotationExclusionStrategy implements ExclusionStrategy {
 		for(Annotation a: c.getAnnotations()) {
 			if(a instanceof GsonSkip) {
 				GsonSkip gs = (GsonSkip) a;
-				for(Class<?> someClass: gs.classes()) {
-					if(someClass.equals(clazz)) {
-						for(String someApplication: gs.applications()) {
-							if(someApplication.equals(this.application)) {
-								return true;
+				if(gs.classes().length == 0) {
+					// No classes was selected, then its any class.
+					return true;
+				} else {
+					for(Class<?> someClass: gs.classes()) {
+						if(someClass.equals(clazz)) {
+							/*
+							for(String someApplication: gs.applications()) {
+								if(someApplication.equals(this.application)) {
+									return true;
+								}
 							}
+							*/
+							return true;
 						}
 					}
 				}

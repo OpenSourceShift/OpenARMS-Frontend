@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Calendar;
 import java.util.List;
 
 import play.mvc.Http;
@@ -43,6 +44,10 @@ public class VoteController extends APIController {
 	public static CreateVoteResponse create(VoteJSON voteJson) throws Exception {
 		Vote vote = Vote.fromJson(voteJson);
 
+		if(vote.pollInstance.closed()) {
+			error("The poll is closed.");
+		}
+
 		// If current user is not the same as the poll creator or there is no
 		// current user, throws an exception
 		User u = AuthBackend.getCurrentUser();
@@ -57,8 +62,7 @@ public class VoteController extends APIController {
 					forbidden("You can't vote twice in the same Poll.");
 				}
 			} else {
-				Vote vote2 = Vote.find("byPollInstanceAndUserAndChoice", 
-						vote.pollInstance, u, vote.choice).first();
+				Vote vote2 = Vote.find("byPollInstanceAndUserAndChoice", vote.pollInstance, u, vote.choice).first();
 
 				if (vote2 == null) {
 					vote.save();

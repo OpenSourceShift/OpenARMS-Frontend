@@ -2,24 +2,32 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Import CRUD routes
-*		/admin									module:crud
-*		/api/{<.*>url}							APIClient.tunnel
+# API tunnel
+*		/api/{<.*>url}													APIClient.tunnel
 
 # Home page
-GET		/										Application.index
-GET		/createpoll								CreatePoll.index
-POST	/createpoll								CreatePoll.submit
-GET		/joinpoll								JoinPoll.index
-GET		/login									LoginUser.showform
-GET		/logout									LoginUser.logout
-GET		/managepoll								ManagePoll.index
-GET		/managepoll/statistics/{<[0-9]+>id}		ManagePoll.statistics
-GET     /{<[A-Za-z0-9]+>token}					JoinPoll.index
-GET     /{<[0-9]+>pollID}/{adminkey}			ManagePoll.index
+GET		/																Application.index
+GET		/create/{<[0-9]+>pollId}										CreatePoll.index
+GET		/create															CreatePoll.index(pollId:'null')
+POST	/create															CreatePoll.submit
+GET		/create/success/{<[A-Za-z0-9]+>token}							CreatePoll.success
+GET		/login/{<[A-Za-z0-9\.@]+>email}									LoginUser.showform
+GET		/login															LoginUser.showform
+GET		/logout															LoginUser.logout
+GET		/manage															ManagePoll.index
+GET		/manage/{<[0-9]+>id}/statistics									ManagePoll.statistics
+GET		/manage/{<[0-9]+>id}/activate									ManagePoll.activate
+POST	/manage/{<[0-9]+>id}/activate									ManagePoll.activate
+GET		/manage/{<[0-9]+>id}/close										ManagePoll.close
+GET		/manage/{<[0-9]+>id}/clone										ManagePoll.clone
+GET     /{<[A-Za-z0-9]+>token}											JoinPoll.index
+GET		/join															JoinPoll.index
+GET		/success/{<[0-9]+>pollInstanceId}								JoinPoll.success
+GET     /{<[0-9]+>pollID}/{adminkey}									ManagePoll.index
+GET     /qr/{<[A-Za-z0-9]+>token}/{<[0-9]+>size}.{<[A-Za-z]+>format}	QRController.renderImage
 
 # Map static resources from the /app/public folder to the /public path
-GET     /public/								staticDir:public
+GET     /public/														staticDir:public
 
 # Catch all
-*       /{controller}/{action}					{controller}.{action}
+*       /{controller}/{action}											{controller}.{action}

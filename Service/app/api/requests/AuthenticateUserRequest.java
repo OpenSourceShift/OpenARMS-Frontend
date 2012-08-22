@@ -9,13 +9,13 @@ import api.responses.Response;
  * A request for the service: Authenticate against an authentication backend.
  */
 public class AuthenticateUserRequest extends Request {
-	public UserJSON user;
+	public String email;
 	public String backend;
-	public AuthenticateUserRequest (UserJSON u, String backend) {
-		this.user = u;
+	public AuthenticateUserRequest (String email, String backend) {
+		this.email = email;
 		this.backend = backend;
 	}
-	
+
 	@Override
 	public String getURL() {
 		return "/user/authenticate";
@@ -30,5 +30,5 @@ public class AuthenticateUserRequest extends Request {
 	public Class<? extends Response> getExpectedResponseClass() {
 		return AuthenticateUserResponse.class;
 	}
-	
+
 }

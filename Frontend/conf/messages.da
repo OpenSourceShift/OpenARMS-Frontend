@@ -93,6 +93,5 @@ go.back=Tilbage
 email.taken=Din email er allerede registreret ved en anden bruger.
 wrong.email=Forkert email adresse
 passw.doesnt.match=Dine passwords matcher ikker
-interested_1=Hvis du er interesseret i at følge projektet
-interested_2=så skriv dig venligst op på vores mailing liste.
+interested_1=Hvis du er interesseret i at følge projektet <a href="%s" target="_blank">så skriv dig venligst op på vores mailing liste!</a>
 wrong.passw=Kodeordet passer ikke

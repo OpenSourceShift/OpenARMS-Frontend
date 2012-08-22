@@ -3,7 +3,6 @@ package controllers;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.HashMap;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -20,16 +19,16 @@ import play.Logger;
 import play.Play;
 import play.libs.Codec;
 import play.libs.Crypto;
+import play.libs.Crypto.HashType;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
-import api.entities.UserJSON;
+import play.mvc.Util;
 import api.helpers.GsonHelper;
-import api.requests.AuthenticateSimpleUserRequest;
-import api.requests.AuthenticateUserRequest;
 import api.requests.DeauthenticateUserRequest;
 import api.requests.LoadTestDataRequest;
 import api.requests.Request;
+import api.requests.SimpleAuthenticateUserRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
@@ -41,6 +40,12 @@ public class APIClient extends Controller {
 	 * The host to use when contacting the service, this will be set by the constructor.
 	 */
 	public HttpHost host;
+	
+	class APIException extends RuntimeException {
+		public APIException(String error_message) {
+			super(error_message);
+		}
+	}
 	
 	/**
 	 * Constructing a new API client, try to reuse these.
@@ -61,16 +66,23 @@ public class APIClient extends Controller {
 		host = new HttpHost(hostname, port);
 	}
 	
-	public void setAuthentication(Long userId, String userSecret) {
+	@Util
+	public static void setAuthentication(Long userId, String userSecret) {
 		session.put("user_id", userId);
-		session.put("user_secret", Crypto.decryptAES(userSecret));
+		if(userSecret == null) {
+			session.put("user_secret", null);
+		} else {
+			session.put("user_secret", Crypto.encryptAES(userSecret));
+		}
 	}
 	
+	@Util
 	public static APIClient getInstance() {
 		return new APIClient();
 	}
 	
-	private HttpRequestBase getBaseRequest(api.requests.Request request) throws Exception {
+	@Util
+	private HttpRequestBase getBaseRequest(api.requests.Request request) {
 		HttpRequestBase httpRequest;
 		if(request.getHttpMethod().equals(Request.Method.GET)) {
 			httpRequest = new HttpGet();
@@ -81,12 +93,18 @@ public class APIClient extends Controller {
 		} else if(request.getHttpMethod().equals(Request.Method.DELETE)) {
 			httpRequest = new HttpDelete();
 		} else {
-			throw new Exception("Unknown HTTP-method of the API-request.");
+			throw new RuntimeException("Unknown HTTP-method of the API-request.");
 		}
 		return httpRequest;
 	}
+
+	@Util
+	public Response sendRequest(Request request) {
+		return sendRequest(request, true);
+	}
 	
-	public Response sendRequest(Request request) throws Exception {
+	@Util
+	public Response sendRequest(Request request, boolean redirectOnAuthenticationRequest) {
 		DefaultHttpClient client = new DefaultHttpClient();
 		
 		String json = GsonHelper.toJson(request);
@@ -115,34 +133,64 @@ public class APIClient extends Controller {
 		// TODO: Remember to set the encoding of the request.
 		Logger.debug("APIClient sends: %s to %s%s as %s", json, host.toString(), httpRequest.getURI(), httpRequest.getMethod());
 		
-		HttpResponse httpResponse = client.execute(host, httpRequest);
-		HttpEntity httpResponseEntity = httpResponse.getEntity();
-		// Check the response content-type.
-		if(httpResponseEntity.getContentType().getValue().startsWith("application/json")) {
-			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
-			String responseJson = "";
-			String line;
-			while ((line = br.readLine()) != null) {
-				responseJson += line;
-				Logger.debug("APIClient receives: %s", line);
+		try {
+			HttpResponse httpResponse = client.execute(host, httpRequest);
+			HttpEntity httpResponseEntity = httpResponse.getEntity();
+			// Check the response content-type.
+			if(httpResponseEntity.getContentType().getValue().startsWith("application/json")) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
+				String responseJson = "";
+				String line;
+				while ((line = br.readLine()) != null) {
+					responseJson += line;
+					Logger.debug("APIClient receives: %s", line);
+				}
+				Response response = GsonHelper.fromJson(responseJson, request.getExpectedResponseClass());
+				response.statusCode = httpResponse.getStatusLine().getStatusCode();
+				
+				if(response.statusCode == StatusCode.UNAUTHORIZED && redirectOnAuthenticationRequest) {
+					if(isLoggedIn()) {
+						// Deauthenticate as the client and the service is in different believes.
+						Logger.debug("Deauthenticating as the client and the service is in different believes.");
+						deauthenticate();
+					}
+					LoginUser.showform(null);
+					 // This we will never get to.
+					return response;
+				} else if(response.success()) {
+					return response;
+				} else {
+					throw new APIException(response.error_message);
+				}
+			} else {
+				Logger.error("APIClient receives something with the wrong content-type.");
+				//Logger.debug(httpResponseEntity.getContent());
+				BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
+				String line;
+				String html = "";
+				while ((line = br.readLine()) != null) {
+					//Logger.debug("APIClient receives: %s", line);
+					html += line;
+				}
+				renderHtml(html);
+				Response response = new EmptyResponse();
+				response.statusCode = httpResponse.getStatusLine().getStatusCode();
+				response.error_message = "Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue();
+				return response;
 			}
-			Response response = GsonHelper.fromJson(responseJson, request.getExpectedResponseClass());
-			response.statusCode = httpResponse.getStatusLine().getStatusCode();
-			return response;
-		} else {
-			Logger.debug("APIClient receives something with the wrong content-type.");
-			//Logger.debug(httpResponseEntity.getContent());
-			BufferedReader br = new BufferedReader(new InputStreamReader(httpResponseEntity.getContent()));
-			String line;
-			while ((line = br.readLine()) != null) {
-				Logger.debug("APIClient receives: %s", line);
-			}
-			throw new Exception("Http response didn't have the application/json content-type, got: "+httpResponseEntity.getContentType().getValue());
+		} catch (Exception e) {
+			throw new RuntimeException("Error from the OpenARMS service: "+e.getMessage(), e);
 		}
 	}
 	
-	public static Response send(Request request) throws Exception {
+	@Util
+	public static Response send(Request request) {
 		return getInstance().sendRequest(request);
+	}
+	
+	@Util
+	public static Response send(Request request, boolean redirectOnAuthenticationRequest) {
+		return getInstance().sendRequest(request, redirectOnAuthenticationRequest);
 	}
 
 	public static void tunnel(String url) {
@@ -205,17 +253,17 @@ public class APIClient extends Controller {
 		}
 	}
 	
+	@Util
 	public static EmptyResponse loadServiceData(String yamlDataFile) throws Exception {
 		LoadTestDataRequest req = new LoadTestDataRequest(yamlDataFile);
 		return (EmptyResponse) APIClient.send(req);
 	}
 
-	public static boolean authenticateSimple(String email, String password) throws Exception {
-		UserJSON u = new UserJSON();
-		u.email = email;
-		AuthenticateSimpleUserRequest req = new AuthenticateSimpleUserRequest(u, "controllers.SimpleAuthBackend");
-		req.password = password;
-		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req);
+	@Util
+	public static boolean authenticateSimple(String email, String password) {
+		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email);
+		req.password = Crypto.passwordHash(password, HashType.SHA256);
+		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req, false);
 		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
 			session.put("user_id", authenticateResponse.user.id);
 			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
@@ -228,9 +276,36 @@ public class APIClient extends Controller {
 			session.put("user_id", null);
 			session.put("user_secret", null);
 			if(StatusCode.error(authenticateResponse.statusCode)) {
-				throw new Exception(authenticateResponse.error_message);
+				throw new RuntimeException(authenticateResponse.error_message);
 			}
 			return false;
 		}
+	}
+
+	@Util
+	public static void deauthenticate() {
+		EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
+		if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
+			System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
+		}
+		session.put("user_id", null);
+		session.put("user_secret", null);
+		if(StatusCode.error(deauthenticateResponse.statusCode)) {
+			throw new RuntimeException(deauthenticateResponse.error_message);
+		}
+	}
+	
+	@Util
+	public static Long getCurrentUserId() {
+		if(session.get("user_id") == null) {
+			return null;
+		} else {
+			return Long.valueOf(session.get("user_id"));
+		}
+	}
+
+	@Util
+	public static boolean isLoggedIn() {
+		return (session.get("user_id") != null && session.get("user_secret") != null);
 	}
 }
