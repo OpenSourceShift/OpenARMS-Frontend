@@ -71,7 +71,7 @@ $(function() {
 	
 	var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 	
-	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"<strong>${voteSummary_index}</strong> ${api.helpers.PresentationHelper.stripHTML(voteSummary.choice_text, true, 15).escapeJavaScript().raw()}"${voteSummary_isLast ? '' : ','}#{/list}];
+	var choices = [#{list items:_pollInstance.votes, as:'voteSummary'}"<strong>${voteSummary_index})</strong> ${api.helpers.PresentationHelper.stripHTML(voteSummary.choice_text, true, 20).escapeJavaScript().raw()}"${voteSummary_isLast ? '' : ','}#{/list}];
 	var autoRefresh = ${_refresh?'true':'false'};
 
 	function loadData() {
