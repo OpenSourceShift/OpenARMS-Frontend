@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 
 import play.Logger;
@@ -35,17 +36,13 @@ public class CreatePoll extends BaseController {
 		render();
 	}
 
-	public static void success(String token) {
-		ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
-		PollJSON poll = response.poll;
-		render(poll);
-	}
-
 	public static void submit(String question, String[] choices, String type, Boolean loginRequired) {
 		// Validate that the question and answers are there.
 		validation.required(question);
 		validation.required(type);
 		validation.required(choices);
+		
+		question = StringEscapeUtils.unescapeHtml(question);
 
 		// This will be the poll that will be used to hold all values.
 		PollJSON poll = new PollJSON();
@@ -55,7 +52,7 @@ public class CreatePoll extends BaseController {
 			for (String s: choices) {
 				if (s != null && !s.isEmpty()) {
 					ChoiceJSON choice = new ChoiceJSON();
-					choice.text = s;
+					choice.text = StringEscapeUtils.unescapeHtml(s);
 					poll.choices.add(choice);
 				}
 			}

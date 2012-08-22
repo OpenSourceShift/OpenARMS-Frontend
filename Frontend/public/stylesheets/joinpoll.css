@@ -58,3 +58,7 @@ li.choice > label > input {
 .choice-content li {
 	margin-left: 1.5em;
 }
+
+input[type=submit] {
+	margin: 0 auto;
+}
