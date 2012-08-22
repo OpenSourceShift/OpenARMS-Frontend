@@ -65,7 +65,11 @@ joinpoll.success.yAxis=Antal stemmer
 joinpoll.success.votes=stemmer
 managepoll.activatepoll.header=Aktiver afstemning
 managepoll.activatepoll.text=Her kan du aktivere din afstemining for et bestemt tidsinterval. I løbet af den aktive periode vil det være muligt at stemme i afstemningen.
+<<<<<<< HEAD
 managepoll.activatepoll.form.minutes=Minutter
+=======
+managepoll.activatepoll.form.minutes=Minutter 	
+>>>>>>> demo
 managepoll.activatepoll.form.seconds=Sekunder
 managepoll.activate.form.title=Aktiver afstemning: "%s"
 managepoll.activate.form.submit=Aktiver
