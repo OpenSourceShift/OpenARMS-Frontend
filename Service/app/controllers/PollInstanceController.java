@@ -55,21 +55,23 @@ public class PollInstanceController extends APIController  {
 		Poll poll = Poll.findById(r.pollinstance.poll_id);
 		notFoundIfNull(poll);
 		
-		requireUser(poll.admin);
-		
-		r.pollinstance.votes = new LinkedList<VoteSummaryJSON>();
-    	// Create vote summaries for all votes.
-		long vote_count = 0;
-    	for(Choice c: pi.poll.choices) {
-    		VoteSummaryJSON summary = new VoteSummaryJSON();
-			summary.choice_id = c.id;
-			summary.choice_text = c.text;
-			summary.count = Vote.count("pollInstance.id = ? and choice.id = ?", pi.id, c.id);
-			vote_count += summary.count;
-			// Add it to the result.
-    		r.pollinstance.votes.add(summary);
-    	}
-    	r.pollinstance.vote_count = vote_count;
+		if(poll.admin.equals(AuthBackend.getCurrentUser())) {
+			// Add the summary.
+			
+			r.pollinstance.votes = new LinkedList<VoteSummaryJSON>();
+	    	// Create vote summaries for all votes.
+			long vote_count = 0;
+	    	for(Choice c: pi.poll.choices) {
+	    		VoteSummaryJSON summary = new VoteSummaryJSON();
+				summary.choice_id = c.id;
+				summary.choice_text = c.text;
+				summary.count = Vote.count("pollInstance.id = ? and choice.id = ?", pi.id, c.id);
+				vote_count += summary.count;
+				// Add it to the result.
+	    		r.pollinstance.votes.add(summary);
+	    	}
+	    	r.pollinstance.vote_count = vote_count;
+		}
 
 		renderJSON(r);
 	}
