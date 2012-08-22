@@ -30,6 +30,10 @@ poll=Afstemings ID
 total=Total
 validation.required.atLeastTwo=Du skal mindst have to svarmuligheder (ellers vil det jo ikke være et spørgsmål)!
 validation.required=Må ikke være tom
+validation.minSize=Mindst %2$d tegn
+validation.maxSize=Maks %2$d tegn
+validation.email=Ugyldig email
+validation.equals=Felterne skal være ens
 createpoll.success.header=Afstemning oprettet
 createpoll.success.text=Din afstemning er nu oprettet! Der er sendt en email til dig med de følgende informationer, men skriv dem evt. ned i tilfælde af at emailen ikke kommer frem.<br /><br />Du kan logge ind på <a href="/">openARS.dk</a> ved at indtaste de følgende information under 'Administrer afstemning':
 createpoll.manage_poll_now=Administrer afstemning nu &raquo;
@@ -94,4 +98,5 @@ email.taken=Din email er allerede registreret ved en anden bruger.
 wrong.email=Forkert email adresse
 passw.doesnt.match=Dine passwords matcher ikker
 interested_1=Hvis du er interesseret i at følge projektet <a href="%s" target="_blank">så skriv dig venligst op på vores mailing liste!</a>
+unexpected_behavior=Der skete noget uventet, prøv igen.
 wrong.passw=Kodeordet passer ikke

@@ -16,6 +16,7 @@ import play.data.validation.Unique;
 import play.db.jpa.Model;
 import api.entities.ChoiceJSON;
 import api.entities.Jsonable;
+import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 
 /**
@@ -257,12 +258,18 @@ public class Poll extends Model implements Jsonable {
     	result.multipleAllowed = p.multipleAllowed;
     	result.loginRequired = p.loginRequired;
     	if (p.admin != null) {
-    	result.admin = p.admin.id;
+    		result.admin = p.admin.id;
     	}
     	result.choices = new LinkedList<ChoiceJSON>();
 		for(Choice c: p.choices) {
 			result.choices.add(c.toJson());
 		}
+    	result.pollinstances = new LinkedList<PollInstanceJSON>();
+    	if(p.instances != null) {
+			for(PollInstance pi: p.instances) {
+				result.pollinstances.add(pi.toJson(false));
+			}
+    	}
 		return result;
     }
     

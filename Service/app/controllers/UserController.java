@@ -334,6 +334,7 @@ public class UserController extends APIController {
 					summary.count = Vote.count("pollInstance = ? and choice = ?", pi, c);
 					vote_count += summary.count;
 					// Add it to the result.
+					piJson.votes = new LinkedList<VoteSummaryJSON>();
 					piJson.votes.add(summary);
 		    	}
 		    	piJson.vote_count = vote_count;

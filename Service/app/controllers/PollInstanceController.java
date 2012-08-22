@@ -17,6 +17,7 @@ import api.responses.CreatePollInstanceResponse;
 import api.responses.EmptyResponse;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.UpdatePollInstanceResponse;
+import play.data.validation.Error;
 
 /**
  * Class that manages the responses in the API for PollsInstances.
@@ -34,9 +35,23 @@ public class PollInstanceController extends APIController  {
         CreatePollInstanceRequest req = GsonHelper.fromJson(request.body, CreatePollInstanceRequest.class);
         PollInstance pollinstance = PollInstance.fromJson(req.pollInstance);
 		notFoundIfNull(pollinstance.poll);
+		
+		validation.required(req.pollInstance.start);
+		validation.required(req.pollInstance.end);
+		validation.future(req.pollInstance.end, req.pollInstance.start);
+		if(validation.hasErrors()) {
+			for(Error e: validation.errors()) {
+				error(e.message());
+			}
+		}
       	
         // If current user is not the same as the poll creator or there is no current user, throws an exception
 		requireUser(pollinstance.poll.admin);
+		
+		List<PollInstance> conflictingPollInstances = PollInstance.find("poll = ? AND ((endDatetime >= ?2 and endDatetime <= ?3) or (startDatetime >= ?2 and startDatetime <= ?3) or (startDatetime <= ?2 and endDatetime >= ?3))", pollinstance.poll, pollinstance.startDateTime, pollinstance.endDateTime).fetch();
+		if(conflictingPollInstances.size() > 0) {
+			error("Your choice of start and end points of the interval has "+conflictingPollInstances.size()+" conflict(s), please close any currently running instances.");
+		}
 		
         pollinstance.save();
         

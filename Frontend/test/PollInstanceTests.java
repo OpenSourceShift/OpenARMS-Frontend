@@ -61,6 +61,7 @@ public class PollInstanceTests extends BaseTest {
         	assertUnSuccessful(response);
         	assertNull(response.pollinstance.id);
     	} catch(RuntimeException e) {
+    		e.printStackTrace();
     		assertEquals(e.getClass(), Redirect.class);
     	}
 	}

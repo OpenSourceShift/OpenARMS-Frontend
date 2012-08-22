@@ -92,21 +92,31 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	return this.toJson(this);
     }
     
-	public PollInstanceJSON toJson(PollInstance p) {
+    public PollInstanceJSON toJson(boolean detailed) {
+    	return toJson(this, detailed);
+    }
+    
+    public PollInstanceJSON toJson(PollInstance p) {
+    	return toJson(p, true);
+    }
+    
+	public static PollInstanceJSON toJson(PollInstance p, boolean detailed) {
     	PollInstanceJSON result = new PollInstanceJSON();
     	result.id = p.id;
-    	result.poll_id = p.poll.id;
-		result.poll_question = p.poll.question;
     	result.start = p.startDateTime;
     	result.end = p.endDateTime;
-    	result.votes = new LinkedList();
-    	long difference = p.endDateTime.getTime() - Calendar.getInstance().getTime().getTime();
-    	if(difference > 0) {
-        	result.time_remaining = PresentationHelper.timeDifferenceToString(difference);
-    	} else {
-        	result.time_remaining = Messages.get("pollinstance.closed");
+    	result.closed = p.closed();
+    	if(detailed) {
+        	result.poll_id = p.poll.id;
+    		result.poll_question = p.poll.question;
+    		result.poll_token = p.poll.token;
+        	long difference = p.endDateTime.getTime() - Calendar.getInstance().getTime().getTime();
+        	if(difference > 0) {
+            	result.time_remaining = PresentationHelper.timeDifferenceToString(difference);
+        	} else {
+            	result.time_remaining = Messages.get("pollinstance.closed");
+        	}
     	}
-    	result.closed = closed();
 		return result;
 	}
 	

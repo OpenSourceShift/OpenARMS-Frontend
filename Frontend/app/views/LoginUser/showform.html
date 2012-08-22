@@ -3,7 +3,11 @@
 <div id="main">
 	#{form @LoginUser.submit(), id:'login' }
 		<h1>&{'loginuser'}</h1>
-		
+					
+			#{if flash.error}
+				<p class="error">${flash.error}</p>
+			#{/if}
+			
 		<div class="labeledinput">
 			<label>&{'loginuser.email'}</label>
 			#{ifError 'email'}
