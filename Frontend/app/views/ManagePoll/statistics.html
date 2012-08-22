@@ -8,6 +8,7 @@ $(function(){
 });
 </script>
 #{/if}
+#{poll-qr-code /}
 <div id="main">
 	#{pollinstance_votechart pollInstance:pollInstance, refresh:true /}
 	<script>
@@ -25,4 +26,3 @@ $(function(){
 		<span class="status">&{'managepoll.statistics.loading'}</span>
 	</div>
 </div>
-#{poll-qr-code /}

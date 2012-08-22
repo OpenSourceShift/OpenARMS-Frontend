@@ -1,16 +1,13 @@
 #{extends 'main.html' /}
 #{set title:'Manage your polls' /}
 #{set moreStyles: ["ManagePoll/base", "ManagePoll/index"] /}
-
 <script type="text/javascript" charset="utf-8">
-
 function editPoll() {
 	alert("&{'managepoll.index.edit.message'}");
 	// TODO: Change this text ...
 }
-
 </script>
-
+#{poll-qr-code /}
 <div id="main">
 #{list pollsJson, as:'poll'}
 	<div class="poll ${poll_isLast ? 'last' : ''}" data-id="${poll.id}" data-token="${poll.token}">
