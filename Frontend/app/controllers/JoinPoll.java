@@ -22,7 +22,7 @@ public class JoinPoll extends BaseController {
 		}
 		
 		// get the Poll Instance Data
-		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token.toUpperCase()));
 		if(res.statusCode.equals(StatusCode.NOT_FOUND)) {
 			notFound("Poll not found.");
 		} else if (StatusCode.error(res.statusCode)) {
