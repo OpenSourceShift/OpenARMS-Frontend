@@ -106,6 +106,7 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
     	} else {
         	result.time_remaining = Messages.get("pollinstance.closed");
     	}
+    	result.closed = closed();
 		return result;
 	}
 	
@@ -129,4 +130,8 @@ public class PollInstance extends Model implements Comparable<PollInstance>, Jso
 		}
 		return result;
     }
+
+	public boolean closed() {
+		return endDateTime.before(Calendar.getInstance().getTime());
+	}
 }

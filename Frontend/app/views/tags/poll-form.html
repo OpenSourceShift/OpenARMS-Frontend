@@ -11,7 +11,7 @@ function addChoice(value) {
 	var index = choiceIndex;
 	var id = "choice-"+index;
 	var label = "&{'createpoll.form.choiceLabel', '<span>?</span>'}";
-	var choiceField = $('<li class="choice block"><label>'+label+'<img src="public/images/i/delete.png" class="removeChoice"></label><textarea name="choices[]" id="'+id+'" class="tinymce">'+value+'</textarea></li>').appendTo("#choices");
+	var choiceField = $('<li class="choice block"><label>'+label+'<img src="/public/images/i/delete.png" class="removeChoice"></label><textarea name="choices[]" id="'+id+'" class="tinymce">'+value+'</textarea></li>').appendTo("#choices");
 	$("#"+id).tinymce({
 		script_url : '/public/javascripts/tiny_mce/tiny_mce.js',
 		theme : "simple",

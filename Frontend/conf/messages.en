@@ -62,6 +62,7 @@ managepoll.index.showQRcode=Show QR code
 managepoll.index.activate=Activate
 managepoll.index.clone=Clone
 managepoll.index.edit=Edit
+managepoll.index.edit.message=Editing a poll after its been activated may not be what you desire. Be aware that statistics generated based on this poll might change semantics.
 managepoll.index.qrcode.click=Click to hide
 managepoll.instance=Instance started at %s ending at %s
 managepoll.index.close=Close
