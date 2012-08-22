@@ -6,7 +6,7 @@
 	#{/if}
 	#{else}
 	    <h1>Oops, an error occured</h1>
-	    <h2>${exception.message}</h2>
+	    <h3>${exception.message}</h3>
 	    #{if exception instanceof play.exceptions.PlayException}
 	        <p>
 	            This exception has been logged with id <strong>${exception.id}</strong>.
