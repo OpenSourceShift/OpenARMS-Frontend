@@ -91,7 +91,7 @@ $(function() {
 				$("#loadingHint").fadeOut('fast');
 				// Update the vote count label
 				$("#voteCountLabel span").text(vote_count);
-				$("#countdown span").text(time_remaining);
+				$(".countdown span").text(time_remaining);
 				var vote_count = data.pollinstance.vote_count;
 				$("#loadingSpinner").hide();
 			},

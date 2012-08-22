@@ -15,14 +15,18 @@
 	vertical-align: middle;
 }
 
-#countdown {
+.countdown {
 	text-align: center;
 }
 
-#countdown .button {
-	margin: 1em;
+.countdown a.button, button.button {
+	display: inline-block;
 }
 
-#voteCountLabel span, #countdown span {
+.countdown .button {
+	margin-top: 1em;
+}
+
+.voteCountLabel span, .countdown span {
 	font-weight: bold;
 }

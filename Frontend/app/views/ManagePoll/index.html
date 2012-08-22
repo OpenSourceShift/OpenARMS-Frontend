@@ -4,22 +4,11 @@
 
 <script type="text/javascript" charset="utf-8">
 
-function showQR(imageUrl, joinUrl) {
-	$("#qrcode-container").fadeIn();
-	$("#qrcode-container #qrcode").attr('src', imageUrl);
-	$("#qrcode-container #qrcode-link").text(joinUrl);
-}
-
 function editPoll() {
 	alert("&{'managepoll.index.edit.message'}");
 	// TODO: Change this text ...
 }
 
-$(document).ready(function() {
-	$("#qrcode-container").click(function() {
-		$(this).hide();
-	});
-});
 </script>
 
 <div id="main">
@@ -28,7 +17,7 @@ $(document).ready(function() {
 		<div class="question block">
 			<span>${api.helpers.PresentationHelper.stripHTML(poll.question)}</span>
 			<div class="controls">
-				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:200,format:'png')}', '@@{JoinPoll.index(token:poll.token)}')">&{'managepoll.index.showQRcode'}</button>
+				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:200,format:'png')}', '@@{JoinPoll.index(token:poll.token)}')">&{'managepoll.qrcode.show_qr_code_button'}</button>
 				<a class="button" href="@{ManagePoll.activate(poll.id)}">&{'managepoll.index.activate'}</a>
 				<button class="button" onClick="editPoll()">&{'managepoll.index.edit'}</button>
 				<a class="button" href="@{ManagePoll.clone(poll.id)}">&{'managepoll.index.clone'}</a>
@@ -40,7 +29,7 @@ $(document).ready(function() {
 					<span>&{'managepoll.instance', pollInstance.start.format() + " " + pollInstance.start.format('HH:mm'), pollInstance.end.format() + " " + pollInstance.end.format('HH:mm')}</span>
 					<div class="controls">
 						#{if !pollInstance.closed}<a class="button" href="@{ManagePoll.close(pollInstance.id)}">&{'managepoll.index.close'}</a>#{/if}
-						<a class="button" href="@{ManagePoll.statistics(pollInstance.id)}">&{'managepoll.index.view_stats'}</a>
+						<a class="button" href="@{ManagePoll.statistics(pollInstance.id, false)}">&{'managepoll.index.view_stats'}</a>
 					</div>
 				</li>
 			#{/list}
@@ -50,10 +39,4 @@ $(document).ready(function() {
 	<hr/>
 	#{/if}
 #{/list}
-</div>
-
-<div id="qrcode-container">
-	<img id="qrcode" />
-	<p id="qrcode-link"></p>
-	<p id="qrcode-hint">&{'managepoll.index.qrcode.click'}</p>
 </div>

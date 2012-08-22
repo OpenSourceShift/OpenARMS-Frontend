@@ -15,8 +15,9 @@ GET		/login/{<[A-Za-z0-9\.@]+>email}									LoginUser.showform
 GET		/login															LoginUser.showform
 GET		/logout															LoginUser.logout
 GET		/manage															ManagePoll.index
-GET		/manage/{<[0-9]+>id}/statistics									ManagePoll.statistics
-GET		/manage/{<[0-9]+>id}/activate									ManagePoll.activate
+GET		/manage/{<[0-9]+>id}/statistics									ManagePoll.statistics(showQRCode:'false')
+GET		/manage/{<[0-9]+>id}/statistics/qr								ManagePoll.statistics(showQRCode:'true')
+GET		/manage/{<[0-9]+>id}/activate									ManagePoll.activateForm
 POST	/manage/{<[0-9]+>id}/activate									ManagePoll.activate
 GET		/manage/{<[0-9]+>id}/close										ManagePoll.close
 GET		/manage/{<[0-9]+>id}/clone										ManagePoll.clone

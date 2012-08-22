@@ -76,26 +76,36 @@ public class ManagePoll extends BaseController {
 		}
 	}
 
-	public static void activate(Long id) {
+	public static void activateForm(Long id) {
 		ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
 		PollJSON poll = pollResponse.poll;
+
+		render(poll);
+	}
+
+	public static void activate(Long id, Long duration) {
+		validation.required(id);
+		validation.required(duration);
+		validation.min(duration, 1);
 		
-		// TODO: this! (activate/instantiate pollinstance with start and end time
-		PollInstanceJSON pi = new PollInstanceJSON();
-		pi.start = request.params.get("start", Date.class);
-		pi.end = request.params.get("end", Date.class);
-
-		validation.required(pi.start);
-		validation.required(pi.end);
-		validation.past(pi.start, pi.end);
-		validation.future(pi.end);
-
 		if (!validation.hasErrors()) {
+			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+			PollJSON poll = pollResponse.poll;
+			
+			// TODO: this! (activate/instantiate pollinstance with start and end time
+			PollInstanceJSON pi = new PollInstanceJSON();
+			pi.poll_id = poll.id;
+			pi.start = pollResponse.currentDate;
+			pi.end = (Date) pollResponse.currentDate.clone();
+			pi.end.setTime(pi.start.getTime() + duration*1000);
+			
 			CreatePollInstanceResponse pollInstanceResponse = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pi));
 			PollInstanceJSON pollInstance = pollInstanceResponse.pollinstance;
-			render(pollInstance);
+			statistics(pollInstance.id, true);
 		} else {
-			renderTemplate("ManagePoll/activate-form.html", poll);
+			params.flash();
+			validation.keep();
+			activateForm(id);
 		}
 	}
 	
@@ -113,10 +123,10 @@ public class ManagePoll extends BaseController {
 		index();
 	}
 
-	public static void statistics(Long id) {
+	public static void statistics(Long id, Boolean showQRCode) {
 		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
 		PollInstanceJSON pollInstance = res.pollinstance;
-		render(pollInstance);
+		render(pollInstance, showQRCode);
 	}
 
 	public static void testStatistics() {

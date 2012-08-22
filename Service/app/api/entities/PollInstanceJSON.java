@@ -6,6 +6,7 @@ import java.util.List;
 public class PollInstanceJSON extends BaseModelJSON {
 	public Long poll_id;
 	public String poll_question;
+	public String poll_token;
 	public String time_remaining;
 	public Boolean closed;
 	public Long id;
