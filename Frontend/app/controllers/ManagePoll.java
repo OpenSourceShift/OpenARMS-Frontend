@@ -102,7 +102,7 @@ public class ManagePoll extends BaseController {
 			
 			CreatePollInstanceResponse pollInstanceResponse = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pi));
 			PollInstanceJSON pollInstance = pollInstanceResponse.pollinstance;
-			statistics(pollInstance.poll_token, true);
+			statistics(pollInstance.id, true);
 		} else {
 			params.flash();
 			validation.keep();
@@ -114,8 +114,8 @@ public class ManagePoll extends BaseController {
 		CreatePoll.index(token);
 	}
 
-	public static void close(String token) {
-		ReadPollInstanceResponse response = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+	public static void close(Long pollInstanceId) {
+		ReadPollInstanceResponse response = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollInstanceId));
 		response.pollinstance.end = response.currentDate;
 		APIClient.send(new UpdatePollInstanceRequest(response.pollinstance));
 		
@@ -124,8 +124,8 @@ public class ManagePoll extends BaseController {
 		index();
 	}
 
-	public static void statistics(String token, Boolean showQRCode) {
-		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+	public static void statistics(Long pollInstanceId, Boolean showQRCode) {
+		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(pollInstanceId));
 		PollInstanceJSON pollInstance = res.pollinstance;
 		render(pollInstance, showQRCode);
 	}

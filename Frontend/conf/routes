@@ -15,12 +15,12 @@ GET		/login/{<[A-Za-z0-9\.@]+>email}									LoginUser.showform
 GET		/login															LoginUser.showform
 GET		/logout															LoginUser.logout
 GET		/manage															ManagePoll.index
-GET		/manage/{<[A-Z0-9]+>token}/statistics							ManagePoll.statistics(showQRCode:'false')
-GET		/manage/{<[A-Z0-9]+>token}/statistics/qr						ManagePoll.statistics(showQRCode:'true')
+GET		/manage/{<[0-9]+>pollInstanceId}/statistics						ManagePoll.statistics(showQRCode:'false')
+GET		/manage/{<[0-9]+>pollInstanceId}/statistics/qr					ManagePoll.statistics(showQRCode:'true')
 GET		/manage/{<[A-Z0-9]+>token}/activate								ManagePoll.activateForm
 GET		/manage/{<[A-Z0-9]+>token}/activate/{<[0-9]+>duration}			ManagePoll.activate
 POST	/manage/{<[A-Z0-9]+>token}/activate								ManagePoll.activate
-GET		/manage/{<[A-Z0-9]+>token}/close								ManagePoll.close
+GET		/manage/{<[0-9]+>pollInstanceId}/close							ManagePoll.close
 GET		/manage/{<[A-Z0-9]+>token}/clone								ManagePoll.clone
 GET     /{<[A-Za-z0-9]+>token}											JoinPoll.index
 GET		/join															JoinPoll.index
