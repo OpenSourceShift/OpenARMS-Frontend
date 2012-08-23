@@ -19,6 +19,7 @@ import api.entities.VoteJSON;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
+import api.requests.ReadPollInstanceByTokenRequest;
 import api.requests.ReadPollInstanceRequest;
 import api.requests.ReadPollRequest;
 import api.requests.ReadUserDetailsRequest;
@@ -76,20 +77,20 @@ public class ManagePoll extends BaseController {
 		}
 	}
 
-	public static void activateForm(Long id) {
-		ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+	public static void activateForm(String token) {
+		ReadPollByTokenResponse pollResponse = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
 		PollJSON poll = pollResponse.poll;
 
 		render(poll);
 	}
 
-	public static void activate(Long id, Long duration) {
-		validation.required(id);
+	public static void activate(String token, Long duration) {
+		validation.required(token);
 		validation.required(duration);
 		validation.min(duration, 1);
 		
 		if (!validation.hasErrors()) {
-			ReadPollResponse pollResponse = (ReadPollResponse) APIClient.send(new ReadPollRequest(id));
+			ReadPollByTokenResponse pollResponse = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
 			PollJSON poll = pollResponse.poll;
 			
 			// TODO: this! (activate/instantiate pollinstance with start and end time
@@ -101,30 +102,30 @@ public class ManagePoll extends BaseController {
 			
 			CreatePollInstanceResponse pollInstanceResponse = (CreatePollInstanceResponse) APIClient.send(new CreatePollInstanceRequest(pi));
 			PollInstanceJSON pollInstance = pollInstanceResponse.pollinstance;
-			statistics(pollInstance.id, true);
+			statistics(pollInstance.poll_token, true);
 		} else {
 			params.flash();
 			validation.keep();
-			activateForm(id);
+			activateForm(token);
 		}
 	}
 	
-	public static void clone(Long id) {
-		CreatePoll.index(id);
+	public static void clone(String token) {
+		CreatePoll.index(token);
 	}
 
-	public static void close(Long id) {
-		ReadPollInstanceResponse response1 = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
-		response1.pollinstance.end = response1.currentDate;
-		APIClient.send(new UpdatePollInstanceRequest(response1.pollinstance));
+	public static void close(String token) {
+		ReadPollInstanceResponse response = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
+		response.pollinstance.end = response.currentDate;
+		APIClient.send(new UpdatePollInstanceRequest(response.pollinstance));
 		
 		flash.success("managepoll.close.success");
 		flash.keep();
 		index();
 	}
 
-	public static void statistics(Long id, Boolean showQRCode) {
-		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceRequest(id));
+	public static void statistics(String token, Boolean showQRCode) {
+		ReadPollInstanceResponse res = (ReadPollInstanceResponse) APIClient.send(new ReadPollInstanceByTokenRequest(token));
 		PollInstanceJSON pollInstance = res.pollinstance;
 		render(pollInstance, showQRCode);
 	}

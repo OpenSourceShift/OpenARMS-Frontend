@@ -24,13 +24,13 @@ import api.responses.ReadPollResponse;
 
 public class CreatePoll extends BaseController {
 	
-	public static void index(Long pollId) {
+	public static void index(String token) {
 		if (!LoginUser.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
 			LoginUser.showform(null);
 		}
-		if(pollId != null) {
-			ReadPollResponse response = (ReadPollResponse) APIClient.send(new ReadPollRequest(pollId));
+		if(token != null) {
+			ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));
 			Logger.debug(response.poll.question);
 		}
 		render();
@@ -88,7 +88,7 @@ public class CreatePoll extends BaseController {
 				CreatePollResponse response = (CreatePollResponse) APIClient.send(new CreatePollRequest(poll));
 				poll = response.poll;
 				if(response.statusCode == Http.StatusCode.CREATED) {
-					ManagePoll.activateForm(poll.id);
+					ManagePoll.activateForm(poll.token);
 					/*
 					PollInstanceJSON pi = new PollInstanceJSON();
 					pi.poll_id = response.poll.id;

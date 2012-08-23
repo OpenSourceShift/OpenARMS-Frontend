@@ -10,23 +10,23 @@ function editPoll() {
 #{poll-qr-code /}
 <div id="main">
 #{list pollsJson, as:'poll'}
-	<div class="poll ${poll_isLast ? 'last' : ''}" data-id="${poll.id}" data-token="${poll.token}">
+	<div class="poll ${poll_isLast ? 'last' : ''}" data-token="${poll.token}">
 		<div class="question block">
 			<span>${api.helpers.PresentationHelper.stripHTML(poll.question)}</span>
 			<div class="controls">
 				<button class="button" onClick="showQR('@{QRController.renderImage(token:poll.token,size:200,format:'png')}', '@@{JoinPoll.index(token:poll.token)}')">&{'managepoll.qrcode.show_qr_code_button'}</button>
-				<a class="button" href="@{ManagePoll.activate(poll.id)}">&{'managepoll.index.activate'}</a>
+				<a class="button" href="@{ManagePoll.activate(poll.token)}">&{'managepoll.index.activate'}</a>
 				<button class="button" onClick="editPoll()">&{'managepoll.index.edit'}</button>
-				<a class="button" href="@{ManagePoll.clone(poll.id)}">&{'managepoll.index.clone'}</a>
+				<a class="button" href="@{ManagePoll.clone(poll.token)}">&{'managepoll.index.clone'}</a>
 			</div>
 		</div>
-		<ol class="instances" id="poll${poll.id}_instances">
+		<ol class="instances" id="poll${poll.token}_instances">
 			#{list poll.pollinstances, as:'pollInstance'}
-				<li class="instance ${pollInstance_isLast ? 'last' : ''} ${pollInstance.closed ? 'closed' : ''}" id="instance_${pollInstance.id}">
+				<li class="instance ${pollInstance_isLast ? 'last' : ''} ${pollInstance.closed ? 'closed' : ''}" id="instance_${pollInstance.poll_token}">
 					<span>&{'managepoll.instance', pollInstance.start.format() + " " + pollInstance.start.format('HH:mm'), pollInstance.end.format() + " " + pollInstance.end.format('HH:mm')}</span>
 					<div class="controls">
-						#{if !pollInstance.closed}<a class="button" href="@{ManagePoll.close(pollInstance.id)}">&{'managepoll.index.close'}</a>#{/if}
-						<a class="button" href="@{ManagePoll.statistics(pollInstance.id, false)}">&{'managepoll.index.view_stats'}</a>
+						#{if !pollInstance.closed}<a class="button" href="@{ManagePoll.close(pollInstance.poll_token)}">&{'managepoll.index.close'}</a>#{/if}
+						<a class="button" href="@{ManagePoll.statistics(pollInstance.poll_token, false)}">&{'managepoll.index.view_stats'}</a>
 					</div>
 				</li>
 			#{/list}
