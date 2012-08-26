@@ -24,4 +24,5 @@ public abstract class BaseController extends Controller {
 		//response.headers.put("Access-Control-Allow-Origin", new Header(name, value))
 		response.setHeader("Access-Control-Allow-Origin", "http://stress.openarms.dk/");
 	}
+	
 }
