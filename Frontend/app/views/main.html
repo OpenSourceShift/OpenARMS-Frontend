@@ -18,6 +18,8 @@
         #{list items:moreScripts, as:'script'}
         <script src="@{'/public/javascripts/'}/${script}.js" type="text/javascript" charset="utf-8"></script>
         #{/list}
+        
+        #{include 'tracking.html' /}
     </head>
 <body>
   <div id="container">
