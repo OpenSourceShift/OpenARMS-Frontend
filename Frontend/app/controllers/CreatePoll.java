@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 
+import controllers.authentication.SimpleAuthentication;
+
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Http;
@@ -25,9 +27,9 @@ import api.responses.ReadPollResponse;
 public class CreatePoll extends BaseController {
 	
 	public static void index(String token) {
-		if (!LoginUser.isLoggedIn()) {
+		if (!APIClient.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
-			LoginUser.showform(null);
+			SimpleAuthentication.showform(null);
 		}
 		if(token != null) {
 			ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));

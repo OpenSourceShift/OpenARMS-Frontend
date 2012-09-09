@@ -15,6 +15,7 @@ import api.requests.*;
 import api.responses.*;
 import api.entities.*;
 import controllers.APIClient;
+import controllers.authentication.SimpleAuthentication;
 
 public class APIClientTest extends UnitTest {
 	
@@ -38,9 +39,8 @@ public class APIClientTest extends UnitTest {
 
 	@Test
 	public void TestVoting() throws Exception {
-		APIClient apiClient = new APIClient();
 		//apiClient.deauthenticate();
-		boolean authenticated = apiClient.authenticateSimple("test@test.com", "1234");
+		boolean authenticated = SimpleAuthentication.authenticateSimple("test@test.com", "1234");
 		assertTrue(authenticated);
 
     	VoteJSON v = new VoteJSON();
@@ -54,9 +54,10 @@ public class APIClientTest extends UnitTest {
 	@Test
     public void testLogin() throws Exception {
 		APIClient.loadServiceData("data.yml");
-		APIClient apiClient = new APIClient();
-		boolean authenticated = apiClient.authenticateSimple("spam@creen.dk", "openarms");
+		boolean authenticated = SimpleAuthentication.authenticateSimple("spam@creen.dk", "openarms");
 		assertTrue(authenticated);
+		
+		APIClient apiClient = new APIClient();
 		
     	PollJSON pj1 = new PollJSON();
     	pj1.question = "This is the first question.";

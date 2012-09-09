@@ -3,6 +3,8 @@ package controllers;
 import java.util.Calendar;
 import java.util.List;
 
+import controllers.authentication.AuthenticationBackend;
+
 import play.mvc.Http;
 
 import models.User;
@@ -50,7 +52,7 @@ public class VoteController extends APIController {
 
 		// If current user is not the same as the poll creator or there is no
 		// current user, throws an exception
-		User u = AuthBackend.getCurrentUser();
+		User u = AuthenticationBackend.getCurrentUser();
 		if (u != null) {
 			vote.user = u;
 			if (vote.pollInstance.poll.multipleAllowed != null && !vote.pollInstance.poll.multipleAllowed) {

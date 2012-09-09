@@ -1,5 +1,7 @@
 package api.requests;
 
+import org.apache.commons.lang.NotImplementedException;
+
 import api.responses.GenerateAuthChallengeResponse;
 import api.responses.Response;
 
@@ -9,19 +11,23 @@ import api.responses.Response;
 public class GenerateAuthChallengeRequest extends Request {
 	public String backend;
 	
-	public GenerateAuthChallengeRequest() {
+	public GenerateAuthChallengeRequest(String backend) {
+		this.backend = backend;
 	}
+	
 	@Override
 	public String getURL() {
-		return "/user/authenticate";
+		return "/user/authenticate/challange";
 	}
-	@Override
-	public Class<? extends Response> getExpectedResponseClass() {
-		return GenerateAuthChallengeResponse.class;
-	}
+	
 	@Override
 	public Method getHttpMethod() {
-		return Method.GET;
+		return Method.POST;
+	}
+
+	@Override
+	public Class<? extends Response> getExpectedResponseClass() {
+		throw new NotImplementedException("Cannot generate a response to an abstract class.");
 	}
 	
 }

@@ -16,7 +16,7 @@ import api.responses.*;
 import api.entities.*;
 import controllers.APIClient;
 import controllers.BaseController;
-import controllers.LoginUser;
+import controllers.authentication.SimpleAuthentication;
 
 public class APIClientFullCreate extends UnitTest {
 	
@@ -52,14 +52,14 @@ public class APIClientFullCreate extends UnitTest {
 		
     	// Authenticate
 		APIClient apiClient = new APIClient();
-		boolean authenticated = apiClient.authenticateSimple(u.email, attributes.get("password"));
+		boolean authenticated = SimpleAuthentication.authenticateSimple(u.email, attributes.get("password"));
 		assertTrue(authenticated);
     
     	PollJSON pj1 = new PollJSON();
 
     	pj1.question = "This is the first question.";
     	//pj1.admin = userresponse.user.id;
-    	pj1.admin = LoginUser.getCurrentUserId();
+    	pj1.admin = APIClient.getCurrentUserId();
     	pj1.multipleAllowed = r.nextBoolean();
     	pj1.loginRequired = false;
     	pj1.reference = "myreference";
@@ -92,7 +92,7 @@ public class APIClientFullCreate extends UnitTest {
     	
     	boolean failed = false;
     	try {
-    		apiClient.authenticateSimple(u.email, "fail");
+    		SimpleAuthentication.authenticateSimple(u.email, "fail");
     	} catch(Exception e) {
     		assertEquals("Password didn't match.", e.getCause().getMessage());
     		failed = true;

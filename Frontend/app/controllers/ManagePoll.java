@@ -7,6 +7,8 @@ import java.util.List;
 import com.mysql.jdbc.Messages;
 import com.sun.imageio.plugins.common.I18N;
 
+import controllers.authentication.SimpleAuthentication;
+
 import play.Logger;
 import play.i18n.Lang;
 import play.mvc.Controller;
@@ -41,9 +43,9 @@ public class ManagePoll extends BaseController {
 		APIClient apiClient = new APIClient();
 		/** get all polls + instances for the current user */
     	try {
-    		Long userId = controllers.LoginUser.getCurrentUserId();
+    		Long userId = APIClient.getCurrentUserId();
     		if(userId == null) {
-        		LoginUser.showform(null);
+        		SimpleAuthentication.showform(null);
     		} else {
 				ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(userId));
 				List<PollJSON> pollsJson = responseUser.polls;

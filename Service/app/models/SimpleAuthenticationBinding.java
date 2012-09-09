@@ -5,6 +5,7 @@ import play.data.validation.Required;
 import play.db.jpa.*;
 import play.libs.Crypto;
 import play.libs.Crypto.HashType;
+import play.mvc.results.Unauthorized;
 import play.*;
 
 import javax.persistence.*;
@@ -37,7 +38,13 @@ public class SimpleAuthenticationBinding extends AuthenticationBinding {
 	 * @return True if the password matches that of the binding, false otherwise.
 	 */
 	public boolean checkPassword(String password) {
-		return password.equals(passwordHash) || Crypto.passwordHash(password, HashType.SHA256).equals(passwordHash);
+		if(passwordHash == null) {
+			return false;
+		} else if(password == null) {
+			return false;
+		} else {
+			return passwordHash.equals(password) || Crypto.passwordHash(password, HashType.SHA256).equals(passwordHash);
+		}
 	}
 	
 	/**

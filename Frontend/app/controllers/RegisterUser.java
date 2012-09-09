@@ -15,6 +15,8 @@ import api.responses.CreateUserResponse;
 
 import com.google.gson.JsonParseException;
 
+import controllers.authentication.SimpleAuthentication;
+
 public class RegisterUser extends BaseController {
 	public static void submit(String name, String email, String password, String passwordConfirmed) throws Exception {
 		
@@ -38,7 +40,7 @@ public class RegisterUser extends BaseController {
 				CreateUserResponse response = (CreateUserResponse) APIClient.send(new CreateUserRequest(uj, "controllers.SimpleAuthenticationBackend", attributes));
 
 				if (response.statusCode == Http.StatusCode.CREATED) {
-					APIClient.authenticateSimple(email, password);
+					SimpleAuthentication.authenticateSimple(email, password);
 					Application.index();
 				} else {
 					throw new RuntimeException("Couldn't create user.");

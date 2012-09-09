@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import controllers.authentication.AuthenticationBackend;
+import controllers.authentication.SimpleAuthenticationBackend;
+
 import play.Logger;
 import play.Play;
 import play.data.validation.Validation;
@@ -48,13 +51,11 @@ public class UserController extends APIController {
 	 * @throws Exception 
 	 */
 	public static void challenge() throws Exception {
-		// Takes the UserJSON from the http body
 		GenerateAuthChallengeRequest req = GsonHelper.fromJson(request.body, GenerateAuthChallengeRequest.class);
-		
 		if(req == null || req.backend == null) {
 			// It was a ListAuthBackendsRequest ... but we dont need it for anything ...
 			// ListAuthBackendsRequest listRequest = GsonHelper.fromJson(request.body, ListAuthBackendsRequest.class);
-			List<Class<? extends AuthBackend>> backends = AuthBackend.advailableBackends();
+			List<Class<? extends AuthenticationBackend>> backends = AuthenticationBackend.advailableBackends();
 			ListAuthBackendsResponse res = new ListAuthBackendsResponse();
 			res.backends = new LinkedList<String>();
 			for(Class clazz: backends) {
@@ -62,14 +63,17 @@ public class UserController extends APIController {
 			}
 			renderJSON(res);
 		} else {
-			Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
-			if(backend != null) {
+			Logger.debug("Got a request for at challenge, for the "+req.backend+" backend.");
+			Class<? extends AuthenticationBackend> backendClass = AuthenticationBackend.getBackend(req.backend);
+			if(backendClass != null) {
 				// Find a challenge for this backend.
-				Method getChallengeRequestClass = backend.getMethod("getChallengeRequestClass");
-				Method generateChallenge = backend.getMethod("generateChallenge", GenerateAuthChallengeRequest.class);
+				Method getChallengeRequestClass = backendClass.getMethod("getChallengeRequestClass");
+				Method generateChallenge = backendClass.getMethod("generateChallenge", GenerateAuthChallengeRequest.class);
+				
 				Class<? extends GenerateAuthChallengeRequest> requestClass = (Class<? extends GenerateAuthChallengeRequest>) getChallengeRequestClass.invoke(null);
 				request.body.reset();
 				GenerateAuthChallengeRequest challengeRequest = GsonHelper.fromJson(request.body, requestClass);
+				
 				GenerateAuthChallengeResponse response = (GenerateAuthChallengeResponse) generateChallenge.invoke(null, challengeRequest);
 				renderJSON(response);
 			} else {
@@ -87,13 +91,13 @@ public class UserController extends APIController {
 	public static void authenticate() throws Exception {
 		// Takes the UserJSON from the http body
 		AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
-		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		Class<? extends AuthenticationBackend> backend = AuthenticationBackend.getBackend(req.backend);
 		
 		if(backend != null) {
 			Method getAuthenticateUserRequestClass = backend.getMethod("getAuthenticateUserRequestClass");
 			Method authenticate = backend.getMethod("authenticate", AuthenticateUserRequest.class);
 			
-			/*// This is not needed, it will be tackled by tge aythenticate method call.
+			/*// This is not needed, it will be tackled by the authenticate method call.
 			// Lookup the user by email
 			User user = User.find("byEmail", req.user.email).first();
 			notFoundIfNull(user);
@@ -106,7 +110,7 @@ public class UserController extends APIController {
 			try {
 				User user = (User) authenticate.invoke(null, authenticationRequest);
 				if (user != null) {
-				    //Creates the UserJSON Response.
+				    // Creates the UserJSON Response.
 					renderJSON(new AuthenticateUserResponse(user.toJson()));
 				} else {
 					unauthorized();
@@ -120,7 +124,7 @@ public class UserController extends APIController {
 			}
 		} else {
 			// TODO: Consider to read this url from the routes.
-			error("Backend not choosen, pick one from the 'GET /user/authenticate' list.");
+			error("Backend not choosen or not supported, pick one from the 'GET /user/authenticate' list.");
 		}
 	}
 	
@@ -132,7 +136,7 @@ public class UserController extends APIController {
 	 */
 	public static void deauthenticate() throws Exception {
 		EmptyResponse response = new EmptyResponse();
-		User user = AuthBackend.getCurrentUser();
+		User user = AuthenticationBackend.getCurrentUser();
 		if (user != null) {
 			user.secret = "";
 			user.save();
@@ -149,7 +153,7 @@ public class UserController extends APIController {
 	 * Used every time user sends any request.
 	 */
 	public static boolean authorize() {
-		User user = AuthBackend.getCurrentUser();
+		User user = AuthenticationBackend.getCurrentUser();
 		return (user != null);
 	}
 	
@@ -173,7 +177,7 @@ public class UserController extends APIController {
 			error("The user didn't validate correctly.");
 		}
         
-		Class<? extends AuthBackend> backend = AuthBackend.getBackend(req.backend);
+		Class<? extends AuthenticationBackend> backend = AuthenticationBackend.getBackend(req.backend);
 		if (backend != null && backend.equals(SimpleAuthenticationBackend.class)) {
 			SimpleAuthenticationBinding authenticationBinding = new SimpleAuthenticationBinding();
 			//Logger.debug("Creating new user with password = %s", req.attributes.get("password"));
@@ -318,7 +322,7 @@ public class UserController extends APIController {
 		}
 		requireUser(user);
 		
-		List<Poll> polls = Poll.find("byAdmin", AuthBackend.getCurrentUser()).fetch();
+		List<Poll> polls = Poll.find("byAdmin", AuthenticationBackend.getCurrentUser()).fetch();
 		List<PollJSON> pollsJ = new LinkedList<PollJSON>();
 		
 		for(Poll p: polls) {

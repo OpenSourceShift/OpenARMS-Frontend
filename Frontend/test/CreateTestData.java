@@ -8,6 +8,7 @@ import api.requests.CreatePollRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import controllers.APIClient;
+import controllers.authentication.SimpleAuthentication;
 
 
 public class CreateTestData extends UnitTest {
@@ -21,10 +22,12 @@ public class CreateTestData extends UnitTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		APIClient apiClient = new APIClient();
 		try {
-			boolean authenticated = apiClient.authenticateSimple("spam@creen.dk", "openarms");
+			boolean authenticated = SimpleAuthentication.authenticateSimple("spam@creen.dk", "openarms");
+			assertTrue(authenticated);
 		} catch (Exception e) {}
+
+		APIClient apiClient = new APIClient();
 		
 		PollJSON pj1 = new PollJSON();
 		pj1.question = "This is the first question.";

@@ -9,10 +9,8 @@ import api.responses.Response;
  * A request for the service: Authenticate against an authentication backend.
  */
 public class AuthenticateUserRequest extends Request {
-	public String email;
 	public String backend;
-	public AuthenticateUserRequest (String email, String backend) {
-		this.email = email;
+	public AuthenticateUserRequest (String backend) {
 		this.backend = backend;
 	}
 
