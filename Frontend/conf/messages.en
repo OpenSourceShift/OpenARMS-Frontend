@@ -118,3 +118,6 @@ wrong.email=Incorrect email address
 passw.doesnt.match=Your passwords do not match
 interested_1=If you are interested in following the project <a href="%s" target="_blank">please sign up on our mailing list!</a>
 wrong.passw=Passwords do not match!
+
+cas.dtu=Login using the DTU CAS
+cas.dtu.button=Press this button if you are a student or employee at DTU

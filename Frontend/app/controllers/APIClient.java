@@ -264,14 +264,16 @@ public class APIClient extends Controller {
 
 	@Util
 	public static void deauthenticate() {
-		EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
-		if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
-			System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
-		}
-		session.put("user_id", null);
-		session.put("user_secret", null);
-		if(StatusCode.error(deauthenticateResponse.statusCode)) {
-			throw new RuntimeException(deauthenticateResponse.error_message);
+		try {
+			EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
+			if(!deauthenticateResponse.success()) {
+				Logger.error("Error deauthenticating: %s", deauthenticateResponse.error_message);
+			} else {
+				Logger.debug("Deauthenticated successfully.");
+			}
+		} finally {
+			session.put("user_id", null);
+			session.put("user_secret", null);
 		}
 	}
 	

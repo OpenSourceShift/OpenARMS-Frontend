@@ -122,3 +122,6 @@ passw.doesnt.match=Dine passwords matcher ikker
 interested_1=Hvis du er interesseret i at følge projektet <a href="%s" target="_blank">så skriv dig venligst op på vores mailing liste!</a>
 unexpected_behavior=Der skete noget uventet, prøv igen.
 wrong.passw=Kodeordet passer ikke
+
+cas.dtu=Login ved at bruge DTU CAS
+cas.dtu.button=Klik her hvis du er studerende eller ansat ved DTU
