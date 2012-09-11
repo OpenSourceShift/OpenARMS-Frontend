@@ -14,6 +14,7 @@ import api.requests.GenerateCASAuthChallengeRequest;
 import api.responses.AuthenticateUserResponse;
 import api.responses.GenerateCASAuthChallengeResponse;
 import controllers.APIClient;
+import controllers.Application;
 import controllers.BaseController;
 
 public class CASAuthentication extends BaseAuthentication {
@@ -39,10 +40,10 @@ public class CASAuthentication extends BaseAuthentication {
 			if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
 				session.put("user_id", authenticateResponse.user.id);
 				session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
+				Application.index();
 			} else {
 				APIClient.deauthenticate();
 			}
 		}
-		// renderText("Authenticating via CAS.");
 	}
 }

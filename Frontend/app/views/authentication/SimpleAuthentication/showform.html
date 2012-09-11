@@ -1,7 +1,7 @@
 #{extends 'main.html' /} #{ set title:'Login' /}
 #{set moreStyles:["login"] /}
 <div id="main">
-	#{form @LoginUser.submit(), id:'login' }
+	#{form @authentication.SimpleAuthentication.submit(), id:'login' }
 		<h1>&{'loginuser'}</h1>
 					
 			#{if flash.error}

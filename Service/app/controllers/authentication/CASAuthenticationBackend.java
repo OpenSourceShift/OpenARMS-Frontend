@@ -2,10 +2,17 @@ package controllers.authentication;
 
 import java.net.URL;
 
+import org.jasig.cas.client.util.XmlUtils;
 import org.jasig.cas.client.validation.Assertion;
 import org.jasig.cas.client.validation.Cas10TicketValidator;
+import org.jasig.cas.client.validation.Cas20ProxyTicketValidator;
 import org.jasig.cas.client.validation.Cas20ServiceTicketValidator;
+import org.jasig.cas.client.validation.Saml11TicketValidator;
+import org.jasig.cas.client.validation.TicketValidationException;
+import org.jasig.cas.client.validation.TicketValidator;
 
+import models.AuthenticationBinding;
+import models.CASAuthenticationBinding;
 import models.SimpleAuthenticationBinding;
 import models.User;
 import notifiers.MailNotifier;
@@ -55,52 +62,57 @@ public class CASAuthenticationBackend extends AuthenticationBackend {
 				throw new RuntimeException("The CAS challenge request needs a service URL.");
 			}
 
-			Cas20ServiceTicketValidator validator = new Cas20ServiceTicketValidator(serverUrl);
+			TicketValidator validator = new DTUCas20ProxyTicketValidator(serverUrl);
 			Assertion assertion = validator.validate(request.ticket, request.service.toExternalForm());
 			
-			Logger.debug("Assertion.getAttributes().get('noreduperson') = %s", assertion.getPrincipal().getAttributes().get("noreduperson"));
+			String email = (String) assertion.getPrincipal().getAttributes().get("email");
+			String name = (String) assertion.getPrincipal().getAttributes().get("name");
+			String identifier = (String) assertion.getPrincipal().getAttributes().get("identifier");
 			
-			/*
-			Cas10TicketValidator validator = new Cas10TicketValidator(serverUrl);
-			Assertion assertion = validator.validate(request.ticket, request.service.toExternalForm());
-			Logger.debug("Assertion.getPrincipal().getAttributes().values().toString() = %s", assertion.getPrincipal().getAttributes().values().toString());
-			Logger.debug("Assertion.getPrincipal().getName() = %s", assertion.getPrincipal().getName());
-			Logger.debug("Assertion.getAttributes().get('user') = %s", assertion.getAttributes().get("user"));
-			Logger.debug("Assertion.getAttributes() = %s", assertion.getAttributes().toString());
-			Logger.debug("Assertion.getPrincipal().getAttributes() = %s", assertion.getPrincipal().getAttributes().toString());
-			*/
+			// Logger.debug("email = %s, name = %s, identifier = %s", email, name, identifier);
 			
-		    // Find correct user in the DB
-			return null;
-			/*
-		    User user = (User)User.find("email", request.email).first();
-		    return authenticate(user, request.password);
-		    */
+			CASAuthenticationBinding binding = (CASAuthenticationBinding) CASAuthenticationBinding.find("externalIdentifier", identifier).first();
+			
+			User user;
+			if(binding == null || binding.user == null) {
+				user = (User) User.find("email", email).first();
+				// Check if there's a user for this.
+				if(user != null) {
+					throw new RuntimeException("Cannot create a new user for you, because your email is registered for another user.");
+				} else {
+					// User is unknown to the system.
+					user = new User();
+					user.email = email;
+					user.name = name;
+					user.save();
+					if(binding == null) {
+						CASAuthenticationBinding authenticationBinding = new CASAuthenticationBinding();
+						authenticationBinding.service = serverUrl;
+						authenticationBinding.externalIdentifier = identifier;
+						authenticationBinding.user = user;
+						authenticationBinding.save();
+						user.authenticationBinding = authenticationBinding;
+					} else {
+						user.authenticationBinding = binding;
+					}
+				}
+			} else {
+				user = binding.user;
+				// Update if changed.
+				user.email = email;
+				user.name = name;
+			}
+			
+			user.save();
+			
+			
+			Logger.debug("User = %s", user.toString());
+			
+    		user.secret = AuthenticationBackend.generateSecret();
+	    	Logger.debug("Generated a new authentication secret: %s", user.secret);
+	    	user.save();
+	    	return user;
 		}
-	}
-	
-	public static User authenticate(User user, String passwordHash) throws Exception {
-		return null;
-		/*
-	    if (user == null) {
-			throw new Exception("No user with this email.");
-	    } else {
-	    	Logger.debug("authenticate() found user: %s", user.toString());
-	    	if(!(user.authenticationBinding instanceof SimpleAuthenticationBinding)) {
-	    		throw new Exception("This user cannot authenticate using the SimpleAuthBackend.");
-	    	} else {
-		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.authenticationBinding;
-		    	if(authBinding.checkPassword(passwordHash)) {
-		    		user.secret = AuthenticationBackend.generateSecret();
-			    	Logger.debug("Generated a new authentication secret: %s", user.secret);
-			    	user.save();
-			    	return user;
-		    	} else {
-		    		throw new Exception("Password didn't match.");
-		    	}
-	    	}
-		}
-		*/
 	}
 	
 	public static GenerateAuthChallengeResponse generateChallenge(GenerateAuthChallengeRequest req) throws Exception {

@@ -86,9 +86,9 @@ public class UserController extends APIController {
 	 * Method that authenticates the user.
 	 * It generates new secret for the user.
 	 * Used only when user is logging in.
-	 * @throws Exception 
+	 * @throws Throwable if something goes wrong.
 	 */
-	public static void authenticate() throws Exception {
+	public static void authenticate() throws Throwable {
 		// Takes the UserJSON from the http body
 		AuthenticateUserRequest req = GsonHelper.fromJson(request.body, AuthenticateUserRequest.class);
 		Class<? extends AuthenticationBackend> backend = AuthenticationBackend.getBackend(req.backend);
@@ -113,13 +113,13 @@ public class UserController extends APIController {
 				    // Creates the UserJSON Response.
 					renderJSON(new AuthenticateUserResponse(user.toJson()));
 				} else {
-					unauthorized();
+					unauthorized("Couldn't authenticate the user.");
 				}
 			} catch (InvocationTargetException e) {
 				if(e.getCause() != null) {
-					unauthorized(e.getCause().getMessage());
+					throw e.getCause();
 				} else {
-					unauthorized(e.getMessage());
+					throw e;
 				}
 			}
 		} else {
