@@ -1,4 +1,4 @@
-package controllers;
+package controllers.authentication;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ import play.mvc.Http.*;
  * Controller which specifies simple authentication method.
  * @author OpenARMS Service team
  */
-public class SimpleAuthenticationBackend extends AuthBackend {
+public class SimpleAuthenticationBackend extends AuthenticationBackend {
 	
 	public static Class<? extends GenerateAuthChallengeRequest> getChallengeRequestClass() throws Exception {
 		return GenerateSimpleAuthChallengeRequest.class;
@@ -66,7 +66,7 @@ public class SimpleAuthenticationBackend extends AuthBackend {
 	    	} else {
 		    	SimpleAuthenticationBinding authBinding = (SimpleAuthenticationBinding)user.authenticationBinding;
 		    	if(authBinding.checkPassword(passwordHash)) {
-		    		user.secret = AuthBackend.generateSecret();
+		    		user.secret = AuthenticationBackend.generateSecret();
 			    	Logger.debug("Generated a new authentication secret: %s", user.secret);
 			    	user.save();
 			    	return user;

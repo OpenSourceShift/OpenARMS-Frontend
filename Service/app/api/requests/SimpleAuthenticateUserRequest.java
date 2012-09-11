@@ -9,9 +9,11 @@ import api.responses.Response;
  * A request for the service: Authenticate against an authentication backend.
  */
 public class SimpleAuthenticateUserRequest extends AuthenticateUserRequest {
-	public final static String BACKEND = "controllers.SimpleAuthenticationBackend";
+	public final static String BACKEND = "controllers.authentication.SimpleAuthenticationBackend";
 	public String password;
+	public String email;
 	public SimpleAuthenticateUserRequest(String email) {
-		super(email, BACKEND);
+		super(BACKEND);
+		this.email = email;
 	}
 }

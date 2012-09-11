@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.hibernate.annotations.AccessType;
 
+import controllers.authentication.AuthenticationBackend;
+
 import models.Choice;
 import models.PollInstance;
 import models.SimpleAuthenticationBinding;
@@ -132,7 +134,7 @@ public abstract class APIController extends Controller {
 	}
 	
 	protected static void requireUser(User user) {
-		User currentUser = AuthBackend.getCurrentUser();
+		User currentUser = AuthenticationBackend.getCurrentUser();
 		if(user != null) {
 			if(currentUser == null) {
 				unauthorized("This action requires authentication. Please use the /user/authenticate to get your user secret.");

@@ -1,4 +1,4 @@
-package controllers;
+package controllers.authentication;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -21,7 +21,7 @@ import api.responses.GenerateAuthChallengeResponse;
  * Abstract controller which specifies authentication method.
  * @author OpenARMS Service team
  */
-public abstract class AuthBackend {
+public abstract class AuthenticationBackend {
 	/**
 	 * Method that authorize the user to access the system.
 	 * @return true if user authorized and false otherwise
@@ -59,25 +59,26 @@ public abstract class AuthBackend {
 		throw new Exception("This AuthBackend does not support authentication requests");
 	}
 
-	public static List<Class<? extends AuthBackend>> backends;
+	public static List<Class<? extends AuthenticationBackend>> backends;
 	/**
 	 * Get a list of advailable authentication backends, based on the 'openarms.authentication_backends'
 	 * parameter in the configuration files.
 	 * Note: This method is a one-shot function, as it caches the result once it has parsed the configuration.
 	 * @return A list of classes that all extend the AuthBackend class.
 	 */
-	public static List<Class<? extends AuthBackend>> advailableBackends() {
+	public static List<Class<? extends AuthenticationBackend>> advailableBackends() {
 		if(backends == null) {
-			backends = new LinkedList<Class<? extends AuthBackend>>();
-			String backendsString = (String) Play.configuration.get("openarms.authentication_backends");
+			backends = new LinkedList<Class<? extends AuthenticationBackend>>();
+			String backendsString = (String) Play.configuration.get("openarms.authentication.backends");
 			if(!backendsString.isEmpty()) {
 				for(String className: backendsString.split(",")) {
 					try {
+						Logger.debug("Loading authentication backend: %s", className);
 						Class<?> clazz = Play.classloader.loadClass(className);
-						if(!AuthBackend.class.isAssignableFrom(clazz)) {
+						if(!AuthenticationBackend.class.isAssignableFrom(clazz)) {
 							System.err.println("Tried loading an authentication backend ("+className+") which is not a subclass of AuthBackend.");
 						} else {
-							backends.add((Class<? extends AuthBackend>) clazz);
+							backends.add((Class<? extends AuthenticationBackend>) clazz);
 						}
 					} catch (ClassNotFoundException e) {
 						System.err.println("Couldn't load the "+className+" authentication backend: "+e.getMessage());
@@ -95,8 +96,8 @@ public abstract class AuthBackend {
 	 * if the backend parameter does not match a valid authentication backend on the system
 	 * null is returned.
 	 */
-	public static Class<? extends AuthBackend> getBackend(String backend) {
-		for(Class clazz: AuthBackend.advailableBackends()) {
+	public static Class<? extends AuthenticationBackend> getBackend(String backend) {
+		for(Class clazz: AuthenticationBackend.advailableBackends()) {
 			if(clazz.getCanonicalName().equals(backend)) {
 				return clazz;
 			}

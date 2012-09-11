@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.mail.Session;
 
 import controllers.APIClient;
+import controllers.authentication.SimpleAuthentication;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
@@ -18,6 +19,7 @@ import api.requests.CreateUserRequest;
 import api.requests.DeleteUserRequest;
 import api.requests.ReadPollRequest;
 import api.requests.ReadUserDetailsRequest;
+import api.requests.SimpleAuthenticateUserRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.responses.CreateUserResponse;
@@ -39,7 +41,6 @@ public abstract class BaseTest extends UnitTest {
 	public static final String NAME = "John Doe";
 	public static final String EMAIL = "test@openarms.dk";
 	public static final String PASSWORD = "1234";
-	public static final String BACKEND = "controllers.SimpleAuthenticationBackend";
 	
 	public static Long latestCreatedUserID;
 	
@@ -58,7 +59,7 @@ public abstract class BaseTest extends UnitTest {
 		user.email = email;
 		Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("password", password);
-		CreateUserRequest request = new CreateUserRequest(user, BACKEND, attributes);
+		CreateUserRequest request = new CreateUserRequest(user, SimpleAuthenticateUserRequest.BACKEND, attributes);
 		CreateUserResponse response = (CreateUserResponse) client.send(request);
 		if(response.success()) {
 			latestCreatedUserID = response.user.id;
@@ -68,7 +69,7 @@ public abstract class BaseTest extends UnitTest {
 	
 	public static void deleteUserIfCreated() {
 		if(latestCreatedUserID != null) {
-			client.authenticateSimple(EMAIL, PASSWORD);
+			SimpleAuthentication.authenticateSimple(EMAIL, PASSWORD);
 			EmptyResponse response1 = deleteUser();
 			assertTrue(response1.error_message, response1.success());
 		}
@@ -91,7 +92,7 @@ public abstract class BaseTest extends UnitTest {
 	}
 	
 	public static boolean authenticateUser() {
-		return client.authenticateSimple(EMAIL, PASSWORD);
+		return SimpleAuthentication.authenticateSimple(EMAIL, PASSWORD);
 	}
 	
 	public static Long ensureAuthenticatedUser() {

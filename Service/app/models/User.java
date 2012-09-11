@@ -2,8 +2,8 @@ package models;
 
 import javax.persistence.*;
 
-import controllers.AuthBackend;
-import controllers.SimpleAuthenticationBackend;
+import controllers.authentication.AuthenticationBackend;
+import controllers.authentication.SimpleAuthenticationBackend;
 
 import play.data.validation.Email;
 import play.data.validation.Password;

@@ -5,8 +5,8 @@ import models.User;
 
 import org.junit.Test;
 
-import controllers.SimpleAuthenticationBackend;
 import controllers.UserController;
+import controllers.authentication.SimpleAuthenticationBackend;
 
 import play.test.Fixtures;
 import play.test.UnitTest;

@@ -4,6 +4,7 @@ PLAYPATH="$1"
 DIR=`dirname $0`
 CLASSDIR="/tmp/classes/"
 JAVASRCDIR=`readlink -f $DIR/../Service/app/api` 
+LIBDIR=`readlink -f $DIR/../Service/lib`
 JAVADSTDIR="/tmp/javasrc"
 JARTARGET=`readlink -f $DIR/../Frontend/jar/openarms-api-0.3.jar`
 echo "Tool dir is located at $DIR"
@@ -30,7 +31,13 @@ fi;
 cp -R $JAVASRCDIR $JAVADSTDIR/
 rm -rf $JAVADSTDIR/api/deprecated/
 cd $CLASSDIR
-CLASSPATH=$PLAYPATH/framework/play-1.2.5.jar:$PLAYPATH/framework/lib/gson-2.2.jar javac `find $JAVADSTDIR/ -name "*.java"` -d .
+PLAYLIBS=$(echo $PLAYPATH/framework/lib/*.jar | tr ' ' ':')
+APPLICATIONLIBS=$(echo $LIBDIR/*.jar | tr ' ' ':')
+CLASSPATH=$PLAYPATH/framework/play-1.2.5.jar:$PLAYLIBS:$APPLICATIONLIBS
+echo "=== Compiling ==="
+#echo "Using class-path: $CLASSPATH"
+export CLASSPATH
+javac -Xlint:unchecked `find $JAVADSTDIR/ -name "*.java"` -d .
 if [ $? -ne 0 ]; then
 	echo "Class compilation failed!";
 	exit;

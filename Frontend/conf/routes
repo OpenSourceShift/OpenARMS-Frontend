@@ -11,9 +11,10 @@ GET		/create/{<[0-9]+>pollId}										CreatePoll.index
 GET		/create															CreatePoll.index(pollId:'null')
 POST	/create															CreatePoll.submit
 GET		/create/success/{<[A-Za-z0-9]+>token}							CreatePoll.success
-GET		/login/{<[A-Za-z0-9\.@]+>email}									LoginUser.showform
-GET		/login															LoginUser.showform
-GET		/logout															LoginUser.logout
+GET		/login/cas														authentication.CASAuthentication.authenticate
+GET		/login/{<[A-Za-z0-9\.@]+>email}									authentication.SimpleAuthentication.showform
+GET		/login															authentication.SimpleAuthentication.showform
+GET		/logout															authentication.BaseAuthentication.logout
 GET		/manage															ManagePoll.index
 GET		/manage/{<[0-9]+>pollInstanceId}/statistics						ManagePoll.statistics(showQRCode:'false')
 GET		/manage/{<[0-9]+>pollInstanceId}/statistics/qr					ManagePoll.statistics(showQRCode:'true')

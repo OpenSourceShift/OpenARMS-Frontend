@@ -15,6 +15,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import controllers.authentication.SimpleAuthentication;
+
 import play.Logger;
 import play.Play;
 import play.libs.Codec;
@@ -117,6 +119,7 @@ public class APIClient extends Controller {
 		} else if(httpRequest instanceof HttpPut) {
 			((HttpPut) httpRequest).setEntity(bae);
 		}
+		
 		// Setting the URI.
 		httpRequest.setURI(URI.create(request.getURL()));
 		// Set the authentication header to match the user_secret known from the user session.
@@ -154,7 +157,7 @@ public class APIClient extends Controller {
 						Logger.debug("Deauthenticating as the client and the service is in different believes.");
 						deauthenticate();
 					}
-					LoginUser.showform(null);
+					SimpleAuthentication.showform(null);
 					 // This we will never get to.
 					return response;
 				} else if(response.success()) {
@@ -257,29 +260,6 @@ public class APIClient extends Controller {
 	public static EmptyResponse loadServiceData(String yamlDataFile) throws Exception {
 		LoadTestDataRequest req = new LoadTestDataRequest(yamlDataFile);
 		return (EmptyResponse) APIClient.send(req);
-	}
-
-	@Util
-	public static boolean authenticateSimple(String email, String password) {
-		SimpleAuthenticateUserRequest req = new SimpleAuthenticateUserRequest(email);
-		req.password = Crypto.passwordHash(password, HashType.SHA256);
-		AuthenticateUserResponse authenticateResponse = (AuthenticateUserResponse) APIClient.send(req, false);
-		if(StatusCode.success(authenticateResponse.statusCode) && authenticateResponse.user != null && authenticateResponse.user.id != null && authenticateResponse.user.secret != null) {
-			session.put("user_id", authenticateResponse.user.id);
-			session.put("user_secret", Crypto.encryptAES(authenticateResponse.user.secret));
-			return true;
-		} else {
-			EmptyResponse deauthenticateResponse = (EmptyResponse)APIClient.send(new DeauthenticateUserRequest());
-			if(Http.StatusCode.error(deauthenticateResponse.statusCode)) {
-				System.err.println("Error deauthenticating: "+deauthenticateResponse.error_message);
-			}
-			session.put("user_id", null);
-			session.put("user_secret", null);
-			if(StatusCode.error(authenticateResponse.statusCode)) {
-				throw new RuntimeException(authenticateResponse.error_message);
-			}
-			return false;
-		}
 	}
 
 	@Util

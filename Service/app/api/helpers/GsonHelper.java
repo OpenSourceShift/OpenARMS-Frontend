@@ -39,18 +39,27 @@ public class GsonHelper {
 		return get(c.getClass()).fromJson(i, c);
 	}
 
-	public static <C> C fromJson(InputStream is, Class c) throws Exception {
+	@SuppressWarnings("unchecked")
+	public static <C> C fromJson(InputStream is, Class<? extends Object> c) throws Exception {
 		if(c == null) {
 			throw new Exception("Second argument Class c, cannot be null.");
+		} else {
+			String json = "";
+			BufferedReader br = new BufferedReader(new InputStreamReader(is));
+			String line;
+			while ((line = br.readLine()) != null) {
+				json += line;
+			}
+			br.close();
+			Logger.debug("GsonHelper.fromJson() reads '%s' as a %s", json, c.getCanonicalName());
+			
+			Gson g = get(c.getClass());
+			Object o = g.fromJson(json, c);
+			if(o == null || c.isInstance(o)) {
+				return (C) o;
+			} else {
+				throw new Exception("The Gson object is not of the expected type, got "+o.getClass().getCanonicalName()+" expected "+c.getCanonicalName());
+			}
 		}
-		String json = "";
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String line;
-		while ((line = br.readLine()) != null) {
-			json += line;
-		}
-		br.close();
-		Logger.debug("GsonHelper.fromJson() reads '%s' as a %s", json, c.getCanonicalName()); 
-		return (C)get(c.getClass()).fromJson(json, c);
 	}
 }

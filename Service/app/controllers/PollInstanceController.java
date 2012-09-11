@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import controllers.authentication.AuthenticationBackend;
+
 import models.Choice;
 import models.Poll;
 import models.PollInstance;
@@ -70,7 +72,7 @@ public class PollInstanceController extends APIController  {
 		Poll poll = Poll.findById(r.pollinstance.poll_id);
 		notFoundIfNull(poll);
 		
-		if(poll.admin.equals(AuthBackend.getCurrentUser())) {
+		if(poll.admin.equals(AuthenticationBackend.getCurrentUser())) {
 			// Add the summary.
 			
 			r.pollinstance.votes = new LinkedList<VoteSummaryJSON>();
