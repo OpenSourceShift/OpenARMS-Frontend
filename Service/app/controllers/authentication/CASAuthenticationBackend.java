@@ -77,9 +77,7 @@ public class CASAuthenticationBackend extends AuthenticationBackend {
 			if(binding == null || binding.user == null) {
 				user = (User) User.find("email", email).first();
 				// Check if there's a user for this.
-				if(user != null) {
-					throw new RuntimeException("Cannot create a new user for you, because your email is registered for another user.");
-				} else {
+				if(user == null) {
 					// User is unknown to the system.
 					user = new User();
 					user.email = email;
@@ -95,6 +93,8 @@ public class CASAuthenticationBackend extends AuthenticationBackend {
 					} else {
 						user.authenticationBinding = binding;
 					}
+				} else {
+					throw new RuntimeException("Sorry, a user with this email already exists on the system.");
 				}
 			} else {
 				user = binding.user;
