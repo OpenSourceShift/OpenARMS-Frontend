@@ -81,18 +81,20 @@ public class CASAuthenticationBackend extends AuthenticationBackend {
 					// User is unknown to the system.
 					user = new User();
 					user.email = email;
-				}
-				user.name = name;
-				user.save();
-				if(binding == null) {
-					CASAuthenticationBinding authenticationBinding = new CASAuthenticationBinding();
-					authenticationBinding.service = serverUrl;
-					authenticationBinding.externalIdentifier = identifier;
-					authenticationBinding.user = user;
-					authenticationBinding.save();
-					user.authenticationBinding = authenticationBinding;
+					user.name = name;
+					user.save();
+					if(binding == null) {
+						CASAuthenticationBinding authenticationBinding = new CASAuthenticationBinding();
+						authenticationBinding.service = serverUrl;
+						authenticationBinding.externalIdentifier = identifier;
+						authenticationBinding.user = user;
+						authenticationBinding.save();
+						user.authenticationBinding = authenticationBinding;
+					} else {
+						user.authenticationBinding = binding;
+					}
 				} else {
-					user.authenticationBinding = binding;
+					throw new RuntimeException("Sorry, a user with this email already exists on the system.");
 				}
 			} else {
 				user = binding.user;
