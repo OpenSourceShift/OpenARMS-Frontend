@@ -1,4 +1,4 @@
-﻿# You can specialize this file for each language.
+# You can specialize this file for each language.
 # For example, for French create a messages.fr file
 #
 # how to use it -> <h1>&{'password'}</h1>

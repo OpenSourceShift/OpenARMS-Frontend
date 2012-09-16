@@ -119,7 +119,7 @@ go.back=Tilbage
 email.taken=Din email er allerede registreret ved en anden bruger.
 wrong.email=Forkert email adresse
 passw.doesnt.match=Dine passwords matcher ikker
-interested_1=Hvis du er interesseret i at følge projektet <a href="%s" target="_blank">så skriv dig venligst op på vores mailing liste!</a>
+mailinglist=Hvis du er interesseret i at følge projektet <span>så skriv dig venligst op på vores mailing liste!</span>
 unexpected_behavior=Der skete noget uventet, prøv igen.
 wrong.passw=Kodeordet passer ikke
 

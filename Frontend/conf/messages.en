@@ -116,7 +116,7 @@ go.back=Back
 email.taken=Email is already registered to a user
 wrong.email=Incorrect email address
 passw.doesnt.match=Your passwords do not match
-interested_1=If you are interested in following the project <a href="%s" target="_blank">please sign up on our mailing list!</a>
+mailinglist=If you are interested in following the project <span>please sign up on our mailing list!</span>
 wrong.passw=Passwords do not match!
 
 cas.dtu=Login using the DTU CAS

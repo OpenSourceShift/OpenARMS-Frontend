@@ -31,9 +31,7 @@ total=Yhteensä
 validation.required.atLeastTwo=Syötä vähintään kaksi
 validation.required=Ei voi olla tyhjä
 createpoll.success.header=äänestys luotu
-createpoll.success.text=
-Onneksi olkoon! äänestyksesi on nyt luotu, seuraavat tiedot on lähetetty sähköpostiisi:
-.<br /><br />Voit hallita änestystäsi menemällä osoitteeseen <a href="/">openARS.dk</a> ja syöttämällä seuraavat tiedot "Hallitse äänestystä":
+createpoll.success.text=Onneksi olkoon! äänestyksesi on nyt luotu, seuraavat tiedot on lähetetty sähköpostiisi: .<br /><br />Voit hallita änestystäsi menemällä osoitteeseen <a href="/">openARS.dk</a> ja syöttämällä seuraavat tiedot "Hallitse äänestystä":
 createpoll.manage_poll_now=Hallitse äänestystä nyt &raquo;
 createpoll.form.email=Sähköposti:
 createpoll.form.question=Kysymys
