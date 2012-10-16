@@ -70,7 +70,7 @@ public abstract class AuthenticationBackend {
 		if(backends == null) {
 			backends = new LinkedList<Class<? extends AuthenticationBackend>>();
 			String backendsString = (String) Play.configuration.get("openarms.authentication.backends");
-			if(!backendsString.isEmpty()) {
+			if(backendsString != null && !backendsString.isEmpty()) {
 				for(String className: backendsString.split(",")) {
 					try {
 						Logger.debug("Loading authentication backend: %s", className);
@@ -84,6 +84,8 @@ public abstract class AuthenticationBackend {
 						System.err.println("Couldn't load the "+className+" authentication backend: "+e.getMessage());
 					}
 				}
+			} else {
+				throw new RuntimeException("Missing the openarms.authentication.backends line in the configuration file.");
 			}
 		}
 		return backends;
