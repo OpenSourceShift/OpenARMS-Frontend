@@ -1,14 +1,14 @@
-#application dependencies	    
 require:
     - play 1.2.5
     - com.google.zxing -> core 2.0
     - provided -> openarms-api 0.3
     - org.apache.httpcomponents -> httpcore 4.1
     - org.apache.httpcomponents -> httpclient 4.1
+    - development -> OpenARMS-Service 0.3
 
-repositories: 
-    - provided: 
-        type:       local 
-        artifact:   "${application.path}/jar/[module]-[revision].jar" 
-        contains: 
-            - provided -> * 
+repositories:
+    - development.service:
+        type:       local
+        artifact:   "${application.path}/../Service/dist/[module]-[revision].zip"
+        contains:
+            - development -> OpenARMS-Service
