@@ -12,5 +12,3 @@ repositories:
         artifact:   "${application.path}/../../OpenARMS-Authentication-CAS/dist/[module]-[revision].zip"
         contains:
             - development -> OpenARMS-Authentication-CAS
-
-
