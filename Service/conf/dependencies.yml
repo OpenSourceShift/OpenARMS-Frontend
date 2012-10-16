@@ -3,4 +3,17 @@ require:
     - play 1.2.5
     - play -> crud
     - play -> secure
-    - org.jasig.cas.client -> cas-client-core 3.2.1
+    - provided -> openarms-authentication-cas 0.1
+    - development -> OpenARMS-Authentication-CAS
+
+repositories:
+    - provided:
+        type:       local
+        artifact:   "${application.path}/jar/[module]-[revision].jar"
+        contains:
+            - provided -> *
+    - development:
+        type:       local
+        artifact:   "${application.path}/../../[module]"
+        contains:
+            - development -> *
