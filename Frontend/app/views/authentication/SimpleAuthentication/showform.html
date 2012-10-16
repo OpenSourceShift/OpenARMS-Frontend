@@ -2,6 +2,13 @@
 #{set moreStyles:["login"] /}
 <div id="main">
 	#{form @authentication.SimpleAuthentication.submit(), id:'login' }
+	
+		<h1>&{'cas.dtu'}</h1>
+		<input type='button' value="&{'cas.dtu.button'}" class='button' onClick="location.href='@{authentication.CASAuthentication.authenticate()}'">
+		<img src="@{'/public/images'}/dtu.png" style="vertical-align: middle;margin-left: 0.5em;">
+		
+		<hr />
+		
 		<h1>&{'loginuser'}</h1>
 					
 			#{if flash.error}

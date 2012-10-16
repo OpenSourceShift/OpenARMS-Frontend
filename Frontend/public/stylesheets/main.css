@@ -245,4 +245,38 @@ textarea:focus {
 	padding: .5em;
 }
 
+#footer svg#opensource-badge {
+	position: absolute;
+	right: -100px;
+	top: -70px;
+	width: 140px;
+	height: 140px;
+}
+
+#footer svg#opensource-badge:hover {
+	position: absolute;
+	right: -105px;
+	top: -75px;
+	width: 150px;
+	height: 150px;
+}
+
+#footer svg#opensource-badge text {
+	font-size: 1.5em;
+}
+
+#mailinglist > span {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+form#mailinglist-form {
+	display: none;
+	padding-top: 1em;
+}
+
+form#mailinglist-form > * {
+	vertical-align: middle;
+}
+
 /*@import url("specifics.css");*/

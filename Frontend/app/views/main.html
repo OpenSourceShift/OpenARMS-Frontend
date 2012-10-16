@@ -18,6 +18,8 @@
         #{list items:moreScripts, as:'script'}
         <script src="@{'/public/javascripts/'}/${script}.js" type="text/javascript" charset="utf-8"></script>
         #{/list}
+        
+        #{include 'tracking.html' /}
     </head>
 <body>
   <div id="container">
@@ -55,7 +57,21 @@
 			<img src="@{'/public/images/flags/tr.png'}" title="Türkçe"/>
 		</div>
 		<div id="footer">
-			&{'interested_1', "https://docs.google.com/spreadsheet/viewform?formkey=dHZicWcwdFl3WEhJR0gtR2szTzlzbnc6MQ#gid=0"}!
+			#{include 'mailinglist.html' /}
+			<!-- a id="badge" target="_blank" href="http://trac.openarms.dk/"><img src="@{'/public/images/opensource-badge.png'}" alt="This is an open source project, click to learn more." /></a -->
+			<svg id="opensource-badge" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+				<g id="badge" transform="rotate(10, 75, 75)">
+					<a xlink:href="http://trac.openarms.dk/" target="_blank">
+						<circle cx="50%" cy="50%" r="49%" fill="#FFFFFF"/>
+						<text fill="black">
+							<tspan dy="20%" x="50%" text-anchor="middle">This is</tspan>
+							<tspan dy="20%" x="50%" text-anchor="middle">an open source</tspan>
+							<tspan dy="20%" x="50%" text-anchor="middle">project, click to</tspan>
+							<tspan dy="20%" x="50%" text-anchor="middle">learn more</tspan>
+						</text>
+					</a>
+				</g>
+			</svg>
 		</div>
 	</div>
     <script type="text/javascript">

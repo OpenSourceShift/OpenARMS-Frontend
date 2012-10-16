@@ -95,9 +95,9 @@ managepoll.qrcode.click=Click to hide
 managepoll.qrcode.show_qr_code_button=Show QR code
 want.sign.up=I want to sign up
 add.name=Your name
-add.email=Your Email
+add.email=Your email
 add.passw=Password
-add.confirm.passw=Confirm Password
+add.confirm.passw=Confirm password
 cancel=Cancel
 user.login=Login
 user.logout=Logout
@@ -116,5 +116,8 @@ go.back=Back
 email.taken=Email is already registered to a user
 wrong.email=Incorrect email address
 passw.doesnt.match=Your passwords do not match
-interested_1=If you are interested in following the project <a href="%s" target="_blank">please sign up on our mailing list!</a>
+mailinglist=If you are interested in following the project <span>please sign up on our mailing list!</span>
 wrong.passw=Passwords do not match!
+
+cas.dtu=Login using the DTU CAS
+cas.dtu.button=Press this button if you are a student or employee at DTU
