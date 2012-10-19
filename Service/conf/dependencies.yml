@@ -7,7 +7,7 @@ require:
     - development -> OpenARMS-Authentication-CAS 0.1
 
 repositories:
-    - development.cas:
+    - development:
         type:       local
         artifact:   "${application.path}/../../OpenARMS-Authentication-CAS/dist/[module]-[revision].zip"
         contains:
