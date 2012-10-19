@@ -1,3 +1,13 @@
 *.swp
-play-1.2.4/*
-*.log
+*.swo
+*~
+.settings
+.project
+.classpath
+eclipse/
+tmp/
+bin/
+test-result/
+lib/
+dist/
+modules/

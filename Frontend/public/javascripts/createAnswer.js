@@ -1,3 +1,0 @@
-function createAnswer() {
-	alert("ok");
-}
