@@ -10,3 +10,4 @@ bin/
 test-result/
 lib/
 dist/
+modules/
