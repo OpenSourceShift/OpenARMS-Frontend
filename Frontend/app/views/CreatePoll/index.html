@@ -1,6 +1,0 @@
-#{extends 'main.html' /} #{ set title:'Create new poll' /}
-#{set moreStyles: ["createpoll"] /}
-#{set moreScripts: ["tiny_mce/jquery.tinymce"] /}
-<div id="main">
-	#{poll-form title:'create_poll', action:@CreatePoll.submit() /}
-</div>
