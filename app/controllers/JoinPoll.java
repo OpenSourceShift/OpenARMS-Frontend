@@ -1,7 +1,5 @@
 package controllers;
-import controllers.authentication.SimpleAuthentication;
 import play.Logger;
-import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.StatusCode;
 import api.entities.PollInstanceJSON;
@@ -14,6 +12,7 @@ import api.requests.ReadPollRequest;
 import api.responses.CreateVoteResponse;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class JoinPoll extends BaseController {
 	public static void index(String token) throws Exception {
@@ -45,7 +44,7 @@ public class JoinPoll extends BaseController {
 		if (poll.loginRequired != null && poll.loginRequired) {
 			if (!APIClient.isLoggedIn()) {
 				session.put("page_prior_to_login", request.url);
-				SimpleAuthentication.showform("");
+				SimpleAuthenticationFrontend.showform("");
 			}
 		}
 		

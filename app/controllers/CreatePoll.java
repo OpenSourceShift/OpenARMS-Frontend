@@ -1,35 +1,25 @@
 package controllers;
-import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.http.HttpStatus;
-
-import controllers.authentication.SimpleAuthentication;
 
 import play.Logger;
-import play.mvc.Controller;
 import play.mvc.Http;
 import api.entities.ChoiceJSON;
-import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.helpers.GsonHelper;
-import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
-import api.requests.ReadPollRequest;
-import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import api.responses.ReadPollByTokenResponse;
-import api.responses.ReadPollResponse;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class CreatePoll extends BaseController {
 	
 	public static void index(String token) {
 		if (!APIClient.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
-			SimpleAuthentication.showform(null);
+			SimpleAuthenticationFrontend.showform(null);
 		}
 		if(token != null) {
 			ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));

@@ -15,26 +15,21 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import controllers.authentication.SimpleAuthentication;
-
 import play.Logger;
 import play.Play;
 import play.libs.Codec;
 import play.libs.Crypto;
-import play.libs.Crypto.HashType;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Http.StatusCode;
 import play.mvc.Util;
 import api.helpers.GsonHelper;
 import api.requests.DeauthenticateUserRequest;
 import api.requests.LoadTestDataRequest;
 import api.requests.Request;
-import api.requests.SimpleAuthenticateUserRequest;
-import api.responses.AuthenticateUserResponse;
 import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class APIClient extends Controller {
 
@@ -157,7 +152,7 @@ public class APIClient extends Controller {
 						Logger.debug("Deauthenticating as the client and the service is in different believes.");
 						deauthenticate();
 					}
-					SimpleAuthentication.showform(null);
+					SimpleAuthenticationFrontend.showform(null);
 					 // This we will never get to.
 					return response;
 				} else if(response.success()) {

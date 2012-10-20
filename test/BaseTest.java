@@ -1,18 +1,13 @@
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Random;
 
-import javax.mail.Session;
-
-import controllers.APIClient;
-import controllers.authentication.SimpleAuthentication;
+import play.test.UnitTest;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
 import api.entities.UserJSON;
-import api.requests.AuthenticateUserRequest;
 import api.requests.CreatePollInstanceRequest;
 import api.requests.CreatePollRequest;
 import api.requests.CreateUserRequest;
@@ -27,11 +22,8 @@ import api.responses.EmptyResponse;
 import api.responses.ReadPollResponse;
 import api.responses.ReadUserDetailsResponse;
 import api.responses.Response;
-import play.Logger;
-import play.mvc.Controller;
-import play.mvc.Http.StatusCode;
-import play.mvc.With;
-import play.test.UnitTest;
+import controllers.APIClient;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public abstract class BaseTest extends UnitTest {
 	
@@ -69,7 +61,7 @@ public abstract class BaseTest extends UnitTest {
 	
 	public static void deleteUserIfCreated() {
 		if(latestCreatedUserID != null) {
-			SimpleAuthentication.authenticateSimple(EMAIL, PASSWORD);
+			SimpleAuthenticationFrontend.authenticateSimple(EMAIL, PASSWORD);
 			EmptyResponse response1 = deleteUser();
 			assertTrue(response1.error_message, response1.success());
 		}
@@ -92,7 +84,7 @@ public abstract class BaseTest extends UnitTest {
 	}
 	
 	public static boolean authenticateUser() {
-		return SimpleAuthentication.authenticateSimple(EMAIL, PASSWORD);
+		return SimpleAuthenticationFrontend.authenticateSimple(EMAIL, PASSWORD);
 	}
 	
 	public static Long ensureAuthenticatedUser() {

@@ -1,21 +1,39 @@
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.Random;
 
 import org.junit.Test;
 
-import play.libs.Crypto;
-import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
-import play.test.Fixtures;
 import play.test.UnitTest;
-import api.requests.*;
-import api.responses.*;
-import api.entities.*;
+import api.entities.ChoiceJSON;
+import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
+import api.entities.UserJSON;
+import api.entities.VoteJSON;
+import api.requests.ClonePollRequest;
+import api.requests.CreateChoiceRequest;
+import api.requests.CreatePollInstanceRequest;
+import api.requests.CreatePollRequest;
+import api.requests.CreateUserRequest;
+import api.requests.CreateVoteRequest;
+import api.requests.DeletePollRequest;
+import api.requests.ReadPollByTokenRequest;
+import api.requests.ReadPollRequest;
+import api.requests.UpdatePollRequest;
+import api.responses.ClonePollResponse;
+import api.responses.CreateChoiceResponse;
+import api.responses.CreatePollInstanceResponse;
+import api.responses.CreatePollResponse;
+import api.responses.CreateUserResponse;
+import api.responses.CreateVoteResponse;
+import api.responses.EmptyResponse;
+import api.responses.ReadPollByTokenResponse;
+import api.responses.ReadPollResponse;
+import api.responses.Response;
+import api.responses.UpdatePollResponse;
 import controllers.APIClient;
-import controllers.authentication.SimpleAuthentication;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class APIClientTest extends UnitTest {
 	
@@ -40,7 +58,7 @@ public class APIClientTest extends UnitTest {
 	@Test
 	public void TestVoting() throws Exception {
 		//apiClient.deauthenticate();
-		boolean authenticated = SimpleAuthentication.authenticateSimple("test@test.com", "1234");
+		boolean authenticated = SimpleAuthenticationFrontend.authenticateSimple("test@test.com", "1234");
 		assertTrue(authenticated);
 
     	VoteJSON v = new VoteJSON();
@@ -54,7 +72,7 @@ public class APIClientTest extends UnitTest {
 	@Test
     public void testLogin() throws Exception {
 		APIClient.loadServiceData("data.yml");
-		boolean authenticated = SimpleAuthentication.authenticateSimple("spam@creen.dk", "openarms");
+		boolean authenticated = SimpleAuthenticationFrontend.authenticateSimple("spam@creen.dk", "openarms");
 		assertTrue(authenticated);
 		
 		APIClient apiClient = new APIClient();

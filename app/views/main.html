@@ -23,7 +23,7 @@
   <div id="container">
 		<div id="header">
 		    #{if loggedIn}
-		        #{form @authentication.BaseAuthentication.logout() }
+		        #{form @authentication.BaseAuthenticationFrontend.logout() }
 		            <input type="submit" value="&{'user.logout'}" class="button" />
 		        #{/form}
 			#{/if}
@@ -33,7 +33,7 @@
 		          <input type="submit" value="&{'user.register'}" class="button" />
 		        #{/form} -->
 		
-		        #{form @authentication.SimpleAuthentication.showform() }
+		        #{form @authentication.BaseAuthenticationFrontend.showform() }
 		          <input type="submit" value="&{'user.login'}" class="button" />
 		        #{/form}
 			#{/else}

@@ -1,22 +1,32 @@
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Random;
 
 import org.junit.Test;
 
-import play.libs.Crypto;
-import play.mvc.Controller;
 import play.mvc.Http.StatusCode;
-import play.test.Fixtures;
 import play.test.UnitTest;
-import api.requests.*;
-import api.responses.*;
-import api.entities.*;
+import api.entities.ChoiceJSON;
+import api.entities.PollInstanceJSON;
+import api.entities.PollJSON;
+import api.entities.UserJSON;
+import api.entities.VoteJSON;
+import api.requests.CreateChoiceRequest;
+import api.requests.CreatePollInstanceRequest;
+import api.requests.CreatePollRequest;
+import api.requests.CreateUserRequest;
+import api.requests.CreateVoteRequest;
+import api.requests.VoteOnPollInstanceRequest;
+import api.responses.CreateChoiceResponse;
+import api.responses.CreatePollInstanceResponse;
+import api.responses.CreatePollResponse;
+import api.responses.CreateUserResponse;
+import api.responses.CreateVoteResponse;
+import api.responses.Response;
+import api.responses.VoteOnPollInstanceResponse;
 import controllers.APIClient;
-import controllers.BaseController;
-import controllers.authentication.SimpleAuthentication;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class APIClientFullCreate extends UnitTest {
 	
@@ -52,7 +62,7 @@ public class APIClientFullCreate extends UnitTest {
 		
     	// Authenticate
 		APIClient apiClient = new APIClient();
-		boolean authenticated = SimpleAuthentication.authenticateSimple(u.email, attributes.get("password"));
+		boolean authenticated = SimpleAuthenticationFrontend.authenticateSimple(u.email, attributes.get("password"));
 		assertTrue(authenticated);
     
     	PollJSON pj1 = new PollJSON();
@@ -92,7 +102,7 @@ public class APIClientFullCreate extends UnitTest {
     	
     	boolean failed = false;
     	try {
-    		SimpleAuthentication.authenticateSimple(u.email, "fail");
+    		SimpleAuthenticationFrontend.authenticateSimple(u.email, "fail");
     	} catch(Exception e) {
     		assertEquals("Password didn't match.", e.getCause().getMessage());
     		failed = true;

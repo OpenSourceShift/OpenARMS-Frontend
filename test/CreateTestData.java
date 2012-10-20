@@ -8,7 +8,7 @@ import api.requests.CreatePollRequest;
 import api.responses.CreatePollInstanceResponse;
 import api.responses.CreatePollResponse;
 import controllers.APIClient;
-import controllers.authentication.SimpleAuthentication;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 
 public class CreateTestData extends UnitTest {
@@ -23,7 +23,7 @@ public class CreateTestData extends UnitTest {
 			e.printStackTrace();
 		}
 		try {
-			boolean authenticated = SimpleAuthentication.authenticateSimple("spam@creen.dk", "openarms");
+			boolean authenticated = SimpleAuthenticationFrontend.authenticateSimple("spam@creen.dk", "openarms");
 			assertTrue(authenticated);
 		} catch (Exception e) {}
 

@@ -5,11 +5,22 @@ require:
     - com.google.zxing -> core 2.0
     - org.apache.httpcomponents -> httpcore 4.1
     - org.apache.httpcomponents -> httpclient 4.1
-    - development -> OpenARMS-Service-API 0.3
+    - OpenARMS -> OpenARMS-API 0.3
+    - OpenARMS -> OpenARMS-Authentication-CAS-API 0.1
+    - OpenARMS -> OpenARMS-Authentication-CAS-Frontend 0.1
 
 repositories:
-    - development:
+    - OpenARMS:
         type:       local
-        artifact:   "${application.path}/../Service/dist/[module]-[revision].zip"
+        artifact:   "/home/creen/Projects/OpenARMS/[module]"
         contains:
-            - development -> OpenARMS-Service-API
+            - OpenARMS -> OpenARMS-API
+            - OpenARMS -> OpenARMS-Service
+            - OpenARMS -> OpenARMS-Frontend
+    - OpenARMS-CAS:
+        type:       local
+        artifact:   "/home/creen/Projects/OpenARMS/OpenARMS-Authentication-CAS/[module]"
+        contains:
+            - OpenARMS -> OpenARMS-Authentication-CAS-API
+            - OpenARMS -> OpenARMS-Authentication-CAS-Service
+            - OpenARMS -> OpenARMS-Authentication-CAS-Frontend

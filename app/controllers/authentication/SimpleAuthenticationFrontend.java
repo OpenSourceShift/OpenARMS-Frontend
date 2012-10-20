@@ -27,7 +27,7 @@ import play.mvc.Http;
 import play.mvc.Util;
 import play.mvc.Http.StatusCode;
 
-public class SimpleAuthentication extends BaseAuthentication {
+public class SimpleAuthenticationFrontend extends BaseAuthenticationFrontend {
 	
 	public static void showform(String email) {
 		if (email == null)

@@ -1,42 +1,22 @@
 package controllers;
-import java.lang.reflect.Field;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.mysql.jdbc.Messages;
-import com.sun.imageio.plugins.common.I18N;
-
-import controllers.authentication.SimpleAuthentication;
-
-import play.Logger;
-import play.i18n.Lang;
-import play.mvc.Controller;
-import play.mvc.Http.StatusCode;
-import play.mvc.results.RenderJson;
 import api.entities.ChoiceJSON;
 import api.entities.PollInstanceJSON;
 import api.entities.PollJSON;
-import api.entities.VoteJSON;
 import api.requests.CreatePollInstanceRequest;
-import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
-import api.requests.ReadPollInstanceByTokenRequest;
 import api.requests.ReadPollInstanceRequest;
-import api.requests.ReadPollRequest;
 import api.requests.ReadUserDetailsRequest;
 import api.requests.UpdatePollInstanceRequest;
 import api.requests.UpdatePollRequest;
-import api.requests.VoteOnPollInstanceRequest;
 import api.responses.CreatePollInstanceResponse;
-import api.responses.CreatePollResponse;
-import api.responses.ReadPollInstanceResponse;
-import api.responses.ReadPollResponse;
 import api.responses.ReadPollByTokenResponse;
+import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadUserDetailsResponse;
-import api.responses.Response;
 import api.responses.UpdatePollResponse;
-import api.responses.VoteOnPollInstanceResponse;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class ManagePoll extends BaseController {
 	public static void index() {
@@ -45,7 +25,7 @@ public class ManagePoll extends BaseController {
     	try {
     		Long userId = APIClient.getCurrentUserId();
     		if(userId == null) {
-        		SimpleAuthentication.showform(null);
+        		SimpleAuthenticationFrontend.showform(null);
     		} else {
 				ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(userId));
 				List<PollJSON> pollsJson = responseUser.polls;

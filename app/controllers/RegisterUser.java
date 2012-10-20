@@ -1,21 +1,12 @@
 package controllers;
-import play.mvc.Controller;
-import play.mvc.Http;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.*;
 
-import org.postgresql.translation.messages_bg;
-
-
+import play.mvc.Http;
 import api.entities.UserJSON;
 import api.requests.CreateUserRequest;
 import api.responses.CreateUserResponse;
-
-import com.google.gson.JsonParseException;
-
-import controllers.authentication.SimpleAuthentication;
+import controllers.authentication.SimpleAuthenticationFrontend;
 
 public class RegisterUser extends BaseController {
 	public static void submit(String name, String email, String password, String passwordConfirmed) throws Exception {
@@ -40,7 +31,7 @@ public class RegisterUser extends BaseController {
 				CreateUserResponse response = (CreateUserResponse) APIClient.send(new CreateUserRequest(uj, "controllers.authentication.SimpleAuthenticationBackend", attributes));
 
 				if (response.statusCode == Http.StatusCode.CREATED) {
-					SimpleAuthentication.authenticateSimple(email, password);
+					SimpleAuthenticationFrontend.authenticateSimple(email, password);
 					Application.index();
 				} else {
 					throw new RuntimeException("Couldn't create user.");
