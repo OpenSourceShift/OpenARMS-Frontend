@@ -33,7 +33,7 @@ public class BaseAuthenticationFrontend extends BaseController {
 				if(!BaseAuthenticationFrontend.class.isAssignableFrom(c)) {
 					throw new RuntimeException("Any OpenARMS authentication frontend has to extend the BaseAuthenticationFrontend-class.");
 				}
-				frontend = frontend.replaceAll(".", "/").replaceFirst("controllers/", "");
+				frontend = frontend.replaceAll("\\.", "/").replaceFirst("controllers/", "");
 				frontendTemplates.add(frontend+"/showform.html");
 			} catch (ClassNotFoundException e) {
 				throw new RuntimeException("Couldn't load the "+frontend+" authentication frontend.", e);

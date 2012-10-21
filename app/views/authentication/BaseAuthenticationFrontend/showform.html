@@ -2,5 +2,8 @@
 #{set moreStyles:["login"] /}
 <div id="main">
 	<h1>Login</h1>
-	
+	#{list items:frontendTemplates, as:'template'}
+	<hr />
+	#{include "${template}" /}
+	#{/list}
 </div>

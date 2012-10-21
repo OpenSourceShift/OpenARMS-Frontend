@@ -16,7 +16,7 @@ import api.responses.ReadPollByTokenResponse;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadUserDetailsResponse;
 import api.responses.UpdatePollResponse;
-import controllers.authentication.SimpleAuthenticationFrontend;
+import controllers.authentication.BaseAuthenticationFrontend;
 
 public class ManagePoll extends BaseController {
 	public static void index() {
@@ -25,7 +25,7 @@ public class ManagePoll extends BaseController {
     	try {
     		Long userId = APIClient.getCurrentUserId();
     		if(userId == null) {
-        		SimpleAuthenticationFrontend.showform(null);
+    			BaseAuthenticationFrontend.showform();
     		} else {
 				ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(userId));
 				List<PollJSON> pollsJson = responseUser.polls;
