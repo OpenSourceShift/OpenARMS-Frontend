@@ -37,10 +37,8 @@
 			<p class="error">#{error 'passwordConfirmed' /}</p>
 	    #{/ifError}
     </div>
-    <input type="submit" value="&{'register'}" class="button" />
-    <a href="/">
-      <input type="button" value="&{'cancel'}" class="button" />
-    </a>
+    <input type="submit" value="&{'registeruser.register'}" class="button" />
+    <input type="button" value="&{'registeruser.cancel'}" onclick="history.back()" class="button" />
   #{/form}
 </div>
 
