@@ -56,17 +56,17 @@ public class SimpleAuthenticationFrontend extends BaseAuthenticationFrontend {
 					}
 				} else {
 					// It failed!
-					flash.error(Messages.get("unexpected_behavior"));
 					params.flash();
+					validation.addError("email", Messages.get("unexpected_behavior"));
 					validation.keep();
-					showform(email);
+					BaseAuthenticationFrontend.showform(email);
 				}
-			} catch (Exception e) {
+			} catch(Exception e) {
 				// It failed!
-				flash.error(e.getMessage().toString());
 				params.flash();
+				validation.addError("email", e.getMessage());
 				validation.keep();
-				showform(email);
+				BaseAuthenticationFrontend.showform(email);
 			}
 		}
 	}
