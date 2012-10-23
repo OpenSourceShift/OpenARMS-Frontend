@@ -14,7 +14,7 @@ GET		/create/success/{<[A-Za-z0-9]+>token}							CreatePoll.success
 GET		/login															authentication.BaseAuthenticationFrontend.showform
 GET		/login/simple/{<[A-Za-z0-9\.@]+>email}							authentication.SimpleAuthenticationFrontend.showform
 GET		/login/simple/													authentication.SimpleAuthenticationFrontend.showform(email:'null')
-GET		/login/simple/submit											authentication.SimpleAuthenticationFrontend.submit
+POST	/login/simple/submit											authentication.SimpleAuthenticationFrontend.submit
 GET		/logout															authentication.BaseAuthenticationFrontend.logout
 GET		/manage															ManagePoll.index
 GET		/manage/{<[0-9]+>pollInstanceId}/statistics						ManagePoll.statistics(showQRCode:'false')
