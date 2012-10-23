@@ -19,7 +19,7 @@ public class CreatePoll extends BaseController {
 	public static void index(String token) {
 		if (!APIClient.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
-			BaseAuthenticationFrontend.showform();
+			BaseAuthenticationFrontend.showform(null);
 		}
 		if(token != null) {
 			ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));

@@ -44,7 +44,7 @@ public class JoinPoll extends BaseController {
 		if (poll.loginRequired != null && poll.loginRequired) {
 			if (!APIClient.isLoggedIn()) {
 				session.put("page_prior_to_login", request.url);
-				BaseAuthenticationFrontend.showform();
+				BaseAuthenticationFrontend.showform(null);
 			}
 		}
 		

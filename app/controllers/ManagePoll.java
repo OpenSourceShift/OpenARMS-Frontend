@@ -25,7 +25,7 @@ public class ManagePoll extends BaseController {
     	try {
     		Long userId = APIClient.getCurrentUserId();
     		if(userId == null) {
-    			BaseAuthenticationFrontend.showform();
+    			BaseAuthenticationFrontend.showform(null);
     		} else {
 				ReadUserDetailsResponse responseUser = (ReadUserDetailsResponse) apiClient.sendRequest(new ReadUserDetailsRequest(userId));
 				List<PollJSON> pollsJson = responseUser.polls;

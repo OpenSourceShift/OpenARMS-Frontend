@@ -21,7 +21,7 @@ public class BaseAuthenticationFrontend extends BaseController {
     	Application.index();
 	}
 	
-	public static void showform() {
+	public static void showform(String email) {
 		List<String> frontendTemplates = new LinkedList<String>();
 		String frontends = Play.configuration.getProperty("openarms.authentication.frontends");
 		if(frontends == null) {
@@ -39,6 +39,6 @@ public class BaseAuthenticationFrontend extends BaseController {
 				throw new RuntimeException("Couldn't load the "+frontend+" authentication frontend.", e);
 			}
 		}
-		render(frontendTemplates);
+		render(frontendTemplates, email);
 	}
 }

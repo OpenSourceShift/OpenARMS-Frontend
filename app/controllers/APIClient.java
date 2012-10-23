@@ -152,7 +152,7 @@ public class APIClient extends Controller {
 						Logger.debug("Deauthenticating as the client and the service is in different believes.");
 						deauthenticate();
 					}
-					BaseAuthenticationFrontend.showform();
+					BaseAuthenticationFrontend.showform(null);
 					 // This we will never get to.
 					return response;
 				} else if(response.success()) {
