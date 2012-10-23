@@ -2,6 +2,9 @@
 #{set title:'Manage your polls' /}
 #{set moreStyles: ["ManagePoll/base", "ManagePoll/index"] /}
 <script type="text/javascript" charset="utf-8">
+function createPoll() {
+	location.href="";
+}
 function editPoll() {
 	alert("&{'managepoll.index.edit.message'}");
 	// TODO: Change this text ...
@@ -9,6 +12,11 @@ function editPoll() {
 </script>
 #{poll-qr-code /}
 <div id="main">
+#{if pollsJson.size() == 0}
+	<h1>&{'managepoll.index.no_polls'}</h1>
+	<a class="button" href="@{CreatePoll.index()}">&{'managepoll.index.no_polls.create_btn'}</a>
+#{/if}
+#{else}
 #{list pollsJson, as:'poll'}
 	<div class="poll ${poll_isLast ? 'last' : ''}" data-token="${poll.token}">
 		<div class="question block">
@@ -36,4 +44,5 @@ function editPoll() {
 	<hr/>
 	#{/if}
 #{/list}
+#{/else}
 </div>

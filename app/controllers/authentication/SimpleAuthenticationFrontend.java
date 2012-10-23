@@ -30,9 +30,7 @@ import play.mvc.Http.StatusCode;
 public class SimpleAuthenticationFrontend extends BaseAuthenticationFrontend {
 	
 	public static void showform(String email) {
-		if (email == null)
-			email = "";
-		render(email);
+		BaseAuthenticationFrontend.showform(email);
 	}
 	
 	public static void submit(String email, String password) {
@@ -44,7 +42,7 @@ public class SimpleAuthenticationFrontend extends BaseAuthenticationFrontend {
 		if (validation.hasErrors()) {
 			params.flash();
 			validation.keep();
-			showform(email);
+			BaseAuthenticationFrontend.showform(email);
 		} else {
 			try {
 				boolean success = authenticateSimple(email, password);

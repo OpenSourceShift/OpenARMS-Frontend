@@ -12,7 +12,7 @@ import api.requests.ReadPollRequest;
 import api.responses.CreateVoteResponse;
 import api.responses.ReadPollInstanceResponse;
 import api.responses.ReadPollResponse;
-import controllers.authentication.SimpleAuthenticationFrontend;
+import controllers.authentication.BaseAuthenticationFrontend;
 
 public class JoinPoll extends BaseController {
 	public static void index(String token) throws Exception {
@@ -44,7 +44,7 @@ public class JoinPoll extends BaseController {
 		if (poll.loginRequired != null && poll.loginRequired) {
 			if (!APIClient.isLoggedIn()) {
 				session.put("page_prior_to_login", request.url);
-				SimpleAuthenticationFrontend.showform("");
+				BaseAuthenticationFrontend.showform(null);
 			}
 		}
 		

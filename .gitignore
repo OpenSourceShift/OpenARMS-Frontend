@@ -1,4 +1,5 @@
 *.swp
+<<<<<<< HEAD
 *.swo
 *~
 .settings
@@ -11,3 +12,22 @@ test-result/
 lib/
 dist/
 modules/
+=======
+play-1.2.4/*
+*.log
+.classpath
+.project
+.settings/
+eclipse/
+lib/
+modules/
+tmp/
+
+# Virtual eclipse folders
+OpenARMS-Authentication-CAS-API/
+OpenARMS-Authentication-CAS-Frontend/
+OpenARMS-Authentication-CAS-Service/
+OpenARMS-API/
+OpenARMS-Service/
+OpenARMS-Frontend/
+>>>>>>> refs/heads/master

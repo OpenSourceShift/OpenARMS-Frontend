@@ -12,14 +12,14 @@ import api.requests.CreatePollRequest;
 import api.requests.ReadPollByTokenRequest;
 import api.responses.CreatePollResponse;
 import api.responses.ReadPollByTokenResponse;
-import controllers.authentication.SimpleAuthenticationFrontend;
+import controllers.authentication.BaseAuthenticationFrontend;
 
 public class CreatePoll extends BaseController {
 	
 	public static void index(String token) {
 		if (!APIClient.isLoggedIn()) {
 			session.put("page_prior_to_login", request.url);
-			SimpleAuthenticationFrontend.showform(null);	
+			BaseAuthenticationFrontend.showform(null);
 		}
 		if(token != null) {
 			ReadPollByTokenResponse response = (ReadPollByTokenResponse) APIClient.send(new ReadPollByTokenRequest(token));

@@ -29,7 +29,8 @@ import api.requests.Request;
 import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
-import controllers.authentication.SimpleAuthenticationFrontend;
+
+import controllers.authentication.BaseAuthenticationFrontend;
 
 public class APIClient extends Controller {
 
@@ -152,7 +153,7 @@ public class APIClient extends Controller {
 						Logger.debug("Deauthenticating as the client and the service is in different believes.");
 						deauthenticate();
 					}
-					SimpleAuthenticationFrontend.showform(null);
+					BaseAuthenticationFrontend.showform(null);
 					 // This we will never get to.
 					return response;
 				} else if(response.success()) {
