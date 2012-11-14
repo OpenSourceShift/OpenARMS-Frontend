@@ -29,11 +29,6 @@ body {
 	overflow: auto;
 }
 
-#main-joinpoll {
-	margin: 0 auto;
-	overflow: none;
-}
-
 #header {
 	position: relative;
 	height: 80px;
