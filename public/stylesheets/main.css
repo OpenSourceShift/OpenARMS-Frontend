@@ -26,6 +26,11 @@ body {
 
 #main {
 	margin: 0 auto;
+	overflow: auto;
+}
+
+#main-joinpoll {
+	margin: 0 auto;
 	overflow: none;
 }
 
