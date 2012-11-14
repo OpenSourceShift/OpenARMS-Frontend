@@ -26,7 +26,7 @@ body {
 
 #main {
 	margin: 0 auto;
-	overflow: auto;
+	overflow: none;
 }
 
 #header {
