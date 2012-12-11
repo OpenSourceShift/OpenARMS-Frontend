@@ -8,6 +8,7 @@ eclipse/
 lib/
 modules/
 tmp/
+test-result/
 
 # Virtual eclipse folders
 OpenARMS-Authentication-CAS-API/
