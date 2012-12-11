@@ -18,6 +18,7 @@
         #{list items:moreScripts, as:'script'}
         <script src="@{'/public/javascripts/'}/${script}.js" type="text/javascript" charset="utf-8"></script>
         #{/list}
+        #{include "tracking.html" /}
     </head>
 <body>
   <div id="container">
@@ -55,6 +56,8 @@
 			<img src="@{'/public/images/flags/tr.png'}" title="Türkçe"/>
 		</div>
 		<div id="footer">
+			#{include "mailinglist.html" /}
+			<a id="badge" target="_blank" href="http://trac.openarms.dk/"><img src="@{'/public/images/opensource-badge.png'}" alt="This is an open source project, click to learn more." /></a>
 		</div>
 	</div>
     <script type="text/javascript">

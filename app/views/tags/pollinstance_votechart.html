@@ -1,6 +1,7 @@
 <div id="stats"></div>
 
 <script type="text/javascript">
+var vote_count = 0;
 $(function() {
 	Highcharts.theme = {
 		colors: ["#B6C225"],
@@ -80,7 +81,7 @@ $(function() {
 			url: '@{APIClient.tunnel("pollinstance")}/${_pollInstance.id}',
 			dataType: 'json',
 			success: function(data) {
-				var vote_count = data.pollinstance.vote_count;
+				window.vote_count = data.pollinstance.vote_count;
 				var time_remaining = data.pollinstance.time_remaining;
 				var votes = [];
 				for(var v in data.pollinstance.votes) {
@@ -92,7 +93,7 @@ $(function() {
 				// Update the vote count label
 				$("#voteCountLabel span").text(vote_count);
 				$(".countdown span").text(time_remaining);
-				var vote_count = data.pollinstance.vote_count;
+				window.vote_count = data.pollinstance.vote_count;
 				$("#loadingSpinner").hide();
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
@@ -101,7 +102,6 @@ $(function() {
 		});
 	}
 	
-	var vote_count;
 	var chart = new Highcharts.Chart({
 		chart: {
 			renderTo: 'stats',
@@ -137,7 +137,7 @@ $(function() {
 		},
 		tooltip: {
 			formatter: function() {
-				yInVotes = Math.round(this.y*vote_count/100);
+				yInVotes = Math.round(this.y*window.vote_count/100);
 				return yInVotes +' &{'joinpoll.success.votes'}';
 			}
 		},

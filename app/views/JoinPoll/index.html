@@ -2,7 +2,7 @@
 #{set title:'Join poll #' + poll.token /}
 #{set moreStyles:["joinpoll"] /}
 
-<div id="main">
+<div id="main" style="overflow: none;">
 	<h1>${poll.question.raw()}</h1>
 	<hr />
 	#{form @JoinPoll.submit()}

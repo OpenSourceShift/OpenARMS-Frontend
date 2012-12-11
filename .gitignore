@@ -1,4 +1,18 @@
 *.swp
+<<<<<<< HEAD
+*.swo
+*~
+.settings
+.project
+.classpath
+eclipse/
+tmp/
+bin/
+test-result/
+lib/
+dist/
+modules/
+=======
 play-1.2.4/*
 *.log
 .classpath
@@ -17,3 +31,4 @@ OpenARMS-Authentication-CAS-Service/
 OpenARMS-API/
 OpenARMS-Service/
 OpenARMS-Frontend/
+>>>>>>> refs/heads/master

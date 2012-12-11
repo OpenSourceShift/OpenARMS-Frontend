@@ -29,6 +29,7 @@ import api.requests.Request;
 import api.responses.EmptyResponse;
 import api.responses.ExceptionResponse;
 import api.responses.Response;
+
 import controllers.authentication.BaseAuthenticationFrontend;
 
 public class APIClient extends Controller {
