@@ -23,7 +23,7 @@
 #main .question > .controls {
 	box-shadow: inset 0 0.0em 0.5em rgba(0, 0, 0, .5);
 	border: 0.1em solid rgba(0, 0, 0, 0.33);
-	background: rgba(0,0,0,0.33);
+	background: rgba(0,0,0,0.10);
 	
 	margin-top: 0.5em;
 	padding: 0.3em;

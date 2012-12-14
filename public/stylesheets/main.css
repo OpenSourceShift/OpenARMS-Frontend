@@ -5,7 +5,7 @@
 
 body {
 	background-color: #F0F0F0;
-	color: #fff;
+	color: #202020;
 	font-size: 13px;
 	margin: 0;
 }
@@ -18,9 +18,9 @@ body {
 #content {
 	margin-bottom: 0.5em;
 	max-width: 600px;
-	background-color: rgba(0,0,0,0.66);
-	border-top: 0.5em solid #333333;
-	border-bottom: 0.5em solid #333333;
+	background-color: rgba(0,0,0,0.10);
+	border-top: 0.5em solid #A0A0A0;
+	border-bottom: 0.5em solid #A0A0A0;
 	padding: 1.0em 2.0em;
 }
 
@@ -68,7 +68,7 @@ body {
 
 #header #logo {
 	position: absolute;
-	background-image: url("/public/images/logo.png");
+	background-image: url("/public/images/logo-blue.png");
 	width: 300px;
 	height: 61px;
 	background-repeat: no-repeat;
@@ -78,6 +78,19 @@ body {
 	margin-left: -150px;
 	bottom: 0px;
 }
+
+#header #cbs-logo {
+	position: absolute;
+	background-image: url("/public/images/cbs.png");
+	width: 112px;
+	height: 61px;
+	background-repeat: no-repeat;
+	padding-bottom: 1em;
+	background-position: 50% 50%;
+	left: 0%;
+	bottom: 5px;
+}
+
 a {
 	color: #fff;
 }
@@ -119,9 +132,9 @@ input[type=text]:focus,
 input[type=password]:focus,
 select:focus,
 textarea:focus {
-	box-shadow: 0 0 5px #CFDC2A;
-	-webkit-box-shadow: 0 0 5px #CFDC2A;
-	-moz-box-shadow: 0 0 5px #CFDC2A;
+	box-shadow: 0 0 5px #2a5cdc;
+	-webkit-box-shadow: 0 0 5px #2a5cdc;
+	-moz-box-shadow: 0 0 5px #2a5cdc;
 }
 
 .centered {
@@ -139,15 +152,15 @@ textarea:focus {
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	border: 0.15em solid #333333;
+	border: 0.1em solid #000;
 	font-size: 1.0em;
 	padding: 0.5em 1em;
 	margin: 0.2em;
 	text-align: center;
 	vertical-align: middle;
 	cursor: pointer;
-	color: #3c400c;
-    text-shadow: 0.0em 0.09em rgba(255,255,255,0.66), 0.0em -0.09em rgba(0,0,0,0.66);
+	color: #e6e9f2;
+    text-shadow: 0.0em 0.09em rgba(255,255,255,0.3), 0.0em -0.09em rgba(0,0,0,0.66);
     box-shadow: inset 0 0.2em 0.1em rgba(255,255,255,.6);
 	
     -webkit-touch-callout: none;
@@ -157,23 +170,23 @@ textarea:focus {
 	-ms-user-select: none;
 	user-select: none;
 	
-	background-color: #b6c225;
-	background-image: -moz-linear-gradient(top,#b6c225 0,#868f1b 100%);
-	background-image: -ms-linear-gradient(top,#b6c225 0,#868f1b 100%);
-	background-image: -o-linear-gradient(top,#b6c225 0,#868f1b 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#b6c225),color-stop(100%,#868f1b));
-	background-image: -webkit-linear-gradient(top,#b6c225 0,#868f1b 100%);
-	background-image: linear-gradient(to bottom,#b6c225 0,#868f1b 100%);
+	background-color: #2551c2;
+	background-image: -moz-linear-gradient(top,#2551c2 0,#1b3c8f 100%);
+	background-image: -ms-linear-gradient(top,#2551c2 0,#1b3c8f 100%);
+	background-image: -o-linear-gradient(top,#2551c2 0,#1b3c8f 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#2551c2),color-stop(100%,#1b3c8f));
+	background-image: -webkit-linear-gradient(top,#2551c2 0,#1b3c8f 100%);
+	background-image: linear-gradient(to bottom,#2551c2 0,#1b3c8f 100%);
 }
 
 .button:hover {
-	background-color: #cfdc2a;
-    background-image: -moz-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -ms-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -o-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#cfdc2a),color-stop(100%,#9ea820));
-	background-image: -webkit-linear-gradient(top,#cfdc2a 0,#9ea820 100%);
-	background-image: linear-gradient(to bottom,#cfdc2a 0,#9ea820 100%);
+	background-color: #2a5cdc;
+    background-image: -moz-linear-gradient(top,#2a5cdc 0,#2047a8 100%);
+	background-image: -ms-linear-gradient(top,#2a5cdc 0,#2047a8 100%);
+	background-image: -o-linear-gradient(top,#2a5cdc 0,#2047a8 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#2a5cdc),color-stop(100%,#2047a8));
+	background-image: -webkit-linear-gradient(top,#2a5cdc 0,#2047a8 100%);
+	background-image: linear-gradient(to bottom,#2a5cdc 0,#2047a8 100%);
 }
 
 .button:active {
@@ -240,7 +253,7 @@ textarea:focus {
 	-moz-border-radius: 0.5em;
 	border-radius: 0.5em;
 	border: 0.1em solid rgba(0, 0, 0, 0.5);
-	background: rgba(255,255,255,0.1);
+	background: rgba(255,255,255,0.7);
 	margin: 0;
 	padding: .5em;
 }
