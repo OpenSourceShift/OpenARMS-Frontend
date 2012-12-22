@@ -6,21 +6,22 @@ require:
     - org.apache.httpcomponents -> httpcore 4.1
     - org.apache.httpcomponents -> httpclient 4.1
     - OpenARMS -> OpenARMS-API 0.3
-    - OpenARMS -> OpenARMS-Authentication-CAS-API 0.1
-    - OpenARMS -> OpenARMS-Authentication-CAS-Frontend 0.1
+    - OpenARMS-CAS -> OpenARMS-Authentication-CAS-API 0.1
+    - OpenARMS-CAS -> OpenARMS-Authentication-CAS-Frontend 0.1
 
 repositories:
     - OpenARMS:
-        type:       local
-        artifact:   "/home/creen/Projects/OpenARMS/[module]"
+        type:       http
+        artifact:   "http://admin.opensourceshift.com/repo/[module]-[revision].zip"
         contains:
             - OpenARMS -> OpenARMS-API
             - OpenARMS -> OpenARMS-Service
             - OpenARMS -> OpenARMS-Frontend
     - OpenARMS-CAS:
-        type:       local
-        artifact:   "/home/creen/Projects/OpenARMS/OpenARMS-Authentication-CAS/[module]"
+        type:       http
+        artifact:   "http://admin.opensourceshift.com/repo/[module]-[revision].zip"
         contains:
-            - OpenARMS -> OpenARMS-Authentication-CAS-API
-            - OpenARMS -> OpenARMS-Authentication-CAS-Service
-            - OpenARMS -> OpenARMS-Authentication-CAS-Frontend
+            - OpenARMS-CAS -> OpenARMS-Authentication-CAS-API
+            - OpenARMS-CAS -> OpenARMS-Authentication-CAS-Service
+            - OpenARMS-CAS -> OpenARMS-Authentication-CAS-Frontend
+
