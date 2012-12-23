@@ -6,6 +6,6 @@ OpenARMS is a complete Audience Response Management System consisting of the fol
 
 To use the service, visit:
 
-www.openarms.dk
+cbs.openarms.dk
 
 For license information, see license.txt
