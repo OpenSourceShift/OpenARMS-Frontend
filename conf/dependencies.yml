@@ -12,7 +12,7 @@ require:
 repositories:
     - OpenARMS:
         type:       http
-        artifact:   "http://admin.opensourceshift.com/repo/[module]-[revision].zip"
+        artifact:  "http://admin.opensourceshift.com/repo/[module]-[revision].zip"
         contains:
             - OpenARMS -> OpenARMS-API
             - OpenARMS -> OpenARMS-Service
@@ -24,4 +24,3 @@ repositories:
             - OpenARMS-CAS -> OpenARMS-Authentication-CAS-API
             - OpenARMS-CAS -> OpenARMS-Authentication-CAS-Service
             - OpenARMS-CAS -> OpenARMS-Authentication-CAS-Frontend
-
